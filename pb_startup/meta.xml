@@ -1,0 +1,11 @@
+<meta>
+    <oop>true</oop>
+
+    <script type="server" src="config.lua"/>
+    <script type="server" src="startup.lua"/>
+
+    <aclrequest>
+        <right name="function.startResource" access="true"/>
+        <right name="function.stopResource" access="true"/>
+    </aclrequest>
+</meta>
