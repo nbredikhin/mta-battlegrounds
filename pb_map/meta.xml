@@ -1,0 +1,9 @@
+<meta>
+    <oop>true</oop>
+
+    <script type="client" src="client/main.lua"/>
+
+    <file src="assets/map.png"/>
+    <file src="assets/p_circle.png"/>
+    <file src="assets/p_location.png"/>
+</meta>

@@ -1,3 +1,5 @@
+local isRadarVisible = true
+
 local screenSize = Vector2(guiGetScreenSize())
 local viewportWidth  = 256
 local viewportHeight = 256
@@ -102,7 +104,14 @@ local function drawRunnerBar(x, y, width, height)
     dxDrawText("4:20", x, y + height + 3, x, y + height + 3)
 end
 
+function setVisible(visible)
+    isRadarVisible = not not visible
+end
+
 addEventHandler("onClientRender", root, function ()
+    if not isRadarVisible then
+        return
+    end
     drawRadar()
 
     dxDrawRectangle(
@@ -124,11 +133,11 @@ addEventHandler("onClientRender", root, function ()
 end)
 
 addEventHandler("onClientResourceStart", resourceRoot, function ()
-    textures.map = dxCreateTexture("assets/map.png", "argb", true, "clamp")
+    textures.map = dxCreateTexture(":pb_map/assets/map.png", "argb", true, "clamp")
     radarTextureSize = dxGetMaterialSize(textures.map)
 
-    textures.p_circle = dxCreateTexture("assets/p_circle.png", "argb", true, "clamp")
-    textures.p_location = dxCreateTexture("assets/p_location.png", "argb", true, "clamp")
+    textures.p_circle = dxCreateTexture(":pb_map/assets/p_circle.png", "argb", true, "clamp")
+    textures.p_location = dxCreateTexture(":pb_map/assets/p_location.png", "argb", true, "clamp")
 
     textures.runner = dxCreateTexture("assets/runner.png")
 
