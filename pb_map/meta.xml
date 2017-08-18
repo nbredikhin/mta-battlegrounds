@@ -3,6 +3,9 @@
 
     <script type="client" src="client/main.lua"/>
 
+    <export type="client" function="setVisible"/>
+    <export type="client" function="isVisible"/>
+
     <file src="assets/map.png"/>
     <file src="assets/p_circle.png"/>
     <file src="assets/p_location.png"/>

@@ -68,12 +68,6 @@ addEventHandler("onClientRender", root, function ()
     dxDrawCircle(850, 490, 150, tocolor(255, 255, 255, 150), 2)
 end)
 
-bindKey("m", "down", function ()
-    isMapVisible = not isMapVisible
-
-    exports.pb_radar:setVisible(not isMapVisible)
-end)
-
 addEventHandler("onClientResourceStart", resourceRoot, function ()
     textures.map = dxCreateTexture("assets/map.png", "argb", true, "clamp")
     mapTextureSize = dxGetMaterialSize(textures.map)
@@ -83,4 +77,18 @@ addEventHandler("onClientResourceStart", resourceRoot, function ()
 
     -- test
     isMapVisible = true
+end)
+
+function setVisible(visible)
+    isMapVisible = not not visible
+end
+
+function isVisible(visible)
+    return isMapVisible
+end
+
+bindKey("m", "down", function ()
+    isMapVisible = not isMapVisible
+
+    exports.pb_radar:setVisible(not isMapVisible)
 end)

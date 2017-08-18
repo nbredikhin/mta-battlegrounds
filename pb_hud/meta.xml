@@ -1,4 +1,38 @@
 <meta>
     <oop>true</oop>
+    <script type="client" src="client/weapon.lua"/>
     <script type="client" src="client/main.lua"/>
+
+    <file src="assets/0.png"/>
+    <file src="assets/1.png"/>
+    <file src="assets/2.png"/>
+    <file src="assets/3.png"/>
+    <file src="assets/4.png"/>
+    <file src="assets/5.png"/>
+    <file src="assets/6.png"/>
+    <file src="assets/7.png"/>
+    <file src="assets/8.png"/>
+    <file src="assets/9.png"/>
+    <file src="assets/16.png"/>
+    <file src="assets/17.png"/>
+    <file src="assets/18.png"/>
+    <file src="assets/22.png"/>
+    <file src="assets/23.png"/>
+    <file src="assets/24.png"/>
+    <file src="assets/25.png"/>
+    <file src="assets/26.png"/>
+    <file src="assets/27.png"/>
+    <file src="assets/28.png"/>
+    <file src="assets/29.png"/>
+    <file src="assets/30.png"/>
+    <file src="assets/31.png"/>
+    <file src="assets/32.png"/>
+    <file src="assets/33.png"/>
+    <file src="assets/34.png"/>
+    <file src="assets/35.png"/>
+    <file src="assets/36.png"/>
+    <file src="assets/37.png"/>
+    <file src="assets/38.png"/>
+    <file src="assets/39.png"/>
+    <file src="assets/46.png"/>
 </meta>
