@@ -1,11 +1,13 @@
 local screenSize = Vector2(guiGetScreenSize())
-local drawSlots = {5, 6, 3, 4, 1, 2, 8}
+local drawSlots = {}
+local slotsOrder = {5, 6, 3, 4, 1, 2, 8}
 local activeSlot = 1
 local weaponIconWidth = 200
 local weaponIconHeight = 40
 local weaponIcons = {}
 local offset = 0
 local size = 1
+local bulletTexture
 
 function drawWeapon()
     local x = screenSize.x / 2
@@ -25,12 +27,16 @@ function drawWeapon()
             local w = math.floor(icon.width * 0.6 * s)
             local h = math.floor(icon.height * 0.6 * s)
             local ix = x + weaponIconWidth / 2
-            --local alpha = --math.max(1, math.min(1, 1 - math.abs(ix - screenSize.x / 2) / weaponIconWidth))
             local alpha = math.max(0, (2 - math.abs(screenSize.x / 2 - ix) / weaponIconWidth) / 2)
             if alpha > 0.1 then
                 if DEBUG_DRAW then
                     dxDrawText("[slot="..tostring(slot).."; weapon="..tostring(weapon).."]", ix - w, y - 100, ix+w, y-100,tocolor(0,255,0),1,"default","center","center")
                 end
+                local ty = y - 60
+                dxDrawText(localPlayer:getAmmoInClip(slot), ix - 10, ty, ix - 10, ty ,tocolor(255, 255, 255, 255 * alpha),1.2*s,"default-bold","right","bottom")
+                local bs = 10 * s
+                dxDrawImage(ix-bs/2, ty-bs-3*s,bs,bs,bulletTexture,0,0,0,tocolor(255,255,255,255*alpha))
+                dxDrawText(localPlayer:getTotalAmmo(slot), ix + 10, ty - 2, ix + 10, ty - 2 ,tocolor(255, 255, 255, 150 * alpha),0.8*s,"default-bold","left","bottom")
                 dxDrawImage(ix - w / 2, y - h / 2, w, h, icon.texture, 0, 0, 0, tocolor(255, 255, 255, 255 * alpha))
             end
             x = x + weaponIconWidth
@@ -38,7 +44,18 @@ function drawWeapon()
     end
 end
 
+function updateSlots()
+    drawSlots = {}
+    for i, slot in ipairs(slotsOrder) do
+        if localPlayer:getWeapon(slot) > 0 then
+            table.insert(drawSlots, slot)
+        end
+    end
+end
+
 addEventHandler("onClientPlayerWeaponSwitch", localPlayer, function (prevSlot, curSlot)
+    updateSlots()
+
     for i, slot in ipairs(drawSlots) do
         if curSlot == slot then
             activeSlot = i
@@ -56,28 +73,41 @@ addEventHandler("onClientResourceStart", resourceRoot, function ()
             weaponIcons[i] = {texture = texture, width = width, height = height}
         end
     end
+
+    bulletTexture = dxCreateTexture("assets/bullet.png")
 end)
 
 toggleControl("next_weapon", false)
 toggleControl("previous_weapon", false)
 
 bindKey("next_weapon", "down", function ()
+    updateSlots()
+    if #drawSlots == 0 then
+        return
+    end
     activeSlot = activeSlot + 1
     if activeSlot > #drawSlots then
-        activeSlot = 1
-    end
-    localPlayer.weaponSlot = drawSlots[activeSlot]
-end)
-
-bindKey("previous_weapon", "down", function ()
-    activeSlot = activeSlot - 1
-    if activeSlot < 1 then
         activeSlot = #drawSlots
     end
     localPlayer.weaponSlot = drawSlots[activeSlot]
 end)
 
+bindKey("previous_weapon", "down", function ()
+    updateSlots()
+    if #drawSlots == 0 then
+        return
+    end
+    activeSlot = activeSlot - 1
+    if activeSlot < 1 then
+        activeSlot = 1
+    end
+    localPlayer.weaponSlot = drawSlots[activeSlot]
+end)
+
 bindKey("x", "down", function ()
+    if #drawSlots == 0 then
+        return
+    end
     if localPlayer.weaponSlot > 0 then
         localPlayer.weaponSlot = 0
     else
@@ -85,8 +115,12 @@ bindKey("x", "down", function ()
     end
 end)
 
-for i = 1, #drawSlots do
+for i = 1, #slotsOrder do
     bindKey(tostring(i), "down", function ()
-        localPlayer.weaponSlot = drawSlots[i]
+        if drawSlots[i] then
+            localPlayer.weaponSlot = drawSlots[i]
+        end
     end)
 end
+
+updateSlots()

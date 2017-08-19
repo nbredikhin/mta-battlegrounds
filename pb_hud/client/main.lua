@@ -1,6 +1,6 @@
 local screenSize = Vector2(guiGetScreenSize())
 
-DEBUG_DRAW = true
+DEBUG_DRAW = false
 
 local isHealthbarVisible = true
 local healthbarWidth = 400
@@ -65,4 +65,5 @@ end, false, "low-1")
 
 addEventHandler("onClientResourceStart", resourceRoot, function ()
     showPlayerHudComponent("all", false)
+    showPlayerHudComponent("crosshair", true)
 end)
