@@ -40,6 +40,31 @@ local function getSectionName(x, y)
     return sectionNames.x[x] or "", sectionNames.y[y] or ""
 end
 
+function dxDrawCircle(x, y, radius, ...)
+    if not segments then
+        segments = math.max(12, math.floor(radius / 4))
+    end
+
+    local px, py
+    for i = 0, segments do
+        local angle = i / segments * math.pi * 2
+        local ax, ay = math.cos(angle), math.sin(angle)
+        ax = ax * radius + x
+        ay = ay * radius + y
+        if px then
+            dxDrawLine(px, py, ax, ay, ...)
+        end
+        px = ax
+        py = ay
+    end
+end
+
+function drawZone(x, y, radius, localX, localY, color)
+    local x, y = worldToRadar(x, y)
+    radius = radius / 6000 * radarTextureSize
+    dxDrawCircle(-localX+x, -localY+y, radius, color, 2)
+end
+
 local function drawRadar()
     dxSetRenderTarget(viewport)
     local localX, localY = worldToRadar(localPlayer.position.x, localPlayer.position.y)
@@ -55,7 +80,6 @@ local function drawRadar()
         localHeight,
         textures.map
     )
-
     -- Сетка
     local gridSize = 40
     for i = 1, gridSize do
@@ -80,6 +104,17 @@ local function drawRadar()
     dxDrawImage(px, py, psize, psize, textures.p_circle)
     dxDrawImage(px, py, psize, psize, textures.p_location, prot, 0, 0)
 
+    -- Зоны
+    local x, y, radius = exports.pb_zones:getWhiteZone()
+    if x then
+        drawZone(x, y, radius, localX - localWidth / 2, localY - localHeight / 2, tocolor(255, 255, 255, 180))
+    end
+
+    local x, y, radius = exports.pb_zones:getBlueZone()
+    if x then
+        drawZone(x, y, radius, localX - localWidth / 2, localY - localHeight / 2, tocolor(0, 0, 200, 150))
+    end
+
     dxSetRenderTarget()
 end
 
@@ -93,13 +128,24 @@ local function drawRunnerBar(x, y, width, height)
 
     local barX = x + height
     local barWidth = width - height * 2
-    local zoneProgress = 0.4
+    local bx, by, br, bp = exports.pb_zones:getBlueZone()
+    local zoneProgress = bp
     dxDrawRectangle(barX, y, barWidth * zoneProgress, height - 1, zoneProgressColor)
     dxDrawLine(barX, y + height - 1, barX + barWidth * zoneProgress, y + height - 1, tocolor(0, 0, 0, 70))
 
-    local runnerProgress = 0.6
+    local br = exports.pb_zones:getBlueZoneRadius()
+    local wx, wy, wr = exports.pb_zones:getWhiteZone()
+    local runnerAlpha = 255
+    local pr = getDistanceBetweenPoints2D(localPlayer.position.x, localPlayer.position.y, bx, by)
+    local pr2 = getDistanceBetweenPoints2D(localPlayer.position.x, localPlayer.position.y, wx, wy)
+    local runnerProgress = (1 - (2 - pr2 / wr)) / br * pr
+    runnerProgress = 1 - math.min(1, math.max(0, runnerProgress))
+
+    if runnerProgress == 1 then
+        runnerAlpha = 100
+    end
     local rsize = runnerIconSize
-    dxDrawImage(barX + barWidth * runnerProgress - rsize / 2, y - rsize + height, rsize, rsize, textures.runner)
+    dxDrawImage(barX + barWidth * runnerProgress - rsize / 2, y - rsize + height, rsize, rsize, textures.runner, 0, 0, 0, tocolor(255, 255, 255, runnerAlpha))
 
     dxDrawText("4:20", x, y + height + 3, x, y + height + 3)
 end

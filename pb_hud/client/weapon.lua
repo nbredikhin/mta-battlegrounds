@@ -1,6 +1,6 @@
 local screenSize = Vector2(guiGetScreenSize())
 local drawSlots = {}
-local slotsOrder = {5, 6, 3, 4, 1, 2, 8}
+local slotsOrder = {5, 6, 3, 4, 2, 1, 8}
 local activeSlot = 1
 local weaponIconWidth = 200
 local weaponIconHeight = 40

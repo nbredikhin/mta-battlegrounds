@@ -19,13 +19,17 @@ local function drawHealthbar()
     local y = screenSize.y - 35 - healthbarHeight
 
     dxDrawRectangle(x - 1, y - 1, healthbarWidth + 2, healthbarHeight + 2, tocolor(0, 0, 0, 150))
-    dxDrawBorderRect(x - 1, y - 1, healthbarWidth + 2, healthbarHeight + 2, tocolor(255, 255, 255, 150), 2)
 
     local hpMul = localPlayer.health / 100
     local color = tocolor(255, 255, 255)
+    local borderColor = tocolor(255, 255, 255, 150)
     if localPlayer.health < 75 then
         color = tocolor(255, 150, 150)
+    elseif localPlayer.health > 99.5 then
+        color = tocolor(255, 255, 255, 100)
+        borderColor = tocolor(255, 255, 255, 120)
     end
+    dxDrawBorderRect(x - 1, y - 1, healthbarWidth + 2, healthbarHeight + 2, borderColor, 2)
     dxDrawRectangle(x, y, healthbarWidth * hpMul, healthbarHeight, color)
 
     local healthbarText = string.gsub(localPlayer.name, '#%x%x%x%x%x%x', '') .. " - " .. tostring(getVersion().sortable)

@@ -1,0 +1,12 @@
+<meta>
+    <oop>true</oop>
+
+    <script type="client" src="client/drawing.lua"/>
+    <script type="client" src="client/exports.lua"/>
+
+    <export type="client" function="getWhiteZone"/>
+    <export type="client" function="getBlueZone"/>
+    <export type="client" function="getBlueZoneRadius"/>
+
+    <file src="assets/wall.png"/>
+</meta>

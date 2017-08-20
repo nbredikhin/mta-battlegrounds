@@ -3,6 +3,7 @@ local screenSize = Vector2(guiGetScreenSize())
 local textures = {}
 local mapTextureSize
 local mapSize = screenSize.y
+local mapX, mapY = screenSize.x / 2 - mapSize / 2, 0
 
 local lineColor = tocolor(255, 255, 150, 150)
 
@@ -19,7 +20,7 @@ end
 
 function dxDrawCircle(x, y, radius, ...)
     if not segments then
-        segments = math.floor(radius / 6.5)
+        segments = math.max(12, math.floor(radius / 4))
     end
 
     local px, py
@@ -36,13 +37,19 @@ function dxDrawCircle(x, y, radius, ...)
     end
 end
 
+function drawZone(x, y, radius, color)
+    local x, y = worldToMap(x, y)
+    radius = radius / 6000 * mapSize
+    dxDrawCircle(mapX + x, mapY + y, radius, color, 2)
+end
+
 addEventHandler("onClientRender", root, function ()
     if not isMapVisible then
         return false
     end
     dxDrawRectangle(0, 0, screenSize.x, screenSize.y, tocolor(0, 0, 0, 150))
-    local x = screenSize.x / 2 - mapSize / 2
-    local y = 0
+    local x = mapX
+    local y = mapY
     dxDrawImage(x, y, mapSize, mapSize, textures.map)
 
     -- Игрок
@@ -64,8 +71,15 @@ addEventHandler("onClientRender", root, function ()
         dxDrawText(sectionNames.x[i + 1], x + offset + 12, y + 7, x + offset + 12, y + 7, tocolor(255, 255, 255, 200), 1, "default-bold")
     end
 
-    dxDrawCircle(900, 500, 250, tocolor(0, 0, 200, 150), 2)
-    dxDrawCircle(850, 490, 150, tocolor(255, 255, 255, 150), 2)
+    local x, y, radius = exports.pb_zones:getWhiteZone()
+    if x then
+        drawZone(x, y, radius, tocolor(255, 255, 255, 180))
+    end
+
+    local x, y, radius = exports.pb_zones:getBlueZone()
+    if x then
+        drawZone(x, y, radius,tocolor(0, 0, 200, 150))
+    end
 end)
 
 addEventHandler("onClientResourceStart", resourceRoot, function ()
@@ -74,9 +88,6 @@ addEventHandler("onClientResourceStart", resourceRoot, function ()
 
     textures.p_circle = dxCreateTexture("assets/p_circle.png", "argb", true, "clamp")
     textures.p_location = dxCreateTexture("assets/p_location.png", "argb", true, "clamp")
-
-    -- test
-    isMapVisible = true
 end)
 
 function setVisible(visible)
