@@ -24,8 +24,8 @@ function drawWeapon()
             if i == activeSlot then
                 s = size
             end
-            local w = math.floor(icon.width * 0.6 * s)
-            local h = math.floor(icon.height * 0.6 * s)
+            local w = math.floor(icon.width * 0.2 * s)
+            local h = math.floor(icon.height * 0.2 * s)
             local ix = x + weaponIconWidth / 2
             local alpha = math.max(0, (2 - math.abs(screenSize.x / 2 - ix) / weaponIconWidth) / 2)
             if alpha > 0.1 then
