@@ -1,5 +1,5 @@
-function instantiateLootItem(item, position)
-    local object = createObject(1575, position - Vector3(0, 0, 0.8))
+function spawnPlayerLootItem(player, item)
+    local object = createObject(1575, player.position - Vector3(0, 0, 0.8))
     object:setCollisionsEnabled(false)
 
     object:setData("loot_item", item)

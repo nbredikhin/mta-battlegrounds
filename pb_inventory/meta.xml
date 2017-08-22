@@ -1,19 +1,22 @@
 <meta>
     <oop>true</oop>
 
-    <script type="shared" src="shared/items.lua"/>
+    <script type="shared" src="shared/item_classes.lua"/>
 
-    <script type="client" src="client/scaled_dx.lua"/>
-    <script type="client" src="client/inventory.lua"/>
-    <script type="client" src="client/drawing.lua"/>
-    <script type="client" src="client/loot.lua"/>
+<!--     <script type="client" src="client/scaled_dx.lua"/> -->
+<!--     <script type="client" src="client/inventory.lua"/> -->
+<!--     <script type="client" src="client/drawing.lua"/> -->
+<!--     <script type="client" src="client/loot.lua"/> -->
+    <script type="client" src="client/weapons.lua"/>
 
-    <script type="server" src="server/inventories.lua"/>
+    <script type="server" src="server/items.lua"/>
+    <script type="server" src="server/weapons.lua"/>
+    <script type="server" src="server/backpack.lua"/>
     <script type="server" src="server/loot.lua"/>
 
     <file src="assets/icons/bandage.png"/>
     <file src="assets/icons/first_aid.png"/>
     <file src="assets/icons/m4.png"/>
 
-    <file src="assets/weapons/m4.png"/>
+    <!-- <file src="assets/weapons/m4.png"/> -->
 </meta>
