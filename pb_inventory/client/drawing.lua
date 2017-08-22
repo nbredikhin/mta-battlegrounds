@@ -79,15 +79,31 @@ local weaponWidth = 475
 local weaponAdditionalWidth = weaponWidth / 2 - 10
 local weaponHeight = 200
 
-function drawItemsList(items, x, y)
+function drawItemsList(items, x, y, title)
+    local itemY = y
+    local skipTitle = false
+    if type(items[1]) == "string" then
+        title = items[1]
+        skipTitle = true
+    end
+    if title then
+        dxDrawText(title, x + 5, y - itemHeight / 2, x + itemWidth, y, tocolor(255, 255, 255, 200), 1, "default", "left", "center")
+    end
     for i, item in ipairs(items) do
-        local itemY = y + (i - 1) * (itemHeight + itemSpace)
-        dxDrawRectangle(x, itemY, itemWidth, itemHeight, inventoryColor)
-        dxDrawRectangle(x, itemY, itemHeight, itemHeight, tocolor(255, 255, 255, 51 - 38))
+        if type(item) == "table" then
+            dxDrawRectangle(x, itemY, itemWidth, itemHeight, inventoryColor)
+            dxDrawRectangle(x, itemY, itemHeight, itemHeight, tocolor(255, 255, 255, 51 - 38))
 
-        dxDrawImage(x, itemY, itemHeight, itemHeight, IconTextures[item.name])
-        dxDrawText(Items[item.name].readableName, x  +itemHeight + 5, itemY, x + itemWidth, itemY + itemHeight, tocolor(255, 255, 255, 200), 1, "default", "left", "center")
-        dxDrawText(item.count, x, itemY, x + itemWidth - 10, itemY + itemHeight, tocolor(255, 255, 255, 200), 1, "default-bold", "right", "center")
+            dxDrawImage(x, itemY, itemHeight, itemHeight, IconTextures[item.name])
+            dxDrawText(Items[item.name].readableName, x  +itemHeight + 5, itemY, x + itemWidth, itemY + itemHeight, tocolor(255, 255, 255, 200), 1, "default", "left", "center")
+            dxDrawText(item.count, x, itemY, x + itemWidth - 10, itemY + itemHeight, tocolor(255, 255, 255, 200), 1, "default-bold", "right", "center")
+            itemY = itemY + itemHeight + itemSpace
+        else
+            if i ~= 1 or not skipTitle then
+                dxDrawText(tostring(item), x + 5, itemY, x + itemWidth, itemY + itemHeight / 2, tocolor(255, 255, 255, 200), 1, "default", "left", "center")
+                itemY = itemY + itemHeight / 2 + itemSpace
+            end
+        end
     end
 end
 
@@ -102,16 +118,26 @@ function drawSpecialItem(name)
         return
     end
     dxDrawRectangle(slot.x, slot.y, slotSize, slotSize)
+    local item = getInventorySpecialSlot(name)
+    if not item then
+        return
+    end
 end
 
-function drawWeaponSlot(x, y, width, height)
+function drawWeaponSlot(slotName, x, y, width, height, slotIndex)
     local rx = x
     local ry = y + 10
     local rs = 30
-    dxDrawRectangle(rx - 1, ry - 1, rs + 2, rs + 2)
-    dxDrawRectangle(rx, ry, rs, rs, tocolor(0, 0, 0, 255))
-    dxDrawText("1", rx, ry, rx + rs, ry + rs, tocolor(255, 255, 255, 255), 1.5, "default-bold", "center", "center")
     dxDrawLine(x, y + height, x + width, y + height, inventoryColor)
+    local item = getInventorySpecialSlot(slotName)
+    if not item then
+        return
+    end
+    if slotIndex then
+        dxDrawRectangle(rx - 1, ry - 1, rs + 2, rs + 2)
+        dxDrawRectangle(rx, ry, rs, rs, tocolor(0, 0, 0, 255))
+        dxDrawText(slotIndex, rx, ry, rx + rs, ry + rs, tocolor(255, 255, 255, 255), 1.5, "default-bold", "center", "center")
+    end
 end
 
 addEventHandler("onClientRender", root, function ()
@@ -132,29 +158,20 @@ addEventHandler("onClientRender", root, function ()
 
     local x = inventoryX
     local y = inventoryY
-    drawItemsList({
-        { name = "bandage", count = 150 },
-    }, x, y)
+    drawItemsList(getLootItems(), x, y, "Ground")
     x = x + itemWidth + 15
     dxDrawLine(x, y, x, y + itemsListHeight, tocolor(255, 255, 255, 38))
     x = x + 15
-    drawItemsList({
-        { name = "bandage", count = 150 },
-        { name = "bandage", count = 150 },
-        { name = "bandage", count = 150 },
-        { name = "bandage", count = 150 },
-        { name = "bandage", count = 150 },
-        { name = "bandage", count = 150 },
-    }, x, y)
+    drawItemsList(getInventoryItems(), x, y, "Backpack")
 
     local wx = 1312
     local wy = y
     for i = 1, 3 do
-        drawWeaponSlot(wx, wy, weaponWidth, weaponHeight)
+        drawWeaponSlot("weapon"..i, wx, wy, weaponWidth, weaponHeight, i)
         wy = wy + weaponHeight
     end
-    drawWeaponSlot(wx, wy, weaponAdditionalWidth, weaponHeight)
-    drawWeaponSlot(wx + weaponAdditionalWidth + 20, wy, weaponAdditionalWidth, weaponHeight)
+    drawWeaponSlot("weapon_melee", wx, wy, weaponAdditionalWidth, weaponHeight)
+    drawWeaponSlot("weapon_grenade", wx + weaponAdditionalWidth + 20, wy, weaponAdditionalWidth, weaponHeight)
 end)
 
 addEventHandler("onClientResourceStart", resourceRoot, function ()
@@ -166,4 +183,8 @@ addEventHandler("onClientResourceStart", resourceRoot, function ()
             IconTextures[name] = dxCreateTexture(path)
         end
     end
+end)
+
+bindKey("tab", "down", function ()
+    isInventoryVisible = not isInventoryVisible
 end)
