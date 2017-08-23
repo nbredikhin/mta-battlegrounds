@@ -27,9 +27,11 @@ Items = {
         storage = "weapons",
         category = "weapon_primary",
         weaponId = 31,
+        clip = 30,
         stackable = false,
         vars = {
-            ammo = 0
+            ammo = 0,
+            clip = 0,
         }
     },
 
@@ -39,9 +41,11 @@ Items = {
         storage = "weapons",
         category = "weapon_primary",
         weaponId = 30,
+        clip = 30,
         stackable = false,
         vars = {
-            ammo = 0
+            ammo = 0,
+            clip = 0,
         }
     },
 
@@ -51,9 +55,11 @@ Items = {
         storage = "weapons",
         category = "weapon_secondary",
         weaponId = 22,
+        clip = 17,
         stackable = false,
         vars = {
-            ammo = 0
+            ammo = 0,
+            clip = 0,
         }
     },
 
@@ -65,7 +71,8 @@ Items = {
         weaponId = 5,
         stackable = false,
         vars = {
-            ammo = 1
+            ammo = 1,
+            clip = 1,
         }
     }
 }
