@@ -3,10 +3,9 @@
 
     <script type="shared" src="shared/item_classes.lua"/>
 
-<!--     <script type="client" src="client/scaled_dx.lua"/> -->
-<!--     <script type="client" src="client/inventory.lua"/> -->
-<!--     <script type="client" src="client/drawing.lua"/> -->
-<!--     <script type="client" src="client/loot.lua"/> -->
+    <script type="client" src="client/backpack.lua"/>
+    <script type="client" src="client/drawing.lua"/>
+    <script type="client" src="client/loot.lua"/>
     <script type="client" src="client/weapons.lua"/>
 
     <script type="server" src="server/items.lua"/>

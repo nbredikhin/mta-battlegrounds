@@ -65,7 +65,7 @@ Items = {
 
     weapon_bat = {
         icon = "bat.png",
-        readableName = "Bat",
+        readableName = "Бита",
         storage = "weapons",
         category = "weapon_melee",
         weaponId = 5,

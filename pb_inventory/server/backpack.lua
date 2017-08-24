@@ -21,3 +21,8 @@ addEventHandler("onResourceStart", resourceRoot, function ()
         initPlayerBackpack(player)
     end
 end)
+
+addEvent("requireClientBackpack", true)
+addEventHandler("requireClientBackpack", resourceRoot, function ()
+    triggerClientEvent(client, "sendPlayerBackpack", resourceRoot, playerBackpacks[client])
+end)

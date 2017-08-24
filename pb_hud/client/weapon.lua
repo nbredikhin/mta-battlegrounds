@@ -6,7 +6,10 @@ local weaponIconHeight = 40
 local weaponIcons = {}
 local offset = 0
 local size = 1
+local isFading = false
+local globalAlpha = 1
 local bulletTexture
+local fadingTimer
 
 function drawWeapon()
     local x = screenSize.x / 2
@@ -15,6 +18,9 @@ function drawWeapon()
     local activeSlotName, activeSlot = exports.pb_inventory:getActiveWeaponSlot()
     offset = offset + (-((activeSlot - 1) * weaponIconWidth + weaponIconWidth / 2) - offset) * 0.2
     size = size + (1.7 - size) * 0.15
+    if isFading then
+        globalAlpha = globalAlpha + (0 - globalAlpha) * 0.1
+    end
 
     local halfScreen = screenSize.x / 2
     for i, slot in ipairs(slotsOrder) do
@@ -38,6 +44,9 @@ function drawWeapon()
                 local h = math.floor(icon.height * 0.2 * s)
                 local ix = x + weaponIconWidth / 2
                 local alpha = math.max(0, (2 - math.abs(screenSize.x / 2 - ix) / weaponIconWidth) / 2)
+                if i ~= activeSlot then
+                    alpha = alpha * globalAlpha
+                end
                 if alpha > 0.1 then
                     local ty = y - 60
                     local r, g, b = 255, 255, 255
@@ -66,4 +75,18 @@ addEventHandler("onClientResourceStart", resourceRoot, function ()
     end
 
     bulletTexture = dxCreateTexture("assets/bullet.png")
+    globalAlpha = 0
+end)
+
+addEvent("onWeaponSlotChange", falses)
+addEventHandler("onWeaponSlotChange", root, function ()
+    if isTimer(fadingTimer) then
+        killTimer(fadingTimer)
+    end
+    size = 1
+    isFading = false
+    globalAlpha = 1
+    fadingTimer = setTimer(function ()
+        isFading = true
+    end, 700, 1)
 end)

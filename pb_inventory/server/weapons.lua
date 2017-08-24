@@ -86,21 +86,6 @@ end)
 addEventHandler("onResourceStart", resourceRoot, function ()
     for i, player in ipairs(getElementsByType("player")) do
         initPlayerWeapons(player)
-        local weapon = createItem("weapon_m4")
-        weapon.ammo = 10
-        weapon.clip = 0
-        addPlayerWeapon(player, weapon)
-
-        local weapon = createItem("weapon_ak47")
-        weapon.ammo = 300
-        addPlayerWeapon(player, weapon)
-
-        local weapon = createItem("weapon_bat")
-        addPlayerWeapon(player, weapon)
-
-        local weapon = createItem("weapon_colt45")
-        weapon.ammo = 5
-        addPlayerWeapon(player, weapon)
     end
 end)
 
@@ -191,3 +176,23 @@ addEventHandler("reloadPlayerWeapon", resourceRoot, function ()
         savePlayerCurrentWeapon(player)
     end, 1800, 1)
 end)
+
+setTimer(function ()
+    local player = getRandomPlayer()
+
+    local weapon = createItem("weapon_m4")
+    weapon.ammo = 10
+    weapon.clip = 0
+    addPlayerWeapon(player, weapon)
+
+    local weapon = createItem("weapon_ak47")
+    weapon.ammo = 300
+    addPlayerWeapon(player, weapon)
+
+    local weapon = createItem("weapon_bat")
+    addPlayerWeapon(player, weapon)
+
+    local weapon = createItem("weapon_colt45")
+    weapon.ammo = 5
+    addPlayerWeapon(player, weapon)
+end, 500, 1)

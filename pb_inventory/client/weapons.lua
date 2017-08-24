@@ -15,8 +15,6 @@ addEventHandler("onClientWeaponsUpdate", resourceRoot, function (weapons)
             table.insert(clientSlots, slot)
         end
     end
-    -- activeSlotIndex = math.max(1, math.min(#clientSlots, activeSlotIndex))
-    -- showPlayerWeaponSlot(clientSlots[activeSlotIndex])
 end)
 
 addEventHandler("onClientResourceStart", resourceRoot, function ()
@@ -31,6 +29,7 @@ function showPlayerWeaponSlot(slot)
     local item = clientWeapons[slot]
     if item then
         triggerServerEvent("showPlayerWeaponSlot", resourceRoot, slot)
+        triggerEvent("onWeaponSlotChange", root, slot)
     end
 end
 
