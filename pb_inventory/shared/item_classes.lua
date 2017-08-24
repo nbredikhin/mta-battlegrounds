@@ -27,7 +27,7 @@ Items = {
         storage = "weapons",
         category = "weapon_primary",
         weaponId = 31,
-        clip = 30,
+        clip = 50,
         stackable = false,
         vars = {
             ammo = 0,
@@ -76,3 +76,10 @@ Items = {
         }
     }
 }
+
+function getItemClass(name)
+    if not name then
+        return
+    end
+    return Items[name]
+end

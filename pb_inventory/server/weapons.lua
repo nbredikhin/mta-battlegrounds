@@ -6,6 +6,11 @@ function initPlayerWeapons(player)
         return
     end
 
+    takeAllWeapons(player)
+
+    player:setData("isReloadingWeapon", false, false)
+    player:removeData("activeWeaponSlot")
+
     playerWeapons[player] = {
         primary1  = nil,
         primary2  = nil,
@@ -83,12 +88,11 @@ addEventHandler("onResourceStart", resourceRoot, function ()
         initPlayerWeapons(player)
         local weapon = createItem("weapon_m4")
         weapon.ammo = 10
-        weapon.clip = 5
+        weapon.clip = 0
         addPlayerWeapon(player, weapon)
 
         local weapon = createItem("weapon_ak47")
         weapon.ammo = 300
-        weapon.clip = 30
         addPlayerWeapon(player, weapon)
 
         local weapon = createItem("weapon_bat")
@@ -115,90 +119,75 @@ function updatePlayerWeapons(player, omitEvent)
     end
 end
 
+function isPlayerReloading(player)
+    return not not player:getData("isReloadingWeapon")
+end
+
+local function savePlayerCurrentWeapon(player)
+    if not isElement(player) then
+        return
+    end
+    local slot = player:getData("activeWeaponSlot")
+    if type(slot) ~= "string" then
+        return
+    end
+    local item = playerWeapons[player][slot]
+    if isItem(item) then
+        local weaponId = Items[item.name].weaponId
+        local weaponSlot = getSlotFromWeapon(weaponId)
+        item.clip = math.max(0, getPedAmmoInClip(player, weaponSlot))
+        item.ammo = getPedTotalAmmo(player, weaponSlot) - item.clip
+        updatePlayerWeapons(player)
+    end
+end
+
 function showPlayerWeaponSlot(player, slot)
     if not isElement(player) or not slot then
         return
     end
+    if isPlayerReloading(player) then
+        return
+    end
+    savePlayerCurrentWeapon(player)
     takeAllWeapons(player)
     local item = playerWeapons[player][slot]
     if isItem(item) then
-        -- local ammo = item.ammo
-        -- local totalAmmo = item.ammo
         local weaponId =  Items[item.name].weaponId
-        -- if ammo == 0 and totalAmmo == 0 then
-        --     ammo = 1
-        -- end
-        giveWeapon(player, weaponId, item.clip, true)
-
-        -- if item.clip == 0 then
-        --     local loadClip = math.min(Items[item.name].clip, item.ammo)
-        --     item.ammo = item.ammo - loadClip
-        --     item.clip = loadClip
-        -- end
-
-        local clip = item.clip
-        if clip > 0 then
-            clip = clip + 1
-        end
-        setWeaponAmmo(player, weaponId, 99999, clip)
+        giveWeapon(player, weaponId, 0, true)
+        local totalAmmo = item.ammo + item.clip
+        setWeaponAmmo(player, weaponId, totalAmmo, item.clip)
+        player:setData("activeWeaponSlot", slot, false)
     end
 end
 
 addEvent("showPlayerWeaponSlot", true)
 addEventHandler("showPlayerWeaponSlot", resourceRoot, function (slot)
     showPlayerWeaponSlot(client, slot)
-    triggerClientEvent(client, "onPlayerWeaponSlotUpdate", resourceRoot)
 end)
 
 addEvent("hidePlayerWeapon", true)
 addEventHandler("hidePlayerWeapon", resourceRoot, function ()
+    savePlayerCurrentWeapon(client)
+    client:setData("activeWeaponSlot", false, false)
     takeAllWeapons(client)
-end)
-
-addEventHandler("onPlayerWeaponFire", root, function (weaponId)
-    local slot = source:getData("activeSlot")
-    if type(slot) ~= "string" then
-        return
-    end
-    local item = playerWeapons[source][slot]
-    if Items[item.name].category == "weapon_melee" then
-        return
-    end
-    item.clip = item.clip - 1
-    setWeaponAmmo(source, weaponId, 99999, item.clip + 1)
-    if item.clip <= 0 then
-        item.clip = 0
-        updatePlayerWeapons(source)
-    end
 end)
 
 addEvent("reloadPlayerWeapon", true)
 addEventHandler("reloadPlayerWeapon", resourceRoot, function ()
-    local slot = client:getData("activeSlot")
+    local player = client
+    local slot = player:getData("activeWeaponSlot")
     if type(slot) ~= "string" then
-        triggerClientEvent(client, "cancelReload", resourceRoot)
         return
     end
-    local item = playerWeapons[client][slot]
-    if not isItem(item) then
-        triggerClientEvent(client, "cancelReload", resourceRoot)
+    if isPlayerReloading(player) then
         return
     end
-    local loadClip = math.min(Items[item.name].clip - item.clip, item.ammo)
-    if item.ammo == 0 then
-        triggerClientEvent(client, "cancelReload", resourceRoot)
-        return
-    end
-    item.ammo = item.ammo - loadClip
-    item.clip = loadClip
+    player:setData("isReloadingWeapon", true, false)
+    player:reloadWeapon()
 
-    local weaponId = Items[item.name].weaponId
-    local clip = item.clip
-    if clip > 0 then
-        clip = clip + 1
-    end
-    reloadPedWeapon(client)
-    setWeaponAmmo(client, weaponId, 99999, clip)
-    updatePlayerWeapons(client)
-    triggerClientEvent(client, "onPlayerWeaponSlotUpdate", resourceRoot)
+    setTimer(function ()
+        if not isElement(player) then return end
+        player:setData("isReloadingWeapon", false, false)
+        savePlayerCurrentWeapon(player)
+    end, 1800, 1)
 end)

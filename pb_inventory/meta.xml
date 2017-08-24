@@ -19,4 +19,10 @@
     <file src="assets/icons/m4.png"/>
 
     <!-- <file src="assets/weapons/m4.png"/> -->
+
+    <export type="shared" function="getItemClass"/>
+
+    <export type="client" function="getClientWeapons"/>
+    <export type="client" function="getWeaponSlot"/>
+    <export type="client" function="getActiveWeaponSlot"/>
 </meta>

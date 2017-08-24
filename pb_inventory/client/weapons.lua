@@ -4,7 +4,7 @@ local clientWeapons = {}
 local clientSlots = {}
 
 local activeSlotIndex = 1
-local reloadTimer
+local isWeaponReloading
 
 addEvent("onClientWeaponsUpdate", true)
 addEventHandler("onClientWeaponsUpdate", resourceRoot, function (weapons)
@@ -15,8 +15,8 @@ addEventHandler("onClientWeaponsUpdate", resourceRoot, function (weapons)
             table.insert(clientSlots, slot)
         end
     end
-    activeSlotIndex = math.max(1, math.min(#clientSlots, activeSlotIndex))
-    showPlayerWeaponSlot(clientSlots[activeSlotIndex])
+    -- activeSlotIndex = math.max(1, math.min(#clientSlots, activeSlotIndex))
+    -- showPlayerWeaponSlot(clientSlots[activeSlotIndex])
 end)
 
 addEventHandler("onClientResourceStart", resourceRoot, function ()
@@ -27,22 +27,9 @@ function getActiveWeaponItem()
     return clientWeapons[clientSlots[activeSlotIndex]]
 end
 
-addEvent("onPlayerWeaponSlotUpdate", true)
-addEventHandler("onPlayerWeaponSlotUpdate", resourceRoot, function ()
-    local item = getActiveWeaponItem()
-    if item then
-        toggleControl("fire", item.clip > 0 or Items[item.name].category == "weapon_melee")
-    end
-end)
-
 function showPlayerWeaponSlot(slot)
-    if isTimer(reloadTimer) then
-        return
-    end
     local item = clientWeapons[slot]
     if item then
-        toggleControl("fire", false)
-        localPlayer:setData("activeSlot", slot)
         triggerServerEvent("showPlayerWeaponSlot", resourceRoot, slot)
     end
 end
@@ -51,9 +38,6 @@ toggleControl("next_weapon", false)
 toggleControl("previous_weapon", false)
 
 bindKey("next_weapon", "down", function ()
-    if isTimer(reloadTimer) then
-        return
-    end
     activeSlotIndex = activeSlotIndex + 1
     if activeSlotIndex > #clientSlots then
         activeSlotIndex = #clientSlots
@@ -62,9 +46,6 @@ bindKey("next_weapon", "down", function ()
 end)
 
 bindKey("previous_weapon", "down", function ()
-    if isTimer(reloadTimer) then
-        return
-    end
     activeSlotIndex = activeSlotIndex - 1
     if activeSlotIndex < 1 then
         activeSlotIndex = 1
@@ -74,9 +55,6 @@ end)
 
 for i = 1, #slotsOrder do
     bindKey(tostring(i), "down", function ()
-        if isTimer(reloadTimer) then
-            return
-        end
         activeSlotIndex = i
         showPlayerWeaponSlot(clientSlots[i])
     end)
@@ -87,9 +65,6 @@ bindKey("g", "down", function ()
 end)
 
 bindKey("x", "down", function ()
-    if isTimer(reloadTimer) then
-        return
-    end
     if localPlayer.weaponSlot ~= 0 then
         triggerServerEvent("hidePlayerWeapon", resourceRoot)
     else
@@ -98,18 +73,29 @@ bindKey("x", "down", function ()
 end)
 
 bindKey("r", "down", function ()
-    if isTimer(reloadTimer) then
-        return
-    end
-    if localPlayer.weaponSlot ~= 0 then
+    local item = getActiveWeaponItem()
+    if item then
         triggerServerEvent("reloadPlayerWeapon", resourceRoot)
-        reloadTimer = setTimer(function () end, 2000, 1)
+        isWeaponReloading = true
     end
 end)
 
-addEvent("cancelReload", true)
-addEventHandler("cancelReload", resourceRoot, function ()
-    if isTimer(reloadTimer) then
-        killTimer(reloadTimer)
-    end
+addEvent("onWeaponReloadFinished", true)
+addEventHandler("onWeaponReloadFinished", resourceRoot, function (successs)
+    isWeaponReloading = false
 end)
+
+function getClientWeapons()
+    return clientWeapons
+end
+
+function getWeaponSlot(slot)
+    if not slot then
+        return
+    end
+    return clientWeapons[slot]
+end
+
+function getActiveWeaponSlot()
+    return clientSlots[activeSlotIndex], activeSlotIndex
+end
