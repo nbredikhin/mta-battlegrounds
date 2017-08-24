@@ -8,6 +8,7 @@ local isWeaponReloading
 addEvent("onClientWeaponsUpdate", true)
 addEventHandler("onClientWeaponsUpdate", resourceRoot, function (weapons)
     clientWeapons = weapons or {}
+    triggerEvent("onWeaponsUpdate", root)
 end)
 
 addEventHandler("onClientResourceStart", resourceRoot, function ()
@@ -23,8 +24,6 @@ function showPlayerWeaponSlot(slot)
     if item then
         triggerServerEvent("showPlayerWeaponSlot", resourceRoot, slot)
         triggerEvent("onWeaponSlotChange", root, slot)
-    else
-        triggerServerEvent("hidePlayerWeapon", resourceRoot)
     end
 end
 

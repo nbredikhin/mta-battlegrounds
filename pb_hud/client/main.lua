@@ -7,6 +7,11 @@ local healthbarWidth = 400
 local healthbarHeight = 28
 local healthbarBorder = 1
 
+function isResourceRunning(resName)
+    local res = getResourceFromName(resName)
+    return (res) and (getResourceState(res) == "running")
+end
+
 local function dxDrawBorderRect(x, y, width, height, color, borderWidth)
     dxDrawLine(x, y, x + width, y, color, borderWidth)
     dxDrawLine(x + width, y, x + width, y + height, color, borderWidth)
@@ -60,7 +65,7 @@ addEventHandler("onClientRender", root, function ()
     local y = 30
     local x = screenSize.x - 36
     x = x - drawCounter(x, y, "1", "В ЖИВЫХ") - 45
-    if exports.pb_map:isVisible() then
+    if isResourceRunning("pb_map") and exports.pb_map:isVisible() then
         drawCounter(x, y, "0", "УБИТО")
     else
         drawWeapon()

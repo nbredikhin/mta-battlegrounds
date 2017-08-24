@@ -1,17 +1,22 @@
 <meta>
     <oop>true</oop>
 
+    <script type="shared" src="shared/utils.lua"/>
+    <script type="shared" src="shared/config.lua"/>
     <script type="shared" src="shared/item_classes.lua"/>
 
     <script type="client" src="client/backpack.lua"/>
     <script type="client" src="client/drawing.lua"/>
     <script type="client" src="client/loot.lua"/>
     <script type="client" src="client/weapons.lua"/>
+    <script type="client" src="client/equipment.lua"/>
+    <script type="client" src="client/wearing.lua"/>
 
     <script type="server" src="server/items.lua"/>
     <script type="server" src="server/weapons.lua"/>
     <script type="server" src="server/backpack.lua"/>
     <script type="server" src="server/loot.lua"/>
+    <script type="server" src="server/equipment.lua"/>
 
     <file src="assets/icons/bandage.png"/>
     <file src="assets/icons/first_aid.png"/>
@@ -20,6 +25,9 @@
     <file src="assets/icons/colt45.png"/>
     <file src="assets/icons/cowbar.png"/>
     <file src="assets/icons/grenade.png"/>
+    <file src="assets/icons/backpack_small.png"/>
+
+    <file src="assets/bar.png"/>
 
     <export type="shared" function="getItemClass"/>
 

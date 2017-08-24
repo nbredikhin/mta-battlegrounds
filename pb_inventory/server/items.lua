@@ -1,7 +1,3 @@
-function isItem(item)
-    return type(item) == "table" and Items[item.name]
-end
-
 function createItem(name, count, vars)
     local itemClass = Items[name]
     if not itemClass then
@@ -27,16 +23,4 @@ function createItem(name, count, vars)
         end
     end
     return instance
-end
-
-function isItemWeapon(item)
-    if not isItem(item) then
-        return
-    end
-    local itemClass = Items[item.name]
-    return not not string.find(itemClass.category, "weapon")
-end
-
-function isItemEquipment(item)
-    return false
 end

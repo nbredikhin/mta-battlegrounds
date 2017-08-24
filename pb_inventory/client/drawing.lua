@@ -9,8 +9,11 @@ local listSpace = 2
 local listItemWidth = 215
 local listItemHeight = 60
 local slotSpace = 15
-local equipSlotSize = 118
-local weaponSlotSize = (listItemHeight + listSpace) * 3 - listSpace
+local equipSlotSize = 135
+local weaponSlotSize = (listItemHeight + slotSpace) * 3 - slotSpace
+local capacityBarWidth = 15
+local capacityBarHeight = weaponSlotSize * 2 + slotSpace
+local capacityBarTexture
 
 local isMouseReleased = false
 local isMousePressed = false
@@ -173,7 +176,7 @@ local function drawEquipmentSlot(slot, x, y, size)
 
     dxDrawRectangle(x - 1, y - 1, size + 2 , size + 2, colors.item)
     dxDrawRectangle(x, y, size, size, tocolor(0, 0, 0, 220))
-    local item = false--getWeaponSlot(slot)
+    local item = getEquipmentSlot(slot)
     if not item or item == dragItem  then
         return
     end
@@ -185,6 +188,26 @@ local function drawEquipmentSlot(slot, x, y, size)
         if isMousePressed then
             startDragging("equipment", item, slot)
         end
+    end
+end
+
+local function drawBackpackCapacity(x, y, width, height)
+    dxDrawRectangle(x - 1, y - 1, width + 2 , height + 2, colors.item)
+    dxDrawRectangle(x, y, width, height, tocolor(0, 0, 0, 220))
+    local totalWeight, capacity = getBackpackTotalWeight(), getBackpackCapacity()
+    local mul = totalWeight / capacity--(math.sin(getTickCount()*0.001) + 1) / 2
+    dxDrawImageSection(x, y + height * (1-mul), width, height * mul, 0, 128-128*mul, 1, 128*mul, capacityBarTexture)
+
+    if isMouseOver(x, y, width, height) then
+        local str = "Носимый вес: " .. tostring(totalWeight) .. "/" .. tostring(capacity)
+        local width = dxGetTextWidth(str) + 10
+        local height = 20
+        local x = mouseX - 5
+        local y = mouseY - 25
+
+        dxDrawRectangle(x - 1, y - 1, width + 2 , height + 2, colors.item)
+        dxDrawRectangle(x, y, width, height, tocolor(0, 0, 0, 220))
+        dxDrawText(str, mouseX, mouseY - 23)
     end
 end
 
@@ -239,7 +262,11 @@ addEventHandler("onClientRender", root, function ()
     dxDrawText("Снаряжение", x + 5, y - 25, x + equipSlotSize, y - 5, tocolor(255, 255, 255, 200), 1, "default", "left", "bottom")
     drawEquipmentSlot("helmet", x, y, equipSlotSize)
     drawEquipmentSlot("backpack", x, y + slotSpace + equipSlotSize, equipSlotSize)
-    drawEquipmentSlot("armor", x, y + slotSpace * 2 + equipSlotSize * 2 - 1, equipSlotSize)
+    drawEquipmentSlot("armor", x, y + slotSpace * 2 + equipSlotSize * 2, equipSlotSize)
+
+    -- Заполненность рюкзака
+    x = x - slotSpace - capacityBarWidth
+    drawBackpackCapacity(x, y, capacityBarWidth, capacityBarHeight)
 
     if not getKeyState("mouse1") and isDragging then
         stopDragging()
@@ -256,22 +283,26 @@ addEventHandler("onClientResourceStart", resourceRoot, function ()
         end
     end
 
+    capacityBarTexture = dxCreateTexture("assets/bar.png", "argb", true, "clamp")
+
     inventoryHeight = math.min(inventoryHeight, screenSize.y - 100)
 
-    if screenSize.x <= 1000 then
-        local mul = (screenSize.x - 800) / (1280 - 800)
-        local minScale = 0.68
+    if screenSize.x <= 1050 then
+        local mul = (screenSize.x - 800) / (1050 - 800)
+        local minScale = 0.6
         local scale = minScale + mul * (1 - minScale)
         slotSpace = slotSpace * scale
         listItemWidth = listItemWidth * scale
         listItemHeight = listItemHeight * scale
         weaponSlotSize = weaponSlotSize * scale
         equipSlotSize = equipSlotSize * scale
+        capacityBarWidth = capacityBarWidth * scale
+        capacityBarHeight = capacityBarHeight * scale
 
         borderSpace = borderSpace * scale / 2
-    elseif screenSize.x < 1050 then
+    elseif screenSize.x < 1250 then
         borderSpace = 1
-    elseif screenSize.x < 1280 then
+    elseif screenSize.x < 1400 then
         borderSpace = 15
     end
 

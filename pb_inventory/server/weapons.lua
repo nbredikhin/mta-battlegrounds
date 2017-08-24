@@ -145,7 +145,7 @@ function showPlayerWeaponSlot(player, slot)
     takeAllWeapons(player)
     local item = playerWeapons[player][slot]
     if isItem(item) then
-        local weaponId =  Items[item.name].weaponId
+        local weaponId = Items[item.name].weaponId
         giveWeapon(player, weaponId, 0, true)
         local totalAmmo = item.ammo + item.clip
         setWeaponAmmo(player, weaponId, totalAmmo, item.clip)
@@ -195,8 +195,8 @@ setTimer(function ()
     local player = getRandomPlayer()
 
     local weapon = createItem("weapon_m4")
-    weapon.ammo = 10
-    weapon.clip = 0
+    weapon.ammo = 0--10
+    weapon.clip = 10
     addPlayerWeapon(player, weapon)
 
     local weapon = createItem("weapon_ak47")
@@ -215,6 +215,17 @@ setTimer(function ()
     weapon.clip = 1
     addPlayerWeapon(player, weapon)
 end, 500, 1)
+
+addEventHandler("onPlayerWeaponFire", root, function (weaponId)
+    if source:getData("activeWeaponSlot") == "melee" then
+        return
+    end
+    local weaponSlot = getSlotFromWeapon(weaponId)
+    if getPedAmmoInClip(source, weaponSlot) == 1 then
+        local player = source
+        setTimer(savePlayerCurrentWeapon, 500, 1, player)
+    end
+end)
 
 addCommandHandler("weapons", function ()
     outputConsole(inspect(playerWeapons[getRandomPlayer()]))

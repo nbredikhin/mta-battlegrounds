@@ -1,6 +1,6 @@
 local playerBackpacks = {}
 
-function initPlayerBackpack(player, omitSend)
+function initPlayerBackpack(player)
     if not isElement(player) then
         return
     end
@@ -12,12 +12,27 @@ function sendPlayerBackpack(player)
     triggerClientEvent(player, "sendPlayerBackpack", resourceRoot, playerBackpacks[player])
 end
 
+function getPlayerBackpackTotalWeight(player)
+    if not isElement(player) or not playerBackpacks[player] then
+        return
+    end
+    local amount = 0
+    for name, item in pairs(playerBackpacks[player]) do
+        amount = amount + getItemWeight(item)
+    end
+    return amount
+end
+
 function addBackpackItem(player, item)
     if not isElement(player) then
         return
     end
     local backpack = playerBackpacks[player]
     if type(backpack) ~= "table" or type(item) ~= "table" then
+        return
+    end
+
+    if getPlayerBackpackTotalWeight(player) + getItemWeight(item) > getPlayerBackpackCapacity(player) then
         return
     end
 

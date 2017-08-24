@@ -16,7 +16,7 @@ function spawnPlayerLootItem(player, item)
     elseif Items[item.name].category == "medicine" then
         color = "green"
     end
-    local object = createObject(lootColors[color], player.position - Vector3(offsetX, offsetY, 0.9))
+    local object = createObject(lootColors[color], player.position - Vector3(offsetX, offsetY, 1))
     object.rotation = Vector3(0, 0, math.random(360))
     object:setCollisionsEnabled(false)
 
