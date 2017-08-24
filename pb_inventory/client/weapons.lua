@@ -1,4 +1,4 @@
-local slotsOrder = {"primary1", "primary2", "secondary", "melee"}
+local slotsOrder = {"primary1", "primary2", "secondary", "melee", "grenade"}
 
 local clientWeapons = {}
 local clientSlots = {}

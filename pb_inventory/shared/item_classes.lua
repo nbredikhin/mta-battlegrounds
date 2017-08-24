@@ -64,15 +64,28 @@ Items = {
     },
 
     weapon_bat = {
-        icon = "bat.png",
-        readableName = "Бита",
+        icon = "cowbar.png",
+        readableName = "Монтировка",
         storage = "weapons",
         category = "weapon_melee",
-        weaponId = 5,
+        weaponId = 2,
         stackable = false,
         vars = {
             ammo = 1,
             clip = 1,
+        }
+    },
+
+    weapon_grenade = {
+        icon = "grenade.png",
+        readableName = "Осколочная граната",
+        storage = "weapons",
+        category = "weapon_grenade",
+        weaponId = 16,
+        stackable = false,
+        vars = {
+            clip = 1,
+            ammo = 0,
         }
     }
 }

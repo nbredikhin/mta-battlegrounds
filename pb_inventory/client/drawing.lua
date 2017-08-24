@@ -71,9 +71,9 @@ local function drawWeaponSlot(slot, x, y, size, hotkey)
         dxDrawText(hotkey, rx, ry, rx + rs, ry + rs, tocolor(255, 255, 255, 255), 1.5, "default-bold", "center", "center")
     end
     if Items[item.name].readableName then
-        dxDrawText(Items[item.name].readableName, x + nameX, y, x + size - 10, y + 30, tocolor(255, 255, 255, 200), 1.5, "default-bold", "left", "center", true)
+        dxDrawText(Items[item.name].readableName, x + nameX, y, x + size - 3, y + 30, tocolor(255, 255, 255, 200), 1.5, "default-bold", "left", "center", true)
     end
-    if item.ammo and item.clip then
+    if slot ~= "melee" and item.ammo and item.clip then
         dxDrawText(item.clip .. " / " .. item.ammo, x + 5, y, x + size, y + size - 5, tocolor(255, 255, 255, 200), 1, "default", "left", "bottom", false)
     end
 end
@@ -91,6 +91,9 @@ local function drawEquipmentSlot(slot, x, y, size)
 end
 
 addEventHandler("onClientRender", root, function ()
+    if not isInventoryVisible then
+        return
+    end
     local x = borderSpace
     local y = screenSize.y / 2 - inventoryHeight / 2
 
@@ -129,8 +132,6 @@ addEventHandler("onClientResourceStart", resourceRoot, function ()
         end
     end
 
-    isInventoryVisible = true
-
     inventoryHeight = math.min(inventoryHeight, screenSize.y - 100)
 
     if screenSize.x <= 1000 then
@@ -143,10 +144,12 @@ addEventHandler("onClientResourceStart", resourceRoot, function ()
         weaponSlotSize = weaponSlotSize * scale
         equipSlotSize = equipSlotSize * scale
 
-        borderSpace = borderSpace * scale / 2--equipSlotSize * scale -math.max(5, borderSpace - (1280 - screenSize.x))
+        borderSpace = borderSpace * scale / 2
     elseif screenSize.x < 1050 then
         borderSpace = 1
     elseif screenSize.x < 1280 then
         borderSpace = 15
     end
+
+    isInventoryVisible = true
 end)

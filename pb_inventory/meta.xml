@@ -16,8 +16,10 @@
     <file src="assets/icons/bandage.png"/>
     <file src="assets/icons/first_aid.png"/>
     <file src="assets/icons/m4.png"/>
-
-    <!-- <file src="assets/weapons/m4.png"/> -->
+    <file src="assets/icons/ak47.png"/>
+    <file src="assets/icons/colt45.png"/>
+    <file src="assets/icons/cowbar.png"/>
+    <file src="assets/icons/grenade.png"/>
 
     <export type="shared" function="getItemClass"/>
 

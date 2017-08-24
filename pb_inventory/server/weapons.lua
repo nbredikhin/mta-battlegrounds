@@ -195,4 +195,9 @@ setTimer(function ()
     local weapon = createItem("weapon_colt45")
     weapon.ammo = 5
     addPlayerWeapon(player, weapon)
+
+    local weapon = createItem("weapon_grenade")
+    weapon.ammo = 0
+    weapon.clip = 1
+    addPlayerWeapon(player, weapon)
 end, 500, 1)
