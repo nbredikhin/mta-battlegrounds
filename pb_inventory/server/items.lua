@@ -28,3 +28,15 @@ function createItem(name, count, vars)
     end
     return instance
 end
+
+function isItemWeapon(item)
+    if not isItem(item) then
+        return
+    end
+    local itemClass = Items[item.name]
+    return not not string.find(itemClass.category, "weapon")
+end
+
+function isItemEquipment(item)
+    return false
+end

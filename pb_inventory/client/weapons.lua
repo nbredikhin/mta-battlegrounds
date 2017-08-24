@@ -1,7 +1,6 @@
 local slotsOrder = {"primary1", "primary2", "secondary", "melee", "grenade"}
 
 local clientWeapons = {}
-local clientSlots = {}
 
 local activeSlotIndex = 1
 local isWeaponReloading
@@ -9,12 +8,6 @@ local isWeaponReloading
 addEvent("onClientWeaponsUpdate", true)
 addEventHandler("onClientWeaponsUpdate", resourceRoot, function (weapons)
     clientWeapons = weapons or {}
-    clientSlots = {}
-    for i, slot in ipairs(slotsOrder) do
-        if clientWeapons[slot] then
-            table.insert(clientSlots, slot)
-        end
-    end
 end)
 
 addEventHandler("onClientResourceStart", resourceRoot, function ()
@@ -22,7 +15,7 @@ addEventHandler("onClientResourceStart", resourceRoot, function ()
 end)
 
 function getActiveWeaponItem()
-    return clientWeapons[clientSlots[activeSlotIndex]]
+    return clientWeapons[slotsOrder[activeSlotIndex]]
 end
 
 function showPlayerWeaponSlot(slot)
@@ -30,6 +23,8 @@ function showPlayerWeaponSlot(slot)
     if item then
         triggerServerEvent("showPlayerWeaponSlot", resourceRoot, slot)
         triggerEvent("onWeaponSlotChange", root, slot)
+    else
+        triggerServerEvent("hidePlayerWeapon", resourceRoot)
     end
 end
 
@@ -38,10 +33,10 @@ toggleControl("previous_weapon", false)
 
 bindKey("next_weapon", "down", function ()
     activeSlotIndex = activeSlotIndex + 1
-    if activeSlotIndex > #clientSlots then
-        activeSlotIndex = #clientSlots
+    if activeSlotIndex > #slotsOrder then
+        activeSlotIndex = #slotsOrder
     end
-    showPlayerWeaponSlot(clientSlots[activeSlotIndex])
+    showPlayerWeaponSlot(slotsOrder[activeSlotIndex])
 end)
 
 bindKey("previous_weapon", "down", function ()
@@ -49,13 +44,13 @@ bindKey("previous_weapon", "down", function ()
     if activeSlotIndex < 1 then
         activeSlotIndex = 1
     end
-    showPlayerWeaponSlot(clientSlots[activeSlotIndex])
+    showPlayerWeaponSlot(slotsOrder[activeSlotIndex])
 end)
 
 for i = 1, #slotsOrder do
     bindKey(tostring(i), "down", function ()
         activeSlotIndex = i
-        showPlayerWeaponSlot(clientSlots[i])
+        showPlayerWeaponSlot(slotsOrder[i])
     end)
 end
 
@@ -67,7 +62,7 @@ bindKey("x", "down", function ()
     if localPlayer.weaponSlot ~= 0 then
         triggerServerEvent("hidePlayerWeapon", resourceRoot)
     else
-        showPlayerWeaponSlot(clientSlots[activeSlotIndex])
+        showPlayerWeaponSlot(slotsOrder[activeSlotIndex])
     end
 end)
 
@@ -96,5 +91,5 @@ function getWeaponSlot(slot)
 end
 
 function getActiveWeaponSlot()
-    return clientSlots[activeSlotIndex], activeSlotIndex
+    return slotsOrder[activeSlotIndex], activeSlotIndex
 end

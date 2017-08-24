@@ -33,6 +33,7 @@ function addPlayerWeapon(player, item, primarySlot)
             local slot = "primary" .. tostring(primarySlot)
             dropPlayerWeapon(player, slot)
             playerWeapons[player][slot] = item
+            updatePlayerWeapons(player)
             return
         else
             local freeSlot
@@ -68,18 +69,25 @@ function dropPlayerWeapon(player, slot)
         return
     end
     if playerWeapons[player][slot] then
+        savePlayerCurrentWeapon(player)
         spawnPlayerLootItem(player, playerWeapons[player][slot])
         playerWeapons[player][slot] = nil
 
+        hidePlayerWeapon(player)
         updatePlayerWeapons(player)
     end
 end
 
-addEventHandler("onPlayerJoin", resourceRoot, function ()
+addEvent("dropPlayerWeapon", true)
+addEventHandler("dropPlayerWeapon", resourceRoot, function (slot)
+    dropPlayerWeapon(client, slot)
+end)
+
+addEventHandler("onPlayerJoin", root, function ()
     initPlayerWeapons(source)
 end)
 
-addEventHandler("onPlayerQuit", resourceRoot, function ()
+addEventHandler("onPlayerQuit", root, function ()
     playerWeapons[source] = nil
 end)
 
@@ -108,7 +116,7 @@ function isPlayerReloading(player)
     return not not player:getData("isReloadingWeapon")
 end
 
-local function savePlayerCurrentWeapon(player)
+function savePlayerCurrentWeapon(player)
     if not isElement(player) then
         return
     end
@@ -142,6 +150,8 @@ function showPlayerWeaponSlot(player, slot)
         local totalAmmo = item.ammo + item.clip
         setWeaponAmmo(player, weaponId, totalAmmo, item.clip)
         player:setData("activeWeaponSlot", slot, false)
+    else
+        hidePlayerWeapon(player)
     end
 end
 
@@ -150,11 +160,15 @@ addEventHandler("showPlayerWeaponSlot", resourceRoot, function (slot)
     showPlayerWeaponSlot(client, slot)
 end)
 
+function hidePlayerWeapon(player)
+    savePlayerCurrentWeapon(player)
+    player:setData("activeWeaponSlot", false, false)
+    takeAllWeapons(player)
+end
+
 addEvent("hidePlayerWeapon", true)
 addEventHandler("hidePlayerWeapon", resourceRoot, function ()
-    savePlayerCurrentWeapon(client)
-    client:setData("activeWeaponSlot", false, false)
-    takeAllWeapons(client)
+    hidePlayerWeapon(client)
 end)
 
 addEvent("reloadPlayerWeapon", true)
@@ -201,3 +215,7 @@ setTimer(function ()
     weapon.clip = 1
     addPlayerWeapon(player, weapon)
 end, 500, 1)
+
+addCommandHandler("weapons", function ()
+    outputConsole(inspect(playerWeapons[getRandomPlayer()]))
+end)
