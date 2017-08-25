@@ -78,7 +78,3 @@ addEvent("requireClientEquipment", true)
 addEventHandler("requireClientEquipment", resourceRoot, function ()
     triggerClientEvent(client, "sendPlayerEquipment", resourceRoot, playerEquipments[client])
 end)
-
-setTimer(function ()
-    addPlayerEquipment(getRandomPlayer(), createItem("backpack_small"))
-end, 1000, 1)

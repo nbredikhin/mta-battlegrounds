@@ -83,6 +83,18 @@ addEventHandler("dropPlayerWeapon", resourceRoot, function (slot)
     dropPlayerWeapon(client, slot)
 end)
 
+addEvent("switchPrimaryWeapons", true)
+addEventHandler("switchPrimaryWeapons", resourceRoot, function ()
+    local player = client
+    if not isElement(player) or not playerWeapons[player] then
+        return
+    end
+    local primary1 = playerWeapons[player]["primary1"]
+    playerWeapons[player]["primary1"] = playerWeapons[player]["primary2"]
+    playerWeapons[player]["primary2"] = primary1
+    updatePlayerWeapons(player)
+end)
+
 addEventHandler("onPlayerJoin", root, function ()
     initPlayerWeapons(source)
 end)
@@ -190,31 +202,6 @@ addEventHandler("reloadPlayerWeapon", resourceRoot, function ()
         savePlayerCurrentWeapon(player)
     end, 1800, 1)
 end)
-
-setTimer(function ()
-    local player = getRandomPlayer()
-
-    local weapon = createItem("weapon_m4")
-    weapon.ammo = 0--10
-    weapon.clip = 10
-    addPlayerWeapon(player, weapon)
-
-    local weapon = createItem("weapon_ak47")
-    weapon.ammo = 300
-    addPlayerWeapon(player, weapon)
-
-    local weapon = createItem("weapon_bat")
-    addPlayerWeapon(player, weapon)
-
-    local weapon = createItem("weapon_colt45")
-    weapon.ammo = 5
-    addPlayerWeapon(player, weapon)
-
-    local weapon = createItem("weapon_grenade")
-    weapon.ammo = 0
-    weapon.clip = 1
-    addPlayerWeapon(player, weapon)
-end, 500, 1)
 
 addEventHandler("onPlayerWeaponFire", root, function (weaponId)
     if source:getData("activeWeaponSlot") == "melee" then

@@ -17,11 +17,15 @@ local capacityBarTexture
 
 local isMouseReleased = false
 local isMousePressed = false
+local isRightMousePressed = false
+local prevRightMouseState = false
 local prevMouseState = false
 local mouseX, mouseY = 0, 0
 local isDragging, dragType, dragItem, dragSlot
 local dragItemSize = 45
 
+local weightErrorTimer
+local currentBarWeight = 0
 
 local colors = {
     border    = tocolor(255, 255, 255),
@@ -45,6 +49,19 @@ function startDragging(slotType, item, slotName)
     setCursorAlpha(0)
 end
 
+function tryPickupLootItem(item)
+    if not isItem(item) then
+        return
+    end
+    if getBackpackTotalWeight() + getItemWeight(item) > getBackpackCapacity() then
+        if isTimer(weightErrorTimer) then
+            killTimer(weightErrorTimer)
+        end
+        weightErrorTimer = setTimer(function () end, 2000, 1)
+    end
+    triggerServerEvent("pickupLootItem", resourceRoot, item.lootElement)
+end
+
 function stopDragging(slotType, slot)
     if not isDragging then
         return
@@ -54,10 +71,14 @@ function stopDragging(slotType, slot)
     if slotType == "weapon" then
         if dragType == "loot" then
             triggerServerEvent("pickupLootItem", resourceRoot, dragItem.lootElement, slot)
+        elseif dragType == "weapon" then
+            if string.find(dragSlot, "primary") and string.find(slot, "primary") and dragSlot ~= slot then
+                triggerServerEvent("switchPrimaryWeapons", resourceRoot)
+            end
         end
     elseif slotType == "backpack" then
         if dragType == "loot" then
-            triggerServerEvent("pickupLootItem", resourceRoot, dragItem.lootElement)
+            tryPickupLootItem(dragItem)
         end
     elseif slotType == "equipment" then
 
@@ -114,6 +135,8 @@ local function drawItemsList(title, items, x, y, width, height, dragType)
                 dxDrawRectangle(x, cy, listItemWidth, listItemHeight, colors.selection)
                 if isMousePressed then
                     startDragging(dragType, item)
+                elseif isRightMousePressed then
+                    tryPickupLootItem(item)
                 end
             end
         end
@@ -163,6 +186,8 @@ local function drawWeaponSlot(slot, x, y, size, hotkey)
         dxDrawRectangle(x, y, size, size, colors.selection)
         if isMousePressed then
             startDragging("weapon", item, slot)
+        elseif isRightMousePressed then
+            triggerServerEvent("dropPlayerWeapon", resourceRoot, slot)
         end
     end
 end
@@ -192,13 +217,14 @@ local function drawEquipmentSlot(slot, x, y, size)
 end
 
 local function drawBackpackCapacity(x, y, width, height)
+    local totalWeight, capacity = getBackpackTotalWeight(), getBackpackCapacity()
+    currentBarWeight = currentBarWeight + (totalWeight - currentBarWeight) * 0.1
     dxDrawRectangle(x - 1, y - 1, width + 2 , height + 2, colors.item)
     dxDrawRectangle(x, y, width, height, tocolor(0, 0, 0, 220))
-    local totalWeight, capacity = getBackpackTotalWeight(), getBackpackCapacity()
-    local mul = totalWeight / capacity--(math.sin(getTickCount()*0.001) + 1) / 2
+    local mul = currentBarWeight / capacity--(math.sin(getTickCount()*0.001) + 1) / 2
     dxDrawImageSection(x, y + height * (1-mul), width, height * mul, 0, 128-128*mul, 1, 128*mul, capacityBarTexture)
 
-    if isMouseOver(x, y, width, height) then
+    if isMouseOver(x, y, width, height) and not isDragging then
         local str = "Носимый вес: " .. tostring(totalWeight) .. "/" .. tostring(capacity)
         local width = dxGetTextWidth(str) + 10
         local height = 20
@@ -209,6 +235,12 @@ local function drawBackpackCapacity(x, y, width, height)
         dxDrawRectangle(x, y, width, height, tocolor(0, 0, 0, 220))
         dxDrawText(str, mouseX, mouseY - 23)
     end
+end
+
+local function drawWeightError()
+    local str = "Недостаточно места!"
+    dxDrawText(str, 2, screenSize.y*0.5 + 2, screenSize.x + 2, screenSize.y + 2, tocolor(0, 0, 0, 200), 2.5, "default-bold", "center", "center")
+    dxDrawText(str, 0, screenSize.y*0.5, screenSize.x, screenSize.y, tocolor(255, 255, 255, 200), 2.5, "default-bold", "center", "center")
 end
 
 addEventHandler("onClientRender", root, function ()
@@ -227,6 +259,11 @@ addEventHandler("onClientRender", root, function ()
         isMouseReleased = false
     end
     prevMouseState = currentMouseState
+    if getKeyState("mouse2") and not prevRightMouseState then
+        isRightMousePressed = true
+    else
+        isRightMousePressed = false
+    end
     local mx, my = getCursorPosition()
     if mx then
         mx = mx * screenSize.x
@@ -267,6 +304,11 @@ addEventHandler("onClientRender", root, function ()
     -- Заполненность рюкзака
     x = x - slotSpace - capacityBarWidth
     drawBackpackCapacity(x, y, capacityBarWidth, capacityBarHeight)
+
+    -- Рюкзак переполнен
+    if isTimer(weightErrorTimer) then
+        drawWeightError()
+    end
 
     if not getKeyState("mouse1") and isDragging then
         stopDragging()

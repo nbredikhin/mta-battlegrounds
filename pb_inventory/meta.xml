@@ -18,6 +18,8 @@
     <script type="server" src="server/loot.lua"/>
     <script type="server" src="server/equipment.lua"/>
 
+    <script type="server" src="server/test.lua"/>
+
     <file src="assets/icons/bandage.png"/>
     <file src="assets/icons/first_aid.png"/>
     <file src="assets/icons/m4.png"/>

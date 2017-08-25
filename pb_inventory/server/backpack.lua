@@ -25,15 +25,15 @@ end
 
 function addBackpackItem(player, item)
     if not isElement(player) then
-        return
+        return false
     end
     local backpack = playerBackpacks[player]
     if type(backpack) ~= "table" or type(item) ~= "table" then
-        return
+        return false
     end
 
     if getPlayerBackpackTotalWeight(player) + getItemWeight(item) > getPlayerBackpackCapacity(player) then
-        return
+        return false
     end
 
     local itemClass = Items[item.name]
@@ -50,6 +50,7 @@ function addBackpackItem(player, item)
         backpack[item.name] = item
     end
     sendPlayerBackpack(player)
+    return true
 end
 
 function dropBackpackItem(player, name)
@@ -106,8 +107,3 @@ addEventHandler("requireClientBackpack", resourceRoot, function ()
     savePlayerCurrentWeapon(client)
     sendPlayerBackpack(client)
 end)
-
-setTimer(function ()
-    local item = createItem("bandage", 5)
-    addBackpackItem(getRandomPlayer(), item)
-end, 1000, 1)
