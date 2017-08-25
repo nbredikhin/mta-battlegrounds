@@ -34,6 +34,13 @@ local colors = {
     selection = tocolor(255, 255, 255, 20),
 }
 
+local itemLists = {}
+
+local testItems = {}
+for i = 1, 100 do
+    table.insert(testItems, {name="bandage", count=i})
+end
+
 function isMouseOver(x, y, w, h)
     return mouseX >= x and mouseX <= x + w and mouseY >= y and mouseY <= y + h
 end
@@ -111,15 +118,36 @@ local function drawDragItem()
     end
 end
 
-local function drawItemsList(title, items, x, y, width, height, dragType)
-    local cy = y
+function createItemsList(title, dragType)
+    return {
+        title    = title,
+        dragType = dragType,
+        scroll   = 0,
+        x = 0,
+        y = 0,
+        width = listItemWidth,
+        height = inventoryHeight,
+        page = math.floor(inventoryHeight / (listItemHeight + listSpace) - listSpace) + 1
+    }
+end
 
+function drawItemsList(list, items, x, y)
+    local title = list.title
+    local dragType = list.dragType
+    local width = list.width
+    local height = list.height
+    list.x = x
+    list.y = y
+    list.scroll = math.min(math.max(0, #items - list.page), list.scroll)
+
+    local cy = y
     if title then
         dxDrawText(title, x + 5, y - 25, x + 5, y - 5, tocolor(255, 255, 255, 200), 1, "default", "left", "bottom")
     end
     local itemIconSize = listItemHeight
-    for i, item in ipairs(items) do
-        if item ~= dragItem then
+    for i = 1 + list.scroll, 1 + list.scroll + list.page do
+        local item = items[i]
+        if item and item ~= dragItem then
             dxDrawRectangle(x, cy, listItemWidth, listItemHeight, colors.item)
             dxDrawRectangle(x, cy, itemIconSize, itemIconSize, colors.item_icon)
             if IconTextures[item.name] then
@@ -279,14 +307,14 @@ addEventHandler("onClientRender", root, function ()
     dxDrawRectangle(0, 0, screenSize.x, screenSize.y, tocolor(0, 0, 0, 200))
 
     -- Содержимое рюкзака и лут
-    drawItemsList("Земля", getLootItems(), x, y, listItemWidth, inventoryHeight, "loot")
+    drawItemsList(itemLists.loot, getLootItems(), x, y)
     x = x + listItemWidth + 15
-    dxDrawLine(x, y, x, y + inventoryHeight, tocolor(255, 255, 255, 38))
+    dxDrawLine(x, y, x, y + (itemLists.loot.page + 1) * (listItemHeight + listSpace) - listSpace, tocolor(255, 255, 255, 38))
     x = x + 15
-    drawItemsList("Рюкзак", getBackpackItems(), x, y, listItemWidth, inventoryHeight, "backpack")
+    drawItemsList(itemLists.backpack, getBackpackItems(), x, y)
 
     -- Слоты оружия
-    x = screenSize.x - borderSpace - weaponSlotSize - slotSpace - weaponSlotSize
+    local x = screenSize.x - borderSpace - weaponSlotSize - slotSpace - weaponSlotSize
     dxDrawText("Оружие", x + 5, y - 25, x + weaponSlotSize, y - 5, tocolor(255, 255, 255, 200), 1, "default", "left", "bottom")
     drawWeaponSlot("primary1", x, y, weaponSlotSize, "1")
     drawWeaponSlot("primary2", x + slotSpace + weaponSlotSize, y, weaponSlotSize, "2")
@@ -348,6 +376,9 @@ addEventHandler("onClientResourceStart", resourceRoot, function ()
         borderSpace = 15
     end
 
+    itemLists.loot = createItemsList("Земля", "loot")
+    itemLists.backpack = createItemsList("Рюкзак", "backpack")
+
     isInventoryVisible = false
 end)
 
@@ -358,6 +389,28 @@ function showInventory(visible)
         triggerServerEvent("requireClientBackpack", resourceRoot)
     end
 end
+
+addEventHandler("onClientKey", root, function (key, down)
+    if not down then
+        return
+    end
+    local delta
+    if key == "mouse_wheel_up" then
+        delta = -1
+    elseif key == "mouse_wheel_down" then
+        delta = 1
+    else
+        return
+    end
+    if not isInventoryVisible then
+        return
+    end
+    for name, list in pairs(itemLists) do
+        if isMouseOver(list.x, list.y, list.width, list.height) then
+            list.scroll = math.max(0, list.scroll + delta)
+        end
+    end
+end)
 
 bindKey("tab", "down", function ()
     showInventory(not isInventoryVisible)

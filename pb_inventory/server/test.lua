@@ -31,6 +31,6 @@ setTimer(function ()
     addBackpackItem(player, item)
 
     -- Лут
-    spawnPlayerLootItem(player, createItem("bandage", 1000))
+    spawnPlayerLootItem(player, createItem("bandage", 5))
     spawnPlayerLootItem(player, createItem("first_aid", 1))
 end, 500, 1)
