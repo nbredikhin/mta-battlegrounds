@@ -159,12 +159,20 @@ function drawItemsList(list, items, x, y)
             if item.count and item.count > 1 then
                 dxDrawText(item.count, x, cy, x + listItemWidth - 10, cy + listItemHeight, tocolor(255, 255, 255, 200), 1, "default-bold", "right", "center")
             end
+            -- Прогресс использования
+            if list.dragType == "backpack" and getUsingItemName() == item.name then
+                dxDrawRectangle(x, cy, listItemWidth * getUsingProgress(), listItemHeight, tocolor(0, 0, 0, 150))
+            end
             if isMouseOver(x, cy, listItemWidth, listItemHeight) then
                 dxDrawRectangle(x, cy, listItemWidth, listItemHeight, colors.selection)
                 if isMousePressed then
                     startDragging(dragType, item)
                 elseif isRightMousePressed then
-                    tryPickupLootItem(item)
+                    if list.dragType == "loot" then
+                        tryPickupLootItem(item)
+                    elseif list.dragType == "backpack" then
+                        useItem(item)
+                    end
                 end
             end
         end
@@ -388,6 +396,10 @@ function showInventory(visible)
     if visible then
         triggerServerEvent("requireClientBackpack", resourceRoot)
     end
+end
+
+function isInventoryShowing()
+    return isInventoryVisible
 end
 
 addEventHandler("onClientKey", root, function (key, down)

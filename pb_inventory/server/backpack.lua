@@ -12,6 +12,36 @@ function sendPlayerBackpack(player)
     triggerClientEvent(player, "sendPlayerBackpack", resourceRoot, playerBackpacks[player])
 end
 
+function getPlayerBackpackItem(player, name)
+    if not isElement(player) or not playerBackpacks[player] then
+        return
+    end
+    return playerBackpacks[player][name]
+end
+
+-- Забирает вещь из инвентаря
+function takePlayerBackpackItem(player, name, count)
+    if not isElement(player) or not playerBackpacks[player] then
+        return
+    end
+    if not count then
+        count = 1
+    end
+    local item = playerBackpacks[player][name]
+    if not isItem(item) then
+        return
+    end
+    if not item.count then
+        playerBackpacks[player][name] = nil
+        return
+    end
+    item.count = item.count - count
+    if item.count <= 0 then
+        playerBackpacks[player][name] = nil
+    end
+    sendPlayerBackpack(player)
+end
+
 function getPlayerBackpackTotalWeight(player)
     if not isElement(player) or not playerBackpacks[player] then
         return
