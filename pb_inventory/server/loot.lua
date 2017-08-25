@@ -69,6 +69,7 @@ addEventHandler("pickupLootItem", resourceRoot, function (element, weaponSlot)
         addPlayerWeapon(client, item, primarySlot)
         destroyElement(element)
     elseif isItemEquipment(item) then
+        addPlayerEquipment(client, item)
         destroyElement(element)
     else
         if addBackpackItem(client, item) then

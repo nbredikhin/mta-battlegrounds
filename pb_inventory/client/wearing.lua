@@ -23,14 +23,18 @@ function updatePlayerWearingItems(player)
     for name, attach in pairs(itemsAttach) do
         local object = attachedObjects[player][name]
         local model = player:getData("wear_"..tostring(name))
-        iprint(model)
-        if model and not isElement(object) then
-            object = createObject(model, player.position)
+
+        if model then
+            if not isElement(object) then
+                object = createObject(model, player.position)
+            end
             attachedObjects[player][name] = object
             object:setCollisionsEnabled(false)
             exports.bone_attach:attachElementToBone(object, player, 3,
                 attach.x, attach.y, attach.z,
                 attach.rx, attach.ry, attach.rz)
+        elseif isElement(object) then
+            destroyElement(object)
         end
     end
 end

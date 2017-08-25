@@ -56,15 +56,19 @@ function startDragging(slotType, item, slotName)
     setCursorAlpha(0)
 end
 
+local function showWeightError()
+    if isTimer(weightErrorTimer) then
+        killTimer(weightErrorTimer)
+    end
+    weightErrorTimer = setTimer(function () end, 2000, 1)
+end
+
 function tryPickupLootItem(item)
     if not isItem(item) then
         return
     end
     if getBackpackTotalWeight() + getItemWeight(item) > getBackpackCapacity() then
-        if isTimer(weightErrorTimer) then
-            killTimer(weightErrorTimer)
-        end
-        weightErrorTimer = setTimer(function () end, 2000, 1)
+        showWeightError()
     end
     triggerServerEvent("pickupLootItem", resourceRoot, item.lootElement)
 end
@@ -88,12 +92,20 @@ function stopDragging(slotType, slot)
             tryPickupLootItem(dragItem)
         end
     elseif slotType == "equipment" then
-
+        if dragType == "loot" then
+            triggerServerEvent("pickupLootItem", resourceRoot, dragItem.lootElement)
+        end
     elseif slotType == "loot" then
         if dragType == "weapon" then
             triggerServerEvent("dropPlayerWeapon", resourceRoot, dragSlot)
         elseif dragType == "backpack" then
             triggerServerEvent("dropBackpackItem", resourceRoot, dragItem.name)
+        elseif dragType == "equipment" then
+            if dragSlot == "backpack" and Config.defaultBackpackCapacity < getBackpackTotalWeight() then
+                showWeightError()
+                return
+            end
+            triggerServerEvent("dropPlayerEquipment", resourceRoot, dragSlot)
         end
     end
 

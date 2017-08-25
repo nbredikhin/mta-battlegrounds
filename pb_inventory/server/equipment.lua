@@ -30,8 +30,13 @@ end
 
 function updatePlayerEquipment(player)
     triggerClientEvent(player, "sendPlayerEquipment", resourceRoot, playerEquipments[player])
-    for name, item in pairs(playerEquipments[player]) do
-        player:setData("wear_"..tostring(name), Items[item.name].model)
+    for slot in pairs(equipmentSlots) do
+        local item = playerEquipments[player][slot]
+        if item then
+            player:setData("wear_"..tostring(slot), Items[item.name].model)
+        else
+            player:removeData("wear_"..tostring(slot))
+        end
     end
     triggerClientEvent("updatePlayerEquipment", resourceRoot, player)
 end
@@ -43,6 +48,9 @@ function addPlayerEquipment(player, item)
     local itemClass = Items[item.name]
     local slot = itemClass.category
     if equipmentSlots[slot] then
+        if slot == "backpack" and itemClass.capacity < getPlayerBackpackTotalWeight(player) then
+            return
+        end
         dropPlayerEquipment(player, itemClass.category)
         playerEquipments[player][slot] = item
         updatePlayerEquipment(player)
@@ -54,11 +62,19 @@ function dropPlayerEquipment(player, slot)
         return
     end
     if playerEquipments[player][slot] then
+        if slot == "backpack" and Config.defaultBackpackCapacity < getPlayerBackpackTotalWeight(player) then
+            return
+        end
         spawnPlayerLootItem(player, playerEquipments[player][slot])
         playerEquipments[player][slot] = nil
         updatePlayerEquipment(player)
     end
 end
+
+addEvent("dropPlayerEquipment", true)
+addEventHandler("dropPlayerEquipment", resourceRoot, function (slot)
+    dropPlayerEquipment(client, slot)
+end)
 
 addEventHandler("onPlayerJoin", root, function ()
     initPlayerEquipment(source)

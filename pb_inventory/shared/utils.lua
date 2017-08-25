@@ -16,7 +16,11 @@ function isItemWeapon(item)
 end
 
 function isItemEquipment(item)
-    return false
+    if not isItem(item) then
+        return
+    end
+    local itemClass = Items[item.name]
+    return itemClass.category == "helmet" or itemClass.category == "armor" or itemClass.category == "backpack"
 end
 
 function getItemWeight(item)
