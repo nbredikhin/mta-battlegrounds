@@ -1,0 +1,22 @@
+<meta>
+    <oop>true</oop>
+
+    <script type="shared" src="shared/models.lua"/>
+    <script type="client" src="client/main.lua"/>
+
+    <export type="shared" function="getItemModel"/>
+
+    <file src="models/backpack_small.dff"/>
+    <file src="models/backpack_small.txd"/>
+    <file src="models/backpack_medium.dff"/>
+    <file src="models/backpack_medium.txd"/>
+    <file src="models/backpack_large.dff"/>
+    <file src="models/backpack_large.txd"/>
+
+    <file src="models/helmet1.dff"/>
+    <file src="models/helmet1.txd"/>
+    <file src="models/helmet2.dff"/>
+    <file src="models/helmet2.txd"/>
+    <file src="models/helmet3.dff"/>
+    <file src="models/helmet3.txd"/>
+</meta>

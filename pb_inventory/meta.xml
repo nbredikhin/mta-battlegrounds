@@ -31,7 +31,12 @@
     <file src="assets/icons/cowbar.png"/>
     <file src="assets/icons/grenade.png"/>
     <file src="assets/icons/backpack_small.png"/>
+    <file src="assets/icons/backpack_medium.png"/>
+    <file src="assets/icons/backpack_large.png"/>
     <file src="assets/icons/ammo_9mm.png"/>
+    <file src="assets/icons/helmet1.png"/>
+    <file src="assets/icons/helmet2.png"/>
+    <file src="assets/icons/helmet3.png"/>
 
     <file src="assets/bar.png"/>
 

@@ -11,12 +11,15 @@ function spawnLootItem(item, position)
     if not isItem(item) or not position then
         return
     end
+    local color = "white"
     if isItemWeapon(item) then
         color = "red"
     elseif Items[item.name].category == "medicine" then
         color = "green"
     elseif Items[item.name].category == "ammo" then
         color = "blue"
+    elseif Items[item.name].category == "backpack" then
+        color = "orange"
     end
     local object = createObject(lootColors[color], position)
     object.rotation = Vector3(0, 0, math.random(360))

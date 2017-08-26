@@ -10,6 +10,7 @@ end
 
 function sendPlayerBackpack(player)
     triggerClientEvent(player, "sendPlayerBackpack", resourceRoot, playerBackpacks[player])
+    triggerEvent("onPlayerBackpackUpdate", player)
 end
 
 function getPlayerBackpackItem(player, name)
@@ -80,7 +81,7 @@ end
 
 function getPlayerBackpackTotalWeight(player)
     if not isElement(player) or not playerBackpacks[player] then
-        return
+        return 0
     end
     local amount = 0
     for name, item in pairs(playerBackpacks[player]) do

@@ -1,3 +1,7 @@
+FirearmsWeapons = {
+    [30] = true
+}
+
 function isResourceRunning(resName)
     local res = getResourceFromName(resName)
     return (res) and (getResourceState(res) == "running")

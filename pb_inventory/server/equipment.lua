@@ -15,6 +15,10 @@ function initPlayerEquipment(player)
         armor    = nil,
         backpack = nil,
     }
+
+    for slot in pairs(equipmentSlots) do
+        player:removeData("wear_"..tostring(slot))
+    end
 end
 
 function getPlayerBackpackCapacity(player)
@@ -29,16 +33,22 @@ function getPlayerBackpackCapacity(player)
 end
 
 function updatePlayerEquipment(player)
+    if not isElement(player) then
+        return
+    end
+    if not isResourceRunning("pb_models") then
+        return
+    end
     triggerClientEvent(player, "sendPlayerEquipment", resourceRoot, playerEquipments[player])
     for slot in pairs(equipmentSlots) do
         local item = playerEquipments[player][slot]
         if item then
-            player:setData("wear_"..tostring(slot), Items[item.name].model)
+            player:setData("wear_"..tostring(slot), exports.pb_models:getItemModel(item.name))
         else
             player:removeData("wear_"..tostring(slot))
         end
     end
-    triggerClientEvent("updatePlayerEquipment", resourceRoot, player)
+    triggerClientEvent("updateWearableItems", resourceRoot, player)
 end
 
 function addPlayerEquipment(player, item)
@@ -71,6 +81,26 @@ function dropPlayerEquipment(player, slot)
     end
 end
 
+function removePlayerEquipment(player, slot)
+    if not isElement(player) or not playerEquipments[player] or type(slot) ~= "string" then
+        return
+    end
+    if playerEquipments[player][slot] then
+        if slot == "backpack" and Config.defaultBackpackCapacity < getPlayerBackpackTotalWeight(player) then
+            return
+        end
+        playerEquipments[player][slot] = nil
+        updatePlayerEquipment(player)
+    end
+end
+
+function getPlayerEquipmentSlot(player, slot)
+    if not isElement(player) or not playerEquipments[player] or type(slot) ~= "string" then
+        return
+    end
+    return playerEquipments[player][slot]
+end
+
 addEvent("dropPlayerEquipment", true)
 addEventHandler("dropPlayerEquipment", resourceRoot, function (slot)
     dropPlayerEquipment(client, slot)
@@ -93,4 +123,20 @@ end)
 addEvent("requireClientEquipment", true)
 addEventHandler("requireClientEquipment", resourceRoot, function ()
     triggerClientEvent(client, "sendPlayerEquipment", resourceRoot, playerEquipments[client])
+end)
+
+addEvent("updateEquipmentHealth", true)
+addEventHandler("updateEquipmentHealth", resourceRoot, function (slot, health)
+    local item = getPlayerEquipmentSlot(client, slot)
+    if not isItem(item) then
+        return
+    end
+    if health > item.health then
+        return
+    end
+    item.health = health
+    if item.health <= 0 then
+        removePlayerEquipment(client, slot)
+    end
+    updatePlayerEquipment(player)
 end)

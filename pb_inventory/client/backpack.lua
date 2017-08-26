@@ -29,7 +29,7 @@ function getBackpackTotalWeight()
     for name, item in pairs(clientBackpack) do
         amount = amount + getItemWeight(item)
     end
-    return amount
+    return math.ceil(amount)
 end
 
 function getBackpackItems()

@@ -1,5 +1,5 @@
 setTimer(function ()
-    local player = getRandomPlayer()
+    local player = getElementsByType("player")[1]
 
     -- Оружие
     local weapon = createItem("weapon_m4")
@@ -21,6 +21,7 @@ setTimer(function ()
 
     -- Снаряжение
     addPlayerEquipment(player, createItem("backpack_small"))
+    addPlayerEquipment(getElementsByType("player")[2], createItem("helmet1"))
 
     -- Вещи
     local item = createItem("bandage", 5)
@@ -29,7 +30,13 @@ setTimer(function ()
     addBackpackItem(player, createItem("ammo_test", 30))
 
     -- Лут
-    spawnPlayerLootItem(player, createItem("bandage", 5))
-    spawnPlayerLootItem(player, createItem("first_aid", 1))
-    spawnPlayerLootItem(player, createItem("weapon_grenade", 1))
+    -- spawnPlayerLootItem(player, createItem("bandage", 5))
+    -- spawnPlayerLootItem(player, createItem("first_aid", 1))
+    spawnPlayerLootItem(player, createItem("backpack_medium"))
+    spawnPlayerLootItem(player, createItem("backpack_large"))
+
+    spawnPlayerLootItem(player, createItem("helmet1"))
+    spawnPlayerLootItem(player, createItem("helmet2"))
+    spawnPlayerLootItem(player, createItem("helmet3"))
+    -- spawnPlayerLootItem(player, createItem("weapon_grenade", 1))
 end, 500, 1)

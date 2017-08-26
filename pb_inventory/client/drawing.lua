@@ -211,7 +211,7 @@ function drawItemsList(list, items, x, y)
                 dxDrawImage(x, cy, itemIconSize, itemIconSize, IconTextures[item.name])
             end
             if Items[item.name].readableName then
-                dxDrawText(Items[item.name].readableName, x + itemIconSize + 5, cy, x + 5, cy + listItemHeight, tocolor(255, 255, 255, 200), 1, "default", "left", "center")
+                dxDrawText(Items[item.name].readableName, x + itemIconSize + 5, cy, x + listItemWidth - 20, cy + listItemHeight, tocolor(255, 255, 255, 200), 1, "default", "left", "center", true)
             end
             if item.count and item.count > 1 then
                 dxDrawText(item.count, x, cy, x + listItemWidth - 10, cy + listItemHeight, tocolor(255, 255, 255, 200), 1, "default-bold", "right", "center")
