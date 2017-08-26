@@ -28,8 +28,8 @@ Items = {
         weaponId = 31,
         clip = 50,
         stackable = false,
+        ammo = "ammo_test",
         vars = {
-            ammo = 0,
             clip = 0,
         }
     },
@@ -41,8 +41,8 @@ Items = {
         weaponId = 30,
         clip = 30,
         stackable = false,
+        ammo = "ammo_test",
         vars = {
-            ammo = 0,
             clip = 0,
         }
     },
@@ -54,8 +54,8 @@ Items = {
         weaponId = 22,
         clip = 17,
         stackable = false,
+        ammo = "ammo_test",
         vars = {
-            ammo = 0,
             clip = 0,
         }
     },
@@ -65,11 +65,7 @@ Items = {
         readableName = "Монтировка",
         category = "weapon_melee",
         weaponId = 2,
-        stackable = false,
-        vars = {
-            ammo = 1,
-            clip = 1,
-        }
+        stackable = false
     },
 
     weapon_grenade = {
@@ -77,11 +73,7 @@ Items = {
         readableName = "Осколочная граната",
         category = "weapon_grenade",
         weaponId = 16,
-        stackable = false,
-        vars = {
-            clip = 1,
-            ammo = 0,
-        }
+        stackable = false
     },
 
     backpack_small = {
@@ -89,7 +81,16 @@ Items = {
         readableName = "Рюкзак (ур.1)",
         category = "backpack",
         capacity = 200,
-        model = 1310
+        model = 1337
+    },
+
+    ammo_test = {
+        icon         = "ammo_9mm.png",
+        readableName = "9 мм",
+        category     = "ammo",
+        stackable    = true,
+        capacity     = 200,
+        weight       = 0.375,
     }
 }
 

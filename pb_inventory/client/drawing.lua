@@ -27,6 +27,12 @@ local dragItemSize = 45
 local weightErrorTimer
 local currentBarWeight = 0
 
+local separateWindowWidth = 350
+local separateWindowHeight = 200
+local isSeparateWindowVisible = false
+local separateItem
+local separateCount = 0
+
 local colors = {
     border    = tocolor(255, 255, 255),
     item      = tocolor(255, 255, 255, 38),
@@ -45,8 +51,34 @@ function isMouseOver(x, y, w, h)
     return mouseX >= x and mouseX <= x + w and mouseY >= y and mouseY <= y + h
 end
 
+function showSeparateWindow(item)
+    if isSeparateWindowVisible then
+        return
+    end
+    isSeparateWindowVisible = true
+    separateItem = item
+    separateCount = math.floor(item.count / 2)
+end
+
+function hideSeparateWindow(drop)
+    if not isSeparateWindowVisible then
+        return
+    end
+    if drop then
+        local count = math.max(1, math.min(separateItem.count, separateCount))
+        triggerServerEvent("dropBackpackItem", resourceRoot, separateItem.name, count)
+    end
+    isSeparateWindowVisible = false
+    separateItem = nil
+    separateCount = nil
+end
+
 function startDragging(slotType, item, slotName)
     if isDragging then
+        return
+    end
+    if isSeparateWindowVisible then
+        stopDragging()
         return
     end
     isDragging = true
@@ -86,10 +118,14 @@ function stopDragging(slotType, slot)
             if string.find(dragSlot, "primary") and string.find(slot, "primary") and dragSlot ~= slot then
                 triggerServerEvent("switchPrimaryWeapons", resourceRoot)
             end
+        elseif dragType == "backpack" then
+            triggerServerEvent("putBackpackItemToWeapon", resourceRoot, dragItem.name, slot)
         end
     elseif slotType == "backpack" then
         if dragType == "loot" then
             tryPickupLootItem(dragItem)
+        elseif dragType == "weapon" then
+            triggerServerEvent("putWeaponToBackpack", resourceRoot, dragSlot)
         end
     elseif slotType == "equipment" then
         if dragType == "loot" then
@@ -99,7 +135,11 @@ function stopDragging(slotType, slot)
         if dragType == "weapon" then
             triggerServerEvent("dropPlayerWeapon", resourceRoot, dragSlot)
         elseif dragType == "backpack" then
-            triggerServerEvent("dropBackpackItem", resourceRoot, dragItem.name)
+            if getKeyState("lctrl") then
+                showSeparateWindow(dragItem)
+            else
+                triggerServerEvent("dropBackpackItem", resourceRoot, dragItem.name)
+            end
         elseif dragType == "equipment" then
             if dragSlot == "backpack" and Config.defaultBackpackCapacity < getBackpackTotalWeight() then
                 showWeightError()
@@ -123,6 +163,11 @@ local function drawDragItem()
     local size = dragItemSize
     local x, y = mouseX - size / 2, mouseY - size / 2
     local item = dragItem
+    if getKeyState("lctrl") then
+        local offset = 6
+        dxDrawRectangle(x - 1 + offset, y - 1 + offset, size + 2 , size + 2, colors.item)
+        dxDrawRectangle(x + offset, y + offset, size, size, tocolor(0, 0, 0, 220))
+    end
     dxDrawRectangle(x - 1, y - 1, size + 2 , size + 2, colors.item)
     dxDrawRectangle(x, y, size, size, tocolor(0, 0, 0, 220))
     if IconTextures[item.name] then
@@ -227,9 +272,18 @@ local function drawWeaponSlot(slot, x, y, size, hotkey)
     if Items[item.name].readableName then
         dxDrawText(Items[item.name].readableName, x + nameX, y, x + size - 3, y + 30, tocolor(255, 255, 255, 200), 1.5, "default-bold", "left", "center", true)
     end
-    if slot ~= "melee" and item.ammo and item.clip then
-        dxDrawText(item.clip .. " / " .. item.ammo, x + 5, y, x + size, y + size - 5, tocolor(255, 255, 255, 200), 1, "default", "left", "bottom", false)
+    local ammoText = ""
+    local ammoName = ""
+    local clip, ammo = getWeaponAmmo(item)
+    if slot ~= "melee" and clip and ammo then
+        ammoText = clip .. " / " .. ammo
+        ammoName = Items[Items[item.name].ammo].readableName
     end
+    if slot == "grenade" and clip then
+        ammoText = clip
+    end
+    dxDrawText(ammoText, x + 5, y, x + size, y + size - 5, tocolor(255, 255, 255, 200), 1, "default-bold", "left", "bottom", false)
+    dxDrawText(ammoName, x + size / 2, y, x + size - 5, y + size - 5, tocolor(255, 255, 255, 100), 1, "default", "right", "bottom", false)
     if isMouseOver(x, y, size, size) then
         dxDrawRectangle(x, y, size, size, colors.selection)
         if isMousePressed then
@@ -291,6 +345,58 @@ local function drawWeightError()
     dxDrawText(str, 0, screenSize.y*0.5, screenSize.x, screenSize.y, tocolor(255, 255, 255, 200), 2.5, "default-bold", "center", "center")
 end
 
+local function drawButton(text, x, y, width, height, bg, color, scale)
+    if not bg then bg = tocolor(250, 250, 250) end
+    if not color then color = tocolor(0, 0, 0, 200) end
+    if not scale then scale = 1.5 end
+    dxDrawRectangle(x, y, width, height, bg)
+    dxDrawRectangle(x, y + height - 5, width, 5, tocolor(0, 0, 0, 10))
+    dxDrawText(text, x, y, x + width, y + height, color, scale, "default-bold", "center", "center")
+
+    if isMouseOver(x, y, width, height) then
+        dxDrawRectangle(x, y, width, height, tocolor(0, 0, 0, 100))
+        if isMousePressed then
+            return true
+        end
+    end
+    return false
+end
+
+local function drawSeparateWindow(x, y, width, height)
+    if not separateItem then
+        hideSeparateWindow()
+        return
+    end
+    dxDrawRectangle(x-1, y-1, width+2, height+2, tocolor(255, 255, 255, 50))
+    dxDrawRectangle(x, y, width, height, tocolor(0, 0, 0, 255))
+    dxDrawText("Введите количество: #FFFFFF" .. tostring(Items[separateItem.name].readableName), x + 10, y, x + width, y + height * 0.4, tocolor(120, 120, 120), 1.2, "default-bold", "left", "center", true, false, false, true)
+    local bw = (width - 25) / 2
+    local bh = 50
+    local bx = x + 10
+    local by = y + height - bh - 10
+    if drawButton("БРОСИТЬ", bx, by, bw, bh) then
+        hideSeparateWindow(true)
+        return
+    end
+    bx = bx + bw + 5
+    if drawButton("ОТМЕНИТЬ", bx, by, bw, bh) then
+        hideSeparateWindow()
+        return
+    end
+
+    bx = x + 10
+    bw = width - 20
+    by = by - bh - 10
+    dxDrawRectangle(bx, by, bw, bh, tocolor(0, 0, 0))
+    if drawButton("Min\n1", bx, by, bh, bh, tocolor(88, 88, 88), tocolor(255, 255, 255, 200), 1) then
+        separateCount = 1
+    end
+    if drawButton("Max\n"..tostring(separateItem.count), bx + bw -bh, by, bh, bh, tocolor(88, 88, 88), tocolor(255, 255, 255, 200), 1) then
+        separateCount = separateItem.count
+    end
+    dxDrawText(tostring(separateCount), bx, by, bx + bw, by + bh, tocolor(255, 255, 255), 1.8, "default-bold", "center", "center")
+end
+
 addEventHandler("onClientRender", root, function ()
     if not isInventoryVisible then
         return
@@ -312,6 +418,8 @@ addEventHandler("onClientRender", root, function ()
     else
         isRightMousePressed = false
     end
+    prevRightMouseState = getKeyState("mouse2")
+
     local mx, my = getCursorPosition()
     if mx then
         mx = mx * screenSize.x
@@ -362,6 +470,16 @@ addEventHandler("onClientRender", root, function ()
         stopDragging()
     end
     drawDragItem()
+
+    if isSeparateWindowVisible then
+        dxDrawRectangle(0, 0, screenSize.x, screenSize.y, tocolor(0, 0, 0, 200))
+        drawSeparateWindow(
+            screenSize.x/2 - separateWindowWidth/2,
+            screenSize.y/2 - separateWindowHeight/2,
+            separateWindowWidth,
+            separateWindowHeight
+        )
+    end
 end)
 
 addEventHandler("onClientResourceStart", resourceRoot, function ()
@@ -438,4 +556,17 @@ end)
 
 bindKey("tab", "down", function ()
     showInventory(not isInventoryVisible)
+end)
+
+addEventHandler("onClientKey", root, function (button, down)
+    if not isSeparateWindowVisible or not down then
+        return
+    end
+    if button == "backspace" then
+        separateCount = tonumber(string.sub(tostring(separateCount), 1, -2)) or 0
+    end
+    if tonumber(button) then
+        separateCount = tonumber(tostring(separateCount) .. button)
+    end
+    cancelEvent()
 end)

@@ -9,6 +9,18 @@ function updateBackpackItems()
     end
 end
 
+function getBackpackItemCount(name)
+    if not clientBackpack then
+        return 0
+    end
+    local item = clientBackpack[name]
+    if not item then
+        return 0
+    else
+        return item.count or 0
+    end
+end
+
 function getBackpackTotalWeight()
     if not clientBackpack then
         return 0
@@ -22,6 +34,13 @@ end
 
 function getBackpackItems()
     return backpackItemsList
+end
+
+function getBackpackItem(name)
+    if not name or not clientBackpack then
+        return
+    end
+    return clientBackpack[name]
 end
 
 addEvent("sendPlayerBackpack", true)

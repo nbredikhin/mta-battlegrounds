@@ -15,6 +15,23 @@ addEventHandler("onClientResourceStart", resourceRoot, function ()
     triggerServerEvent("requireClientWeapons", resourceRoot)
 end)
 
+function getWeaponAmmo(item)
+    if not isItem(item) then
+        return
+    end
+    local itemClass = Items[item.name]
+    if itemClass.category == "weapon_primary" or itemClass.category == "weapon_secondary" then
+        local ammo = getBackpackItem(itemClass.ammo)
+        local count = 0
+        if isItem(ammo) then
+            count = ammo.count
+        end
+        return item.clip, count
+    elseif itemClass.category == "weapon_grenade" then
+        return item.count
+    end
+end
+
 function getActiveWeaponItem()
     return clientWeapons[slotsOrder[activeSlotIndex]]
 end

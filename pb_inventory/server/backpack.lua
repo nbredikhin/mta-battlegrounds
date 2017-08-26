@@ -19,6 +19,30 @@ function getPlayerBackpackItem(player, name)
     return playerBackpacks[player][name]
 end
 
+function getPlayerBackpackItemCount(player, name)
+    if not isElement(player) then
+        return
+    end
+    local item = getPlayerBackpackItem(player, name)
+    if not item then
+        return 0
+    else
+        return item.count or 0
+    end
+end
+
+function setPlayerBackpackItemCount(player, name, count)
+    local item = getPlayerBackpackItem(player, name)
+    if not item or not count then
+        return
+    end
+    item.count = count
+    if count <= 0 then
+        playerBackpacks[player][name] = nil
+    end
+    sendPlayerBackpack(player)
+end
+
 -- Забирает вещь из инвентаря
 function takePlayerBackpackItem(player, name, count)
     if not isElement(player) or not playerBackpacks[player] then
@@ -39,6 +63,18 @@ function takePlayerBackpackItem(player, name, count)
     if item.count <= 0 then
         playerBackpacks[player][name] = nil
     end
+    sendPlayerBackpack(player)
+end
+
+function removePlayerBackpackItem(player, name)
+    if not isElement(player) or not playerBackpacks[player] then
+        return
+    end
+    local item = playerBackpacks[player][name]
+    if not isItem(item) then
+        return
+    end
+    playerBackpacks[player][name] = nil
     sendPlayerBackpack(player)
 end
 
@@ -83,7 +119,7 @@ function addBackpackItem(player, item)
     return true
 end
 
-function dropBackpackItem(player, name)
+function dropBackpackItem(player, name, count)
     if not isElement(player) then
         return
     end
@@ -92,17 +128,24 @@ function dropBackpackItem(player, name)
     end
 
     local item = playerBackpacks[player][name]
-    playerBackpacks[player][name] = nil
-
-    if item then
+    if not item then
+        return
+    end
+    if count and count < item.count then
+        local newItem = cloneItem(item)
+        newItem.count = count
+        item.count = item.count - count
+        spawnPlayerLootItem(player, newItem)
+    else
+        playerBackpacks[player][name] = nil
         spawnPlayerLootItem(player, item)
     end
     sendPlayerBackpack(player)
 end
 
 addEvent("dropBackpackItem", true)
-addEventHandler("dropBackpackItem", resourceRoot, function (name)
-    dropBackpackItem(client, name)
+addEventHandler("dropBackpackItem", resourceRoot, function (name, count)
+    dropBackpackItem(client, name, count)
 end)
 
 function dropPlayerBackpack(player)

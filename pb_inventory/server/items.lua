@@ -24,3 +24,10 @@ function createItem(name, count, vars)
     end
     return instance
 end
+
+function cloneItem(item)
+    if not isItem(item) then
+        return
+    end
+    return table.copy(item)
+end

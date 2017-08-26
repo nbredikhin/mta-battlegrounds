@@ -2,11 +2,11 @@ local itemsAttach = {
     backpack = {
         bone = 4,
         x = 0,
-        y = -0.15,
-        z = -0.15,
+        y = -0.05,
+        z = 0.1,
         rx = -5,
         ry = 0,
-        rz = 0
+        rz = 180
     }
 }
 
@@ -30,6 +30,7 @@ function updatePlayerWearingItems(player)
             end
             attachedObjects[player][name] = object
             object:setCollisionsEnabled(false)
+            object.scale = 1
             exports.bone_attach:attachElementToBone(object, player, 3,
                 attach.x, attach.y, attach.z,
                 attach.rx, attach.ry, attach.rz)

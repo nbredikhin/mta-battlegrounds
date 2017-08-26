@@ -22,6 +22,13 @@ function initPlayerWeapons(player)
     updatePlayerWeapons(player, true)
 end
 
+function getWeaponAmmoName(item)
+    if not isItem(item) then
+        return
+    end
+    return Items[item.name].ammo
+end
+
 function addPlayerWeapon(player, item, primarySlot)
     if not isElement(player) or not playerWeapons[player] or not isItem(item) then
         return
@@ -57,8 +64,14 @@ function addPlayerWeapon(player, item, primarySlot)
         dropPlayerWeapon(player, "melee")
         playerWeapons[player]["melee"] = item
     elseif itemClass.category == "weapon_grenade" then
-        -- TODO: Move to backpack
-        playerWeapons[player]["grenade"] = item
+        local currentItem = playerWeapons[player]["grenade"]
+        if currentItem and currentItem.name == item.name then
+            item.count = item.count + currentItem.count
+            playerWeapons[player]["grenade"] = item
+        else
+            putPlayerWeaponToBackpack(player, "grenade")
+            playerWeapons[player]["grenade"] = item
+        end
     end
 
     updatePlayerWeapons(player)
@@ -73,6 +86,17 @@ function dropPlayerWeapon(player, slot)
         spawnPlayerLootItem(player, playerWeapons[player][slot])
         playerWeapons[player][slot] = nil
 
+        hidePlayerWeapon(player)
+        updatePlayerWeapons(player)
+    end
+end
+
+function takePlayerWeapon(player, slot)
+    if not isElement(player) or not playerWeapons[player] or type(slot) ~= "string" then
+        return
+    end
+    if playerWeapons[player][slot] then
+        playerWeapons[player][slot] = nil
         hidePlayerWeapon(player)
         updatePlayerWeapons(player)
     end
@@ -93,6 +117,43 @@ addEventHandler("switchPrimaryWeapons", resourceRoot, function ()
     playerWeapons[player]["primary1"] = playerWeapons[player]["primary2"]
     playerWeapons[player]["primary2"] = primary1
     updatePlayerWeapons(player)
+end)
+
+function putPlayerWeaponToBackpack(player, slot)
+    if not isElement(player) or not playerWeapons[player] or type(slot) ~= "string" then
+        return
+    end
+    if slot ~= "grenade" then
+        return
+    end
+    local item = playerWeapons[player][slot]
+    if not isItem(item) then
+        return
+    end
+    takePlayerWeapon(player, slot)
+    addBackpackItem(player, item)
+end
+
+addEvent("putWeaponToBackpack", true)
+addEventHandler("putWeaponToBackpack", resourceRoot, function (slot)
+    putPlayerWeaponToBackpack(client, slot)
+end)
+
+addEvent("putBackpackItemToWeapon", true)
+addEventHandler("putBackpackItemToWeapon", resourceRoot, function (name, slot)
+    local player = client
+    if not isElement(player) or not playerWeapons[player] or type(slot) ~= "string" then
+        return
+    end
+    if slot ~= "grenade" then
+        return
+    end
+    local item = getPlayerBackpackItem(player, name)
+    if not isItem(item) then
+        return
+    end
+    removePlayerBackpackItem(player, item.name)
+    addPlayerWeapon(player, item)
 end)
 
 addEventHandler("onPlayerJoin", root, function ()
@@ -140,9 +201,22 @@ function savePlayerCurrentWeapon(player)
     if isItem(item) then
         local weaponId = Items[item.name].weaponId
         local weaponSlot = getSlotFromWeapon(weaponId)
-        item.clip = math.max(0, getPedAmmoInClip(player, weaponSlot))
-        item.ammo = getPedTotalAmmo(player, weaponSlot) - item.clip
-        updatePlayerWeapons(player)
+        if Items[item.name].category == "weapon_grenade" then
+            local count = getPedTotalAmmo(player, weaponSlot)
+            item.count = count
+            if item.count <= 0 then
+                takePlayerWeapon(player, slot)
+            end
+        else
+            item.clip = math.max(0, getPedAmmoInClip(player, weaponSlot))
+            local ammo = getPedTotalAmmo(player, weaponSlot) - item.clip
+            setPlayerBackpackItemCount(
+                player,
+                getWeaponAmmoName(item),
+                ammo
+            )
+            updatePlayerWeapons(player)
+        end
     end
 end
 
@@ -159,8 +233,20 @@ function showPlayerWeaponSlot(player, slot)
     if isItem(item) then
         local weaponId = Items[item.name].weaponId
         giveWeapon(player, weaponId, 0, true)
-        local totalAmmo = item.ammo + item.clip
-        setWeaponAmmo(player, weaponId, totalAmmo, item.clip)
+        local clip = 0
+        local ammo = 0
+        if Items[item.name].category == "weapon_grenade" then
+            ammo = item.count
+            clip = ammo
+        else
+            clip = item.clip
+            ammo = getPlayerBackpackItemCount(player, getWeaponAmmoName(item)) + (clip or 0)
+
+            if not clip then
+                clip = ammo
+            end
+        end
+        setWeaponAmmo(player, weaponId, ammo, clip)
         player:setData("activeWeaponSlot", slot, false)
     else
         hidePlayerWeapon(player)
