@@ -21,7 +21,6 @@ setTimer(function ()
 
     -- Снаряжение
     addPlayerEquipment(player, createItem("backpack_small"))
-    addPlayerEquipment(getElementsByType("player")[2], createItem("helmet1"))
 
     -- Вещи
     local item = createItem("bandage", 5)

@@ -36,19 +36,20 @@ function updatePlayerEquipment(player)
     if not isElement(player) then
         return
     end
-    if not isResourceRunning("pb_models") then
-        return
-    end
     triggerClientEvent(player, "sendPlayerEquipment", resourceRoot, playerEquipments[player])
-    for slot in pairs(equipmentSlots) do
-        local item = playerEquipments[player][slot]
-        if item then
-            player:setData("wear_"..tostring(slot), exports.pb_models:getItemModel(item.name))
-        else
-            player:removeData("wear_"..tostring(slot))
+
+
+    if isResourceRunning("pb_models") then
+        for slot in pairs(equipmentSlots) do
+            local item = playerEquipments[player][slot]
+            if item then
+                player:setData("wear_"..tostring(slot), exports.pb_models:getItemModel(item.name))
+            else
+                player:removeData("wear_"..tostring(slot))
+            end
         end
+        triggerClientEvent("updateWearableItems", resourceRoot, player)
     end
-    triggerClientEvent("updateWearableItems", resourceRoot, player)
 end
 
 function addPlayerEquipment(player, item)
