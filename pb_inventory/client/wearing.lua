@@ -87,6 +87,7 @@ function updatePlayerWearingItems(player)
             if not isElement(object) then
                 object = createObject(model, player.position)
                 object:setCollisionsEnabled(false)
+                object.doubleSided = true
                 exports.bone_attach:attachElementToBone(object, player, attach.bone,
                     attach.x, attach.y, attach.z,
                     attach.rx, attach.ry, attach.rz)
