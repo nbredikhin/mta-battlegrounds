@@ -1,6 +1,13 @@
 <meta>
     <oop>true</oop>
+    <min_mta_version client="1.5.4" server="1.5.4" />
+
+    <script type="shared" src="shared/config.lua"/>
+
+    <script type="client" src="client/match.lua"/>
+    <script type="client" src="client/plane.lua"/>
 
     <script type="server" src="server/match.lua"/>
     <script type="server" src="server/match_gameplay.lua"/>
+    <script type="server" src="server/match_events.lua"/>
 </meta>

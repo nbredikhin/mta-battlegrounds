@@ -71,19 +71,24 @@ function createMatch(matchType)
     local matchId = matchCounter
 
     local match = {
-        id         = matchId,
+        id          = matchId,
 
-        players    = {},
-        elements   = {},
-        dimension  = matchId,
+        players     = {},
+        elements    = {},
+        dimension   = matchId,
 
-        maxPlayers = maxMatchPlayers,
-        matchType  = matchType,
-        state      = "waiting",
-        stateTime  = 0
+        maxPlayers  = maxMatchPlayers,
+        matchType   = matchType,
+        state       = "waiting",
+        stateTime   = 0,
+        totalTime   = 0,
+        runningTime = 0,
+
+        settings    = {}
     }
 
     table.insert(matchesList, match)
+    initMatch(match)
     outputDebugString("[Matchmaking] Created new match (" .. tostring(match.id) .. ")")
     return match
 end
@@ -98,6 +103,13 @@ function getMatchById(id)
         end
     end
     return false
+end
+
+function getPlayerMatch(player)
+    if not isElement(player) then
+        return false
+    end
+    return getMatchById(player:getData("matchId"))
 end
 
 function addMatchPlayers(match, players)
@@ -152,7 +164,7 @@ function removePlayerFromMatch(player, reason)
         handlePlayerLeaveMatch(match, player, reason)
         for i, p in ipairs(match.players) do
             if p == player then
-                table.remove(match.players, player)
+                table.remove(match.players, i)
                 break
             end
         end
@@ -191,8 +203,24 @@ function destroyMatch(match)
     return true
 end
 
+addEventHandler("onPlayerQuit", root, function ()
+    removePlayerFromMatch(player, "disconnect")
+end)
+
 setTimer(function ()
     for i, match in ipairs(matchesList) do
+        match.stateTime = match.stateTime + 1
+        match.totalTime = match.totalTime + 1
         updateMatch(match)
     end
 end, 1000, 0)
+
+addEventHandler("onResourceStart", resourceRoot, function ()
+    for i, player in ipairs(getElementsByType("player")) do
+        player:removeData("matchId")
+    end
+end)
+
+setTimer(function ()
+    findMatch({getRandomPlayer()})
+end, 500, 1)
