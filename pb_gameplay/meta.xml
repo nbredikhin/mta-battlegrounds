@@ -1,0 +1,6 @@
+<meta>
+    <oop>true</oop>
+
+    <script type="server" src="server/match.lua"/>
+    <script type="server" src="server/match_gameplay.lua"/>
+</meta>
