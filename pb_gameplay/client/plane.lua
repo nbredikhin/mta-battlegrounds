@@ -24,29 +24,23 @@ addEventHandler("createPlane", resourceRoot, function (x, y, angle, vx, vy)
 
     startTime = getTickCount()
     isCameraAttached = true
+    startPlaneCamera(currentPlane)
 end)
 
 addEventHandler("onClientPreRender", root, function (deltaTime)
     if not isElement(currentPlane) then
         return
     end
-    if isCameraAttached then
-        setCameraMatrix(currentPlane.matrix:transformPosition(0, -40, 50), currentPlane.position)
-    end
-
+    updatePlaneCamera(deltaTime / 1000)
     local passedTime = (getTickCount() - startTime) / 1000
-    currentPlane.position = Vector3(startX + velocityX * passedTime, startY + velocityY * passedTime, Config.planeZ)
+    currentPlane.position = Vector3(startX + velocityX * passedTime, startY + velocityY * passedTime, Config.planeZ - 10)
 end)
 
 bindKey("f", "down", function ()
-    if isCameraAttached then
-        triggerServerEvent("planeJump", resourceRoot)
-        isCameraAttached = false
-    end
+    triggerServerEvent("planeJump", resourceRoot)
 end)
 
 addEvent("planeJump", true)
 addEventHandler("planeJump", resourceRoot, function ()
-    isCameraAttached = false
-    setCameraTarget(localPlayer)
+    stopPlaneCamera()
 end)
