@@ -98,8 +98,8 @@ function isVisible(visible)
     return isMapVisible
 end
 
-bindKey("m", "down", function ()
-    isMapVisible = not isMapVisible
+-- bindKey("m", "down", function ()
+--     isMapVisible = not isMapVisible
 
-    exports.pb_radar:setVisible(not isMapVisible)
-end)
+--     exports.pb_radar:setVisible(not isMapVisible)
+-- end)

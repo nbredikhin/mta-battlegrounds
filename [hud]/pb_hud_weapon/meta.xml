@@ -1,7 +1,9 @@
 <meta>
     <oop>true</oop>
-    <script type="client" src="client/weapon.lua"/>
+
     <script type="client" src="client/main.lua"/>
+
+    <export type="client" function="setVisible"/>
 
     <file src="assets/0.png"/>
     <file src="assets/1.png"/>

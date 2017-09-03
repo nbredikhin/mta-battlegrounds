@@ -45,4 +45,7 @@
     <export type="client" function="getClientWeapons"/>
     <export type="client" function="getWeaponSlot"/>
     <export type="client" function="getActiveWeaponSlot"/>
+
+    <export type="client" function="setVisible"/>
+    <export type="client" function="isVisible"/>
 </meta>

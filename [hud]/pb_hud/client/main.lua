@@ -65,10 +65,10 @@ addEventHandler("onClientRender", root, function ()
     local y = 30
     local x = screenSize.x - 36
     x = x - drawCounter(x, y, "1", "В ЖИВЫХ") - 45
-    if isResourceRunning("pb_map") and exports.pb_map:isVisible() then
+    if (isResourceRunning("pb_map") and exports.pb_map:isVisible()) or
+       (isResourceRunning("pb_inventory") and exports.pb_inventory:isVisible())
+    then
         drawCounter(x, y, "0", "УБИТО")
-    else
-        drawWeapon()
     end
 end, false, "low-1")
 

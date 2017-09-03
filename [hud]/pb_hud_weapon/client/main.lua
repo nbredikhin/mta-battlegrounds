@@ -60,11 +60,11 @@ local function drawWeaponSlot(slot, x, y)
     end
 
     local ammoColor = tocolor(255, 255, 255, 200 * alpha)
-    if ammo == 0 then
+    if not ammo or ammo == 0 then
         ammoColor = tocolor(255, 0, 0, 0 * alpha)
     end
 
-    if ammo > 0 and (slot == "primary1" or slot == "primary2" or slot == "secondary") then
+    if ammo and ammo > 0 and (slot == "primary1" or slot == "primary2" or slot == "secondary") then
         dxDrawText(clip, ix - 10, ty, ix - 10, ty ,weaponColor,1.2*size,"default-bold","right","bottom")
         local bs = 10 * size
         dxDrawImage(ix-bs/2, ty-bs-3*size,bs,bs,bulletTexture,0,0,0,ammoColor)

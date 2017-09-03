@@ -1,5 +1,6 @@
 Config = {}
 
+-- В секундах
 Config.matchWaitingTime = 1
 Config.matchEndedTime = 20
 

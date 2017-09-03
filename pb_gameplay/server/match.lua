@@ -204,7 +204,7 @@ function destroyMatch(match)
 end
 
 addEventHandler("onPlayerQuit", root, function ()
-    removePlayerFromMatch(player, "disconnect")
+    removePlayerFromMatch(source, "disconnect")
 end)
 
 setTimer(function ()
@@ -221,6 +221,6 @@ addEventHandler("onResourceStart", resourceRoot, function ()
     end
 end)
 
-setTimer(function ()
-    findMatch({getRandomPlayer()})
-end, 500, 1)
+-- setTimer(function ()
+--     findMatch({getRandomPlayer()})
+-- end, 500, 1)
