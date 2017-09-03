@@ -81,7 +81,11 @@ function setMatchState(match, state)
 
         for i, player in ipairs(match.players) do
             player:setData("isInPlane", true)
+            player.alpha = 0
+            player.frozen = true
         end
+
+        triggerMatchEvent(match, "onMatchStarted", resourceRoot, getMatchAlivePlayersCount(match))
     end
 end
 
@@ -103,14 +107,16 @@ end
 function handlePlayerJoinMatch(match, player)
     player.dimension = match.dimension
 
-    triggerMatchEvent(match, "onPlayerJoinedMatch", root, player)
+    local aliveCount = getMatchAlivePlayersCount(match)
+    triggerMatchEvent(match, "onPlayerJoinedMatch", root, player, aliveCount)
     triggerClientEvent(player, "onJoinedMatch", resourceRoot, match.settings)
 end
 
 function handlePlayerLeaveMatch(match, player, reason)
     player.dimension = 0
 
-    triggerMatchEvent(match, "onPlayerLeftMatch", root, player, reason)
+    local aliveCount = getMatchAlivePlayersCount(match)
+    triggerMatchEvent(match, "onPlayerLeftMatch", root, player, reason, aliveCount)
     triggerClientEvent(player, "onLeftMatch", resourceRoot, reason)
 end
 
@@ -135,6 +141,8 @@ function handlePlayerPlaneJump(player)
     triggerClientEvent(player, "planeJump", resourceRoot)
     giveWeapon(player, 46, 1, true)
     player:removeData("isInPlane")
+    player.frozen = false
+    player.alpha = 255
 end
 
 addEvent("planeJump", true)

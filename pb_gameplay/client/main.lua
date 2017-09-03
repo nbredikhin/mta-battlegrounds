@@ -1,0 +1,26 @@
+addEventHandler("onClientResourceStart", resourceRoot, function ()
+    showGameHUD(false)
+    exports.pb_lobby:showLobby(true)
+end)
+
+addEvent("onJoinedMatch", true)
+addEventHandler("onJoinedMatch", resourceRoot, function (settings)
+    exports.pb_lobby:showLobby(false)
+    exports.pb_hud:setCounter("alive", 0)
+    showGameHUD(true)
+end)
+
+addEvent("onPlayerJoinedMatch", true)
+addEventHandler("onPlayerJoinedMatch", resourceRoot, function (player, aliveCount)
+    exports.pb_hud:setCounter("alive", aliveCount)
+end)
+
+addEvent("onPlayerLeftMatch", true)
+addEventHandler("onPlayerLeftMatch", resourceRoot, function (player, reason, aliveCount)
+    exports.pb_hud:setCounter("alive", aliveCount)
+end)
+
+addEvent("onMatchStarted", true)
+addEventHandler("onMatchStarted", resourceRoot, function (aliveCount)
+    exports.pb_hud:setCounter("alive", aliveCount)
+end)

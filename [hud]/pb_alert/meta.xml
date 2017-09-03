@@ -1,0 +1,9 @@
+<meta>
+    <oop>true</oop>
+
+    <script type="client" src="client/main.lua"/>
+    <script type="server" src="server/main.lua"/>
+
+    <export type="client" function="show"/>
+    <export type="server" function="show"/>
+</meta>

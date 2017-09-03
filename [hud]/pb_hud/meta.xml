@@ -4,4 +4,5 @@
     <script type="client" src="client/main.lua"/>
 
     <export type="client" function="setVisible"/>
+    <export type="client" function="setCounter"/>
 </meta>

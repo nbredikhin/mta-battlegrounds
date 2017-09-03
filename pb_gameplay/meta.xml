@@ -5,6 +5,7 @@
     <script type="shared" src="shared/utils.lua"/>
     <script type="shared" src="shared/config.lua"/>
 
+    <script type="client" src="client/main.lua"/>
     <script type="client" src="client/game_hud.lua"/>
     <script type="client" src="client/match.lua"/>
     <script type="client" src="client/plane.lua"/>

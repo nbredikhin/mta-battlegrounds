@@ -31,6 +31,8 @@ function showLobby(enabled)
         setTime(12, 0)
         setWeather(12)
 
+        buttonState = false
+
         setupLobbyPed(localPlayer)
 
         -- localPlayer.rotation = localPlayer.rotation + Vector3(0, 0, 180)
@@ -40,9 +42,9 @@ function showLobby(enabled)
     end
 end
 
-addEventHandler("onClientResourceStart", resourceRoot, function ()
-    showLobby(true)
-end)
+-- addEventHandler("onClientResourceStart", resourceRoot, function ()
+--     showLobby(true)
+-- end)
 
 addEventHandler("onCLientResourceStop", resourceRoot, showLobby)
 

@@ -8,6 +8,11 @@ local healthbarWidth = 400
 local healthbarHeight = 28
 local healthbarBorder = 1
 
+local counters = {
+    alive = 0,
+    kills = 0,
+}
+
 function isResourceRunning(resName)
     local res = getResourceFromName(resName)
     return (res) and (getResourceState(res) == "running")
@@ -68,11 +73,11 @@ addEventHandler("onClientRender", root, function ()
 
     local y = 30
     local x = screenSize.x - 36
-    x = x - drawCounter(x, y, "1", "В ЖИВЫХ") - 45
+    x = x - drawCounter(x, y, counters.alive, "В ЖИВЫХ") - 45
     if (isResourceRunning("pb_map") and exports.pb_map:isVisible()) or
        (isResourceRunning("pb_inventory") and exports.pb_inventory:isVisible())
     then
-        drawCounter(x, y, "0", "УБИТО")
+        drawCounter(x, y, counters.kills, "УБИТО")
     end
 end, false, "low-1")
 
@@ -83,4 +88,15 @@ end)
 
 function setVisible(visible)
     isVisible = not not visible
+end
+
+function setCounter(name, count)
+    if not name then
+        return
+    end
+    if not tonumber(count) then
+        counters[name] = 0
+    else
+        counters[name] = count
+    end
 end

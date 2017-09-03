@@ -1,6 +1,7 @@
 local screenSize = Vector2(guiGetScreenSize())
 
 local buttonText = "НАЧАТЬ ИГРУ"
+buttonState = false
 local logoWidth = 750
 local logoHeight = 292
 
@@ -25,8 +26,10 @@ addEventHandler("onClientRender", root, function ()
     dxDrawText(buttonText, 25 + 5, 20 + 5, 0, 0, tocolor(0, 0, 0, 150), 5, "default-bold", "left", "top")
     dxDrawText(buttonText, 25, 20, 0, 0, tocolor(255, 255, 255), 5, "default-bold", "left", "top")
 
-    if isOver and getKeyState("mouse1") then
+    if isOver and getKeyState("mouse1") and not buttonState then
         buttonText = "ПОИСК МАТЧА"
+        buttonState = true
+        triggerServerEvent("playerFindMatch", resourceRoot)
     end
 
     local w = logoWidth * 0.3

@@ -4,6 +4,8 @@
     <script type="client" src="client/lobby.lua"/>
     <script type="client" src="client/gui.lua"/>
 
+    <export type="client" function="showLobby"/>
+
     <file src="assets/corner0.png"/>
     <file src="assets/corner1.png"/>
     <file src="assets/logo.png"/>
