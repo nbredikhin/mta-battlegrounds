@@ -60,12 +60,15 @@ Items = {
         }
     },
 
-    weapon_bat = {
-        icon = "cowbar.png",
+    weapon_crowbar = {
+        icon = "crowbar.png",
         readableName = "Монтировка",
         category = "weapon_melee",
         weaponId = 2,
-        stackable = false
+        stackable = false,
+        vars = {
+            clip = 1
+        }
     },
 
     weapon_grenade = {

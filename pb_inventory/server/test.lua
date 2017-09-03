@@ -9,7 +9,7 @@ setTimer(function ()
     local weapon = createItem("weapon_ak47")
     addPlayerWeapon(player, weapon)
 
-    local weapon = createItem("weapon_bat")
+    local weapon = createItem("weapon_crowbar")
     addPlayerWeapon(player, weapon)
 
     local weapon = createItem("weapon_colt45")

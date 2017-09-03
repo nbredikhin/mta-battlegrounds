@@ -1,3 +1,5 @@
+local isVisible = true
+
 local screenSize = Vector2(guiGetScreenSize())
 local weaponIcons = {}
 
@@ -18,6 +20,11 @@ local fadingTimer
 
 local activeSlotName, activeSlotIndex = "primary1", 1
 
+local function isResourceRunning(resName)
+    local res = getResourceFromName(resName)
+    return (res) and (getResourceState(res) == "running")
+end
+
 local function drawWeaponSlot(slot, x, y)
     local item = exports.pb_inventory:getWeaponSlot(slot)
     if not item then
@@ -34,13 +41,15 @@ local function drawWeaponSlot(slot, x, y)
     local weaponSlot = getSlotFromWeapon(weaponId)
     local size = 1
     local clip = item.clip
-    local ammo = item.ammo
+    local ammo = exports.pb_inventory:getWeaponAmmo(item)--item.ammo
     if slot == activeSlotName then
         size = iconSize
         if localPlayer:getWeapon() ~= 0 then
             clip = localPlayer:getAmmoInClip(weaponSlot)
             ammo = localPlayer:getTotalAmmo(weaponSlot) - clip
         end
+    else
+        clip = nil
     end
     local w = math.floor(icon.width * 0.2 * size)
     local h = math.floor(icon.height * 0.2 * size)
@@ -64,18 +73,23 @@ local function drawWeaponSlot(slot, x, y)
         ammoColor = tocolor(255, 0, 0, 0 * alpha)
     end
 
-    if ammo and ammo > 0 and (slot == "primary1" or slot == "primary2" or slot == "secondary") then
-        dxDrawText(clip, ix - 10, ty, ix - 10, ty ,weaponColor,1.2*size,"default-bold","right","bottom")
-        local bs = 10 * size
-        dxDrawImage(ix-bs/2, ty-bs-3*size,bs,bs,bulletTexture,0,0,0,ammoColor)
-        dxDrawText(ammo, ix + 10, ty - 2, ix + 10, ty - 2 ,ammoColor,0.8*size,"default-bold","left","bottom")
-    elseif slot == "grenade" or ammo == 0 then
-        dxDrawText(clip, ix - 10, ty, ix + 10, ty ,weaponColor,1.2*size,"default-bold","center","bottom")
+    if clip and slot ~= "melee" then
+        if ammo and ammo > 0 and (slot == "primary1" or slot == "primary2" or slot == "secondary") then
+            dxDrawText(clip, ix - 10, ty, ix - 10, ty ,weaponColor,1.2*size,"default-bold","right","bottom")
+            local bs = 10 * size
+            dxDrawImage(ix-bs/2, ty-bs-3*size,bs,bs,bulletTexture,0,0,0,ammoColor)
+            dxDrawText(ammo, ix + 10, ty - 2, ix + 10, ty - 2 ,ammoColor,0.8*size,"default-bold","left","bottom")
+        elseif slot == "grenade" or ammo == 0 then
+            dxDrawText(clip, ix - 10, ty, ix + 10, ty ,weaponColor,1.2*size,"default-bold","center","bottom")
+        end
     end
     dxDrawImage(ix - w / 2, y - h / 2, w, h, icon.texture, 0, 0, 0, weaponColor)
 end
 
-function drawWeapon()
+addEventHandler("onClientRender", root, function ()
+    if not isVisible then
+        return
+    end
     if not isResourceRunning("pb_inventory") then
         return
     end
@@ -95,7 +109,7 @@ function drawWeapon()
         drawWeaponSlot(slot, x, y)
         x = x + weaponIconWidth
     end
-end
+end)
 
 addEventHandler("onClientResourceStart", resourceRoot, function ()
     for i = 0, 50 do
@@ -146,3 +160,7 @@ addEventHandler("onWeaponSlotChange", root, function ()
         isFading = true
     end, 700, 1)
 end)
+
+function setVisible(visible)
+    isVisible = not not visible
+end

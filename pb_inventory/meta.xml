@@ -28,7 +28,7 @@
     <file src="assets/icons/m4.png"/>
     <file src="assets/icons/ak47.png"/>
     <file src="assets/icons/colt45.png"/>
-    <file src="assets/icons/cowbar.png"/>
+    <file src="assets/icons/crowbar.png"/>
     <file src="assets/icons/grenade.png"/>
     <file src="assets/icons/backpack_small.png"/>
     <file src="assets/icons/backpack_medium.png"/>
@@ -44,6 +44,7 @@
 
     <export type="client" function="getClientWeapons"/>
     <export type="client" function="getWeaponSlot"/>
+    <export type="client" function="getWeaponAmmo"/>
     <export type="client" function="getActiveWeaponSlot"/>
 
     <export type="client" function="setVisible"/>

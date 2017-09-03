@@ -1,4 +1,4 @@
-local isHudHidden = false
+local isHudVisible = false
 
 local function setComponentVisible(name, visible)
     if isResourceRunning(name) then
@@ -18,10 +18,13 @@ end
 
 -- Включает/выключает интерфейс игры
 function showGameHUD(visible)
-    if visible == isHudHidden then
+    if visible == isHudVisible then
         return
     end
-    isHudHidden = not not visible
+    showPlayerHudComponent("all", false)
+    showPlayerHudComponent("crosshair", true)
+
+    isHudVisible = not not visible
     hideGameHUD()
     if visible then
         setComponentVisible("pb_hud",        true)
@@ -29,11 +32,12 @@ function showGameHUD(visible)
         setComponentVisible("pb_compass",    true)
         setComponentVisible("pb_hud_weapon", true)
     end
+    showChat(not visible)
 end
 
 -- Карта
 bindKey("m", "down", function ()
-    if isHudHidden then
+    if not isHudVisible then
         hideGameHUD()
         return
     end
@@ -44,6 +48,7 @@ bindKey("m", "down", function ()
     setComponentVisible("pb_map", visible)
     setComponentVisible("pb_radar", not visible)
     setComponentVisible("pb_compass", not visible)
+    setComponentVisible("pb_hud_weapon", not visible)
     if visible then
         setComponentVisible("pb_inventory", false)
     end
@@ -51,7 +56,7 @@ end)
 
 -- Инвентарь
 bindKey("tab", "down", function ()
-    if isHudHidden then
+    if not isHudVisible then
         hideGameHUD()
         return
     end
@@ -62,7 +67,10 @@ bindKey("tab", "down", function ()
     setComponentVisible("pb_inventory", visible)
     setComponentVisible("pb_radar", not visible)
     setComponentVisible("pb_compass", not visible)
+    setComponentVisible("pb_hud_weapon", not visible)
     if visible then
         setComponentVisible("pb_map", false)
     end
 end)
+
+showGameHUD(true)

@@ -1,4 +1,5 @@
 local screenSize = Vector2(guiGetScreenSize())
+local isVisible = true
 
 DEBUG_DRAW = false
 
@@ -60,6 +61,9 @@ local function drawCounter(x, y, count, label)
 end
 
 addEventHandler("onClientRender", root, function ()
+    if not isVisible then
+        return
+    end
     drawHealthbar()
 
     local y = 30
@@ -76,3 +80,7 @@ addEventHandler("onClientResourceStart", resourceRoot, function ()
     showPlayerHudComponent("all", false)
     showPlayerHudComponent("crosshair", true)
 end)
+
+function setVisible(visible)
+    isVisible = not not visible
+end
