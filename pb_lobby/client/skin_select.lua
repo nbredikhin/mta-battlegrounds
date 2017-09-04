@@ -9,6 +9,7 @@ local playerPed
 local function createLobbyPed(position)
     local ped = createPed(skins[1], position, 150)
     ped.frozen = true
+    ped.dimension = localPlayer.dimension
     setPedAnimation(ped, "ped", "IDLE_HBHB", -1, true, false)
     return ped
 end
@@ -29,6 +30,7 @@ function changeSkin(delta)
     end
 
     updateSkin()
+    localPlayer:setData("skin", playerPed.model)
 end
 
 local function handleKey(key, isDown)

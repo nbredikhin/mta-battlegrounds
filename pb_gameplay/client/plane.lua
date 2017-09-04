@@ -17,6 +17,7 @@ addEventHandler("createPlane", resourceRoot, function (x, y, angle, vx, vy)
     currentPlane.dimension = localPlayer.dimension
 
     local ped = createPed(0, currentPlane.position)
+    ped.dimension = localPlayer.dimension
     setTimer(function ()
         ped.vehicle = currentPlane
         ped:setControlState("accelerate", true)
@@ -40,15 +41,22 @@ addEventHandler("onClientPreRender", root, function (deltaTime)
     updatePlaneCamera(deltaTime / 1000)
     local passedTime = (getTickCount() - startTime) / 1000
     currentPlane.position = Vector3(startX + velocityX * passedTime, startY + velocityY * passedTime, Config.planeZ - 10)
-
     if isClientInPlane then
         setElementPosition(localPlayer, currentPlane.position, false)
+    end
+    if math.abs(currentPlane.position.x) > Config.planeDistance + 50 or
+       math.abs(currentPlane.position.y) > Config.planeDistance + 50
+    then
+        destroyElement(currentPlane)
+        iprint("Plane destroyed")
     end
 end)
 
 bindKey("f", "down", function ()
-    triggerServerEvent("planeJump", resourceRoot)
-    fadeCamera(false, 0)
+    if isClientInPlane then
+        triggerServerEvent("planeJump", resourceRoot)
+        fadeCamera(false, 0)
+    end
 end)
 
 addEvent("planeJump", true)
@@ -56,4 +64,8 @@ addEventHandler("planeJump", resourceRoot, function ()
     isClientInPlane = false
     stopPlaneCamera()
     fadeCamera(true, 1)
+end)
+
+bindKey("1", "down", function ()
+    setElementPosition(localPlayer, currentPlane.position, false)
 end)

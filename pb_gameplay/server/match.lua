@@ -218,6 +218,7 @@ end, 1000, 0)
 addEventHandler("onResourceStart", resourceRoot, function ()
     for i, player in ipairs(getElementsByType("player")) do
         player:removeData("matchId")
+        player.dimension = 0
     end
 end)
 

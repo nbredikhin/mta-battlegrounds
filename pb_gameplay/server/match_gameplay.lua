@@ -135,9 +135,11 @@ function handlePlayerPlaneJump(player)
     local timePassed = (getTickCount() - match.planeStartTime) / 1000
     local x = match.planeStartPosition.x + match.planeVelocity.x * timePassed
     local y = match.planeStartPosition.y + match.planeVelocity.y * timePassed
-    local z = Config.planeZ
+    local z = Config.planeZ - 10
 
     spawnPlayer(player, Vector3(x, y, z))
+    player.model = player:getData("skin") or 0
+    player.dimension = match.dimension
     triggerClientEvent(player, "planeJump", resourceRoot)
     giveWeapon(player, 46, 1, true)
     player:removeData("isInPlane")

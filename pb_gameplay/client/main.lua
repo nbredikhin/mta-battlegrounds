@@ -9,7 +9,7 @@ addEvent("onJoinedMatch", true)
 addEventHandler("onJoinedMatch", resourceRoot, function (settings)
     exports.pb_lobby:setVisible(false)
     exports.pb_hud:setCounter("alive", 0)
-    -- showGameHUD(true)
+
     setTimer(fadeCamera, 50, 1, false, 0)
     setTimer(fadeCamera, 1000, 1, true, 1)
     setTimer(showGameHUD, 1500, 1, true)
