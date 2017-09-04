@@ -92,11 +92,14 @@ end)
 
 function setVisible(visible)
     isMapVisible = not not visible
+    toggleControl("radar", false)
 end
 
 function isVisible(visible)
     return isMapVisible
 end
+
+toggleControl("radar", false)
 
 -- bindKey("m", "down", function ()
 --     isMapVisible = not isMapVisible

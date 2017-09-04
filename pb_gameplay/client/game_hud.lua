@@ -35,8 +35,7 @@ function showGameHUD(visible)
     end
 end
 
--- Карта
-bindKey("m", "down", function ()
+function toggleMap()
     if not isHudVisible then
         hideGameHUD()
         return
@@ -52,7 +51,11 @@ bindKey("m", "down", function ()
     if visible then
         setComponentVisible("pb_inventory", false)
     end
-end)
+end
+
+-- Карта
+bindKey("m", "down", toggleMap)
+bindKey("f11", "down", toggleMap)
 
 -- Инвентарь
 bindKey("tab", "down", function ()

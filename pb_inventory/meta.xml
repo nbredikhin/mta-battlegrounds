@@ -14,12 +14,14 @@
     <script type="client" src="client/pickup.lua"/>
     <script type="client" src="client/usable_items.lua"/>
 
+    <script type="server" src="server/parachute.lua"/>
     <script type="server" src="server/items.lua"/>
     <script type="server" src="server/weapons.lua"/>
     <script type="server" src="server/backpack.lua"/>
     <script type="server" src="server/loot.lua"/>
     <script type="server" src="server/equipment.lua"/>
     <script type="server" src="server/usable_items.lua"/>
+    <script type="server" src="server/exports.lua"/>
 
     <script type="server" src="server/test.lua"/>
 
@@ -49,4 +51,8 @@
 
     <export type="client" function="setVisible"/>
     <export type="client" function="isVisible"/>
+
+    <export type="server" function="givePlayerParachute"/>
+    <export type="server" function="takePlayerParachute"/>
+    <export type="server" function="takeAllItems"/>
 </meta>

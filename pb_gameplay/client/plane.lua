@@ -34,6 +34,10 @@ addEventHandler("createPlane", resourceRoot, function (x, y, angle, vx, vy)
     startPlaneCamera(currentPlane)
 end)
 
+function getFlightDistance()
+    return ((getTickCount() - startTime) / 1000) * Config.planeSpeed
+end
+
 addEventHandler("onClientPreRender", root, function (deltaTime)
     if not isElement(currentPlane) then
         return
@@ -48,15 +52,29 @@ addEventHandler("onClientPreRender", root, function (deltaTime)
        math.abs(currentPlane.position.y) > Config.planeDistance + 50
     then
         destroyElement(currentPlane)
-        iprint("Plane destroyed")
+    end
+
+    if isClientInPlane and getFlightDistance() > 3000 and
+      (math.abs(currentPlane.position.x) > Config.autoParachuteDistance or
+       math.abs(currentPlane.position.y) > Config.autoParachuteDistance)
+    then
+        jumpFromPlane()
     end
 end)
 
-bindKey("f", "down", function ()
+function jumpFromPlane()
+    if getFlightDistance() < 800 then
+        return
+    end
     if isClientInPlane then
+        isClientInPlane = false
         triggerServerEvent("planeJump", resourceRoot)
         fadeCamera(false, 0)
     end
+end
+
+bindKey("f", "down", function ()
+    jumpFromPlane()
 end)
 
 addEvent("planeJump", true)

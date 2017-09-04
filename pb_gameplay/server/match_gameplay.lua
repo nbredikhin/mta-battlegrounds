@@ -141,10 +141,14 @@ function handlePlayerPlaneJump(player)
     player.model = player:getData("skin") or 0
     player.dimension = match.dimension
     triggerClientEvent(player, "planeJump", resourceRoot)
-    giveWeapon(player, 46, 1, true)
     player:removeData("isInPlane")
     player.frozen = false
     player.alpha = 255
+
+    if isResourceRunning("pb_inventory") then
+        exports.pb_inventory:takeAllItems(player)
+        exports.pb_inventory:givePlayerParachute(player)
+    end
 end
 
 addEvent("planeJump", true)
