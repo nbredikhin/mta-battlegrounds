@@ -1,10 +1,11 @@
 <meta>
     <oop>true</oop>
 
-    <script type="client" src="client/lobby.lua"/>
-    <script type="client" src="client/gui.lua"/>
+    <script type="client" src="client/main.lua"/>
+    <script type="client" src="client/skin_select.lua"/>
+    <script type="client" src="client/drawing.lua"/>
 
-    <export type="client" function="showLobby"/>
+    <export type="client" function="setVisible"/>
 
     <file src="assets/corner0.png"/>
     <file src="assets/corner1.png"/>

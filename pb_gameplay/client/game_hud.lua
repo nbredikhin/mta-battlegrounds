@@ -23,6 +23,7 @@ function showGameHUD(visible)
     end
     showPlayerHudComponent("all", false)
     showPlayerHudComponent("crosshair", true)
+    showChat(false)
 
     isHudVisible = not not visible
     hideGameHUD()
@@ -32,7 +33,6 @@ function showGameHUD(visible)
         setComponentVisible("pb_compass",    true)
         setComponentVisible("pb_hud_weapon", true)
     end
-    showChat(not visible)
 end
 
 -- Карта

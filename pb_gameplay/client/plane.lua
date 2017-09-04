@@ -48,10 +48,12 @@ end)
 
 bindKey("f", "down", function ()
     triggerServerEvent("planeJump", resourceRoot)
+    fadeCamera(false, 0)
 end)
 
 addEvent("planeJump", true)
 addEventHandler("planeJump", resourceRoot, function ()
     isClientInPlane = false
     stopPlaneCamera()
+    fadeCamera(true, 1)
 end)
