@@ -17,6 +17,10 @@ function updateMatch(match)
     end
 
     if match.state == "waiting" then
+        local timeLeft = Config.matchWaitingTime - match.stateTime
+        if timeLeft > 0 then
+            exports.pb_alert:show(match.players, "МАТЧ НАЧИНАЕТСЯ ЧЕРЕЗ\n"..tostring(timeLeft), 2000, 0xFFAAFAE1)
+        end
         if match.stateTime >= Config.matchWaitingTime then
             setMatchState(match, "running")
         end
@@ -83,6 +87,7 @@ function setMatchState(match, state)
             player:setData("isInPlane", true)
             player.alpha = 0
             player.frozen = true
+            player:removeData("match_waiting")
         end
 
         triggerMatchEvent(match, "onMatchStarted", resourceRoot, getMatchAlivePlayersCount(match))
@@ -93,9 +98,7 @@ function triggerMatchEvent(match, ...)
     if not isMatch(match) then
         return
     end
-    for i, player in ipairs(match.players) do
-        triggerClientEvent(player, ...)
-    end
+    triggerClientEvent(match.players, ...)
 end
 
 -- До входа любого игрока
@@ -107,6 +110,12 @@ end
 function handlePlayerJoinMatch(match, player)
     player.dimension = match.dimension
 
+    spawnPlayer(player, Config.waitingPosition + Vector3(math.random()-0.5, math.random()-0.5, 0) * 20)
+    player.model = player:getData("skin") or 0
+    player.dimension = match.dimension
+
+    player:setData("match_waiting", true)
+
     local aliveCount = getMatchAlivePlayersCount(match)
     triggerMatchEvent(match, "onPlayerJoinedMatch", root, player, aliveCount)
     triggerClientEvent(player, "onJoinedMatch", resourceRoot, match.settings)
@@ -115,6 +124,7 @@ end
 function handlePlayerLeaveMatch(match, player, reason)
     player.dimension = 0
 
+    player:removeData("match_waiting")
     local aliveCount = getMatchAlivePlayersCount(match)
     triggerMatchEvent(match, "onPlayerLeftMatch", root, player, reason, aliveCount)
     triggerClientEvent(player, "onLeftMatch", resourceRoot, reason)
@@ -140,6 +150,7 @@ function handlePlayerPlaneJump(player)
     spawnPlayer(player, Vector3(x, y, z))
     player.model = player:getData("skin") or 0
     player.dimension = match.dimension
+
     triggerClientEvent(player, "planeJump", resourceRoot)
     player:removeData("isInPlane")
     player.frozen = false

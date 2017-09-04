@@ -14,7 +14,7 @@ function show(text, time, color)
     if isTimer(hideTimer) then
         killTimer(hideTimer)
     end
-    killTimer = setTimer(function ()
+    hideTimer = setTimer(function ()
         currentText = nil
     end, time, 1)
 end

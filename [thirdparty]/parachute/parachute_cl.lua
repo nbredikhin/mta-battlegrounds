@@ -3,10 +3,10 @@ MIN_GROUND_HEIGHT = 20 -- how high above the ground you need to be before parach
 local y_turn_offset = 20 -- limits how far to the sides the player will lean when turning left or right
 local rotation_accelerate = 0.5 -- speed at which the player will lean when turning
 slowfallspeed = -0.07 -- fall speed with legs up
-fallspeed = -0.15 -- fall speed with legs down
-haltspeed = 0.02
-movespeed = 0.2 -- horizontal speed
-turnspeed = 1.5 -- rotation speed when turning
+fallspeed = -0.2 -- fall speed with legs down
+haltspeed = 0.04
+movespeed = 0.3 -- horizontal speed
+turnspeed = 1.8 -- rotation speed when turning
 lastspeed = 0
 opentime = 1000
 

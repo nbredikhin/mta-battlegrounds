@@ -73,7 +73,11 @@ addEventHandler("onClientRender", root, function ()
 
     local y = 30
     local x = screenSize.x - 36
-    x = x - drawCounter(x, y, counters.alive, "В ЖИВЫХ") - 45
+    local aliveText = "В ЖИВЫХ"
+    if localPlayer:getData("match_waiting") then
+        aliveText = "ПРИСОЕДИНИЛИСЬ"
+    end
+    x = x - drawCounter(x, y, counters.alive, aliveText) - 45
     if (isResourceRunning("pb_map") and exports.pb_map:isVisible()) or
        (isResourceRunning("pb_inventory") and exports.pb_inventory:isVisible())
     then
