@@ -6,6 +6,8 @@ local mapSize = screenSize.y
 local mapX, mapY = screenSize.x / 2 - mapSize / 2, 0
 
 local lineColor = tocolor(255, 255, 150, 150)
+local markerSize = 20
+local markerAnim = 0
 
 local sectionNames = {
     x = {"A", "B", "C", "D", "E", "F", "G", "H"},
@@ -80,6 +82,14 @@ addEventHandler("onClientRender", root, function ()
     if x then
         drawZone(x, y, radius,tocolor(0, 0, 200, 150))
     end
+
+    local marker = localPlayer:getData("map_marker")
+    if marker then
+        markerAnim = math.min(1, markerAnim + 0.1)
+        local x, y = worldToMap(unpack(marker))
+        local offset = 10 * markerAnim - 10
+        dxDrawImage(x + mapX - markerSize / 2, y + mapY - markerSize + offset, markerSize, markerSize, textures.marker, 0, 0, 0, tocolor(255, 255, 255, 255 * markerAnim))
+    end
 end)
 
 addEventHandler("onClientResourceStart", resourceRoot, function ()
@@ -88,10 +98,30 @@ addEventHandler("onClientResourceStart", resourceRoot, function ()
 
     textures.p_circle = dxCreateTexture("assets/p_circle.png", "argb", true, "clamp")
     textures.p_location = dxCreateTexture("assets/p_location.png", "argb", true, "clamp")
+    textures.marker = dxCreateTexture("assets/marker.png", "argb", true, "clamp")
+end)
+
+addEventHandler("onClientClick", root, function (button, state, x, y)
+    if isMapVisible and button == "left" and state == "down" then
+        local marker = localPlayer:getData("map_marker")
+        x = x - mapX
+        y = y - mapY
+        x = x / mapSize
+        y = y / mapSize
+        x = x * 6000 - 3000
+        y = (6000 - y * 6000) - 3000
+        if marker and (Vector2(unpack(marker)) - Vector2(x, y)).length < 50 then
+            localPlayer:setData("map_marker", false, false)
+        else
+            localPlayer:setData("map_marker", {x, y}, false)
+            markerAnim = 0
+        end
+    end
 end)
 
 function setVisible(visible)
     isMapVisible = not not visible
+    showCursor(visible)
     toggleControl("radar", false)
 end
 
@@ -102,7 +132,9 @@ end
 toggleControl("radar", false)
 
 -- bindKey("m", "down", function ()
---     isMapVisible = not isMapVisible
+--     setVisible(not isMapVisible)
 
 --     exports.pb_radar:setVisible(not isMapVisible)
 -- end)
+
+-- setVisible(true)

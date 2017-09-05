@@ -115,6 +115,15 @@ local function drawRadar()
         drawZone(x, y, radius, localX - localWidth / 2, localY - localHeight / 2, tocolor(0, 0, 200, 150))
     end
 
+    -- Маркер
+    local marker = localPlayer:getData("map_marker")
+    if marker then
+        local markerSize = 20
+        local x, y = worldToRadar(unpack(marker))
+        x = -(localX - localWidth / 2) + x
+        y = -(localY - localHeight / 2) + y
+        dxDrawImage(x - markerSize / 2, y - markerSize, markerSize, markerSize, textures.marker)
+    end
     dxSetRenderTarget()
 end
 
@@ -184,6 +193,7 @@ addEventHandler("onClientResourceStart", resourceRoot, function ()
 
     textures.p_circle = dxCreateTexture(":pb_map/assets/p_circle.png", "argb", true, "clamp")
     textures.p_location = dxCreateTexture(":pb_map/assets/p_location.png", "argb", true, "clamp")
+    textures.marker = dxCreateTexture(":pb_map/assets/marker.png", "argb", true, "clamp")
 
     textures.runner = dxCreateTexture("assets/runner.png")
 

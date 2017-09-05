@@ -11,10 +11,12 @@ local viewWidth
 local viewHeight
 
 local arrowSize = 32
+local compassAngle = 360 * 0.55
 
 addEventHandler("onClientResourceStart", resourceRoot, function ()
     textures.arrow = dxCreateTexture("assets/pubg_arrow.png", "dxt3", true)
     textures.compass = dxCreateTexture("assets/pubg_compass.png", "dxt3", true)
+    textures.marker = dxCreateTexture("assets/marker.png", "dxt3", true)
     compassWidth, compassHeight = dxGetMaterialSize(textures.compass)
 
     viewWidth = compassWidth * 0.55
@@ -30,12 +32,29 @@ addEventHandler("onClientRender", root, function ()
     if not isCompassVisible then
         return
     end
-    local offset = compassWidth / 2 - viewWidth / 2 - (getCamera().rotation.z) / 720 * compassWidth * 2
+    local camera = getCamera()
+    local offset = compassWidth / 2 - viewWidth / 2 - (camera.rotation.z) / 720 * compassWidth * 2
 
     local x = screenSize.x / 2 - width / 2
     local y = screenSize.y * 0.04
 
     dxDrawImageSection(x, y, width, height, offset, 0, viewWidth, viewHeight, textures.compass, 0, 0, 0, tocolor(255, 255, 255, 200))
+
+    -- Маркер
+    local marker = localPlayer:getData("map_marker")
+    if marker then
+        local mx, my = unpack(marker)
+        local angle = math.deg(math.atan2(my - localPlayer.position.y, mx - localPlayer.position.x))
+        local offset = camera.rotation.z - angle + 180
+        if offset > 360 then
+            offset = offset - 360
+        end
+        if offset < compassAngle then
+            offset = x + offset / (compassAngle) * width
+            dxDrawImage(offset - arrowSize / 2, y - arrowSize, arrowSize, arrowSize, textures.marker, 0, 0, 0, tocolor(255, 216, 0))
+        end
+    end
+
     dxDrawImage(x + width / 2 - arrowSize / 2, y - arrowSize, arrowSize, arrowSize, textures.arrow, 0, 0, 0, tocolor(255, 255, 255, 200))
 end)
 
