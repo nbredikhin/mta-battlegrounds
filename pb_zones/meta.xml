@@ -4,9 +4,14 @@
     <script type="client" src="client/drawing.lua"/>
     <script type="client" src="client/exports.lua"/>
 
+    <script type="server" src="server/zone_points.lua"/>
+    <script type="server" src="server/zones.lua"/>
+
     <export type="client" function="getWhiteZone"/>
     <export type="client" function="getBlueZone"/>
     <export type="client" function="getBlueZoneRadius"/>
+
+    <export type="server" function="generateZones"/>
 
     <file src="assets/wall.png"/>
 </meta>
