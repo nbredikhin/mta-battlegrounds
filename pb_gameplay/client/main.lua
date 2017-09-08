@@ -1,4 +1,11 @@
 addEventHandler("onClientResourceStart", resourceRoot, function ()
+    -- Отключение фоновых звуков стрельбы
+    setWorldSoundEnabled(5, false)
+    -- Отключение скрытия объектов
+    -- setOcclusionsEnabled(false)
+    -- Отключение размытия при движении
+    setBlurLevel(0)
+
     showGameHUD(false)
     fadeCamera(false, 0)
     exports.pb_lobby:setVisible(true)

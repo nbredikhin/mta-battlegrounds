@@ -2,7 +2,7 @@ local itemsAttach = {
     backpack = {
         bone = 3,
         x = 0,
-        y = -0.07,
+        y = -0.05,
         z = 0.1,
         rx = -5,
         ry = 0,
@@ -12,8 +12,8 @@ local itemsAttach = {
     helmet = {
         bone = 1,
         x = 0,
-        y = 0.05,
-        z = 0.08,
+        y = 0.07,
+        z = 0.053,
         rx = 10,
         ry = 0,
         rz = 180
@@ -69,7 +69,7 @@ function removePlayerWearingItems(player)
 end
 
 function updatePlayerWearingItems(player)
-    if not isElement(player) or getElementType(player) ~= "player" then
+    if not isElement(player) then
         return
     end
     if not isResourceRunning("bone_attach") then

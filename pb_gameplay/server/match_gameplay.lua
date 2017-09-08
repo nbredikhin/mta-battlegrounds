@@ -11,6 +11,29 @@ function getMatchAlivePlayersCount(match)
     return count
 end
 
+function updateMatchZones(match)
+    if not isMatch(match) then
+        return false
+    end
+
+    if not match.zoneTimer then
+        return
+    end
+
+    match.zoneTimer = match.zoneTimer - 1
+
+    if match.zoneTimer <= 0 then
+        match.currentZone = match.currentZone - 1
+
+        if match.currentZone >= 1 then
+            match.zoneTimer = 10
+        else
+            -- TODO: Нулевая зона
+            match.zoneTimer = 999
+        end
+    end
+end
+
 function updateMatch(match)
     if not isMatch(match) then
         return false
@@ -25,6 +48,7 @@ function updateMatch(match)
             setMatchState(match, "running")
         end
     elseif match.state == "running" then
+        updateMatchZones(match)
         -- if getMatchAlivePlayersCount(match) <= 1 then
         --     setMatchState(match, "ended")
         -- end
@@ -91,6 +115,12 @@ function setMatchState(match, state)
         end
 
         triggerMatchEvent(match, "onMatchStarted", resourceRoot, getMatchAlivePlayersCount(match))
+
+        if isResourceRunning("pb_zones") then
+            match.zones = exports.pb_zones:generateZones()
+            match.currentZone = #match.zones + 1
+            match.zoneTimer = 10
+        end
     end
 end
 
