@@ -1,42 +1,42 @@
-setTimer(function ()
-    local player = getElementsByType("player")[1]
+-- setTimer(function ()
+--     local player = getElementsByType("player")[1]
 
---     -- Оружие
-    local weapon = createItem("weapon_m4")
-    weapon.clip = 10
-    addPlayerWeapon(player, weapon)
-
-    local weapon = createItem("weapon_ak47")
-    addPlayerWeapon(player, weapon)
-
---     local weapon = createItem("weapon_crowbar")
+-- --     -- Оружие
+--     local weapon = createItem("weapon_m4")
+--     weapon.clip = 10
 --     addPlayerWeapon(player, weapon)
 
-    local weapon = createItem("weapon_colt45")
-    weapon.clip = 5
-    addPlayerWeapon(player, weapon)
-
---     local weapon = createItem("weapon_grenade", 3)
+--     local weapon = createItem("weapon_ak47")
 --     addPlayerWeapon(player, weapon)
 
---     -- Снаряжение
-    addPlayerEquipment(player, createItem("backpack_large"))
-    addPlayerEquipment(player, createItem("helmet3"))
+-- --     local weapon = createItem("weapon_crowbar")
+-- --     addPlayerWeapon(player, weapon)
 
---     -- Вещи
---     local item = createItem("bandage", 5)
---     addBackpackItem(player, item)
+--     local weapon = createItem("weapon_colt45")
+--     weapon.clip = 5
+--     addPlayerWeapon(player, weapon)
 
---     addBackpackItem(player, createItem("ammo_test", 30))
+-- --     local weapon = createItem("weapon_grenade", 3)
+-- --     addPlayerWeapon(player, weapon)
 
---     -- Лут
---     -- spawnPlayerLootItem(player, createItem("bandage", 5))
---     -- spawnPlayerLootItem(player, createItem("first_aid", 1))
---     -- spawnPlayerLootItem(player, createItem("backpack_medium"))
---     -- spawnPlayerLootItem(player, createItem("backpack_large"))
+-- --     -- Снаряжение
+--     addPlayerEquipment(player, createItem("backpack_large"))
+--     addPlayerEquipment(player, createItem("helmet3"))
 
---     -- spawnPlayerLootItem(player, createItem("helmet1"))
---     -- spawnPlayerLootItem(player, createItem("helmet2"))
---     spawnPlayerLootItem(player, createItem("helmet3"))
---     -- spawnPlayerLootItem(player, createItem("weapon_grenade", 1))
-end, 500, 1)
+-- --     -- Вещи
+-- --     local item = createItem("bandage", 5)
+-- --     addBackpackItem(player, item)
+
+-- --     addBackpackItem(player, createItem("ammo_test", 30))
+
+-- --     -- Лут
+-- --     -- spawnPlayerLootItem(player, createItem("bandage", 5))
+-- --     -- spawnPlayerLootItem(player, createItem("first_aid", 1))
+-- --     -- spawnPlayerLootItem(player, createItem("backpack_medium"))
+-- --     -- spawnPlayerLootItem(player, createItem("backpack_large"))
+
+-- --     -- spawnPlayerLootItem(player, createItem("helmet1"))
+-- --     -- spawnPlayerLootItem(player, createItem("helmet2"))
+-- --     spawnPlayerLootItem(player, createItem("helmet3"))
+-- --     -- spawnPlayerLootItem(player, createItem("weapon_grenade", 1))
+-- end, 500, 1)

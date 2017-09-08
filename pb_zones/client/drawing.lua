@@ -21,7 +21,9 @@ end
 
 
 addEventHandler("onClientRender", root, function ()
-    dxDraw3DCircle(getBlueZone())
+    if isZonesVisible() then
+        dxDraw3DCircle(getBlueZone())
+    end
 end)
 
 addEventHandler("onClientResourceStart", resourceRoot, function ()

@@ -1,3 +1,7 @@
+local zoneProperties = {
+    {  },
+}
+
 function getMatchAlivePlayersCount(match)
     if not isMatch(match) then
         return false
@@ -17,19 +21,40 @@ function updateMatchZones(match)
     end
 
     if not match.zoneTimer then
-        return
+        match.zoneTimer = 0
+    end
+    if not match.shrinkTimer then
+        match.shrinkTimer = 0
     end
 
-    match.zoneTimer = match.zoneTimer - 1
-
-    if match.zoneTimer <= 0 then
-        match.currentZone = match.currentZone - 1
-
-        if match.currentZone >= 1 then
-            match.zoneTimer = 10
+    if match.zoneTimer > 0 then
+        match.zoneTimer = match.zoneTimer - 1
+    else
+        if match.shrinkTimer > 0 then
+            if match.zoneTimer == 0 then
+                exports.pb_alert:show(match.players, "ОГРАНИЧЕНИЕ ИГРОВОЙ ОБЛАСТИ!", 4000)
+                triggerMatchEvent(match, "onZoneShrink", resourceRoot, match.shrinkTimer)
+                match.zoneTimer = -1
+            end
+            match.shrinkTimer = match.shrinkTimer - 1
         else
-            -- TODO: Нулевая зона
-            match.zoneTimer = 999
+            if match.currentZone > 1 then
+                local zone = exports.pb_zones:getZone(match.currentZone)
+                match.zoneTimer = zone.time
+                match.shrinkTimer = zone.shrink
+                if match.zoneTimer > 0 then
+                    triggerMatchEvent(match, "onWhiteZoneUpdate", resourceRoot, match.zones[match.currentZone - 1], match.zoneTimer)
+                end
+
+                match.currentZone = match.currentZone - 1
+            elseif match.currentZone == 1 then
+                local zone = exports.pb_zones:getZone(match.currentZone)
+                match.zoneTimer = zone.time
+                match.shrinkTimer = zone.shrink
+                triggerMatchEvent(match, "onWhiteZoneUpdate", resourceRoot, {match.zones[1][1], match.zones[1][2], 0}, match.zoneTimer)
+
+                match.currentZone = 0
+            end
         end
     end
 end
@@ -114,13 +139,14 @@ function setMatchState(match, state)
             player:removeData("match_waiting")
         end
 
-        triggerMatchEvent(match, "onMatchStarted", resourceRoot, getMatchAlivePlayersCount(match))
-
         if isResourceRunning("pb_zones") then
             match.zones = exports.pb_zones:generateZones()
-            match.currentZone = #match.zones + 1
-            match.zoneTimer = 10
+            match.currentZone = #match.zones
+            triggerMatchEvent(match, "onZonesInit", resourceRoot, match.zones[match.currentZone])
+            match.zoneTimer = 90
         end
+
+        triggerMatchEvent(match, "onMatchStarted", resourceRoot, getMatchAlivePlayersCount(match))
     end
 end
 
@@ -133,6 +159,7 @@ end
 
 -- До входа любого игрока
 function initMatch(match)
+
     -- TODO: Spawn loot
     -- TODO: Выбор времени, погоды и т д (match.settings)
 end

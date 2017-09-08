@@ -50,7 +50,7 @@ function updatePlaneCamera(deltaTime)
 end
 
 local function mouseMove(x, y)
-    if not mouseLookActive or isMTAWindowActive() then
+    if not mouseLookActive or isMTAWindowActive() or isCursorShowing() then
         return
     end
     -- Пропустить первый эвент, чтобы избежать резкого дёргания камеры

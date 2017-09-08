@@ -63,10 +63,10 @@ addEventHandler("onClientPreRender", root, function (deltaTime)
 end)
 
 function jumpFromPlane()
-    if getFlightDistance() < 800 then
-        return
-    end
     if isClientInPlane then
+        if getFlightDistance() < 800 then
+            return
+        end
         isClientInPlane = false
         triggerServerEvent("planeJump", resourceRoot)
         fadeCamera(false, 0)

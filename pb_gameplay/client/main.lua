@@ -15,6 +15,7 @@ end)
 addEvent("onJoinedMatch", true)
 addEventHandler("onJoinedMatch", resourceRoot, function (settings)
     exports.pb_lobby:setVisible(false)
+    exports.pb_zones:hideZones()
     exports.pb_hud:setCounter("alive", 0)
 
     setTimer(fadeCamera, 50, 1, false, 0)

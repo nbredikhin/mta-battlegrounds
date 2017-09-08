@@ -73,14 +73,16 @@ addEventHandler("onClientRender", root, function ()
         dxDrawText(sectionNames.x[i + 1], x + offset + 12, y + 7, x + offset + 12, y + 7, tocolor(255, 255, 255, 200), 1, "default-bold")
     end
 
-    local x, y, radius = exports.pb_zones:getWhiteZone()
-    if x then
-        drawZone(x, y, radius, tocolor(255, 255, 255, 180))
-    end
+    if exports.pb_zones:isZonesVisible() then
+        local x, y, radius = exports.pb_zones:getWhiteZone()
+        if x then
+            drawZone(x, y, radius, tocolor(255, 255, 255, 180))
+        end
 
-    local x, y, radius = exports.pb_zones:getBlueZone()
-    if x then
-        drawZone(x, y, radius,tocolor(0, 0, 200, 150))
+        local x, y, radius = exports.pb_zones:getBlueZone()
+        if x then
+            drawZone(x, y, radius,tocolor(0, 0, 200, 150))
+        end
     end
 
     local marker = localPlayer:getData("map_marker")
@@ -121,7 +123,8 @@ end)
 
 function setVisible(visible)
     isMapVisible = not not visible
-    showCursor(visible)
+    showCursor(visible, false)
+    toggleControl("fire", not visible)
     toggleControl("radar", false)
 end
 
@@ -130,11 +133,3 @@ function isVisible(visible)
 end
 
 toggleControl("radar", false)
-
--- bindKey("m", "down", function ()
---     setVisible(not isMapVisible)
-
---     exports.pb_radar:setVisible(not isMapVisible)
--- end)
-
--- setVisible(true)

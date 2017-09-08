@@ -2,7 +2,7 @@ local itemsAttach = {
     backpack = {
         bone = 3,
         x = 0,
-        y = -0.05,
+        y = -0.07,
         z = 0.1,
         rx = -5,
         ry = 0,
@@ -12,8 +12,8 @@ local itemsAttach = {
     helmet = {
         bone = 1,
         x = 0,
-        y = 0.07,
-        z = 0.053,
+        y = 0.05,
+        z = 0.08,
         rx = 10,
         ry = 0,
         rz = 180
@@ -69,7 +69,7 @@ function removePlayerWearingItems(player)
 end
 
 function updatePlayerWearingItems(player)
-    if not isElement(player) then
+    if not isElement(player) or getElementType(player) ~= "player" then
         return
     end
     if not isResourceRunning("bone_attach") then
@@ -119,11 +119,3 @@ addEvent("updateWearableItems", true)
 addEventHandler("updateWearableItems", resourceRoot, function (player)
     updatePlayerWearingItems(player)
 end)
-
--- local testPlayer = createPed(46, Vector3 { x = 1739.095, y = -2506.986, z = 13.555 })
--- testPlayer:setData("wear_backpack", 1853)
--- testPlayer:setData("wear_helmet", 1856)
--- updatePlayerWearingItems(testPlayer)
--- setTimer(function ()
---     destroyElement(testPlayer)
--- end, 5000, 1)

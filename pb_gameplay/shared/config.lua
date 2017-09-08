@@ -1,7 +1,7 @@
 Config = {}
 
 -- В секундах
-Config.matchWaitingTime = 60
+Config.matchWaitingTime = 5
 Config.matchEndedTime = 20
 
 Config.planeSpeed = 100

@@ -105,14 +105,25 @@ local function drawRadar()
     dxDrawImage(px, py, psize, psize, textures.p_location, prot, 0, 0)
 
     -- Зоны
-    local x, y, radius = exports.pb_zones:getWhiteZone()
-    if x then
-        drawZone(x, y, radius, localX - localWidth / 2, localY - localHeight / 2, tocolor(255, 255, 255, 180))
-    end
+    if exports.pb_zones:isZonesVisible() then
+        local x, y, radius = exports.pb_zones:getWhiteZone()
+        if x then
+            drawZone(x, y, radius, localX - localWidth / 2, localY - localHeight / 2, tocolor(255, 255, 255, 180))
+        end
+        local wx, wy, wrad = x, y, radius
 
-    local x, y, radius = exports.pb_zones:getBlueZone()
-    if x then
-        drawZone(x, y, radius, localX - localWidth / 2, localY - localHeight / 2, tocolor(0, 0, 200, 150))
+        local x, y, radius = exports.pb_zones:getBlueZone()
+        if x then
+            drawZone(x, y, radius, localX - localWidth / 2, localY - localHeight / 2, tocolor(0, 0, 200, 150))
+        end
+
+        local lx = -(localX - localWidth / 2)
+        local ly = -(localY - localHeight / 2)
+        local x, y = worldToRadar(localPlayer.position.x, localPlayer.position.y)
+        if (Vector2(localPlayer.position.x, localPlayer.position.y) - Vector2(wx, wy)).length > wrad then
+            local wx, wy = worldToRadar(wx, wy)
+            dxDrawLine(lx + wx, ly + wy, lx + x, ly + y, tocolor(255, 255, 255, 150), 2)
+        end
     end
 
     -- Маркер
@@ -128,6 +139,9 @@ local function drawRadar()
 end
 
 local function drawRunnerBar(x, y, width, height)
+    if not exports.pb_zones:isZonesVisible() then
+        return
+    end
     dxDrawRectangle(x, y, width, height - 1, runnerBackgroundColor)
 
     dxDrawRectangle(x, y, height, height, runnerLeftColor)
@@ -156,7 +170,13 @@ local function drawRunnerBar(x, y, width, height)
     local rsize = runnerIconSize
     dxDrawImage(barX + barWidth * runnerProgress - rsize / 2, y - rsize + height, rsize, rsize, textures.runner, 0, 0, 0, tocolor(255, 255, 255, runnerAlpha))
 
-    dxDrawText("4:20", x, y + height + 3, x, y + height + 3)
+    local zoneTime = exports.pb_zones:getZoneTime()
+    local text = "!"
+    if zoneTime then
+        local mins = math.floor(zoneTime / 60)
+        text = string.format("%02d:%02d", mins, zoneTime % 60)
+    end
+    dxDrawText(text, x, y + height + 3, x, y + height + 3)
 end
 
 function setVisible(visible)
