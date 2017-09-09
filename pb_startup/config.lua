@@ -18,6 +18,7 @@ Config.resourceList = {
     "pb_hud_weapon",
     "pb_alert",
     "pb_inventory",
+    "pb_rank_screen",
 
     "pb_lobby",
     "pb_gameplay",

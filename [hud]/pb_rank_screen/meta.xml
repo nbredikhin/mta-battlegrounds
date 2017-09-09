@@ -1,0 +1,8 @@
+<meta>
+    <oop>true</oop>
+
+    <script type="client" src="client/drawing.lua"/>
+
+    <file src="assets/Roboto-Bold.ttf"/>
+    <file src="assets/Roboto-Regular.ttf"/>
+</meta>
