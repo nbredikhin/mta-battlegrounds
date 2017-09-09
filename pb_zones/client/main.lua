@@ -53,9 +53,9 @@ addEventHandler("onWhiteZoneUpdate", root, function (zone, time)
         local mins = math.floor(zoneTime / 60)
         local secs = zoneTime % 60
         if secs == 0 then
-            text = string.format("%02d МИН", mins)
+            text = string.format("%d МИН", mins)
         else
-            text = string.format("%02d МИН %02d СЕК", mins, zoneTime % 60)
+            text = string.format("%d МИН %d СЕК", mins, zoneTime % 60)
         end
     end
     exports.pb_alert:show("ПРОСЛЕДУЙТЕ В ИГРОВУЮ ОБЛАСТЬ, ОТМЕЧЕННУЮ НА КАРТЕ ЗА  "..tostring(text) .. "!", 4000)

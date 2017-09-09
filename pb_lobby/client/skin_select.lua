@@ -65,6 +65,8 @@ function startSkinSelect()
     local cameraPosition = playerPed.matrix:transformPosition(0, 4, 1)
     setCameraMatrix(cameraPosition, playerPed.position + Vector3(0, 0, 0.3), 0, 70)
 
+    changeSkin(0)
+
     setTime(12, 0)
     setWeather(12)
 end

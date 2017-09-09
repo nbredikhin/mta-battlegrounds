@@ -59,6 +59,20 @@ function dxDrawCircle(x, y, radius, ...)
     end
 end
 
+function dxDrawLineDotted(x1, y1, x2, y2, ...)
+    local len = getDistanceBetweenPoints2D(x1, y1, x2, y2)
+    local vx = (x2 - x1) / len
+    local vy = (y2 - y1) / len
+
+    local cx = x1
+    local cy = y1
+    for i = 1, len / 10 do
+        cx = cx + vx * 10
+        cy = cy + vy * 10
+        dxDrawLine(cx, cy, cx + vx * 5, cy + vy * 5, ...)
+    end
+end
+
 function drawZone(x, y, radius, localX, localY, color)
     local x, y = worldToRadar(x, y)
     radius = radius / 6000 * radarTextureSize
@@ -122,7 +136,7 @@ local function drawRadar()
         local x, y = worldToRadar(localPlayer.position.x, localPlayer.position.y)
         if (Vector2(localPlayer.position.x, localPlayer.position.y) - Vector2(wx, wy)).length > wrad then
             local wx, wy = worldToRadar(wx, wy)
-            dxDrawLine(lx + wx, ly + wy, lx + x, ly + y, tocolor(255, 255, 255, 150), 2)
+            dxDrawLineDotted(lx + wx, ly + wy, lx + x, ly + y, tocolor(255, 255, 255, 200), 2)
         end
     end
 
