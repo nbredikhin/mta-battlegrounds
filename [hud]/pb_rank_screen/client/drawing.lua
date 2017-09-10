@@ -16,6 +16,23 @@ local prevMouseState = false
 local mouseX = 0
 local mouseY = 0
 
+local screenData = {
+    nickname = "-",
+    rank = 0,
+    players_total = 0,
+
+    kills = 0,
+    reward = 0,
+
+    time_alive = 0,
+}
+
+local winTexts = {
+    "ПОБЕДА-ПОБЕДА ВМЕСТО ОБЕДА!"
+}
+
+local currentWinText = ""
+
 function isMouseOver(x, y, w, h)
     return mouseX >= x and mouseX <= x + w and mouseY >= y and mouseY <= y + h
 end
@@ -61,13 +78,20 @@ addEventHandler("onClientRender", root, function ()
 
     dxDrawRectangle(0, 0, screenSize.x, screenSize.y, tocolor(0, 0, 0, 230))
     dxDrawText("Wherry", 50, 50, 51, 51, colors.white, 1, fonts.big, "left", "top")
-    dxDrawText("ВЫ ПОПАЛИ В ТОП-999!", 50, 120, 51, 121, colors.orange, 1, fonts.medium, "left", "top")
-    dxDrawText("№ 99", 0, 50, screenSize.x - 50 - 130, 51, colors.orange, scale, fonts.bigger_bold, "right", "top")
-    dxDrawText("/99", screenSize.x - 50 - 125, 50, screenSize.x, 51, colors.grey, scale, fonts.bigger, "left", "top")
+    local topText = "В СЛЕДУЮЩИЙ РАЗ ПОВЕЗЕТ!"
+    if screenData.rank and screenData.rank <= 10 then
+        topText = "ВЫ ПОПАЛИ В ТОП-10!"
+        if screenData.rank == 1 then
+            topText = currentWinText
+        end
+    end
+    dxDrawText(topText, 50, 120, 51, 121, colors.orange, 1, fonts.medium, "left", "top")
+    dxDrawText("№ "..tostring(screenData.rank), 0, 50, screenSize.x - 50 - 130, 51, colors.orange, scale, fonts.bigger_bold, "right", "top")
+    dxDrawText("/"..tostring(screenData.players_total), screenSize.x - 50 - 125, 50, screenSize.x, 51, colors.grey, scale, fonts.bigger, "left", "top")
 
     local ry = 240
     local rx = 50
-    local rtext = "РАНГ № 999"
+    local rtext = "РАНГ № "..tostring(screenData.rank)
     local rw = dxGetTextWidth(rtext, 1, fonts.medium)
     local rh = dxGetFontHeight(1, fonts.medium)
     dxDrawText(rtext, rx, ry, rx + rw, ry + 1, colors.white, 1, fonts.medium, "left", "top")
@@ -75,55 +99,56 @@ addEventHandler("onClientRender", root, function ()
 
     ry = ry + rh + 30
     dxDrawText("ВРЕМЯ ЖИЗНИ", rx, ry, rx + rw, ry + 1, colors.grey, 1, fonts.small, "left", "top")
-    dxDrawText("999 МИН", rx, ry, rx + rw, ry + 1, colors.grey, 1, fonts.small, "right", "top")
-    ry = ry + 25
-    dxDrawText("ОЧКИ УБИЙСТВ", rx, ry, rx + rw, ry + 1, colors.grey, 1, fonts.small, "left", "top")
-    dxDrawText("9999", rx, ry, rx + rw, ry + 1, colors.grey, 1, fonts.small, "right", "top")
-    ry = ry + 25
-    dxDrawText("ОЧКИ ЧЕГО-ТО ЕЩЁ", rx, ry, rx + rw, ry + 1, colors.grey, 1, fonts.small, "left", "top")
-    dxDrawText("9999", rx, ry, rx + rw, ry + 1, colors.grey, 1, fonts.small, "right", "top")
+    dxDrawText(tostring(screenData.time_alive).." МИН", rx, ry, rx + rw, ry + 1, colors.grey, 1, fonts.small, "right", "top")
+    -- ry = ry + 25
+    -- dxDrawText("ОЧКИ УБИЙСТВ", rx, ry, rx + rw, ry + 1, colors.grey, 1, fonts.small, "left", "top")
+    -- dxDrawText("9999", rx, ry, rx + rw, ry + 1, colors.grey, 1, fonts.small, "right", "top")
+    -- ry = ry + 25
+    -- dxDrawText("ОЧКИ ЧЕГО-ТО ЕЩЁ", rx, ry, rx + rw, ry + 1, colors.grey, 1, fonts.small, "left", "top")
+    -- dxDrawText("9999", rx, ry, rx + rw, ry + 1, colors.grey, 1, fonts.small, "right", "top")
 
     if scale > 0.9 then
         ry = 240
         rx = rx + rw + 40
-        rtext = "УБИЙСТВ 999"
+        rtext = "УБИЙСТВ "..tostring(screenData.kills)
         rw = dxGetTextWidth(rtext, 1, fonts.medium)
         dxDrawText(rtext, rx, ry, rx + rw, ry + 1, colors.white, 1, fonts.medium, "left", "top")
         dxDrawLine(rx, ry + rh + 15, rx + rw, ry + rh + 15, colors.grey)
 
-        ry = ry + rh + 30
-        dxDrawText("НАНЕСЕНО УРОНА", rx, ry, rx + rw, ry + 1, colors.grey, 1, fonts.small, "left", "top")
-        dxDrawText("9999", rx, ry, rx + rw, ry + 1, colors.grey, 1, fonts.small, "right", "top")
-        ry = ry + 25
-        dxDrawText("ПОЛУЧЕНО УРОНА", rx, ry, rx + rw, ry + 1, colors.grey, 1, fonts.small, "left", "top")
-        dxDrawText("9999", rx, ry, rx + rw, ry + 1, colors.grey, 1, fonts.small, "right", "top")
-        ry = ry + 25
-        dxDrawText("ВЫЛЕЧЕНО HP", rx, ry, rx + rw, ry + 1, colors.grey, 1, fonts.small, "left", "top")
-        dxDrawText("9999", rx, ry, rx + rw, ry + 1, colors.grey, 1, fonts.small, "right", "top")
+        -- ry = ry + rh + 30
+        -- dxDrawText("НАНЕСЕНО УРОНА", rx, ry, rx + rw, ry + 1, colors.grey, 1, fonts.small, "left", "top")
+        -- dxDrawText("9999", rx, ry, rx + rw, ry + 1, colors.grey, 1, fonts.small, "right", "top")
+        -- ry = ry + 25
+        -- dxDrawText("ПОЛУЧЕНО УРОНА", rx, ry, rx + rw, ry + 1, colors.grey, 1, fonts.small, "left", "top")
+        -- dxDrawText("9999", rx, ry, rx + rw, ry + 1, colors.grey, 1, fonts.small, "right", "top")
+        -- ry = ry + 25
+        -- dxDrawText("ВЫЛЕЧЕНО HP", rx, ry, rx + rw, ry + 1, colors.grey, 1, fonts.small, "left", "top")
+        -- dxDrawText("9999", rx, ry, rx + rw, ry + 1, colors.grey, 1, fonts.small, "right", "top")
 
     end
 
     ry = 240
     rx = rx + rw + 40
-    rtext = "НАГРАДА 9999"
+    rtext = "НАГРАДА "..tostring(screenData.reward)
     rw = dxGetTextWidth(rtext, 1, fonts.medium)
     dxDrawText(rtext, rx, ry, rx + rw, ry + 1, colors.white, 1, fonts.medium, "left", "top")
     dxDrawLine(rx, ry + rh + 15, rx + rw, ry + rh + 15, colors.grey)
 
-    ry = ry + rh + 30
-    dxDrawText("ОЧКИ РАНГА", rx, ry, rx + rw, ry + 1, colors.grey, 1, fonts.small, "left", "top")
-    dxDrawText("9999", rx, ry, rx + rw, ry + 1, colors.grey, 1, fonts.small, "right", "top")
-    ry = ry + 25
-    dxDrawText("ОЧКИ УБИЙСТВ", rx, ry, rx + rw, ry + 1, colors.grey, 1, fonts.small, "left", "top")
-    dxDrawText("9999", rx, ry, rx + rw, ry + 1, colors.grey, 1, fonts.small, "right", "top")
-    ry = ry + 25
-    dxDrawText("ОЧКИ ЧЕГО-ТО ЕЩЁ", rx, ry, rx + rw, ry + 1, colors.grey, 1, fonts.small, "left", "top")
-    dxDrawText("9999", rx, ry, rx + rw, ry + 1, colors.grey, 1, fonts.small, "right", "top")
+    -- ry = ry + rh + 30
+    -- dxDrawText("ОЧКИ РАНГА", rx, ry, rx + rw, ry + 1, colors.grey, 1, fonts.small, "left", "top")
+    -- dxDrawText("9999", rx, ry, rx + rw, ry + 1, colors.grey, 1, fonts.small, "right", "top")
+    -- ry = ry + 25
+    -- dxDrawText("ОЧКИ УБИЙСТВ", rx, ry, rx + rw, ry + 1, colors.grey, 1, fonts.small, "left", "top")
+    -- dxDrawText("9999", rx, ry, rx + rw, ry + 1, colors.grey, 1, fonts.small, "right", "top")
+    -- ry = ry + 25
+    -- dxDrawText("ОЧКИ ЧЕГО-ТО ЕЩЁ", rx, ry, rx + rw, ry + 1, colors.grey, 1, fonts.small, "left", "top")
+    -- dxDrawText("9999", rx, ry, rx + rw, ry + 1, colors.grey, 1, fonts.small, "right", "top")
 
     local bw = 200
     local bh = 50
     if drawButton("Выйти в лобби", screenSize.x / 2 - bw / 2, screenSize.y - bh - 50, bw, bh) then
         setVisible(false)
+        triggerEvent("onExitToLobby", resourceRoot)
     end
 end)
 
@@ -132,7 +157,7 @@ addEventHandler("onClientResourceStart", resourceRoot, function ()
     fonts.bigger = dxCreateFont("assets/Roboto-Regular.ttf", 54)
     fonts.big    = dxCreateFont("assets/Roboto-Regular.ttf", 35)
     fonts.medium = dxCreateFont("assets/Roboto-Regular.ttf", 28)
-    fonts.small  = dxCreateFont("assets/Roboto-Regular.ttf", 12)
+    fonts.small  = dxCreateFont("assets/Roboto-Regular.ttf", 10)
     fonts.normal  = dxCreateFont("assets/Roboto-Bold.ttf", 14)
 
     if screenSize.x < 1024 then
@@ -159,4 +184,12 @@ end
 
 function isVisible()
     return isScreenVisible
+end
+
+function setScreenData(data)
+    if type(data) ~= "table" then
+        return
+    end
+    currentWinText = winTexts[math.random(1, #winTexts)]
+    screenData = data
 end

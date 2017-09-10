@@ -5,4 +5,8 @@
 
     <file src="assets/Roboto-Bold.ttf"/>
     <file src="assets/Roboto-Regular.ttf"/>
+
+    <export type="client" function="setVisible"/>
+    <export type="client" function="isVisible"/>
+    <export type="client" function="setScreenData"/>
 </meta>

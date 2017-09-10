@@ -7,6 +7,8 @@ local velocityY = 0
 local startTime = 0
 local startX, startY = 0, 0
 
+local didPrintMessage = false
+
 addEvent("createPlane", true)
 addEventHandler("createPlane", resourceRoot, function (x, y, angle, vx, vy)
     if isElement(currentPlane) then
@@ -15,10 +17,14 @@ addEventHandler("createPlane", resourceRoot, function (x, y, angle, vx, vy)
     currentPlane = createVehicle(592, x, y, Config.planeZ, 0, 0, angle)
     currentPlane.frozen = true
     currentPlane.dimension = localPlayer.dimension
+    currentPlane:setCollisionsEnabled(false)
 
     local ped = createPed(0, currentPlane.position)
     ped.dimension = localPlayer.dimension
+    ped.vehicle = currentPlane
+    ped.alpha = 0
     setTimer(function ()
+        ped.alpha = 255
         ped.vehicle = currentPlane
         ped:setControlState("accelerate", true)
     end, 1000, 1)
@@ -46,7 +52,7 @@ addEventHandler("onClientPreRender", root, function (deltaTime)
     local passedTime = (getTickCount() - startTime) / 1000
     currentPlane.position = Vector3(startX + velocityX * passedTime, startY + velocityY * passedTime, Config.planeZ - 10)
     if isClientInPlane then
-        setElementPosition(localPlayer, currentPlane.position, false)
+        setElementPosition(localPlayer, currentPlane.position - Vector3(0, 0, 10), false)
     end
     if math.abs(currentPlane.position.x) > Config.planeDistance + 50 or
        math.abs(currentPlane.position.y) > Config.planeDistance + 50
@@ -54,11 +60,17 @@ addEventHandler("onClientPreRender", root, function (deltaTime)
         destroyElement(currentPlane)
     end
 
-    if isClientInPlane and getFlightDistance() > 3000 and
+    local flightDistance = getFlightDistance()
+    if isClientInPlane and flightDistance > 3000 and
       (math.abs(currentPlane.position.x) > Config.autoParachuteDistance or
        math.abs(currentPlane.position.y) > Config.autoParachuteDistance)
     then
         jumpFromPlane()
+    end
+
+    if flightDistance >= 800 and not didPrintMessage then
+        didPrintMessage = true
+        exports.pb_alert:show("НАЖМИТЕ F, ЧТОБЫ ВЫПРЫГНУТЬ С САМОЛЕТА", 6000, 0xFFAAFAE1)
     end
 end)
 
@@ -82,8 +94,4 @@ addEventHandler("planeJump", resourceRoot, function ()
     isClientInPlane = false
     stopPlaneCamera()
     fadeCamera(true, 1)
-end)
-
-bindKey("1", "down", function ()
-    setElementPosition(localPlayer, currentPlane.position, false)
 end)

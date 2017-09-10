@@ -11,8 +11,12 @@
     <script type="client" src="client/match.lua"/>
     <script type="client" src="client/plane.lua"/>
     <script type="client" src="client/plane_camera.lua"/>
+    <script type="client" src="client/match_stats.lua"/>
+    <script type="client" src="client/debug.lua"/>
 
+    <script type="server" src="server/main.lua"/>
     <script type="server" src="server/match.lua"/>
     <script type="server" src="server/match_gameplay.lua"/>
     <script type="server" src="server/match_events.lua"/>
+    <script type="server" src="server/admin.lua"/>
 </meta>

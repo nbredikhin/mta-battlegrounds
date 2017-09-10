@@ -15,6 +15,19 @@ function getMatchAlivePlayersCount(match)
     return count
 end
 
+function getMatchAlivePlayers(match)
+    if not isMatch(match) then
+        return false
+    end
+    local list = {}
+    for i, player in ipairs(match.players) do
+        if not player.dead then
+            table.insert(list, player)
+        end
+    end
+    return list
+end
+
 function updateMatchZones(match)
     if not isMatch(match) then
         return false
@@ -74,26 +87,33 @@ function updateMatch(match)
         end
     elseif match.state == "running" then
         updateMatchZones(match)
-        -- if getMatchAlivePlayersCount(match) <= 1 then
-        --     setMatchState(match, "ended")
-        -- end
+        if #match.players == 0 then
+            destroyMatch(match)
+            return
+        end
+        if match.totalPlayers > 1 and getMatchAlivePlayersCount(match) == 1 then
+            setMatchState(match, "ended")
+        end
     elseif match.state == "ended" then
+        if match.stateTime == Config.matchEndedTime - 1 then
+            for i, player in ipairs(match.players) do
+                removePlayerFromMatch(player, "ended")
+            end
+        end
+        if #match.players == 0 then
+            destroyMatch(match)
+            return
+        end
         if match.stateTime >= Config.matchEndedTime then
             destroyMatch(match)
+            return
+        end
+
+        local timeLeft = Config.matchEndedTime - match.stateTime
+        if timeLeft > 0 then
+            exports.pb_alert:show(match.players, "МАТЧ ЗАКАНЧИВАЕТСЯ ЧЕРЕЗ\n"..tostring(timeLeft - 1), 2000, 0xFFAAFAE1)
         end
     end
-end
-
-function playerFinishMatch(match, player)
-    if not isMatch(match) then
-        return false
-    end
-    if not isElement(player) then
-        return
-    end
-    local rank = getMatchAlivePlayersCount(match)
-    triggerMatchEvent(match, "onPlayerFinishMatch", resourceRoot, rank)
-    triggerClientEvent(player, "onFinishMatch", resourceRoot, rank)
 end
 
 function setMatchState(match, state)
@@ -146,7 +166,13 @@ function setMatchState(match, state)
             match.zoneTimer = 90
         end
 
-        triggerMatchEvent(match, "onMatchStarted", resourceRoot, getMatchAlivePlayersCount(match))
+        match.totalPlayers = getMatchAlivePlayersCount(match)
+        triggerMatchEvent(match, "onMatchStarted", resourceRoot, match.totalPlayers)
+    elseif state == "ended" then
+        local alivePlayers = getMatchAlivePlayers(match)
+        if #alivePlayers == 1 then
+            triggerClientEvent(alivePlayers[1], "onMatchFinished", resourceRoot, 1, match.totalPlayers, match.totalTime)
+        end
     end
 end
 
@@ -159,23 +185,26 @@ end
 
 -- До входа любого игрока
 function initMatch(match)
-
+    match.totalPlayers = 0
     -- TODO: Spawn loot
     -- TODO: Выбор времени, погоды и т д (match.settings)
 end
 
-function handlePlayerJoinMatch(match, player)
-    player.dimension = match.dimension
-
+function spawnWaitingPlayer(match, player)
     spawnPlayer(player, Config.waitingPosition + Vector3(math.random()-0.5, math.random()-0.5, 0) * 20)
     player.model = player:getData("skin") or 0
     player.dimension = match.dimension
+end
+
+function handlePlayerJoinMatch(match, player)
+    spawnWaitingPlayer(match, player)
 
     player:setData("match_waiting", true)
+    player.alpha = 255
 
     local aliveCount = getMatchAlivePlayersCount(match)
     triggerMatchEvent(match, "onPlayerJoinedMatch", root, player, aliveCount)
-    triggerClientEvent(player, "onJoinedMatch", resourceRoot, match.settings)
+    triggerClientEvent(player, "onJoinedMatch", resourceRoot, match.settings, aliveCount)
 end
 
 function handlePlayerLeaveMatch(match, player, reason)
@@ -218,8 +247,3 @@ function handlePlayerPlaneJump(player)
         exports.pb_inventory:givePlayerParachute(player)
     end
 end
-
-addEvent("planeJump", true)
-addEventHandler("planeJump", resourceRoot, function ()
-    handlePlayerPlaneJump(client)
-end)

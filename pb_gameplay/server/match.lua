@@ -46,7 +46,6 @@ function findMatch(players)
 
     -- Выбор свободного матча
     for i, match in ipairs(matchesList) do
-        iprint(#match.players, #players, match.maxPlayers)
         if match.state == "waiting" and #match.players + #players <= match.maxPlayers then
             return addMatchPlayers(match, players)
         end
@@ -58,6 +57,10 @@ function findMatch(players)
         return false
     end
     return addMatchPlayers(match, players)
+end
+
+function getAllMatches()
+    return matchesList
 end
 
 -- Создание нового матча типа matchType
@@ -168,8 +171,12 @@ function removePlayerFromMatch(player, reason)
                 break
             end
         end
+        outputDebugString("[Matchmaking] Player "..tostring(player.name).." left match " .. tostring(match.id))
+    else
+        outputDebugString("[Matchmaking] Player "..tostring(player.name).." was removed from destroyed match")
+        triggerClientEvent(player, "onLeftMatch", resourceRoot)
     end
-    outputDebugString("[Matchmaking] Player "..tostring(player.name).." left match " .. tostring(match.id))
+    spawnPlayer(player, 0, 0, 0)
     return true
 end
 
@@ -203,10 +210,6 @@ function destroyMatch(match)
     return true
 end
 
-addEventHandler("onPlayerQuit", root, function ()
-    removePlayerFromMatch(source, "disconnect")
-end)
-
 setTimer(function ()
     for i, match in ipairs(matchesList) do
         match.stateTime = match.stateTime + 1
@@ -214,14 +217,3 @@ setTimer(function ()
         updateMatch(match)
     end
 end, 1000, 0)
-
-addEventHandler("onResourceStart", resourceRoot, function ()
-    for i, player in ipairs(getElementsByType("player")) do
-        player:removeData("matchId")
-        player.dimension = 0
-    end
-end)
-
--- setTimer(function ()
---     findMatch({getRandomPlayer()})
--- end, 500, 1)
