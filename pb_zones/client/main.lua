@@ -16,7 +16,7 @@ local blueZone = {0, 0, 0}
 local DAMAGER_TIME = 5000
 
 local zoneTimeMessages = {
-    [60] = "1 МИУНУТУ",
+    [60] = "1 МИНУТУ",
     [30] = "30 СЕКУНД",
     [10] = "10 СЕКУНД",
 }

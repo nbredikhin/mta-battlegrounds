@@ -4,10 +4,13 @@ local textures = {}
 local mapTextureSize
 local mapSize = screenSize.y
 local mapX, mapY = screenSize.x / 2 - mapSize / 2, 0
+local viewX, viewY = 0, 0
 
 local lineColor = tocolor(255, 255, 150, 150)
 local markerSize = 20
 local markerAnim = 0
+
+local renderTarget = dxCreateRenderTarget(mapSize, mapSize)
 
 local sectionNames = {
     x = {"A", "B", "C", "D", "E", "F", "G", "H"},
@@ -42,16 +45,16 @@ end
 function drawZone(x, y, radius, color)
     local x, y = worldToMap(x, y)
     radius = radius / 6000 * mapSize
-    dxDrawCircle(mapX + x, mapY + y, radius, color, 2)
+    dxDrawCircle(viewX + x, viewY + y, radius, color, 2)
 end
 
 addEventHandler("onClientRender", root, function ()
     if not isMapVisible then
         return false
     end
-    dxDrawRectangle(0, 0, screenSize.x, screenSize.y, tocolor(0, 0, 0, 150))
-    local x = mapX
-    local y = mapY
+    dxSetRenderTarget(renderTarget)
+    local x = viewX
+    local y = viewY
     dxDrawImage(x, y, mapSize, mapSize, textures.map)
 
     -- Игрок
@@ -90,8 +93,12 @@ addEventHandler("onClientRender", root, function ()
         markerAnim = math.min(1, markerAnim + 0.1)
         local x, y = worldToMap(unpack(marker))
         local offset = 10 * markerAnim - 10
-        dxDrawImage(x + mapX - markerSize / 2, y + mapY - markerSize + offset, markerSize, markerSize, textures.marker, 0, 0, 0, tocolor(255, 255, 255, 255 * markerAnim))
+        dxDrawImage(x + viewX - markerSize / 2, y + viewY - markerSize + offset, markerSize, markerSize, textures.marker, 0, 0, 0, tocolor(255, 255, 255, 255 * markerAnim))
     end
+    dxSetRenderTarget()
+
+    dxDrawRectangle(0, 0, screenSize.x, screenSize.y, tocolor(0, 0, 0, 150))
+    dxDrawImage(mapX, mapY, mapSize, mapSize, renderTarget)
 end)
 
 addEventHandler("onClientResourceStart", resourceRoot, function ()
