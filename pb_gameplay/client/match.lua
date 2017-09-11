@@ -21,6 +21,8 @@ end)
 
 addEvent("onLeftMatch", true)
 addEventHandler("onLeftMatch", resourceRoot, function ()
+    destroyPlane()
+
     showGameHUD(false)
     fadeCamera(false, 0)
     exports.pb_rank_screen:setVisible(false)

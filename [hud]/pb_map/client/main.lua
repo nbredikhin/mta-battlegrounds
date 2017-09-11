@@ -48,6 +48,13 @@ function drawZone(x, y, radius, color)
     dxDrawCircle(viewX + x, viewY + y, radius, color, 2)
 end
 
+function drawRedZone(x, y, radius)
+    local x, y = worldToMap(x, y)
+    radius = radius / 6000 * mapSize
+    dxDrawImage(viewX + x - radius, viewY + y - radius, radius * 2, radius * 2, textures.circle, 0, 0, 0, tocolor(255, 0, 0, 80))
+end
+
+
 addEventHandler("onClientRender", root, function ()
     if not isMapVisible then
         return false
@@ -86,6 +93,11 @@ addEventHandler("onClientRender", root, function ()
         if x then
             drawZone(x, y, radius,tocolor(0, 0, 200, 150))
         end
+
+        local x, y, radius = exports.pb_zones:getRedZone()
+        if x then
+            drawRedZone(x, y, radius,tocolor(255, 0, 0, 180))
+        end
     end
 
     local marker = localPlayer:getData("map_marker")
@@ -106,6 +118,7 @@ addEventHandler("onClientResourceStart", resourceRoot, function ()
     mapTextureSize = dxGetMaterialSize(textures.map)
 
     textures.p_circle = dxCreateTexture("assets/p_circle.png", "argb", true, "clamp")
+    textures.circle = dxCreateTexture("assets/circle.png", "argb", true, "clamp")
     textures.p_location = dxCreateTexture("assets/p_location.png", "argb", true, "clamp")
     textures.marker = dxCreateTexture("assets/marker.png", "argb", true, "clamp")
 end)

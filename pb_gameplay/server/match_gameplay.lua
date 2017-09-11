@@ -86,13 +86,25 @@ function updateMatch(match)
             setMatchState(match, "running")
         end
     elseif match.state == "running" then
+        local alivePlayers = getMatchAlivePlayers(match)
+
         updateMatchZones(match)
         if #match.players == 0 then
             destroyMatch(match)
             return
         end
-        if match.totalPlayers > 1 and getMatchAlivePlayersCount(match) == 1 then
+        if match.totalPlayers > 1 and #alivePlayers == 1 then
             setMatchState(match, "ended")
+        end
+
+        -- Красные зоны
+        if #alivePlayers >= Config.redZoneMinPlayers and match.currentZone > 3 then
+            match.redZoneTimer = match.redZoneTimer - 1
+            if match.redZoneTimer <= 0 then
+                match.redZoneTimer = math.random(Config.redZoneTimeMin, Config.redZoneTimeMax)
+                local player = alivePlayers[math.random(1, #alivePlayers)]
+                exports.pb_zones:createRedZone(match.players, player.position.x, player.position.y)
+            end
         end
     elseif match.state == "ended" then
         if match.stateTime == Config.matchEndedTime - 1 then
@@ -166,7 +178,8 @@ function setMatchState(match, state)
             match.zones = exports.pb_zones:generateZones()
             match.currentZone = #match.zones
             triggerMatchEvent(match, "onZonesInit", resourceRoot, match.zones[match.currentZone])
-            match.zoneTimer = 90
+            match.zoneTimer = Config.firstZoneTime
+            match.redZoneTimer = Config.firstZoneTime + 60
         end
 
         match.totalPlayers = getMatchAlivePlayersCount(match)
@@ -189,6 +202,7 @@ end
 -- До входа любого игрока
 function initMatch(match)
     match.totalPlayers = 0
+    math.redZoneTimer = 0
     -- TODO: Spawn loot
     -- TODO: Выбор времени, погоды и т д (match.settings)
 end

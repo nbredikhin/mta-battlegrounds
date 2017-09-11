@@ -1,15 +1,21 @@
 <meta>
     <oop>true</oop>
+    <min_mta_version client="1.5.4" server="1.5.4" />
+
+    <script type="shared" src="shared/utils.lua"/>
 
     <script type="client" src="client/drawing.lua"/>
     <script type="client" src="client/main.lua"/>
+    <script type="client" src="client/red_zone.lua"/>
 
     <script type="server" src="server/zone_properties.lua"/>
     <script type="server" src="server/zone_points.lua"/>
     <script type="server" src="server/zones.lua"/>
+    <script type="server" src="server/red_zones.lua"/>
 
     <export type="client" function="getWhiteZone"/>
     <export type="client" function="getBlueZone"/>
+    <export type="client" function="getRedZone"/>
     <export type="client" function="getBlueZoneRadius"/>
     <export type="client" function="isZonesVisible"/>
     <export type="client" function="getZoneTime"/>
@@ -17,6 +23,7 @@
 
     <export type="server" function="generateZones"/>
     <export type="server" function="getZone"/>
+    <export type="server" function="createRedZone"/>
 
     <file src="assets/wall.png"/>
 </meta>

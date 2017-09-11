@@ -79,6 +79,12 @@ function drawZone(x, y, radius, localX, localY, color)
     dxDrawCircle(-localX+x, -localY+y, radius, color, 2)
 end
 
+function drawRedZone(x, y, radius, localX, localY, color)
+    local x, y = worldToRadar(x, y)
+    radius = radius / 6000 * radarTextureSize
+    dxDrawImage(-localX+x-radius, -localY+y-radius, radius*2,radius*2, textures.circle, 0, 0, 0, tocolor(255, 0, 0, 80))
+end
+
 local function drawRadar()
     dxSetRenderTarget(viewport)
     local localX, localY = worldToRadar(localPlayer.position.x, localPlayer.position.y)
@@ -129,6 +135,11 @@ local function drawRadar()
         local x, y, radius = exports.pb_zones:getBlueZone()
         if x then
             drawZone(x, y, radius, localX - localWidth / 2, localY - localHeight / 2, tocolor(0, 0, 200, 150))
+        end
+
+        local x, y, radius = exports.pb_zones:getRedZone()
+        if x then
+            drawRedZone(x, y, radius, localX - localWidth / 2, localY - localHeight / 2)
         end
 
         local lx = -(localX - localWidth / 2)
@@ -226,6 +237,7 @@ addEventHandler("onClientResourceStart", resourceRoot, function ()
     radarTextureSize = dxGetMaterialSize(textures.map)
 
     textures.p_circle = dxCreateTexture(":pb_map/assets/p_circle.png", "argb", true, "clamp")
+    textures.circle = dxCreateTexture(":pb_map/assets/circle.png", "argb", true, "clamp")
     textures.p_location = dxCreateTexture(":pb_map/assets/p_location.png", "argb", true, "clamp")
     textures.marker = dxCreateTexture(":pb_map/assets/marker.png", "argb", true, "clamp")
 

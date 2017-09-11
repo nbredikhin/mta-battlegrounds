@@ -85,6 +85,12 @@ function jumpFromPlane()
     end
 end
 
+function destroyPlane()
+    if isElement(currentPlane) then
+        destroyElement(currentPlane)
+    end
+end
+
 bindKey("f", "down", function ()
     jumpFromPlane()
 end)
