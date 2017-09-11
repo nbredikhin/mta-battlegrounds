@@ -159,6 +159,15 @@ function setMatchState(match, state)
         local velocityX = -x / len * Config.planeSpeed
         local velocityY = -y / len * Config.planeSpeed
 
+        local randomOffset = (math.random() - 0.5) * 1800
+        if side == 1 or side == 3 then
+            x = x + randomOffset
+            x = math.max(-3000, math.min(3000, x))
+        elseif side == 2 or side == 4 then
+            y = y + randomOffset
+            y = math.max(-3000, math.min(3000, y))
+        end
+
         match.planeVelocity = Vector2(velocityX, velocityY)
         match.planeStartTime = getTickCount()
         match.planeStartPosition = Vector2(x, y)

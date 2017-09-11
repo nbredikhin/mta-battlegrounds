@@ -2,7 +2,7 @@ local isActive = false
 
 local pedPosition = Vector3(-2048.503, 304.355, 46.258)
 
-local skins = {10, 46, 62, 72, 142, 154, 170, 182, 217, 68, 70, 213, 206, 243, 204, 49, 39, 312, 309, 295, 129}
+local skins = {46, 10, 62, 72, 142, 154, 170, 182, 217, 68, 70, 213, 206, 243, 204, 49, 39, 312, 309, 295, 129}
 local skinIndex = 1
 local playerPed
 
