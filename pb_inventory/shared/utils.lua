@@ -95,3 +95,11 @@ function table.copy(orig)
     end
     return copy
 end
+
+function getWeaponNameFromId(id)
+    for name, itemClass in pairs(Items) do
+        if itemClass.weaponId == id then
+            return itemClass.readableName
+        end
+    end
+end

@@ -1,8 +1,6 @@
 local currentStats = {
-    killsCount   = 0,
-    damageGiven  = 0,
-    damageTaken  = 0,
-    healedHealth = 0,
+    shots_hit = 0,
+    shots_total = 0,
 }
 
 function resetMatchStats()
@@ -26,3 +24,13 @@ function addMatchStats(name, value)
         currentStats[name] = currentStats[name] + (tonumber(value) or 0)
     end
 end
+
+addEventHandler("onClientPlayerWeaponFire", localPlayer, function (weapon, _, _, x, y, z, element)
+    addMatchStats("shots_total", 1)
+
+    if isElement(element) then
+        if element.type == "player" or element.type == "vehicle" then
+            addMatchStats("shots_hit", 1)
+        end
+    end
+end)

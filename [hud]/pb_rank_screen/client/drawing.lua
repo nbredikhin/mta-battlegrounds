@@ -25,6 +25,10 @@ local screenData = {
     reward = 0,
 
     time_alive = 0,
+
+    accuracy = 0,
+    damage_taken = 0,
+    hp_healed = 0
 }
 
 local winTexts = {
@@ -115,15 +119,15 @@ addEventHandler("onClientRender", root, function ()
         dxDrawText(rtext, rx, ry, rx + rw, ry + 1, colors.white, 1, fonts.medium, "left", "top")
         dxDrawLine(rx, ry + rh + 15, rx + rw, ry + rh + 15, colors.grey)
 
-        -- ry = ry + rh + 30
-        -- dxDrawText("НАНЕСЕНО УРОНА", rx, ry, rx + rw, ry + 1, colors.grey, 1, fonts.small, "left", "top")
-        -- dxDrawText("9999", rx, ry, rx + rw, ry + 1, colors.grey, 1, fonts.small, "right", "top")
-        -- ry = ry + 25
-        -- dxDrawText("ПОЛУЧЕНО УРОНА", rx, ry, rx + rw, ry + 1, colors.grey, 1, fonts.small, "left", "top")
-        -- dxDrawText("9999", rx, ry, rx + rw, ry + 1, colors.grey, 1, fonts.small, "right", "top")
-        -- ry = ry + 25
-        -- dxDrawText("ВЫЛЕЧЕНО HP", rx, ry, rx + rw, ry + 1, colors.grey, 1, fonts.small, "left", "top")
-        -- dxDrawText("9999", rx, ry, rx + rw, ry + 1, colors.grey, 1, fonts.small, "right", "top")
+        ry = ry + rh + 30
+        dxDrawText("ТОЧНОСТЬ", rx, ry, rx + rw, ry + 1, colors.grey, 1, fonts.small, "left", "top")
+        dxDrawText(tostring(screenData.accuracy).."%", rx, ry, rx + rw, ry + 1, colors.grey, 1, fonts.small, "right", "top")
+        ry = ry + 25
+        dxDrawText("ПОЛУЧЕНО УРОНА", rx, ry, rx + rw, ry + 1, colors.grey, 1, fonts.small, "left", "top")
+        dxDrawText(screenData.damage_taken, rx, ry, rx + rw, ry + 1, colors.grey, 1, fonts.small, "right", "top")
+        ry = ry + 25
+        dxDrawText("ВЫЛЕЧЕНО HP", rx, ry, rx + rw, ry + 1, colors.grey, 1, fonts.small, "left", "top")
+        dxDrawText(screenData.hp_healed, rx, ry, rx + rw, ry + 1, colors.grey, 1, fonts.small, "right", "top")
 
     end
 

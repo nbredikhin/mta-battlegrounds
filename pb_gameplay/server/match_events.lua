@@ -17,7 +17,7 @@ addEventHandler("onPlayerQuit", root, function ()
     removePlayerFromMatch(source, "disconnect")
 end)
 
-addEventHandler("onPlayerWasted", root, function (...)
+addEventHandler("onPlayerWasted", root, function (ammo, killer, weaponId)
     local player = source
     if not isElement(player) then
         return
@@ -30,9 +30,22 @@ addEventHandler("onPlayerWasted", root, function (...)
         spawnWaitingPlayer(match, player)
         return
     end
+    local killerPlayer
+    if isElement(killer) then
+        if killer.type == "player" then
+            killerPlayer = killer
+        elseif killer.type == "vehicle" then
+            killerPlayer = killer.controller
+        end
+    end
+
+    if isElement(killerPlayer) then
+        local kills = killerPlayer:getData("kills") or 0
+        killerPlayer:setData("kills", kills + 1)
+    end
 
     local aliveCount = getMatchAlivePlayersCount(match)
     local rank = aliveCount + 1
     triggerClientEvent(player, "onMatchFinished", resourceRoot, rank, match.totalPlayers, match.totalTime)
-    triggerMatchEvent(match, "onMatchPlayerWasted", player, aliveCount, killerPlayer)
+    triggerMatchEvent(match, "onMatchPlayerWasted", player, aliveCount, killerPlayer, weaponId)
 end)

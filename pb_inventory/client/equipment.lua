@@ -27,10 +27,13 @@ addEventHandler("onClientResourceStart", resourceRoot, function ()
     triggerServerEvent("requireClientEquipment", resourceRoot)
 end)
 
+local localDamage = 0
+
 addEventHandler("onClientPlayerDamage", localPlayer, function (attacker, weaponId, bodypart, oldLoss)
     if not isElement(attacker) then
         return
     end
+
     local loss = oldLoss
     local custom
     if bodypart == 9 then
@@ -44,6 +47,21 @@ addEventHandler("onClientPlayerDamage", localPlayer, function (attacker, weaponI
             triggerServerEvent("updateEquipmentHealth", resourceRoot, Items[item.name].category, item.health)
         end
     end
-    localPlayer.health = math.min(100, localPlayer.health + oldLoss - loss)
-    cancelEvent()
+    if loss > 0 then
+        localDamage = localDamage + loss
+    end
+    local newHealth = math.min(100, localPlayer.health + oldLoss - loss)
+    localPlayer.health = newHealth
+
+    if newHealth > 0 then
+        cancelEvent()
+    end
 end)
+
+setTimer(function ()
+    if localDamage > 0 then
+        local total = localPlayer:getData("damage_taken") or 0
+        localPlayer:setData("damage_taken", math.floor(total + localDamage))
+    end
+    localDamage = 0
+end, 1000, 0)

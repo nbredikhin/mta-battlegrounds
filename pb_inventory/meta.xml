@@ -43,6 +43,7 @@
     <file src="assets/bar.png"/>
 
     <export type="shared" function="getItemClass"/>
+    <export type="shared" function="getWeaponNameFromId"/>
 
     <export type="client" function="getClientWeapons"/>
     <export type="client" function="getWeaponSlot"/>

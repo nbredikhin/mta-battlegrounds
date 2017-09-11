@@ -52,6 +52,10 @@ addEventHandler("onMatchFinished", resourceRoot, function (rank, totalPlayers, t
     showGameHUD(false)
 
     local matchStats = getMatchStats()
+    local accuracy = 0
+    if matchStats.shots_total > 0 then
+        accuracy = math.floor(matchStats.shots_hit / matchStats.shots_total * 100)
+    end
 
     exports.pb_rank_screen:setScreenData({
         nickname      = string.gsub(localPlayer.name, '#%x%x%x%x%x%x', ''),
@@ -60,7 +64,10 @@ addEventHandler("onMatchFinished", resourceRoot, function (rank, totalPlayers, t
         time_alive    = math.floor(timeAlive / 60),
 
         reward = 0,
-        kills  = matchStats.killsCount or 0,
+        accuracy      = accuracy,
+        kills         = localPlayer:getData("kills")        or 0,
+        damage_taken  = localPlayer:getData("damage_taken") or 0,
+        hp_healed     = localPlayer:getData("hp_healed")    or 0,
     })
     exports.pb_rank_screen:setVisible(true)
 end)

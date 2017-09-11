@@ -157,6 +157,9 @@ function setMatchState(match, state)
             player.alpha = 0
             player.frozen = true
             player:removeData("match_waiting")
+            player:setData("kills", 0)
+            player:setData("damage_taken", 0)
+            player:setData("hp_healed", 0)
         end
 
         if isResourceRunning("pb_zones") then
@@ -199,6 +202,7 @@ end
 function handlePlayerJoinMatch(match, player)
     spawnWaitingPlayer(match, player)
 
+    player:setData("kills", 0)
     player:setData("match_waiting", true)
     player.alpha = 255
 
@@ -211,6 +215,9 @@ function handlePlayerLeaveMatch(match, player, reason)
     player.dimension = 0
 
     player:removeData("match_waiting")
+    player:removeData("kills")
+    player:removeData("damage_taken")
+    player:removeData("hp_healed")
     local aliveCount = getMatchAlivePlayersCount(match)
     triggerMatchEvent(match, "onPlayerLeftMatch", root, player, reason, aliveCount)
     triggerClientEvent(player, "onLeftMatch", resourceRoot, reason)
