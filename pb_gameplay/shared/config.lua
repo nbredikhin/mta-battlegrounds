@@ -1,7 +1,7 @@
 Config = {}
 
 -- В секундах
-Config.matchWaitingTime = 5
+Config.matchWaitingTime = 60
 Config.matchEndedTime = 61
 Config.firstZoneTime = 95
 

@@ -13,7 +13,7 @@ local whiteSize = 500
 
 local blueZone = {0, 0, 0}
 
-local DAMAGER_TIME = 5000
+local ZONE_DAMAGE_TIME = 400
 
 local zoneTimeMessages = {
     [60] = "1 МИНУТУ",
@@ -137,6 +137,6 @@ setTimer(function ()
 
     if not isPlayerWithinZone() then
         -- iprint("damage")
-        -- localPlayer.health = localPlayer.healt - 5
+        localPlayer.health = localPlayer.health - 1
     end
-end, DAMAGER_TIME, 0)
+end, ZONE_DAMAGE_TIME, 0)
