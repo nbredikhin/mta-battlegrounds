@@ -7,7 +7,7 @@ Config.firstZoneTime = 95
 
 Config.redZoneTimeMin = 70
 Config.redZoneTimeMax = 120
-Config.redZoneMinPlayers = 30
+Config.redZoneMinPlayers = 8
 
 Config.planeSpeed = 100
 Config.planeZ = 650

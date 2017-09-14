@@ -3,7 +3,7 @@ local matchTypes = {
     ["duo"]    = 2,
     ["triple"] = 3
 }
-local maxMatchPlayers = 3
+local maxMatchPlayers = 100
 local matchCounter = 0
 local matchesList = {}
 
