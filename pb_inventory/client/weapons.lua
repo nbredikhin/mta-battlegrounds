@@ -37,6 +37,8 @@ function getActiveWeaponItem()
 end
 
 function showPlayerWeaponSlot(slot)
+    toggleControl("next_weapon", false)
+    toggleControl("previous_weapon", false)
     local item = clientWeapons[slot]
     if item then
         triggerServerEvent("showPlayerWeaponSlot", resourceRoot, slot)
@@ -48,6 +50,9 @@ toggleControl("next_weapon", false)
 toggleControl("previous_weapon", false)
 
 bindKey("next_weapon", "down", function ()
+    toggleControl("next_weapon", false)
+    toggleControl("previous_weapon", false)
+
     activeSlotIndex = activeSlotIndex + 1
     if activeSlotIndex > #slotsOrder then
         activeSlotIndex = #slotsOrder
@@ -56,6 +61,9 @@ bindKey("next_weapon", "down", function ()
 end)
 
 bindKey("previous_weapon", "down", function ()
+    toggleControl("next_weapon", false)
+    toggleControl("previous_weapon", false)
+
     activeSlotIndex = activeSlotIndex - 1
     if activeSlotIndex < 1 then
         activeSlotIndex = 1
@@ -75,6 +83,9 @@ bindKey("g", "down", function ()
 end)
 
 bindKey("x", "down", function ()
+    toggleControl("next_weapon", false)
+    toggleControl("previous_weapon", false)
+
     if localPlayer.weaponSlot ~= 0 then
         triggerServerEvent("hidePlayerWeapon", resourceRoot)
     else

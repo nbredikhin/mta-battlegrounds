@@ -11,6 +11,8 @@ Config.resourceList = {
 
     "pb_models",
     "pb_zones",
+    "pb_loot",
+    "pb_vehicles",
     "pb_compass",
     "pb_map",
     "pb_radar",

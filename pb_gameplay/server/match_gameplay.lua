@@ -212,7 +212,16 @@ end
 function initMatch(match)
     match.totalPlayers = 0
     math.redZoneTimer = 0
-    -- TODO: Spawn loot
+    -- Спавн лута
+    local lootItems = exports.pb_loot:generateLoot(match.dimension)
+    for i, element in ipairs(lootItems) do
+        addMatchElement(match, element)
+    end
+
+    local vehicles = exports.pb_vehicles:generateVehicles(match.dimension)
+    for i, element in ipairs(vehicles) do
+        addMatchElement(match, element)
+    end
     -- TODO: Выбор времени, погоды и т д (match.settings)
 end
 

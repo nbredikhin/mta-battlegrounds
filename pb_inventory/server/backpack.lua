@@ -158,7 +158,7 @@ function dropPlayerBackpack(player)
         return
     end
     playerBackpacks[player] = nil
-    spawnPlayerLootBackpack(backpack, player.position)
+    spawnPlayerLootBackpack(backpack, player.position, player.dimension)
     sendPlayerBackpack(player)
 end
 

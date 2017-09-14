@@ -130,6 +130,17 @@ function addMatchPlayers(match, players)
     return true
 end
 
+function addMatchElement(match, element)
+    if not isMatch(match) then
+        return false
+    end
+    if not isElement(element) then
+        return false
+    end
+
+    table.insert(match.elements, element)
+end
+
 function addMatchPlayer(match, player)
     if not isMatch(match) then
         outputDebugString("[Matchmaking] addMatchPlayer: bad match '" .. tostring(match) .. "'")

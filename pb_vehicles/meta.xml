@@ -1,0 +1,7 @@
+<meta>
+    <oop>true</oop>
+
+    <script type="server" src="server/main.lua"/>
+
+    <export type="server" function="generateVehicles"/>
+</meta>

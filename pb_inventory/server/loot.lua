@@ -7,7 +7,7 @@ local lootColors = {
     red    = 1580,
 }
 
-function spawnLootItem(item, position)
+function spawnLootItem(item, position, dimension)
     if not isItem(item) or not position then
         return
     end
@@ -26,7 +26,12 @@ function spawnLootItem(item, position)
     object:setCollisionsEnabled(false)
 
     item.lootElement = object
+    if dimension then
+        object.dimension = dimension
+    end
     object:setData("loot_item", item)
+
+    return object
 end
 
 function spawnPlayerLootItem(player, item)
@@ -37,10 +42,10 @@ function spawnPlayerLootItem(player, item)
     local offsetY = math.random() * 0.4 - 0.2
     local position = player.position - Vector3(offsetX, offsetY, 1)
     local color = "white"
-    return spawnLootItem(item, position)
+    return spawnLootItem(item, position, player.dimension)
 end
 
-function spawnPlayerLootBackpack(backpack, position)
+function spawnPlayerLootBackpack(backpack, position, dimension)
     local items = {}
     local object = createObject(2358, position - Vector3(0, 0, 0.8))
     object:setCollisionsEnabled(false)
@@ -51,6 +56,9 @@ function spawnPlayerLootBackpack(backpack, position)
     end
 
     object:setData("loot_items", items)
+    if dimension then
+        object.dimension = dimension
+    end
 end
 
 addEvent("pickupLootItem", true)

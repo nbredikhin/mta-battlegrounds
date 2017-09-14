@@ -75,6 +75,10 @@ function updatePlayerWearingItems(player)
     if not isResourceRunning("bone_attach") then
         return
     end
+    if player.dimension ~= localPlayer.dimension then
+        return
+    end
+
     if not attachedObjects[player] then
         attachedObjects[player] = {}
     end
@@ -88,6 +92,7 @@ function updatePlayerWearingItems(player)
                 object = createObject(model, player.position)
                 object:setCollisionsEnabled(false)
                 object.doubleSided = true
+                object.dimension = player.dimension
                 exports.bone_attach:attachElementToBone(object, player, attach.bone,
                     attach.x, attach.y, attach.z,
                     attach.rx, attach.ry, attach.rz)

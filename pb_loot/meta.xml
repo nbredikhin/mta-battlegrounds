@@ -1,0 +1,13 @@
+<meta>
+    <oop>true</oop>
+
+    <script type="shared" src="shared/config.lua"/>
+    <script type="shared" src="shared/utils.lua"/>
+
+    <script type="client" src="client/editor.lua"/>
+
+    <script type="server" src="server/commands.lua"/>
+    <script type="server" src="server/main.lua"/>
+
+    <export type="server" function="generateLoot"/>
+</meta>
