@@ -1,6 +1,7 @@
 <meta>
     <oop>true</oop>
 
+    <script type="shared" src="shared/async.lua"/>
     <script type="shared" src="shared/config.lua"/>
     <script type="shared" src="shared/utils.lua"/>
 
@@ -10,4 +11,6 @@
     <script type="server" src="server/main.lua"/>
 
     <export type="server" function="generateLoot"/>
+
+    <serverfile src="data/spawnpoints.json"/>
 </meta>

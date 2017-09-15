@@ -54,3 +54,25 @@ addEventHandler("onPlayerWasted", root, function (ammo, killer, weaponId)
     triggerClientEvent(player, "onMatchFinished", resourceRoot, rank, match.totalPlayers, match.totalTime)
     triggerMatchEvent(match, "onMatchPlayerWasted", player, aliveCount, killerPlayer, weaponId)
 end)
+
+addEvent("onMatchLootSpawned", false)
+addEventHandler("onMatchLootSpawned", root, function (matchId, elements)
+    local match = getMatchById(matchId)
+    if not isMatch(match) then
+        -- Запустить удаление
+        Async:setPriority("low")
+        Async:foreach(elements, function(element)
+            if isElement(element) then
+                destroyElement(element)
+            end
+        end)
+
+        return
+    end
+    Async:setPriority("high")
+    Async:foreach(elements, function(element)
+        if isElement(element) then
+            table.insert(match.elements, element)
+        end
+    end)
+end)

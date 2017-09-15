@@ -92,10 +92,14 @@ function getLootSpawnpoints()
 end
 
 -- Раскидывает лут в dimension
-function generateLoot(dimension)
+function generateLoot(matchId, dimension)
     local spawnedItems = {}
-
-    for i, spawnpoint in ipairs(lootSpawnpoints) do
+    Async:setPriority("low")
+    Async:iterate(1, #lootSpawnpoints, function(index)
+        local spawnpoint = lootSpawnpoints[index]
+        if not spawnpoint then
+            return
+        end
         local items = generateSpawnpointItems(spawnpoint)
         if items and #items > 0 then
             for i, item in ipairs(items) do
@@ -103,9 +107,11 @@ function generateLoot(dimension)
                 table.insert(spawnedItems, item)
             end
         end
-    end
 
-    return spawnedItems
+        if index == #lootSpawnpoints then
+            triggerEvent("onMatchLootSpawned", root, matchId, spawnedItems)
+        end
+    end)
 end
 
 addEventHandler("onResourceStart", resourceRoot, function ()

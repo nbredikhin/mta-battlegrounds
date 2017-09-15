@@ -217,10 +217,7 @@ function initMatch(match)
     match.totalPlayers = 0
     math.redZoneTimer = 0
     -- Спавн лута
-    local lootItems = exports.pb_loot:generateLoot(match.dimension)
-    for i, element in ipairs(lootItems) do
-        addMatchElement(match, element)
-    end
+    exports.pb_loot:generateLoot(match.id, match.dimension)
 
     local vehicles = exports.pb_vehicles:generateVehicles(match.dimension)
     for i, element in ipairs(vehicles) do

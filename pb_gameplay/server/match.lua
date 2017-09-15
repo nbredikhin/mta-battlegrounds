@@ -205,11 +205,12 @@ function destroyMatch(match)
         removePlayerFromMatch(player, "match_destroyed")
     end
     -- Удаление элементов
-    for i, element in ipairs(match.elements) do
+    Async:setPriority("low")
+    Async:foreach(match.elements, function(element)
         if isElement(element) then
             destroyElement(element)
         end
-    end
+    end)
     -- Удалить матч из списка матчей
     for i, m in ipairs(matchesList) do
         if m == match then

@@ -18,3 +18,11 @@ addEventHandler("finishPlayerHeal", resourceRoot, function (itemName)
     local totalHealed = player:getData("hp_healed") or 0
     player:setData("hp_healed", math.floor(totalHealed + diffHealth))
 end)
+
+
+    -- player:setAnimation("FOOD", "EAT_Pizza", -1, false, false, true, true)
+    -- setTimer(function ()
+    --     if isElement(player) then
+    --         player:setAnimation()
+    --     end
+    -- end, 1000, 1)

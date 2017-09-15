@@ -4,4 +4,6 @@
     <script type="server" src="server/main.lua"/>
 
     <export type="server" function="generateVehicles"/>
+
+    <serverfile src="data/spawnpoints.json"/>
 </meta>

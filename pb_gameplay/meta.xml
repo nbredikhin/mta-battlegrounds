@@ -2,6 +2,7 @@
     <oop>true</oop>
     <min_mta_version client="1.5.4" server="1.5.4" />
 
+    <script type="shared" src="shared/async.lua"/>
     <script type="shared" src="shared/utils.lua"/>
     <script type="shared" src="shared/config.lua"/>
 

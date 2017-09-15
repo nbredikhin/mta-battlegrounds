@@ -554,9 +554,9 @@ addEventHandler("onClientKey", root, function (key, down)
     end
 end)
 
-bindKey("tab", "down", function ()
-    showInventory(not isInventoryVisible)
-end)
+-- bindKey("tab", "down", function ()
+--     showInventory(not isInventoryVisible)
+-- end)
 
 addEventHandler("onClientKey", root, function (button, down)
     if not isSeparateWindowVisible or not down then
