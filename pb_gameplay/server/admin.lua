@@ -16,3 +16,16 @@ addEventHandler("requireMatchesList", resourceRoot, function ()
 
     triggerClientEvent(client, "requireMatchesList", resourceRoot, list)
 end)
+
+addCommandHandler("startmatch", function (player, cmd, id)
+    local id = tonumber(id)
+
+    if id then
+        local match = getMatchById(id)
+        if not match then
+            return
+        end
+
+        match.forceStart = true
+    end
+end)

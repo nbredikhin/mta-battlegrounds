@@ -1,5 +1,7 @@
 Config = {}
 
+Config.minMatchPlayers = 20
+
 -- В секундах
 Config.matchWaitingTime = 60
 Config.matchEndedTime = 61
@@ -7,7 +9,7 @@ Config.firstZoneTime = 95
 
 Config.redZoneTimeMin = 70
 Config.redZoneTimeMax = 120
-Config.redZoneMinPlayers = 8
+Config.redZoneMinPlayers = 10
 
 Config.planeSpeed = 100
 Config.planeZ = 650

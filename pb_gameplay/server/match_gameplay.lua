@@ -78,11 +78,21 @@ function updateMatch(match)
     end
 
     if match.state == "waiting" then
-        local timeLeft = Config.matchWaitingTime - match.stateTime
-        if timeLeft > 0 then
-            exports.pb_alert:show(match.players, "МАТЧ НАЧИНАЕТСЯ ЧЕРЕЗ\n"..tostring(timeLeft), 2000, 0xFFAAFAE1)
+        local isWaitingOver = false
+
+        if #match.players < math.min(#getElementsByType("player"), Config.minMatchPlayers) then
+            match.stateTime = 0
+        else
+            if #match.players > 30 then
+
+            end
+            local timeLeft = Config.matchWaitingTime - match.stateTime
+            if timeLeft > 0 then
+                exports.pb_alert:show(match.players, "МАТЧ НАЧИНАЕТСЯ ЧЕРЕЗ\n"..tostring(timeLeft), 2000, 0xFFAAFAE1)
+            end
         end
-        if match.stateTime >= Config.matchWaitingTime then
+
+        if match.forceStart or match.stateTime >= Config.matchWaitingTime then
             setMatchState(match, "running")
         end
     elseif match.state == "running" then
