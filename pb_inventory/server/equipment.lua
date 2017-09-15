@@ -21,6 +21,13 @@ function initPlayerEquipment(player)
     end
 end
 
+function getPlayerEquipment(player)
+    if not player then
+        return
+    end
+    return playerEquipments[player]
+end
+
 function getPlayerBackpackCapacity(player)
     if not isElement(player) or not playerEquipments[player] then
         return
@@ -93,6 +100,14 @@ function removePlayerEquipment(player, slot)
         playerEquipments[player][slot] = nil
         updatePlayerEquipment(player)
     end
+end
+
+function clearPlayerEquipment(player)
+    if not isElement(player) then
+        return
+    end
+    initPlayerEquipment(player)
+    updatePlayerEquipment(player)
 end
 
 function getPlayerEquipmentSlot(player, slot)

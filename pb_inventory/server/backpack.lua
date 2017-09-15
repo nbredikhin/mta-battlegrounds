@@ -149,16 +149,18 @@ addEventHandler("dropBackpackItem", resourceRoot, function (name, count)
     dropBackpackItem(client, name, count)
 end)
 
-function dropPlayerBackpack(player)
+function getPlayerBackpack(player)
+    if not player then
+        return
+    end
+    return playerBackpacks[player]
+end
+
+function clearPlayerBackpack(player)
     if not isElement(player) then
         return
     end
-    local backpack = playerBackpacks[player]
-    if type(backpack) ~= "table" then
-        return
-    end
-    playerBackpacks[player] = nil
-    spawnPlayerLootBackpack(backpack, player.position, player.dimension)
+    initPlayerBackpack(player)
     sendPlayerBackpack(player)
 end
 

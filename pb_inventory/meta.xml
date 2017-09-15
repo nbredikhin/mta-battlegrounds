@@ -60,6 +60,7 @@
 
     <export type="server" function="givePlayerParachute"/>
     <export type="server" function="takePlayerParachute"/>
+    <export type="server" function="spawnPlayerLootBox"/>
     <export type="server" function="takeAllItems"/>
 
     <export type="server" function="createItem"/>

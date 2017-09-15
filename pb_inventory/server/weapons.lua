@@ -32,6 +32,21 @@ function initPlayerWeapons(player)
     updatePlayerWeapons(player, true)
 end
 
+function getPlayerWeapons(player)
+    if not player then
+        return
+    end
+    return playerWeapons[player]
+end
+
+function clearPlayerWeapons(player)
+    if not isElement(player) then
+        return
+    end
+    initPlayerWeapons(player)
+    updatePlayerWeapons(player)
+end
+
 function getWeaponAmmoName(item)
     if not isItem(item) then
         return

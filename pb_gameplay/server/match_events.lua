@@ -30,6 +30,11 @@ addEventHandler("onPlayerWasted", root, function (ammo, killer, weaponId)
         spawnWaitingPlayer(match, player)
         return
     end
+
+    if isResourceRunning("pb_inventory") then
+        exports.pb_inventory:spawnPlayerLootBox(player)
+    end
+
     local killerPlayer
     if isElement(killer) then
         if killer.type == "player" then

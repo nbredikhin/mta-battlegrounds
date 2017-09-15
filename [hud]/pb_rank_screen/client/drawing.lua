@@ -81,7 +81,7 @@ addEventHandler("onClientRender", root, function ()
     mouseX, mouseY = mx, my
 
     dxDrawRectangle(0, 0, screenSize.x, screenSize.y, tocolor(0, 0, 0, 230))
-    dxDrawText("Wherry", 50, 50, 51, 51, colors.white, 1, fonts.big, "left", "top")
+    dxDrawText(tostring(screenData.nickname), 50, 50, 51, 51, colors.white, 1, fonts.big, "left", "top")
     local topText = "В СЛЕДУЮЩИЙ РАЗ ПОВЕЗЕТ!"
     if screenData.rank and screenData.rank <= 10 then
         topText = "ВЫ ПОПАЛИ В ТОП-10!"

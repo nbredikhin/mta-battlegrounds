@@ -45,25 +45,56 @@ function spawnPlayerLootItem(player, item)
     return spawnLootItem(item, position, player.dimension)
 end
 
-function spawnPlayerLootBackpack(backpack, position, dimension)
+function spawnPlayerLootBox(player)
+    if not isElement(player) then
+        return
+    end
     local items = {}
-    local object = createObject(2358, position - Vector3(0, 0, 0.8))
+    -- Взять все вещи из рюкзака
+    local backpack = getPlayerBackpack(player)
+    if backpack then
+        for name, item in pairs(backpack) do
+            table.insert(items, item)
+        end
+    end
+    -- Взять все снаряжение
+    local equipment = getPlayerEquipment(player)
+    if equipment then
+        for name, item in pairs(equipment) do
+            table.insert(items, item)
+        end
+    end
+    -- Взять все оружие
+    local weapons = getPlayerWeapons(player)
+    if weapons then
+        for name, item in pairs(weapons) do
+            table.insert(items, item)
+        end
+    end
+
+    if #items == 0 then
+        takeAllItems(player)
+        return
+    end
+
+    local object = createObject(2358, player.position - Vector3(0, 0, 0.8))
     object:setCollisionsEnabled(false)
     object.scale = 1.3
-
-    for name, item in pairs(backpack) do
-        table.insert(items, item)
-    end
-
+    object.dimension = player.dimension
+    -- Закинуть вещи в коробку
+    takeAllItems(player)
     object:setData("loot_items", items)
-    if dimension then
-        object.dimension = dimension
-    end
 end
 
 addEvent("pickupLootItem", true)
 addEventHandler("pickupLootItem", resourceRoot, function (element, weaponSlot)
     if not isElement(element) then
+        return
+    end
+    if client.vehicle then
+        return
+    end
+    if getDistanceBetweenPoints3D(client.position, element.position) > Config.minLootDistance + 2 then
         return
     end
     local item = element:getData("loot_item")
@@ -89,5 +120,30 @@ addEventHandler("pickupLootItem", resourceRoot, function (element, weaponSlot)
             destroyElement(element)
         end
     end
+
+    animatePlayerPickup(client)
 end)
 
+function animatePlayerPickup(player)
+    if not isElement(player) then
+        return
+    end
+    if player:getData("pickup_animation") then
+        return
+    end
+    player:setData("pickup_animation", true)
+
+    player:setAnimation("BOMBER", "BOM_Plant")
+    setTimer(function ()
+        if isElement(player) then
+            player:setAnimation("BOMBER", "BOM_Plant_2Idle", -1, false, false, true, true)
+        end
+    end, 500, 1)
+
+    setTimer(function ()
+        if isElement(player) then
+            player:setAnimation()
+            player:removeData("pickup_animation")
+        end
+    end, 1500, 1)
+end

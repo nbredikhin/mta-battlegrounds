@@ -1,6 +1,6 @@
 addEventHandler("onClientResourceStart", resourceRoot, function ()
-    -- Отключение фоновых звуков стрельбы
-    setWorldSoundEnabled(5, false)
+    -- Отключение фоновых звуков стрельбы - ломает стандартные звуки стрельбы
+    -- setWorldSoundEnabled(5, false)
     -- Отключение скрытия объектов
     -- setOcclusionsEnabled(false)
     -- Отключение размытия при движении

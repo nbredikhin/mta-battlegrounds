@@ -181,6 +181,10 @@ function setMatchState(match, state)
             player:setData("kills", 0)
             player:setData("damage_taken", 0)
             player:setData("hp_healed", 0)
+
+            if isResourceRunning("pb_inventory") then
+                exports.pb_inventory:takeAllItems(player)
+            end
         end
 
         if isResourceRunning("pb_zones") then
@@ -241,6 +245,12 @@ function handlePlayerJoinMatch(match, player)
     local aliveCount = getMatchAlivePlayersCount(match)
     triggerMatchEvent(match, "onPlayerJoinedMatch", root, player, aliveCount)
     triggerClientEvent(player, "onJoinedMatch", resourceRoot, match.settings, aliveCount)
+
+    initPlayerSkillStats(player)
+
+    if isResourceRunning("pb_inventory") then
+        exports.pb_inventory:takeAllItems(player)
+    end
 end
 
 function handlePlayerLeaveMatch(match, player, reason)
@@ -282,7 +292,6 @@ function handlePlayerPlaneJump(player)
     player.alpha = 255
 
     if isResourceRunning("pb_inventory") then
-        exports.pb_inventory:takeAllItems(player)
         exports.pb_inventory:givePlayerParachute(player)
     end
 end

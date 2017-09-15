@@ -75,7 +75,7 @@ addEventHandler("onMatchFinished", resourceRoot, function (rank, totalPlayers, t
 end)
 
 addEvent("onMatchPlayerWasted", true)
-addEventHandler("onMatchPlayerWasted", resourceRoot, function (aliveCount, killer)
+addEventHandler("onMatchPlayerWasted", root, function (aliveCount, killer)
     exports.pb_hud:setCounter("alive", aliveCount)
 
     if isElement(killer) then

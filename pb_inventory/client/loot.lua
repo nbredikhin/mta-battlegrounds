@@ -4,6 +4,13 @@ local colshapeItems = {}
 addEventHandler("onClientPreRender", root, function ()
     colshapeItems = {}
 
+    lootColshape.position = localPlayer.position
+    lootColshape.dimension = localPlayer.dimension
+    -- Лут вокруг не будет отображаться, если игрок находится в автомобиле
+    if localPlayer.vehicle then
+        return
+    end
+
     for i, element in ipairs(lootColshape:getElementsWithin("object")) do
         if element.dimension == localPlayer.dimension then
             local item = element:getData("loot_item")
@@ -34,6 +41,5 @@ function getLootItems()
 end
 
 addEventHandler("onClientResourceStart", resourceRoot, function ()
-    lootColshape = createColSphere(0, 0, 0, 2)
-    lootColshape:attach(localPlayer)
+    lootColshape = createColSphere(0, 0, 0, Config.minLootDistance)
 end)
