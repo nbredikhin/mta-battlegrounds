@@ -80,7 +80,8 @@ function updateMatch(match)
     if match.state == "waiting" then
         local isWaitingOver = false
 
-        if #match.players < math.min(#getElementsByType("player"), Config.minMatchPlayers) then
+        -- if #match.players < math.min(#getElementsByType("player"), Config.minMatchPlayers) then
+        if #match.players < Config.minMatchPlayers then
             match.stateTime = 0
         else
             if #match.players > 30 then

@@ -33,6 +33,10 @@ end
 addEventHandler("onResourceStart", resourceRoot, function ()
     local startedCount = 0
 
+    for name, value in pairs(Config.serverConfig) do
+        setServerConfigSetting(tostring(name), tostring(value), true)
+    end
+
     outputStartupMessage("Starting gamemode...")
     for i, resourceName in ipairs(Config.resourceList) do
         local status, message = setResourceRunning(resourceName, true)

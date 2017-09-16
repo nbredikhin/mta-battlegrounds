@@ -5,7 +5,8 @@
     <script type="server" src="startup.lua"/>
 
     <aclrequest>
-        <right name="function.startResource" access="true"/>
-        <right name="function.stopResource" access="true"/>
+        <right name="function.startResource"          access="true"/>
+        <right name="function.stopResource"           access="true"/>
+        <right name="function.setServerConfigSetting" access="true"/>
     </aclrequest>
 </meta>

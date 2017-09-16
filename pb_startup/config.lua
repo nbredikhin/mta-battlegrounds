@@ -2,6 +2,13 @@ Config = {}
 
 -- Print additional information
 Config.verboseMode = false
+-- Server settings
+Config.serverConfig = {
+    bullet_sync = 1,
+    fpslimit = 60,
+    -- networkencryption = 0,
+    lightweight_sync_interval = 3000,
+}
 -- Message that apperas after successful start
 Config.welcomeMessage = "Welcome to PUBG MTA"
 -- Startup resources list
