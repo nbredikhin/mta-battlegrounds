@@ -1,5 +1,17 @@
 <meta>
     <oop>true</oop>
 
+    <script type="shared" src="shared/async.lua"/>
+    <script type="shared" src="shared/config.lua"/>
+    <script type="shared" src="shared/chunk.lua"/>
+
     <script type="server" src="server/main.lua"/>
+
+    <script type="client" src="client/main.lua"/>
+
+    <export type="server" function="createStaticObject"/>
+    <export type="server" function="destroyStaticObject"/>
+    <export type="server" function="setObjectProperty"/>
+    <export type="server" function="setObjectData"/>
+    <export type="server" function="getObjectData"/>
 </meta>
