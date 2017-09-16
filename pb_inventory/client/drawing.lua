@@ -102,7 +102,7 @@ function tryPickupLootItem(item)
     if getBackpackTotalWeight() + getItemWeight(item) > getBackpackCapacity() then
         showWeightError()
     end
-    triggerServerEvent("pickupLootItem", resourceRoot, item.lootElement)
+    triggerServerEvent("pickupLootItem", resourceRoot, item.lootElement, nil, item.name)
 end
 
 function stopDragging(slotType, slot)
@@ -113,7 +113,7 @@ function stopDragging(slotType, slot)
     -- dragType - откуда
     if slotType == "weapon" then
         if dragType == "loot" then
-            triggerServerEvent("pickupLootItem", resourceRoot, dragItem.lootElement, slot)
+            triggerServerEvent("pickupLootItem", resourceRoot, dragItem.lootElement, slot, dragItem.name)
         elseif dragType == "weapon" then
             if string.find(dragSlot, "primary") and string.find(slot, "primary") and dragSlot ~= slot then
                 triggerServerEvent("switchPrimaryWeapons", resourceRoot)
@@ -129,7 +129,7 @@ function stopDragging(slotType, slot)
         end
     elseif slotType == "equipment" then
         if dragType == "loot" then
-            triggerServerEvent("pickupLootItem", resourceRoot, dragItem.lootElement)
+            triggerServerEvent("pickupLootItem", resourceRoot, dragItem.lootElement, dragItem.name)
         end
     elseif slotType == "loot" then
         if dragType == "weapon" then
@@ -554,9 +554,11 @@ addEventHandler("onClientKey", root, function (key, down)
     end
 end)
 
--- bindKey("tab", "down", function ()
---     showInventory(not isInventoryVisible)
--- end)
+if not isResourceRunning("pb_gameplay") then
+    bindKey("tab", "down", function ()
+        showInventory(not isInventoryVisible)
+    end)
+end
 
 addEventHandler("onClientKey", root, function (button, down)
     if not isSeparateWindowVisible or not down then

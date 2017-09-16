@@ -25,7 +25,7 @@ addEventHandler("onClientPreRender", root, function ()
                     if name then
                         table.insert(colshapeItems, name)
                     end
-                    for i, item in ipairs(items) do
+                    for name, item in pairs(items) do
                         if item.name and Items[item.name] then
                             table.insert(colshapeItems, item)
                         end

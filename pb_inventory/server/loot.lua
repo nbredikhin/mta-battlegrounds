@@ -54,25 +54,25 @@ function spawnPlayerLootBox(player)
     local backpack = getPlayerBackpack(player)
     if backpack then
         for name, item in pairs(backpack) do
-            table.insert(items, item)
+            items[item.name] = item
         end
     end
     -- Взять все снаряжение
     local equipment = getPlayerEquipment(player)
     if equipment then
         for name, item in pairs(equipment) do
-            table.insert(items, item)
+            items[item.name] = item
         end
     end
     -- Взять все оружие
     local weapons = getPlayerWeapons(player)
     if weapons then
         for name, item in pairs(weapons) do
-            table.insert(items, item)
+            items[item.name] = item
         end
     end
 
-    if #items == 0 then
+    if not next(items) then
         takeAllItems(player)
         return
     end
@@ -83,11 +83,14 @@ function spawnPlayerLootBox(player)
     object.dimension = player.dimension
     -- Закинуть вещи в коробку
     takeAllItems(player)
+    for name, item in pairs(items) do
+        item.lootElement = object
+    end
     object:setData("loot_items", items)
 end
 
 addEvent("pickupLootItem", true)
-addEventHandler("pickupLootItem", resourceRoot, function (element, weaponSlot)
+addEventHandler("pickupLootItem", resourceRoot, function (element, weaponSlot, itemName)
     if not isElement(element) then
         return
     end
@@ -97,11 +100,37 @@ addEventHandler("pickupLootItem", resourceRoot, function (element, weaponSlot)
     if getDistanceBetweenPoints3D(client.position, element.position) > Config.minLootDistance + 2 then
         return
     end
-    local item = element:getData("loot_item")
+    local item
+    local isLootBox = false
+    local lootItems = element:getData("loot_items")
+    if lootItems and itemName then
+        isLootBox = true
+
+        item = lootItems[itemName]
+    end
+
     if not isItem(item) then
-        destroyElement(element)
+        item = element:getData("loot_item")
+    end
+
+    local function removeLootItem()
+        if isLootBox then
+            lootItems[itemName] = nil
+            if next(lootItems) then
+                element:setData("loot_items", lootItems)
+            else
+                destroyElement(element)
+            end
+        else
+            destroyElement(element)
+        end
+    end
+
+    if not isItem(item) then
+        removeLootItem()
         return
     end
+
     item.lootElement = nil
     if isItemWeapon(item) then
         local primarySlot
@@ -111,13 +140,13 @@ addEventHandler("pickupLootItem", resourceRoot, function (element, weaponSlot)
             primarySlot = 2
         end
         addPlayerWeapon(client, item, primarySlot)
-        destroyElement(element)
+        removeLootItem()
     elseif isItemEquipment(item) then
         addPlayerEquipment(client, item)
-        destroyElement(element)
+        removeLootItem()
     else
         if addBackpackItem(client, item) then
-            destroyElement(element)
+            removeLootItem()
         end
     end
 
