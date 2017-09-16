@@ -312,6 +312,12 @@ local function drawEquipmentSlot(slot, x, y, size)
     if IconTextures[item.name] then
         dxDrawImage(x, y, size, size, IconTextures[item.name])
     end
+    local itemClass = Items[item.name]
+    if itemClass and itemClass.vars and itemClass.vars.health and item.health < itemClass.vars.health then
+        local mul = item.health / itemClass.vars.health
+        local h = size * mul
+        dxDrawRectangle(x, y + size - h, size, h, tocolor(255, 0, 0, 80))
+    end
     if isMouseOver(x, y, size, size) then
         dxDrawRectangle(x, y, size, size, colors.selection)
         if isMousePressed then

@@ -42,15 +42,16 @@ local function drawWeaponSlot(slot, x, y)
     end
     local weaponSlot = getSlotFromWeapon(weaponId)
     local size = 1
-    local clip = item.clip
-    local ammo = exports.pb_inventory:getWeaponAmmo(item)
-    local w = math.floor(icon.width * 0.2 * size)
-    local h = math.floor(icon.height * 0.2 * size)
+    local clip, ammo = exports.pb_inventory:getWeaponAmmo(item)
     local ix = x + weaponIconWidth / 2
     local alpha = math.max(0, (2 - math.abs(screenSize.x / 2 - ix) / weaponIconWidth) / 2)
-    if slot ~= activeSlotName then
+    if slot == activeSlotName then
+        size = iconSize
+    else
         alpha = alpha * iconAlpha
     end
+    local w = math.floor(icon.width * 0.2 * size)
+    local h = math.floor(icon.height * 0.2 * size)
     if alpha < 0.1 then
         return
     end
@@ -120,8 +121,8 @@ addEventHandler("onClientResourceStart", resourceRoot, function ()
     globalAlpha = 0
 end)
 
-addEvent("onWeaponsUpdate", false)
-addEventHandler("onWeaponsUpdate", root, function ()
+addEvent("onClientWeaponsUpdate", true)
+addEventHandler("onClientWeaponsUpdate", root, function ()
     clientSlots = {}
     local clientWeapons = exports.pb_inventory:getClientWeapons() or {}
     for i, slot in ipairs(slotsOrder) do
@@ -131,12 +132,6 @@ addEventHandler("onWeaponsUpdate", root, function ()
     end
 end)
 
-addEvent("onWeaponHidden", false)
-addEventHandler("onWeaponHidden", root, function ()
-    iprint("Hidden")
-    isHiding = true
-end)
-
 addEvent("onClientSwitchWeaponSlot", true)
 addEventHandler("onClientSwitchWeaponSlot", root, function ()
     if isTimer(fadingTimer) then
@@ -144,6 +139,10 @@ addEventHandler("onClientSwitchWeaponSlot", root, function ()
     end
     isHiding = false
     local newSlot = localPlayer:getData("activeWeaponSlot")
+    if not newSlot then
+        isHiding = true
+        return
+    end
     if activeSlotName == newSlot then
         return
     end

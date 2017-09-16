@@ -1,4 +1,5 @@
 local slotsOrder = {"primary1", "primary2", "secondary", "melee", "grenade"}
+local activeSlotIndex = 1
 local reloadableWeapons = {
     primary1  = true,
     primary2  = true,
@@ -87,6 +88,7 @@ end
 addEventHandler("onClientResourceStart", resourceRoot, function ()
     for i = 1, #slotsOrder do
         bindKey(tostring(i), "down", function ()
+            activeSlotIndex = i
             setActiveWeaponSlot(slotsOrder[i])
         end)
     end
@@ -106,3 +108,19 @@ addEventHandler("onClientReloadFinished", resourceRoot, function ()
 end)
 
 localPlayer:setData("isReloadingWeapon", false)
+
+bindKey("next_weapon", "down", function ()
+    activeSlotIndex = activeSlotIndex + 1
+    if activeSlotIndex > #slotsOrder then
+        activeSlotIndex = #slotsOrder
+    end
+    setActiveWeaponSlot(slotsOrder[activeSlotIndex])
+end)
+
+bindKey("previous_weapon", "down", function ()
+    activeSlotIndex = activeSlotIndex - 1
+    if activeSlotIndex < 1 then
+        activeSlotIndex = 1
+    end
+    setActiveWeaponSlot(slotsOrder[activeSlotIndex])
+end)
