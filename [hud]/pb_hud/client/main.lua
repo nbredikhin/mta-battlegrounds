@@ -81,7 +81,7 @@ addEventHandler("onClientRender", root, function ()
     if (isResourceRunning("pb_map") and exports.pb_map:isVisible()) or
        (isResourceRunning("pb_inventory") and exports.pb_inventory:isVisible())
     then
-        drawCounter(x, y, counters.kills, "УБИТО")
+        drawCounter(x, y, localPlayer:getData("kills") or 0, "УБИТО")
     end
 end, false, "low-1")
 
