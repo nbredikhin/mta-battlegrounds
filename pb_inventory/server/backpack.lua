@@ -180,6 +180,5 @@ end)
 
 addEvent("requireClientBackpack", true)
 addEventHandler("requireClientBackpack", resourceRoot, function ()
-    savePlayerCurrentWeapon(client)
     sendPlayerBackpack(client)
 end)

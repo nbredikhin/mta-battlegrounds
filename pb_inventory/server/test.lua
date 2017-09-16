@@ -6,8 +6,8 @@ setTimer(function ()
     weapon.clip = 10
     addPlayerWeapon(player, weapon)
 
-    local weapon = createItem("weapon_ak47")
-    addPlayerWeapon(player, weapon)
+    -- local weapon = createItem("weapon_ak47")
+    -- addPlayerWeapon(player, weapon)
 
     local weapon = createItem("weapon_crowbar")
     addPlayerWeapon(player, weapon)
@@ -16,8 +16,13 @@ setTimer(function ()
     weapon.clip = 5
     addPlayerWeapon(player, weapon)
 
-    local weapon = createItem("weapon_grenade", 3)
+    local weapon = createItem("weapon_shotgun")
+    weapon.clip = 5
     addPlayerWeapon(player, weapon)
+
+    local weapon = createItem("weapon_grenade", 5)
+    addPlayerWeapon(player, weapon)
+
 
     -- Снаряжение
     addPlayerEquipment(player, createItem("backpack_large"))
@@ -28,8 +33,9 @@ setTimer(function ()
     addBackpackItem(player, item)
 
     addBackpackItem(player, createItem("ammo_556mm", 30))
+    addBackpackItem(player, createItem("ammo_12gauge", 30))
 
     -- Лут
     -- spawnPlayerLootBox(player)
-    setTimer(spawnPlayerLootBox, 500, 1, player)
+    -- setTimer(spawnPlayerLootBox, 500, 1, player)
 end, 500, 1)

@@ -133,6 +133,7 @@ function stopDragging(slotType, slot)
         end
     elseif slotType == "loot" then
         if dragType == "weapon" then
+            saveActiveWeaponClip()
             triggerServerEvent("dropPlayerWeapon", resourceRoot, dragSlot)
         elseif dragType == "backpack" then
             if getKeyState("lctrl") then
@@ -289,6 +290,7 @@ local function drawWeaponSlot(slot, x, y, size, hotkey)
         if isMousePressed then
             startDragging("weapon", item, slot)
         elseif isRightMousePressed then
+            saveActiveWeaponClip()
             triggerServerEvent("dropPlayerWeapon", resourceRoot, slot)
         end
     end

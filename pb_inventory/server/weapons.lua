@@ -123,11 +123,12 @@ function dropPlayerWeapon(player, slot)
         return
     end
     if playerWeapons[player][slot] then
-        savePlayerCurrentWeapon(player)
         spawnPlayerLootItem(player, playerWeapons[player][slot])
         playerWeapons[player][slot] = nil
 
-        hidePlayerWeapon(player)
+        if player:getData("activeWeaponSlot") == slot then
+            setPlayerActiveWeaponSlot(player)
+        end
         updatePlayerWeapons(player)
     end
 end
@@ -138,7 +139,9 @@ function takePlayerWeapon(player, slot)
     end
     if playerWeapons[player][slot] then
         playerWeapons[player][slot] = nil
-        hidePlayerWeapon(player)
+        if player:getData("activeWeaponSlot") == slot then
+            setPlayerActiveWeaponSlot(player)
+        end
         updatePlayerWeapons(player)
     end
 end
@@ -159,6 +162,13 @@ addEventHandler("switchPrimaryWeapons", resourceRoot, function ()
     playerWeapons[player]["primary2"] = primary1
     updatePlayerWeapons(player)
 end)
+
+function getPlayerWeaponSlot(player, slot)
+    if not player or not slot or not playerWeapons[player] then
+        return false
+    end
+    return playerWeapons[player][slot]
+end
 
 function putPlayerWeaponToBackpack(player, slot)
     if not isElement(player) or not playerWeapons[player] or type(slot) ~= "string" then
@@ -227,159 +237,3 @@ function updatePlayerWeapons(player, omitEvent)
 
     updateWearableWeapons(player)
 end
-
-function isPlayerReloading(player)
-    return not not player:getData("isReloadingWeapon")
-end
-
-function savePlayerCurrentWeapon(player)
-    if not isElement(player) then
-        return
-    end
-    if hasPlayerParachute() then
-        return
-    end
-    local slot = player:getData("activeWeaponSlot")
-    if type(slot) ~= "string" then
-        return
-    end
-    local item = playerWeapons[player][slot]
-    if isItem(item) then
-        local weaponId = Items[item.name].weaponId
-        local weaponSlot = getSlotFromWeapon(weaponId)
-        if Items[item.name].category == "weapon_grenade" then
-            local count = getPedTotalAmmo(player, weaponSlot)
-            item.count = count
-            if item.count <= 0 then
-                takePlayerWeapon(player, slot)
-            end
-        else
-            item.clip = math.max(0, getPedAmmoInClip(player, weaponSlot))
-            local ammo = getPedTotalAmmo(player, weaponSlot) - item.clip
-            setPlayerBackpackItemCount(
-                player,
-                getWeaponAmmoName(item),
-                ammo
-            )
-            updatePlayerWeapons(player)
-        end
-    end
-end
-
-function updatePlayerWeaponAmmo(player)
-    if not isElement(player) then
-        return
-    end
-    if hasPlayerParachute(player) then
-        return
-    end
-    local slot = player:getData("activeWeaponSlot")
-    if type(slot) ~= "string" then
-        return
-    end
-    takeAllWeapons(player)
-    local item = playerWeapons[player][slot]
-    if isItem(item) then
-        local weaponId = Items[item.name].weaponId
-        local clip = 0
-        local ammo = 0
-        if Items[item.name].category == "weapon_grenade" then
-            ammo = item.count
-            clip = ammo
-        else
-            clip = item.clip
-            ammo = getPlayerBackpackItemCount(player, getWeaponAmmoName(item)) + (clip or 0)
-
-            if not clip then
-                clip = ammo
-            end
-        end
-        if ammo + clip == 0 then
-            hidePlayerWeapon(player)
-        else
-            giveWeapon(player, weaponId, 0, true)
-            setWeaponAmmo(player, weaponId, ammo, clip)
-        end
-    else
-        hidePlayerWeapon(player)
-    end
-end
-
-addEvent("onPlayerBackpackUpdate", false)
-addEventHandler("onPlayerBackpackUpdate", root, function ()
-    updatePlayerWeaponAmmo(source)
-end)
-
-function showPlayerWeaponSlot(player, slot)
-    if not isElement(player) or not slot then
-        return
-    end
-    if isPlayerReloading(player) then
-        return
-    end
-    if hasPlayerParachute(player) then
-        return
-    end
-    savePlayerCurrentWeapon(player)
-    takeAllWeapons(player)
-    player:setData("activeWeaponSlot", slot, false)
-    updatePlayerWeaponAmmo(player)
-    updateWearableWeapons(player)
-end
-
-addEvent("showPlayerWeaponSlot", true)
-addEventHandler("showPlayerWeaponSlot", resourceRoot, function (slot)
-    if hasPlayerParachute() then
-        return
-    end
-    showPlayerWeaponSlot(client, slot)
-end)
-
-function hidePlayerWeapon(player)
-    savePlayerCurrentWeapon(player)
-    player:setData("activeWeaponSlot", false, false)
-    takeAllWeapons(player)
-    updateWearableWeapons(player)
-end
-
-addEvent("hidePlayerWeapon", true)
-addEventHandler("hidePlayerWeapon", resourceRoot, function ()
-    if hasPlayerParachute() then
-        return
-    end
-    hidePlayerWeapon(client)
-end)
-
-addEvent("reloadPlayerWeapon", true)
-addEventHandler("reloadPlayerWeapon", resourceRoot, function ()
-    local player = client
-    if hasPlayerParachute() then
-        return
-    end
-    local slot = player:getData("activeWeaponSlot")
-    if type(slot) ~= "string" then
-        return
-    end
-    if isPlayerReloading(player) then
-        return
-    end
-    player:setData("isReloadingWeapon", true, false)
-    player:reloadWeapon()
-
-    setTimer(function ()
-        if not isElement(player) then return end
-        player:setData("isReloadingWeapon", false, false)
-        savePlayerCurrentWeapon(player)
-    end, 1800, 1)
-end)
-
-addEventHandler("onPlayerWeaponFire", root, function (weaponId)
-    if source:getData("activeWeaponSlot") == "melee" then
-        return
-    end
-    local weaponSlot = getSlotFromWeapon(weaponId)
-    if getPedAmmoInClip(source, weaponSlot) == 1 then
-        local player = source
-        setTimer(savePlayerCurrentWeapon, 500, 1, player)
-    end
-end)

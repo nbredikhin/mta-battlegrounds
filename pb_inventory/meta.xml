@@ -9,6 +9,7 @@
     <script type="client" src="client/drawing.lua"/>
     <script type="client" src="client/loot.lua"/>
     <script type="client" src="client/weapons.lua"/>
+    <script type="client" src="client/weapon_switching.lua"/>
     <script type="client" src="client/equipment.lua"/>
     <script type="client" src="client/wearing.lua"/>
     <script type="client" src="client/pickup.lua"/>
@@ -17,6 +18,7 @@
     <script type="server" src="server/parachute.lua"/>
     <script type="server" src="server/items.lua"/>
     <script type="server" src="server/weapons.lua"/>
+    <script type="server" src="server/weapon_switching.lua"/>
     <script type="server" src="server/backpack.lua"/>
     <script type="server" src="server/loot.lua"/>
     <script type="server" src="server/equipment.lua"/>

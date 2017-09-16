@@ -18,6 +18,8 @@ local isFading = false
 local bulletTexture
 local fadingTimer
 
+local isHiding = false
+
 local activeSlotName, activeSlotIndex = "primary1", 1
 
 local function isResourceRunning(resName)
@@ -41,16 +43,7 @@ local function drawWeaponSlot(slot, x, y)
     local weaponSlot = getSlotFromWeapon(weaponId)
     local size = 1
     local clip = item.clip
-    local ammo = exports.pb_inventory:getWeaponAmmo(item)--item.ammo
-    if slot == activeSlotName then
-        size = iconSize
-        if localPlayer:getWeapon() ~= 0 then
-            clip = localPlayer:getAmmoInClip(weaponSlot)
-            ammo = localPlayer:getTotalAmmo(weaponSlot) - clip
-        end
-    else
-        clip = nil
-    end
+    local ammo = exports.pb_inventory:getWeaponAmmo(item)
     local w = math.floor(icon.width * 0.2 * size)
     local h = math.floor(icon.height * 0.2 * size)
     local ix = x + weaponIconWidth / 2
@@ -91,6 +84,9 @@ addEventHandler("onClientRender", root, function ()
         return
     end
     if not isResourceRunning("pb_inventory") then
+        return
+    end
+    if isHiding then
         return
     end
     scrollOffset = scrollOffset + (-((activeSlotIndex - 1) * weaponIconWidth + weaponIconWidth / 2) - scrollOffset) * 0.2
@@ -135,13 +131,19 @@ addEventHandler("onWeaponsUpdate", root, function ()
     end
 end)
 
-addEvent("onWeaponSlotChange", false)
-addEventHandler("onWeaponSlotChange", root, function ()
+addEvent("onWeaponHidden", false)
+addEventHandler("onWeaponHidden", root, function ()
+    iprint("Hidden")
+    isHiding = true
+end)
+
+addEvent("onClientSwitchWeaponSlot", true)
+addEventHandler("onClientSwitchWeaponSlot", root, function ()
     if isTimer(fadingTimer) then
         killTimer(fadingTimer)
     end
-
-    local newSlot = exports.pb_inventory:getActiveWeaponSlot()
+    isHiding = false
+    local newSlot = localPlayer:getData("activeWeaponSlot")
     if activeSlotName == newSlot then
         return
     end
