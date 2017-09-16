@@ -15,6 +15,20 @@ Items = {
         category     = "medicine",
     },
 
+    medkit = {
+        level        = 3,
+        tag          = "medicine",
+
+        icon         = "medkit.png",
+        readableName = "Большая аптечка",
+        stackable    = true,
+        heal         = 100,
+        heal_max     = 100,
+        use_time     = 8000,
+        weight       = 15,
+        category     = "medicine",
+    },
+
     first_aid = {
         level        = 2,
         tag          = "medicine",
@@ -118,6 +132,18 @@ Items = {
         weaponId     = 16,
         stackable    = true,
         weight       = 12
+    },
+
+    weapon_molotov = {
+        level        = 3,
+        tag          = "weapon",
+
+        icon         = "molotov.png",
+        readableName = "Коктейль Молотова",
+        category     = "weapon_grenade",
+        weaponId     = 18,
+        stackable    = true,
+        weight       = 8
     },
 
     backpack_small = {

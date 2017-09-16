@@ -10,7 +10,10 @@ local function endUsing()
     usingItem = nil
     usingTime = nil
     usingPosition = nil
+    localPlayer:setAnimation()
 end
+
+bindKey("f", "down", endUsing)
 
 local function healSelf(item)
     endUsing()
@@ -50,6 +53,7 @@ function useItem(item)
         usingTime = itemClass.use_time
         usageTimer = setTimer(healSelf, usingTime, 1, item)
         usingPosition = localPlayer.position
+        localPlayer:setAnimation("FOOD", "EAT_Pizza", -1, true, false, true, true)
     end
 end
 

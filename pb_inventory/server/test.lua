@@ -20,7 +20,7 @@ setTimer(function ()
     -- weapon.clip = 5
     -- addPlayerWeapon(player, weapon)
 
-    local weapon = createItem("weapon_grenade", 5)
+    local weapon = createItem("weapon_molotov", 5)
     addPlayerWeapon(player, weapon)
 
     -- Снаряжение
@@ -28,7 +28,7 @@ setTimer(function ()
     addPlayerEquipment(player, createItem("helmet3",1,{health=5}))
 
     -- Вещи
-    local item = createItem("bandage", 5)
+    local item = createItem("medkit", 1)
     addBackpackItem(player, item)
 
     addBackpackItem(player, createItem("ammo_556mm", 30))

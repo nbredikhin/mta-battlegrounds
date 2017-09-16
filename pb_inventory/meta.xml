@@ -29,12 +29,14 @@
 
     <file src="assets/icons/bandage.png"/>
     <file src="assets/icons/first_aid.png"/>
+    <file src="assets/icons/medkit.png"/>
     <file src="assets/icons/m4.png"/>
     <file src="assets/icons/ak47.png"/>
     <file src="assets/icons/colt45.png"/>
     <file src="assets/icons/shotgun.png"/>
     <file src="assets/icons/crowbar.png"/>
     <file src="assets/icons/grenade.png"/>
+    <file src="assets/icons/molotov.png"/>
     <file src="assets/icons/backpack_small.png"/>
     <file src="assets/icons/backpack_medium.png"/>
     <file src="assets/icons/backpack_large.png"/>

@@ -81,6 +81,9 @@ function setActiveWeaponSlot(slotName)
     if localPlayer:getData("isReloadingWeapon") then
         return
     end
+    if localPlayer.vehicle then
+        slotName = ""
+    end
     saveActiveWeaponClip()
     triggerServerEvent("onPlayerSwitchWeaponSlot", resourceRoot, slotName)
 end
