@@ -1,7 +1,9 @@
+local screenSize = Vector2(guiGetScreenSize())
 local usageTimer
 local usingItem
 local usingTime
 local usingPosition
+local usingItemName
 
 local function endUsing()
     if isTimer(usageTimer) then
@@ -53,12 +55,23 @@ function useItem(item)
         usingTime = itemClass.use_time
         usageTimer = setTimer(healSelf, usingTime, 1, item)
         usingPosition = localPlayer.position
+
+        usingItemName = itemClass.readableName
         localPlayer:setAnimation("FOOD", "EAT_Pizza", -1, true, false, true, true)
     end
 end
 
 addEventHandler("onClientRender", root, function ()
-    if usingPosition and getDistanceBetweenPoints3D(localPlayer.position, usingPosition) > 1 then
-        endUsing()
+    if usingPosition and usingItem then
+        local time = tostring(math.floor(getTimerDetails(usageTimer) / 100 ) / 10)
+        if string.len(time) == 1 then
+            time = time .. ".0"
+        end
+        str = "Использование " ..tostring(usingItemName) .. " - " .. time .. "\nНажмите F, чтобы отменить"
+        dxDrawText(str, 1, 1, screenSize.x + 1, screenSize.y * 0.6 + 1, tocolor(0, 0, 0, 150), 1.5, "default-bold", "center", "bottom")
+        dxDrawText(str, 0, 0, screenSize.x, screenSize.y * 0.6, tocolor(255, 255, 255), 1.5, "default-bold", "center", "bottom")
+        if getDistanceBetweenPoints3D(localPlayer.position, usingPosition) > 1 then
+            endUsing()
+        end
     end
 end)

@@ -16,6 +16,7 @@ Config.resourceList = {
     "bone_attach",
     "parachute",
 
+    "pb_mapping",
     "pb_models",
     "pb_zones",
     "pb_loot",

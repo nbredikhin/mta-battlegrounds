@@ -17,4 +17,4 @@ Config.planeDistance = 3500
 Config.planeCameraDistance = 50
 Config.autoParachuteDistance = 2650
 
-Config.waitingPosition = Vector3(1787.384, -2538.799, 13.547)
+Config.waitingPosition = Vector3({ x = 761.044, y = -3262.803, z = 4.160})

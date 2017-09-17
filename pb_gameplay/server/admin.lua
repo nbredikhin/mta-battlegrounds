@@ -29,3 +29,17 @@ addCommandHandler("startmatch", function (player, cmd, id)
         match.forceStart = true
     end
 end)
+
+addCommandHandler("skipzone", function (player, cmd, id)
+    local id = tonumber(id)
+
+    if id then
+        local match = getMatchById(id)
+        if not match then
+            return
+        end
+
+        match.shrinkTimer = 0
+        match.zoneTimer = 0
+    end
+end)

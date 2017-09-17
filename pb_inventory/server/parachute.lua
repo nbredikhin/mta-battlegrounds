@@ -3,7 +3,7 @@ function givePlayerParachute(player)
         return
     end
 
-    hidePlayerWeapon(player)
+    setPlayerActiveWeaponSlot(player)
     player:setData("has_parachute", true)
     giveWeapon(player, 46, 1, true)
 end
@@ -16,7 +16,7 @@ function takePlayerParachute(player)
         return
     end
     player:removeData("has_parachute")
-    hidePlayerWeapon(player)
+    setPlayerActiveWeaponSlot(player)
 end
 
 function hasPlayerParachute(player)

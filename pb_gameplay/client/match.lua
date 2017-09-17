@@ -17,6 +17,10 @@ addEventHandler("onJoinedMatch", resourceRoot, function (settings, aliveCount)
     setTimer(fadeCamera, 50, 1, false, 0)
     setTimer(fadeCamera, 1000, 1, true, 1)
     setTimer(showGameHUD, 1500, 1, true)
+
+    for i, element in ipairs(getResourceFromName("pb_mapping").rootElement:getChildren()) do
+        element.dimension = localPlayer.dimension
+    end
 end)
 
 addEvent("onLeftMatch", true)
