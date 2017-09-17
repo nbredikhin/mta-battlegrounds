@@ -40,6 +40,22 @@ addCommandHandler("startmatch", function (player, cmd, id)
     end
 end)
 
+addCommandHandler("matchwait", function (player, cmd, id)
+    if not isPlayerAdmin(player) then
+        return
+    end
+    local id = tonumber(id)
+
+    if id then
+        local match = getMatchById(id)
+        if not match then
+            return
+        end
+
+        match.stateTime = 0
+    end
+end)
+
 addCommandHandler("skipzone", function (player, cmd, id)
     if not isPlayerAdmin(player) then
         return

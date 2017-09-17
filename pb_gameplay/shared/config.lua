@@ -1,6 +1,6 @@
 Config = {}
 
-Config.minMatchPlayers = 20
+Config.minMatchPlayers = 35
 
 -- В секундах
 Config.matchWaitingTime = 60

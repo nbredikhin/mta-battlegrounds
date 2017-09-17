@@ -8,7 +8,7 @@ local zoneActive = false
 local maxExplosionsCount = 12
 local explosionId = 0
 
-local disableDamage = true
+local disableDamage = false
 
 function getRedZone()
     if not isTimer(zoneTimer) then

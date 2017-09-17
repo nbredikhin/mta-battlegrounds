@@ -34,6 +34,6 @@ function initPlayerSkillStats(player)
     end
     for i = 69, 79 do
         local stat = overrideStat[i] or 1000
-        player:setStat(i, 1000)
+        player:setStat(i, stat)
     end
 end

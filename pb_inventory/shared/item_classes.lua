@@ -261,7 +261,7 @@ Items = {
     },
 
     armor2 = {
-        level             = 1,
+        level             = 2,
         tag               = "equipment",
 
         icon              = "armor2.png",
@@ -274,7 +274,7 @@ Items = {
     },
 
     armor3 = {
-        level             = 1,
+        level             = 3,
         tag               = "equipment",
 
         icon              = "armor3.png",

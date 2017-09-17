@@ -80,9 +80,10 @@ function updateMatch(match)
     if match.state == "waiting" then
         local isWaitingOver = false
 
-        if #match.players < math.min(getLobbyPlayersCount(), Config.minMatchPlayers) then
-        -- if #match.players < Config.minMatchPlayers then
+        local needPlayers = math.min(math.floor(#getElementsByType("player") * 0.5), Config.minMatchPlayers)
+        if #match.players < needPlayers then
             match.stateTime = 0
+            exports.pb_alert:show(match.players, "ОЖИДАНИЕ ПРИСОЕДИНЕНИЯ ДРУГИХ ИГРКОВ\n"..tostring(#match.players).." из "..tostring(needPlayers), 2000, 0xFFAAFAE1)
         else
             if #match.players > 30 then
 

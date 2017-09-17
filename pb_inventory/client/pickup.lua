@@ -50,9 +50,12 @@ addEventHandler("onClientRender", root, function()
     end
 end)
 
-bindKey("f", "down", function ()
-    if isItem(pickupItem) then
-        tryPickupLootItem(pickupItem)
-        pickupItem = nil
+addEventHandler("onClientKey", root, function (button, down)
+    if button == "f" and down then
+        if isItem(pickupItem) then
+            tryPickupLootItem(pickupItem)
+            pickupItem = nil
+            cancelEvent()
+        end
     end
 end)

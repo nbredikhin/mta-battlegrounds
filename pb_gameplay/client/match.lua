@@ -21,6 +21,8 @@ addEventHandler("onJoinedMatch", resourceRoot, function (settings, aliveCount)
     for i, element in ipairs(getResourceFromName("pb_mapping").rootElement:getChildren()) do
         element.dimension = localPlayer.dimension
     end
+
+    localPlayer:setData("map_marker", false)
 end)
 
 addEvent("onLeftMatch", true)

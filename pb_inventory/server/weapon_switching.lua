@@ -19,7 +19,7 @@ function updatePlayerActiveWeapon(player)
         if itemClass.category == "weapon_grenade" then
             giveWeapon(player, weaponId, item.count, true)
         else
-            giveWeapon(player, weaponId, 2, true)
+            giveWeapon(player, weaponId, 999, true)
         end
     end
 end
@@ -52,7 +52,7 @@ addEventHandler("onPlayerSwitchWeaponSlot", resourceRoot, function (slotName)
 end)
 
 addEventHandler("onPlayerWeaponFire", root, function (weaponId)
-    setWeaponAmmo(source, weaponId, 2, 2)
+    setWeaponAmmo(source, weaponId, 999, 999)
 end)
 
 addEvent("onPlayerReloadWeapon", true)
