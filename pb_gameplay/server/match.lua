@@ -6,6 +6,11 @@ local matchTypes = {
 local maxMatchPlayers = 100
 local matchCounter = 0
 local matchesList = {}
+local lobbyPlayersCount = 0
+
+function getLobbyPlayersCount()
+    return lobbyPlayersCount
+end
 
 function getMatchTypeFromPlayersCount(count)
     if not count then
@@ -227,5 +232,12 @@ setTimer(function ()
         match.stateTime = match.stateTime + 1
         match.totalTime = match.totalTime + 1
         updateMatch(match)
+    end
+
+    lobbyPlayersCount = 0
+    for i, player in ipairs(getElementsByType("player")) do
+        if not player:getData("matchId") then
+            lobbyPlayersCount = lobbyPlayersCount + 1
+        end
     end
 end, 1000, 0)

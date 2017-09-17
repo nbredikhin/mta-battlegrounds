@@ -24,7 +24,8 @@ setTimer(function ()
     -- addPlayerWeapon(player, weapon)
 
     -- Снаряжение
-    -- addPlayerEquipment(player, createItem("backpack_large"))
+    addPlayerEquipment(player, createItem("armor2"))
+    addPlayerEquipment(player, createItem("backpack_small"))
     -- addPlayerEquipment(player, createItem("helmet3",1,{health=5}))
 
     -- Вещи

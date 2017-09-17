@@ -6,6 +6,10 @@ ReplacedModels = {
     helmet1 = 1854,
     helmet2 = 1855,
     helmet3 = 1856,
+
+    armor1 = 1857,
+    armor2 = 1858,
+    armor3 = 1859,
 }
 
 function getItemModel(name)

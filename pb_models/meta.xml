@@ -19,4 +19,11 @@
     <file src="models/helmet2.txd"/>
     <file src="models/helmet3.dff"/>
     <file src="models/helmet3.txd"/>
+
+    <file src="models/armor1.dff"/>
+    <file src="models/armor1.txd"/>
+    <file src="models/armor2.dff"/>
+    <file src="models/armor2.txd"/>
+    <file src="models/armor3.dff"/>
+    <file src="models/armor3.txd"/>
 </meta>

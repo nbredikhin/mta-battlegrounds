@@ -1,3 +1,10 @@
+function isPlayerAdmin(thePlayer)
+     local accName=getAccountName(getPlayerAccount(thePlayer))
+     if isObjectInACLGroup("user." ..accName, aclGetGroup("Admin")) then
+          return true
+     end
+end
+
 addEvent("requireMatchesList", true)
 addEventHandler("requireMatchesList", resourceRoot, function ()
     local list = {}
@@ -18,6 +25,9 @@ addEventHandler("requireMatchesList", resourceRoot, function ()
 end)
 
 addCommandHandler("startmatch", function (player, cmd, id)
+    if not isPlayerAdmin(player) then
+        return
+    end
     local id = tonumber(id)
 
     if id then
@@ -31,6 +41,9 @@ addCommandHandler("startmatch", function (player, cmd, id)
 end)
 
 addCommandHandler("skipzone", function (player, cmd, id)
+    if not isPlayerAdmin(player) then
+        return
+    end
     local id = tonumber(id)
 
     if id then
@@ -39,7 +52,7 @@ addCommandHandler("skipzone", function (player, cmd, id)
             return
         end
 
-        match.shrinkTimer = 0
+        -- match.shrinkTimer = 0
         match.zoneTimer = 0
     end
 end)

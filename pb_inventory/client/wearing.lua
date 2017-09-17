@@ -9,6 +9,16 @@ local itemsAttach = {
         rz = 180
     },
 
+    armor = {
+        bone = 3,
+        x = 0,
+        y = 0.05,
+        z = 0.05,
+        rx = 0,
+        ry = 0,
+        rz = 180
+    },
+
     helmet = {
         bone = 1,
         x = 0,

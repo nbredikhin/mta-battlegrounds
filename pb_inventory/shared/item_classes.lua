@@ -215,6 +215,45 @@ Items = {
         }
     },
 
+    armor1 = {
+        level             = 1,
+        tag               = "equipment",
+
+        icon              = "armor1.png",
+        readableName      = "Бронежилет (ур.1)",
+        category          = "armor",
+        penetration_ratio = 0.8,
+        vars = {
+            health        = 10
+        }
+    },
+
+    armor2 = {
+        level             = 1,
+        tag               = "equipment",
+
+        icon              = "armor2.png",
+        readableName      = "Бронежилет (ур.2)",
+        category          = "armor",
+        penetration_ratio = 0.5,
+        vars = {
+            health        = 15
+        }
+    },
+
+    armor3 = {
+        level             = 1,
+        tag               = "equipment",
+
+        icon              = "armor3.png",
+        readableName      = "Бронежилет (ур.3)",
+        category          = "armor",
+        penetration_ratio = 0.2,
+        vars = {
+            health        = 20
+        }
+    },
+
     ammo_9mm = {
         level        = 1,
         tag          = "ammo",
