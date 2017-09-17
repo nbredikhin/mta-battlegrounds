@@ -108,6 +108,38 @@ Items = {
         }
     },
 
+    weapon_uzi = {
+        level        = 1,
+        tag          = "weapon",
+
+        icon         = "uzi.png",
+        readableName = "Uzi",
+        category     = "weapon_primary",
+        weaponId     = 28,
+        clip         = 30,
+        stackable    = false,
+        ammo         = "ammo_9mm",
+        vars = {
+            clip = 0,
+        }
+    },
+
+    weapon_mp5 = {
+        level        = 2,
+        tag          = "weapon",
+
+        icon         = "mp5.png",
+        readableName = "MP5",
+        category     = "weapon_primary",
+        weaponId     = 29,
+        clip         = 30,
+        stackable    = false,
+        ammo         = "ammo_9mm",
+        vars = {
+            clip = 0,
+        }
+    },
+
     weapon_crowbar = {
         level        = 1,
         tag          = "weapon",

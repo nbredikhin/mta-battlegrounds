@@ -12,9 +12,9 @@ setTimer(function ()
     -- local weapon = createItem("weapon_crowbar")
     -- addPlayerWeapon(player, weapon)
 
-    -- local weapon = createItem("weapon_colt45")
-    -- weapon.clip = 5
-    -- addPlayerWeapon(player, weapon)
+    local weapon = createItem("weapon_mp5")
+    weapon.clip = 5
+    addPlayerWeapon(player, weapon)
 
     -- local weapon = createItem("weapon_shotgun")
     -- weapon.clip = 5

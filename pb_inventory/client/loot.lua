@@ -7,7 +7,7 @@ addEventHandler("onClientPreRender", root, function ()
     lootColshape.position = localPlayer.position
     lootColshape.dimension = localPlayer.dimension
     -- Лут вокруг не будет отображаться, если игрок находится в автомобиле
-    if localPlayer.vehicle then
+    if localPlayer.vehicle or localPlayer.dead then
         return
     end
 

@@ -562,11 +562,14 @@ addEventHandler("onClientKey", root, function (key, down)
     end
 end)
 
--- if not isResourceRunning("pb_gameplay") then
---     bindKey("tab", "down", function ()
---         showInventory(not isInventoryVisible)
---     end)
--- end
+if not isResourceRunning("pb_gameplay") then
+    bindKey("tab", "down", function ()
+        if isResourceRunning("pb_gameplay") then
+            return
+        end
+        showInventory(not isInventoryVisible)
+    end)
+end
 
 addEventHandler("onClientKey", root, function (button, down)
     if not isSeparateWindowVisible or not down then

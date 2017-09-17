@@ -23,11 +23,17 @@ addEventHandler("onPlayerJoin", root, function ()
     source.nametagShowing = false
 end)
 
+local overrideStat = {
+    [69] = 0,
+    [75] = 0
+}
+
 function initPlayerSkillStats(player)
     if not isElement(player) then
         return
     end
     for i = 69, 79 do
+        local stat = overrideStat[i] or 1000
         player:setStat(i, 1000)
     end
 end
