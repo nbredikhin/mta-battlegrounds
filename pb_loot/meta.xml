@@ -4,11 +4,14 @@
     <script type="shared" src="shared/async.lua"/>
     <script type="shared" src="shared/config.lua"/>
     <script type="shared" src="shared/utils.lua"/>
+    <script type="shared" src="shared/chunk.lua"/>
 
     <script type="client" src="client/editor.lua"/>
+    <script type="client" src="client/chunks.lua"/>
 
     <script type="server" src="server/commands.lua"/>
-    <script type="server" src="server/main.lua"/>
+    <script type="server" src="server/generation.lua"/>
+    <script type="server" src="server/chunks.lua"/>
 
     <export type="server" function="generateLoot"/>
 

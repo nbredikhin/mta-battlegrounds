@@ -1,5 +1,9 @@
 -- Все возможные точки спавна лута
 local lootSpawnpoints = {}
+-- Точки спавна в чанках
+local chunkSpawnpoints = {}
+-- Сиды
+local dimensionSeeds = {}
 
 function createLootSpawnpoint(position, level, tag)
     if not position then
@@ -92,14 +96,28 @@ function getLootSpawnpoints()
 end
 
 -- Раскидывает лут в dimension
-function generateLoot(matchId, dimension)
+function generateChunkLoot(chunk, dimension)
+    if not chunk then
+        return {}
+    end
+    if not chunkSpawnpoints[chunk.id] then
+        return {}
+    end
+    if not dimensionSeeds[dimension] then
+        dimensionSeeds[dimension] = getTickCount() + dimension
+    end
     local spawnedItems = {}
-    Async:setPriority("low")
-    Async:iterate(1, #lootSpawnpoints, function(index)
-        local spawnpoint = lootSpawnpoints[index]
-        if not spawnpoint then
+
+    local spawnpoints = chunkSpawnpoints[chunk.id]
+
+    Async:setPriority("medium")
+    Async:foreach(spawnpoints, function(spawnpoint)
+        -- Если чанк выгрузился до того, как успели заспавниться все объекты
+        if not chunk.loaded then
             return
         end
+
+        math.randomseed(dimensionSeeds[dimension])
         local items = generateSpawnpointItems(spawnpoint)
         if items and #items > 0 then
             for i, item in ipairs(items) do
@@ -107,13 +125,23 @@ function generateLoot(matchId, dimension)
                 table.insert(spawnedItems, item)
             end
         end
-
-        if index == #lootSpawnpoints then
-            triggerEvent("onMatchLootSpawned", root, matchId, spawnedItems)
-        end
     end)
+
+    return spawnedItems
 end
 
 addEventHandler("onResourceStart", resourceRoot, function ()
     lootSpawnpoints = fromJSON(loadFile("data/spawnpoints.json") or "[[]]") or {}
+
+    chunkSpawnpoints = {}
+    for i, spawnpoint in ipairs(lootSpawnpoints) do
+        local cx, cy = getChunkFromWorldPosition(spawnpoint.x, spawnpoint.y)
+        local chunkId = getChunkId(cx, cy)
+
+        if not chunkSpawnpoints[chunkId] then
+            chunkSpawnpoints[chunkId] = {}
+        end
+
+        table.insert(chunkSpawnpoints[chunkId], spawnpoint)
+    end
 end)
