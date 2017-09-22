@@ -216,6 +216,9 @@ function destroyMatch(match)
             destroyElement(element)
         end
     end)
+    if isResourceRunning("pb_loot") then
+        exports.pb_loot:unloadDimension(match.dimension)
+    end
     -- Удалить матч из списка матчей
     for i, m in ipairs(matchesList) do
         if m == match then

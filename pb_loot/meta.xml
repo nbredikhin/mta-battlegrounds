@@ -13,7 +13,7 @@
     <script type="server" src="server/generation.lua"/>
     <script type="server" src="server/chunks.lua"/>
 
-    <export type="server" function="generateLoot"/>
+    <export type="server" function="unloadDimension"/>
 
     <serverfile src="data/spawnpoints.json"/>
 </meta>
