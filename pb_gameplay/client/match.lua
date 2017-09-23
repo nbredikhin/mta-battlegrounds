@@ -1,11 +1,14 @@
+local function handleLobbyOpening()
+    exports.pb_zones:removeZones()
+    showGameHUD(false)
+    fadeCamera(false, 0)
+    showChat(false)
+end
 
 addEvent("onExitToLobby", true)
 addEventHandler("onExitToLobby", root, function ()
-    showGameHUD(false)
-    fadeCamera(false, 0)
+    handleLobbyOpening()
     triggerServerEvent("clientLeaveMatch", resourceRoot)
-
-    showChat(false)
 end)
 
 addEvent("onJoinedMatch", true)
@@ -32,13 +35,11 @@ addEvent("onLeftMatch", true)
 addEventHandler("onLeftMatch", resourceRoot, function ()
     destroyPlane()
 
-    showGameHUD(false)
-    fadeCamera(false, 0)
+    handleLobbyOpening()
     exports.pb_rank_screen:setVisible(false)
     setTimer(function ()
         exports.pb_lobby:setVisible(true)
         fadeCamera(true, 1)
-        showChat(false)
     end, 500, 1)
 end)
 

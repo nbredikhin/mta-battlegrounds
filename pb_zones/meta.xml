@@ -20,6 +20,7 @@
     <export type="client" function="isZonesVisible"/>
     <export type="client" function="getZoneTime"/>
     <export type="client" function="hideZones"/>
+    <export type="client" function="removeZones"/>
 
     <export type="server" function="generateZones"/>
     <export type="server" function="getZone"/>

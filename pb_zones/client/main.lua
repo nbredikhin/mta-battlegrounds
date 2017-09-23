@@ -21,6 +21,12 @@ local zoneTimeMessages = {
     [10] = "10 СЕКУНД",
 }
 
+function removeZones()
+    zoneProgress = 0
+    zoneTime = false
+    zonesHidden = true
+end
+
 addEvent("onZonesInit", true)
 addEventHandler("onZonesInit", root, function (zone)
     blueX, blueY, blueSize = unpack(zone)

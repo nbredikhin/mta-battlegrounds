@@ -83,7 +83,7 @@ function updateMatch(match)
         local needPlayers = math.min(math.floor(#getElementsByType("player") * 0.5), Config.minMatchPlayers)
         if #match.players < needPlayers then
             match.stateTime = 0
-            exports.pb_alert:show(match.players, "ОЖИДАНИЕ ПРИСОЕДИНЕНИЯ ДРУГИХ ИГРКОВ\n"..tostring(#match.players).." из "..tostring(needPlayers), 2000, 0xFFAAFAE1)
+            exports.pb_alert:show(match.players, "ОЖИДАНИЕ ПРИСОЕДИНЕНИЯ ДРУГИХ ИГРОКОВ\n"..tostring(#match.players).." из "..tostring(needPlayers), 2000, 0xFFAAFAE1)
         else
             if #match.players > 30 then
 
