@@ -4,10 +4,13 @@ addEventHandler("onExitToLobby", root, function ()
     showGameHUD(false)
     fadeCamera(false, 0)
     triggerServerEvent("clientLeaveMatch", resourceRoot)
+
+    showChat(false)
 end)
 
 addEvent("onJoinedMatch", true)
 addEventHandler("onJoinedMatch", resourceRoot, function (settings, aliveCount)
+    showChat(true)
     resetMatchStats()
 
     exports.pb_lobby:setVisible(false)
@@ -35,6 +38,7 @@ addEventHandler("onLeftMatch", resourceRoot, function ()
     setTimer(function ()
         exports.pb_lobby:setVisible(true)
         fadeCamera(true, 1)
+        showChat(false)
     end, 500, 1)
 end)
 
@@ -51,7 +55,7 @@ end)
 addEvent("onMatchStarted", true)
 addEventHandler("onMatchStarted", resourceRoot, function (aliveCount)
     resetMatchStats()
-
+    showChat(false)
     exports.pb_hud:setCounter("alive", aliveCount)
 end)
 

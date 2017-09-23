@@ -12,4 +12,6 @@ addEventHandler("onClientResourceStart", resourceRoot, function ()
     fadeCamera(false, 0)
     exports.pb_lobby:setVisible(true)
     fadeCamera(true, 1)
+
+    showChat(false)
 end)

@@ -24,7 +24,6 @@ function showGameHUD(visible)
     end
     showPlayerHudComponent("all", false)
     showPlayerHudComponent("crosshair", true)
-    showChat(false)
 
     isHudVisible = not not visible
     hideGameHUD()

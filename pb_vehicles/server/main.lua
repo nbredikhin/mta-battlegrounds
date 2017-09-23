@@ -60,19 +60,19 @@ function createVehicleSpawnpoints(model, position, rotation)
     saveFile("data/spawnpoints.json", toJSON(vehicleSpawnpoints))
 end
 
-addCommandHandler("addcar", function (player)
-    if not player.vehicle then
-        return
-    end
-    createVehicleSpawnpoints(player.vehicle.model, player.vehicle.position, player.vehicle.rotation)
+-- addCommandHandler("addcar", function (player)
+--     if not player.vehicle then
+--         return
+--     end
+--     createVehicleSpawnpoints(player.vehicle.model, player.vehicle.position, player.vehicle.rotation)
 
-    local vehicle = createVehicle(player.vehicle.model, player.vehicle.position, player.vehicle.rotation)
-    vehicle.frozen = true
-    vehicle:setCollisionsEnabled(false)
-    createBlip(player.vehicle.position)
+--     local vehicle = createVehicle(player.vehicle.model, player.vehicle.position, player.vehicle.rotation)
+--     vehicle.frozen = true
+--     vehicle:setCollisionsEnabled(false)
+--     createBlip(player.vehicle.position)
 
-    outputChatBox("Car added")
-end)
+--     outputChatBox("Car added")
+-- end)
 
 local function randomChance(chance)
     return math.random() <= chance
@@ -100,10 +100,10 @@ end
 addEventHandler("onResourceStart", resourceRoot, function ()
     vehicleSpawnpoints = fromJSON(loadFile("data/spawnpoints.json") or "[[]]") or {}
 
-    for i, s in ipairs(vehicleSpawnpoints) do
-        local vehicle = createVehicle(s.model, s.x, s.y, s.z, s.rx, s.ry, s.rz)
-        vehicle.frozen = true
-        vehicle:setCollisionsEnabled(false)
-        createBlip(s.x, s.y, s.z)
-    end
+    -- for i, s in ipairs(vehicleSpawnpoints) do
+    --     local vehicle = createVehicle(s.model, s.x, s.y, s.z, s.rx, s.ry, s.rz)
+    --     vehicle.frozen = true
+    --     vehicle:setCollisionsEnabled(false)
+    --     createBlip(s.x, s.y, s.z)
+    -- end
 end)
