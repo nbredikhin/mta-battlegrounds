@@ -2,8 +2,6 @@
 local lootSpawnpoints = {}
 -- Точки спавна в чанках
 local chunkSpawnpoints = {}
--- Сиды
-local dimensionSeeds = {}
 
 function createLootSpawnpoint(position, level, tag)
     if not position then
@@ -103,13 +101,9 @@ function generateChunkLoot(chunk, dimension)
     if not chunkSpawnpoints[chunk.id] then
         return {}
     end
-    if not dimensionSeeds[dimension] then
-        dimensionSeeds[dimension] = getTickCount() + dimension
-    end
+
     local spawnedItems = {}
-
     local spawnpoints = chunkSpawnpoints[chunk.id]
-
     Async:setPriority("medium")
     Async:foreach(spawnpoints, function(spawnpoint)
         -- Если чанк выгрузился до того, как успели заспавниться все объекты
@@ -117,7 +111,6 @@ function generateChunkLoot(chunk, dimension)
             return
         end
 
-        math.randomseed(dimensionSeeds[dimension])
         local items = generateSpawnpointItems(spawnpoint)
         if items and #items > 0 then
             for i, item in ipairs(items) do
@@ -144,4 +137,6 @@ addEventHandler("onResourceStart", resourceRoot, function ()
 
         table.insert(chunkSpawnpoints[chunkId], spawnpoint)
     end
+
+    math.randomseed(getTickCount())
 end)

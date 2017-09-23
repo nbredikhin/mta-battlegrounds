@@ -1,13 +1,15 @@
-local function handleLobbyOpening()
+local function handleLeavingMatch()
     exports.pb_zones:removeZones()
     showGameHUD(false)
     fadeCamera(false, 0)
     showChat(false)
+    setWeather(0)
+    setTime(12, 0)
 end
 
 addEvent("onExitToLobby", true)
 addEventHandler("onExitToLobby", root, function ()
-    handleLobbyOpening()
+    handleLeavingMatch()
     triggerServerEvent("clientLeaveMatch", resourceRoot)
 end)
 
@@ -29,13 +31,22 @@ addEventHandler("onJoinedMatch", resourceRoot, function (settings, aliveCount)
     end
 
     localPlayer:setData("map_marker", false)
+
+    local weather = Config.weathers[settings.weather]
+    if weather then
+        setWeather(weather.id)
+    end
+    if settings.hour then
+        setTime(settings.hour, 0)
+        setMinuteDuration(600000)
+    end
 end)
 
 addEvent("onLeftMatch", true)
 addEventHandler("onLeftMatch", resourceRoot, function ()
     destroyPlane()
 
-    handleLobbyOpening()
+    handleLeavingMatch()
     exports.pb_rank_screen:setVisible(false)
     setTimer(function ()
         exports.pb_lobby:setVisible(true)

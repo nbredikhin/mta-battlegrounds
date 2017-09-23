@@ -26,7 +26,7 @@ addEventHandler("onPlayerWasted", root, function (ammo, killer, weaponId)
     if not match then
         return
     end
-    if match.state ~= "running" then
+    if match.state == "waiting" then
         spawnWaitingPlayer(match, player)
         return
     end

@@ -8,14 +8,14 @@ local zoneProperties = {
     -- { time = 1,  shrink = 1 },
     -- { time = 1,  shrink = 1 },
     -- { time = 1,  shrink = 1 },
-    { time = 10,  shrink = 10 },
-    { time = 20,  shrink = 20 },
+    { time = 15,  shrink = 15 },
+    { time = 30,  shrink = 20 },
     { time = 30,  shrink = 30 },
     { time = 40,  shrink = 40 },
     { time = 60,  shrink = 50 },
     { time = 100, shrink = 50 },
     { time = 120, shrink = 70 },
-    { time = 180, shrink = 200},
+    { time = 240, shrink = 200},
 }
 
 function getZone(index)

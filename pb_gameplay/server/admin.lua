@@ -72,3 +72,21 @@ addCommandHandler("skipzone", function (player, cmd, id)
         match.zoneTimer = 0
     end
 end)
+
+addCommandHandler("skipshrink", function (player, cmd, id)
+    if not isPlayerAdmin(player) then
+        return
+    end
+    local id = tonumber(id)
+
+    if id then
+        local match = getMatchById(id)
+        if not match then
+            return
+        end
+
+        match.shrinkTimer = 0
+        --match.zoneTimer = 0
+    end
+end)
+

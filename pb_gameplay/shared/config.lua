@@ -18,3 +18,9 @@ Config.planeCameraDistance = 50
 Config.autoParachuteDistance = 2650
 
 Config.waitingPosition = Vector3({ x = 761.044, y = -3262.803, z = 4.160})
+
+Config.weathers = {
+    { name = "rain",  id = 16},
+    { name = "fog",   id = 9 },
+    { name = "sunny", id = 1 },
+}

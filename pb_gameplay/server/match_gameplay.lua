@@ -234,6 +234,8 @@ function initMatch(match)
         addMatchElement(match, element)
     end
     -- TODO: Выбор времени, погоды и т д (match.settings)
+    match.settings.weather = math.random(1, #Config.weathers)
+    match.settings.hour = math.random(0, 23)
 end
 
 function spawnWaitingPlayer(match, player)

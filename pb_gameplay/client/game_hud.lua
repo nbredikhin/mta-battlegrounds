@@ -25,6 +25,7 @@ function showGameHUD(visible)
     end
     showPlayerHudComponent("all", false)
     showPlayerHudComponent("crosshair", true)
+    showPlayerHudComponent("radio", true)
 
     isHudVisible = not not visible
     hideGameHUD()

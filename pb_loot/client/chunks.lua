@@ -3,7 +3,6 @@ local prevDimension = 0
 
 function loadChunk(id)
     loadedChunks[id] = true
-    iprint("load", id)
     triggerServerEvent("onPlayerRequireChunk", resourceRoot, id)
 end
 

@@ -1,14 +1,14 @@
-ZONES_COUNT = 9
+ZONES_COUNT = 8
 local SMALL_ZONE_RADIUS = 30
 local GAME_MAP_SIZE = 6000
 
 local radiusMultipliers = {
-    0.5,
-    0.53,
-    0.5,
-    0.55,
     0.6,
-    0.7,
+    0.4,
+    0.4,
+    0.5,
+    0.6,
+    0.62,
 }
 
 local function generateFirstZone()

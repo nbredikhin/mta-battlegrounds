@@ -15,3 +15,7 @@ addEventHandler("onClientResourceStart", resourceRoot, function ()
 
     showChat(false)
 end)
+
+addEventHandler("onClientPlayerVehicleEnter", localPlayer, function ()
+    setRadioChannel(0)
+end)

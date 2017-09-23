@@ -17,11 +17,11 @@ setTimer(function ()
     local consumedFuel = 0
     local isAccelerating = false
     if getControlState("accelerate") then
-        consumedFuel = consumedFuel + 2.5
+        consumedFuel = consumedFuel + 3
         isAccelerating = true
     end
     if getControlState("brake_reverse") then
-        consumedFuel = consumedFuel + 1
+        consumedFuel = consumedFuel + 1.5
         isAccelerating = true
     end
 
@@ -32,7 +32,7 @@ setTimer(function ()
     if isAccelerating and getControlState("handbrake ") then
         consumedFuel = consumedFuel + 0.5
     end
-    if not vehicle.onGround then
+    if getVehicleType(vehicle) ~= "Boat" and not vehicle.onGround then
         consumedFuel = math.min(consumedFuel, 0.5)
     end
 
