@@ -193,6 +193,7 @@ function setMatchState(match, state)
             player:setData("kills", 0)
             player:setData("damage_taken", 0)
             player:setData("hp_healed", 0)
+            player:setData("boost", 0)
 
             if isResourceRunning("pb_inventory") then
                 exports.pb_inventory:takeAllItems(player)

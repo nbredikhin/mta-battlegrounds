@@ -29,7 +29,7 @@ setTimer(function ()
     -- addPlayerEquipment(player, createItem("helmet3",1,{health=5}))
 
     -- Вещи
-    local item = createItem("jerrycan", 1)
+    local item = createItem("energy_drink", 1)
     addBackpackItem(player, item)
 
     -- addBackpackItem(player, createItem("ammo_556mm", 30))

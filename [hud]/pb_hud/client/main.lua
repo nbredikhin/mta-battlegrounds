@@ -52,6 +52,54 @@ local function drawHealthbar()
     end
 end
 
+local function drawBoost()
+    local boost = localPlayer:getData("boost")
+    if not boost or boost <= 0 then
+        return
+    end
+    local x = screenSize.x / 2 - healthbarWidth / 2
+    local y = screenSize.y - 35 - healthbarHeight - 15
+    local count = math.floor(boost/10)
+    local w = healthbarWidth * 0.2 - 5
+    dxDrawRectangle(x, y, w, 5, tocolor(255, 255, 255, 100))
+
+    if boost > 0 then
+        local mul = math.min(1, boost / 20)
+        dxDrawRectangle(x, y, w * mul, 5, tocolor(255, 150, 0))
+    end
+    x = x + w + 5
+
+    local w = healthbarWidth * 0.4 - 5
+    dxDrawRectangle(x, y, w, 5, tocolor(255, 255, 255, 150))
+    if boost > 20 then
+        local mul = math.min(1, (boost - 20) / 40)
+        dxDrawRectangle(x, y, w * mul, 5, tocolor(255, 150, 0))
+    end
+    x = x + w + 5
+    local w = healthbarWidth * 0.3 - 5
+    dxDrawRectangle(x, y, w, 5, tocolor(255, 255, 255, 200))
+    if boost > 60 then
+        local mul = math.min(1, (boost - 60) / 30)
+        dxDrawRectangle(x, y, w * mul, 5, tocolor(255, 150, 0))
+    end
+    x = x + w + 5
+    local w = healthbarWidth * 0.1
+    dxDrawRectangle(x, y, w, 5, tocolor(255, 255, 255, 255))
+    if boost > 90 then
+        local mul = math.min(1, (boost - 90) / 10)
+        dxDrawRectangle(x, y, w * mul, 5, tocolor(255, 150, 0))
+    end
+    -- if boost > 0 then
+    --     localPlayer.health = localPlayer.health + 1
+    -- elseif boost > 20 and boost <= 60 then
+    --     localPlayer.health = localPlayer.health + 2
+    -- elseif boost > 60 and boost <= 90 then
+    --     localPlayer.health = localPlayer.health + 3
+    -- elseif boost > 90 then
+    --     localPlayer.health = localPlayer.health + 4
+    -- end
+end
+
 local function drawCounter(x, y, count, label)
     local countWidth = dxGetTextWidth(count, 2.8, "default-bold")
     local labelWidth = dxGetTextWidth(label, 2.5, "default")
@@ -70,6 +118,7 @@ addEventHandler("onClientRender", root, function ()
         return
     end
     drawHealthbar()
+    drawBoost()
 
     local y = 30
     local x = screenSize.x - 36

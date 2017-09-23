@@ -27,6 +27,11 @@ local function fillFuel(item)
     triggerServerEvent("finishPlayerFillFuel", resourceRoot, item.name)
 end
 
+local function startBoost(item)
+    endUsing()
+    triggerServerEvent("finishPlayerBoost", resourceRoot, item.name)
+end
+
 function getUsingItemName()
     if usingItem then
         return usingItem.name
@@ -76,6 +81,16 @@ function useItem(item)
         usingPosition = localPlayer.position
 
         usingItemName = itemClass.readableName
+    elseif itemClass.category == "boost" then
+        if not itemClass.use_time then
+            return
+        end
+        usingItem = item
+        usingTime = itemClass.use_time
+        usageTimer = setTimer(startBoost, usingTime, 1, item)
+        usingPosition = localPlayer.position
+
+        usingItemName = itemClass.readableName
     end
 end
 
@@ -93,3 +108,25 @@ addEventHandler("onClientRender", root, function ()
         end
     end
 end)
+
+setTimer(function ()
+    local boost = localPlayer:getData("boost")
+    if not boost or boost == 0 then
+        return
+    end
+    if boost > 0 and boost <= 20 then
+        localPlayer.health = localPlayer.health + 1
+    elseif boost > 20 and boost <= 60 then
+        localPlayer.health = localPlayer.health + 2
+    elseif boost > 60 and boost <= 90 then
+        localPlayer.health = localPlayer.health + 3
+    elseif boost > 90 then
+        localPlayer.health = localPlayer.health + 4
+    end
+
+    boost = boost - 1
+    if boost < 0 then
+        boost = 0
+    end
+    localPlayer:setData("boost", boost)
+end, 1000, 0)

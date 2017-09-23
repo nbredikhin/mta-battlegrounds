@@ -59,6 +59,36 @@ Items = {
         category     = "medicine",
     },
 
+    energy_drink = {
+        level        = 2,
+        tag          = "medicine",
+        spawnCount   = 1,
+        spawnStacks  = 1,
+
+        icon         = "energy_drink.png",
+        readableName = "Энергетик",
+        stackable    = true,
+        boost        = 15,
+        use_time     = 3000,
+        weight       = 4,
+        category     = "boost",
+    },
+
+    painkiller = {
+        level        = 3,
+        tag          = "medicine",
+        spawnCount   = 1,
+        spawnStacks  = 1,
+
+        icon         = "painkiller.png",
+        readableName = "Обезболивающее",
+        stackable    = true,
+        boost        = 35,
+        use_time     = 4000,
+        weight       = 10,
+        category     = "boost",
+    },
+
     weapon_m4 = {
         level        = 3,
         tag          = "weapon",
