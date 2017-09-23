@@ -8,7 +8,6 @@ local zoneProperties = {
     -- { time = 1,  shrink = 1 },
     -- { time = 1,  shrink = 1 },
     -- { time = 1,  shrink = 1 },
-    { time = 10,  shrink = 5 },
     { time = 10,  shrink = 10 },
     { time = 20,  shrink = 20 },
     { time = 30,  shrink = 30 },

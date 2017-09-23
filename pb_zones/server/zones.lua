@@ -4,7 +4,6 @@ local GAME_MAP_SIZE = 6000
 
 local radiusMultipliers = {
     0.5,
-    0.5,
     0.53,
     0.5,
     0.55,

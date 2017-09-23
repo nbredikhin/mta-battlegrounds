@@ -8,13 +8,14 @@ end
 
 -- Скрывает все элементы игрового интерфейса
 local function hideGameHUD()
-    setComponentVisible("pb_map",        false)
-    setComponentVisible("pb_hud",        false)
-    setComponentVisible("pb_radar",      false)
-    setComponentVisible("pb_compass",    false)
-    setComponentVisible("pb_killchat",   false)
-    setComponentVisible("pb_inventory",  false)
-    setComponentVisible("pb_hud_weapon", false)
+    setComponentVisible("pb_map",         false)
+    setComponentVisible("pb_hud",         false)
+    setComponentVisible("pb_radar",       false)
+    setComponentVisible("pb_compass",     false)
+    setComponentVisible("pb_killchat",    false)
+    setComponentVisible("pb_inventory",   false)
+    setComponentVisible("pb_hud_weapon",  false)
+    setComponentVisible("pb_hud_vehicle", false)
 end
 
 -- Включает/выключает интерфейс игры
@@ -28,11 +29,12 @@ function showGameHUD(visible)
     isHudVisible = not not visible
     hideGameHUD()
     if visible then
-        setComponentVisible("pb_hud",        true)
-        setComponentVisible("pb_radar",      true)
-        setComponentVisible("pb_compass",    true)
-        setComponentVisible("pb_killchat",   true)
-        setComponentVisible("pb_hud_weapon", true)
+        setComponentVisible("pb_hud",         true)
+        setComponentVisible("pb_radar",       true)
+        setComponentVisible("pb_compass",     true)
+        setComponentVisible("pb_killchat",    true)
+        setComponentVisible("pb_hud_weapon",  true)
+        setComponentVisible("pb_hud_vehicle", true)
     end
 end
 
@@ -50,6 +52,7 @@ function toggleMap()
     setComponentVisible("pb_compass", not visible)
     setComponentVisible("pb_killchat", not visible)
     setComponentVisible("pb_hud_weapon", not visible)
+    setComponentVisible("pb_hud_vehicle", not visible)
     if visible then
         setComponentVisible("pb_inventory", false)
     end
@@ -74,6 +77,7 @@ bindKey("tab", "down", function ()
     setComponentVisible("pb_compass", not visible)
     setComponentVisible("pb_killchat", not visible)
     setComponentVisible("pb_hud_weapon", not visible)
+    setComponentVisible("pb_hud_vehicle", not visible)
     if visible then
         setComponentVisible("pb_map", false)
     end

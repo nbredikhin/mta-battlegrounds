@@ -1,0 +1,14 @@
+<meta>
+    <oop>true</oop>
+
+    <script type="shared" src="shared/config.lua"/>
+    <script type="shared" src="shared/exports.lua"/>
+
+    <script type="client" src="client/main.lua"/>
+
+    <script type="server" src="server/main.lua"/>
+
+    <export type="server" function="setVehicleRandomFuel"/>
+    <export type="server" function="fillVehicleFuel"/>
+    <export type="shared" function="getVehicleMaxFuel"/>
+</meta>

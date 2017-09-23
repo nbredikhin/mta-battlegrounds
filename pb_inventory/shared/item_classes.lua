@@ -1,4 +1,19 @@
 Items = {
+    jerrycan = {
+        level        = 1,
+        tag          = "equipment",
+        spawnCount   = 1,
+        spawnStacks  = 1,
+
+        icon         = "jerrycan.png",
+        readableName = "Канистра с топливом",
+        stackable    = true,
+        use_time     = 6000,
+        fuel_amount  = 250,
+        weight       = 25,
+        category     = "vehicles",
+    },
+
     bandage = {
         level        = 1,
         tag          = "medicine",

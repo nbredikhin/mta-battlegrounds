@@ -22,6 +22,11 @@ local function healSelf(item)
     triggerServerEvent("finishPlayerHeal", resourceRoot, item.name)
 end
 
+local function fillFuel(item)
+    endUsing()
+    triggerServerEvent("finishPlayerFillFuel", resourceRoot, item.name)
+end
+
 function getUsingItemName()
     if usingItem then
         return usingItem.name
@@ -58,6 +63,19 @@ function useItem(item)
 
         usingItemName = itemClass.readableName
         localPlayer:setAnimation("FOOD", "EAT_Pizza", -1, true, false, true, true)
+    elseif itemClass.category == "vehicles" then
+        if not itemClass.use_time then
+            return
+        end
+        if not localPlayer.vehicle then
+            return
+        end
+        usingItem = item
+        usingTime = itemClass.use_time
+        usageTimer = setTimer(fillFuel, usingTime, 1, item)
+        usingPosition = localPlayer.position
+
+        usingItemName = itemClass.readableName
     end
 end
 

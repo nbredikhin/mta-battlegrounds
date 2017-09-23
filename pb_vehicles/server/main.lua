@@ -90,6 +90,7 @@ function generateVehicles(dimension)
             end
             local vehicle = createVehicle(model, spawnpoint.x, spawnpoint.y, spawnpoint.z, spawnpoint.rx, spawnpoint.ry, spawnpoint.rz)
             vehicle.dimension = dimension
+            exports.pb_fuel:setVehicleRandomFuel(vehicle)
             table.insert(spawnedVehicles, vehicle)
         end
     end
