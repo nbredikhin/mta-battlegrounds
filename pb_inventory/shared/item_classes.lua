@@ -94,7 +94,7 @@ Items = {
         tag          = "weapon",
 
         icon         = "m4.png",
-        readableName = "M4",
+        readableName = "M16A4",
         category     = "weapon_primary",
         weaponId     = 31,
         clip         = 30,
@@ -116,6 +116,38 @@ Items = {
         clip         = 30,
         stackable    = false,
         ammo         = "ammo_762mm",
+        vars = {
+            clip = 0,
+        }
+    },
+
+    weapon_kar98k = {
+        level        = 3,
+        tag          = "weapon",
+
+        icon         = "kar98k.png",
+        readableName = "Kar98k",
+        category     = "weapon_primary",
+        weaponId     = 33,
+        clip         = 5,
+        stackable    = false,
+        ammo         = "ammo_762mm",
+        vars = {
+            clip = 0,
+        }
+    },
+
+    weapon_awm = {
+        level        = 3,
+        tag          = "weapon",
+
+        icon         = "awm.png",
+        readableName = "AWM",
+        category     = "weapon_primary",
+        weaponId     = 34,
+        clip         = 5,
+        stackable    = false,
+        ammo         = "ammo_556mm",
         vars = {
             clip = 0,
         }

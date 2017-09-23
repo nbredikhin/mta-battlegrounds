@@ -26,4 +26,9 @@
     <file src="models/armor2.txd"/>
     <file src="models/armor3.dff"/>
     <file src="models/armor3.txd"/>
+
+    <file src="models/m16a4.dff"/>
+    <file src="models/m16a4.txd"/>
+    <file src="models/awm.dff"/>
+    <file src="models/awm.txd"/>
 </meta>

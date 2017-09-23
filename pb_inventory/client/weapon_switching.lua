@@ -113,6 +113,9 @@ end)
 localPlayer:setData("isReloadingWeapon", false)
 
 bindKey("next_weapon", "down", function ()
+    if getControlState("aim_weapon") then
+        return
+    end
     activeSlotIndex = activeSlotIndex + 1
     if activeSlotIndex > #slotsOrder then
         activeSlotIndex = #slotsOrder
@@ -121,6 +124,9 @@ bindKey("next_weapon", "down", function ()
 end)
 
 bindKey("previous_weapon", "down", function ()
+    if getControlState("aim_weapon") then
+        return
+    end
     activeSlotIndex = activeSlotIndex - 1
     if activeSlotIndex < 1 then
         activeSlotIndex = 1

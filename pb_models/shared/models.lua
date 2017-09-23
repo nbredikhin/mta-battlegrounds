@@ -10,6 +10,9 @@ ReplacedModels = {
     armor1 = 1857,
     armor2 = 1858,
     armor3 = 1859,
+
+    awm   = 358,
+    m16a4 = 356,
 }
 
 function getItemModel(name)
