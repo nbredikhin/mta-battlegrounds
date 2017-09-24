@@ -69,6 +69,8 @@ addEventHandler("onMatchStarted", resourceRoot, function (aliveCount)
     resetMatchStats()
     showChat(false)
     exports.pb_hud:setCounter("alive", aliveCount)
+
+    setWindowFlashing(true, 10)
 end)
 
 addEvent("onMatchFinished", true)

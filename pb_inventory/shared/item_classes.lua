@@ -18,7 +18,7 @@ Items = {
         level        = 1,
         tag          = "medicine",
         spawnCount   = 5,
-        spawnStacks  = 3,
+        spawnStacks  = 1,
 
         icon         = "bandage.png",
         readableName = "Бинт",
@@ -47,7 +47,7 @@ Items = {
     first_aid = {
         level        = 2,
         tag          = "medicine",
-        spawnStacks  = 2,
+        spawnStacks  = 1,
 
         icon         = "first_aid.png",
         readableName = "Малая аптечка",
@@ -63,7 +63,7 @@ Items = {
         level        = 2,
         tag          = "medicine",
         spawnCount   = 1,
-        spawnStacks  = 1,
+        spawnStacks  = 2,
 
         icon         = "energy_drink.png",
         readableName = "Энергетик",
@@ -367,7 +367,7 @@ Items = {
         level        = 1,
         tag          = "ammo",
         spawnCount   = 15,
-        spawnStacks  = 6,
+        spawnStacks  = 3,
 
         icon         = "ammo_9mm.png",
         readableName = "9 мм",
@@ -380,7 +380,7 @@ Items = {
         level        = 2,
         tag          = "ammo",
         spawnCount   = 30,
-        spawnStacks  = 3,
+        spawnStacks  = 2,
 
         icon         = "ammo_762mm.png",
         readableName = "7.62мм",
@@ -393,7 +393,7 @@ Items = {
         level        = 2,
         tag          = "ammo",
         spawnCount   = 30,
-        spawnStacks  = 3,
+        spawnStacks  = 2,
 
         icon         = "ammo_556mm.png",
         readableName = "5.56мм",
@@ -406,7 +406,7 @@ Items = {
         level        = 2,
         tag          = "ammo",
         spawnCount   = 10,
-        spawnStacks  = 2,
+        spawnStacks  = 3,
 
         icon         = "ammo_12gauge.png",
         readableName = "12 калибр",

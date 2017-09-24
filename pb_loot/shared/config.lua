@@ -10,7 +10,7 @@ Config.chunkLifetime = 300
 Config.spawnpointChances = {
     0.6,
     0.3,
-    0.25
+    0.15
 }
 
 Config.lootTags = {
