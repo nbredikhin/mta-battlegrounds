@@ -31,6 +31,8 @@ function spawnLootItem(item, position, dimension)
     end
     object:setData("loot_item", item)
 
+    triggerEvent("onMatchElementCreated", object, dimension)
+
     return object
 end
 
@@ -49,44 +51,28 @@ function spawnPlayerLootBox(player)
     if not isElement(player) then
         return
     end
-    local items = {}
     -- Взять все вещи из рюкзака
     local backpack = getPlayerBackpack(player)
     if backpack then
         for name, item in pairs(backpack) do
-            items[item.name] = item
+            spawnPlayerLootItem(player, item)
         end
     end
     -- Взять все снаряжение
     local equipment = getPlayerEquipment(player)
     if equipment then
         for name, item in pairs(equipment) do
-            items[item.name] = item
+            spawnPlayerLootItem(player, item)
         end
     end
     -- Взять все оружие
     local weapons = getPlayerWeapons(player)
     if weapons then
         for name, item in pairs(weapons) do
-            items[item.name] = item
+            spawnPlayerLootItem(player, item)
         end
     end
-
-    if not next(items) then
-        takeAllItems(player)
-        return
-    end
-
-    local object = createObject(2358, player.position - Vector3(0, 0, 0.8))
-    object:setCollisionsEnabled(false)
-    object.scale = 1.3
-    object.dimension = player.dimension
-    -- Закинуть вещи в коробку
     takeAllItems(player)
-    for name, item in pairs(items) do
-        item.lootElement = object
-    end
-    object:setData("loot_items", items)
 end
 
 addEvent("pickupLootItem", true)
@@ -100,38 +86,13 @@ addEventHandler("pickupLootItem", resourceRoot, function (element, weaponSlot, i
     if getDistanceBetweenPoints3D(client.position, element.position) > Config.minLootDistance + 2 then
         return
     end
-    local item
-    local isLootBox = false
-    local lootItems = element:getData("loot_items")
-    if lootItems and itemName then
-        isLootBox = true
-
-        item = lootItems[itemName]
-    end
+    local item = element:getData("loot_item")
 
     if not isItem(item) then
-        item = element:getData("loot_item")
+        destroyElement(element)
     end
-
-    local function removeLootItem()
-        if isLootBox then
-            lootItems[itemName] = nil
-            if next(lootItems) then
-                element:setData("loot_items", lootItems)
-            else
-                destroyElement(element)
-            end
-        else
-            destroyElement(element)
-        end
-    end
-
-    if not isItem(item) then
-        removeLootItem()
-        return
-    end
-
     item.lootElement = nil
+
     if isItemWeapon(item) then
         local primarySlot
         if weaponSlot == "primary1" then
@@ -140,17 +101,40 @@ addEventHandler("pickupLootItem", resourceRoot, function (element, weaponSlot, i
             primarySlot = 2
         end
         addPlayerWeapon(client, item, primarySlot)
-        removeLootItem()
+        destroyElement(element)
+        animatePlayerPickup(client)
     elseif isItemEquipment(item) then
         addPlayerEquipment(client, item)
-        removeLootItem()
+        destroyElement(element)
+        animatePlayerPickup(client)
     else
-        if addBackpackItem(client, item) then
-            removeLootItem()
+        local backpackWeight = getPlayerBackpackTotalWeight(player)
+        local itemWeight = getItemWeight(item)
+        local backpackCapacity = getPlayerBackpackCapacity(player)
+        iprint("wat")
+        if backpackWeight + itemWeight > backpackCapacity then
+            local weight = Items[item.name].weight or 0
+            local slotsAvailable = math.ceil((backpackCapacity - backpackWeight) / weight)
+            local item2 = cloneItem(item)
+            item2.count = slotsAvailable
+            item.count = item.count - slotsAvailable
+            iprint("taking", slotsAvailable)
+            if item.count > 0 then
+                item.lootElement = element
+                element:setData("loot_item", item)
+            else
+                destroyElement(element)
+            end
+            addBackpackItem(client, item2)
+            animatePlayerPickup(client)
+        else
+            iprint("taking all?")
+            addBackpackItem(client, item)
+            destroyElement(element)
+            animatePlayerPickup(client)
         end
     end
 
-    animatePlayerPickup(client)
 end)
 
 function animatePlayerPickup(player)

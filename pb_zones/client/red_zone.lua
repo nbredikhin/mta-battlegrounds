@@ -10,6 +10,15 @@ local explosionId = 0
 
 local disableDamage = false
 
+function stopRedZone()
+    if isTimer(zoneTimer) then
+        killTimer(zoneTimer)
+    end
+    if isTimer(zoneExplosionTimer) then
+        killTimer(zoneExplosionTimer)
+    end
+end
+
 function getRedZone()
     if not isTimer(zoneTimer) then
         return

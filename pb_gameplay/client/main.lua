@@ -19,3 +19,20 @@ end)
 addEventHandler("onClientPlayerVehicleEnter", localPlayer, function ()
     setRadioChannel(0)
 end)
+
+addEventHandler("onClientVehicleDamage", root, function (attacker, weapon, loss)
+    if source ~= localPlayer.vehicle then
+        return
+    end
+    if attacker then
+        return
+    end
+    if not loss then
+        return
+    end
+    loss = loss / 1000 * 100
+    if loss < 10 then
+        return
+    end
+    localPlayer.health = localPlayer.health - loss
+end)

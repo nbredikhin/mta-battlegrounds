@@ -30,7 +30,7 @@ end
 
 function getPlayerBackpackCapacity(player)
     if not isElement(player) or not playerEquipments[player] then
-        return
+        return Config.defaultBackpackCapacity
     end
     local backpack = playerEquipments[player].backpack
     if not isItem(backpack) then

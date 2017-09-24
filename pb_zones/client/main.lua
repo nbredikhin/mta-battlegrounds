@@ -25,6 +25,7 @@ function removeZones()
     zoneProgress = 0
     zoneTime = false
     zonesHidden = true
+    stopRedZone()
 end
 
 addEvent("onZonesInit", true)

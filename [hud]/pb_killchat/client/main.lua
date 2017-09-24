@@ -21,16 +21,19 @@ end
 
 addEvent("onMatchPlayerWasted", true)
 addEventHandler("onMatchPlayerWasted", root, function (aliveCount, killerPlayer, weaponId)
-    if not isElement(killerPlayer) then
+    local wastedName = string.gsub(source.name, '#%x%x%x%x%x%x', '')
+    local message = "Игрок " ..tostring(wastedName) .. " умер"
+
+    if isElement(killerPlayer) then
+        local weaponName = exports.pb_inventory:getWeaponNameFromId(weaponId)
+        local killerName = string.gsub(killerPlayer.name, '#%x%x%x%x%x%x', '')
+        message = "Игрок "..killerName.." убил игрока "..wastedName
+        if weaponName then
+            message = message .. ", используя "..weaponName
+        end
         return
     end
-    local weaponName = exports.pb_inventory:getWeaponNameFromId(weaponId)
-    local killerName = string.gsub(killerPlayer.name, '#%x%x%x%x%x%x', '')
-    local wastedName = string.gsub(source.name, '#%x%x%x%x%x%x', '')
-    local message = "Игрок "..killerName.." убивает игрока "..wastedName
-    if weaponName then
-        message = message .. ", используя "..weaponName
-    end
+
     local aliveText = " - " .. tostring(aliveCount) .. " в живых"
     if aliveCount == 1 then
         aliveText = "МАТЧ ЗАВЕРШЕН"
