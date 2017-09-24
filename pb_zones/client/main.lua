@@ -148,7 +148,6 @@ setTimer(function ()
     if not isPlayerWithinZone() then
         local damageMul = 1 - math.max(0, math.min(1, blueSize / 1000))
         local damage = 14 * damageMul + 1
-        iprint(blueZone[3], damage)
         localPlayer.health = localPlayer.health - damage
         triggerEvent("onClientCustomDamage", localPlayer)
     end

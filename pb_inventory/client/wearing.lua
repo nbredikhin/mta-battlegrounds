@@ -62,6 +62,14 @@ local itemsAttach = {
 
 local attachedObjects = {}
 
+function getPlayerAttachedObject(player, name)
+    if player and name then
+        if attachedObjects[player] then
+            return attachedObjects[player][name]
+        end
+    end
+end
+
 function removePlayerWearingItems(player)
     if not attachedObjects[player] then
         return
@@ -133,4 +141,18 @@ end)
 addEvent("updateWearableItems", true)
 addEventHandler("updateWearableItems", resourceRoot, function (player)
     updatePlayerWearingItems(player)
+end)
+
+bindKey("mouse2", "down", function ()
+    local object = getPlayerAttachedObject(localPlayer, "helmet")
+    if localPlayer:getWeapon() == 34 and isElement(object) then
+        object.scale = 0
+    end
+end)
+
+bindKey("mouse2", "up", function ()
+    local object = getPlayerAttachedObject(localPlayer, "helmet")
+    if isElement(object) then
+        object.scale = 1
+    end
 end)
