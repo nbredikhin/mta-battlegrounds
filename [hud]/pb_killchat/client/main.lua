@@ -31,7 +31,6 @@ addEventHandler("onMatchPlayerWasted", root, function (aliveCount, killerPlayer,
         if weaponName then
             message = message .. ", используя "..weaponName
         end
-        return
     end
 
     local aliveText = " - " .. tostring(aliveCount) .. " в живых"

@@ -15,7 +15,7 @@ Config.welcomeMessage = "Welcome to PUBG MTA"
 Config.resourceList = {
     "bone_attach",
     "parachute",
-    "blood",
+    -- "blood",
 
     "pb_mapping",
     "pb_models",
