@@ -35,4 +35,5 @@ addEventHandler("onClientVehicleDamage", root, function (attacker, weapon, loss)
         return
     end
     localPlayer.health = localPlayer.health - loss
+    triggerEvent("onClientCustomDamage", localPlayer)
 end)

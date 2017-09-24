@@ -31,8 +31,6 @@ function spawnLootItem(item, position, dimension)
     end
     object:setData("loot_item", item)
 
-    triggerEvent("onMatchElementCreated", object, dimension)
-
     return object
 end
 
@@ -55,21 +53,24 @@ function spawnPlayerLootBox(player)
     local backpack = getPlayerBackpack(player)
     if backpack then
         for name, item in pairs(backpack) do
-            spawnPlayerLootItem(player, item)
+            local object = spawnPlayerLootItem(player, item)
+            triggerEvent("onMatchElementCreated", object, player.dimension)
         end
     end
     -- Взять все снаряжение
     local equipment = getPlayerEquipment(player)
     if equipment then
         for name, item in pairs(equipment) do
-            spawnPlayerLootItem(player, item)
+            local object = spawnPlayerLootItem(player, item)
+            triggerEvent("onMatchElementCreated", object, player.dimension)
         end
     end
     -- Взять все оружие
     local weapons = getPlayerWeapons(player)
     if weapons then
         for name, item in pairs(weapons) do
-            spawnPlayerLootItem(player, item)
+            local object = spawnPlayerLootItem(player, item)
+            triggerEvent("onMatchElementCreated", object, player.dimension)
         end
     end
     takeAllItems(player)

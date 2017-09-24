@@ -1,7 +1,7 @@
 local zoneProgress = 0
 local shrinkTime = 15
 local zoneTime = false
-local zonesHidden = false
+local zonesHidden = true
 
 local blueX = 1800
 local blueY = -1600
@@ -13,7 +13,7 @@ local whiteSize = 500
 
 local blueZone = {0, 0, 0}
 
-local ZONE_DAMAGE_TIME = 400
+local ZONE_DAMAGE_TIME = 800
 
 local zoneTimeMessages = {
     [60] = "1 МИНУТУ",
@@ -141,9 +141,15 @@ setTimer(function ()
     if zonesHidden then
         return
     end
+    if not localPlayer:getData("matchId") then
+        return
+    end
 
     if not isPlayerWithinZone() then
-        -- iprint("damage")
-        localPlayer.health = localPlayer.health - 1
+        local damageMul = 1 - math.max(0, math.min(1, blueSize / 1000))
+        local damage = 14 * damageMul + 1
+        iprint(blueZone[3], damage)
+        localPlayer.health = localPlayer.health - damage
+        triggerEvent("onClientCustomDamage", localPlayer)
     end
 end, ZONE_DAMAGE_TIME, 0)
