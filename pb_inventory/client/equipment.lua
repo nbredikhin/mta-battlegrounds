@@ -40,19 +40,19 @@ addEventHandler("onClientPlayerDamage", localPlayer, function (attacker, weaponI
         loss = 50
         local item = getEquipmentSlot("helmet")
         if isItem(item) then
+            item.health = math.max(0, item.health - loss)
             if item.health > 0 then
                 loss = loss * (1 - Items[item.name].penetration_ratio)
             end
-            item.health = math.max(0, item.health - loss)
             triggerServerEvent("updateEquipmentHealth", resourceRoot, Items[item.name].category, item.health)
         end
     elseif bodypart == 3 then
         local item = getEquipmentSlot("armor")
         if isItem(item) then
+            item.health = math.max(0, item.health - loss)
             if item.health > 0 then
                 loss = loss * (1 - Items[item.name].penetration_ratio)
             end
-            item.health = math.max(0, item.health - loss)
             triggerServerEvent("updateEquipmentHealth", resourceRoot, Items[item.name].category, item.health)
         end
     end

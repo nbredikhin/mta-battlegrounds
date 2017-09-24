@@ -61,7 +61,7 @@ end
 
 -- Создает (или не создает) случайный item
 local function generateSpawnpointItems(spawnpoint)
-    if not randomChance(Config.spawnpointChance) then
+    if not randomChance(Config.spawnpointChances[spawnpoint.level]) then
         return {}
     end
 
@@ -73,7 +73,7 @@ local function generateSpawnpointItems(spawnpoint)
         if not tag then
             local index = math.random(1, #tags)
             tag = tags[index]
-            if tag == "equipment" then
+            if tag == "equipment" ~= tag == "weapon" then
                 table.remove(tags, index)
             end
         end

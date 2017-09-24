@@ -112,14 +112,12 @@ addEventHandler("pickupLootItem", resourceRoot, function (element, weaponSlot, i
         local backpackWeight = getPlayerBackpackTotalWeight(player)
         local itemWeight = getItemWeight(item)
         local backpackCapacity = getPlayerBackpackCapacity(player)
-        iprint("wat")
         if backpackWeight + itemWeight > backpackCapacity then
             local weight = Items[item.name].weight or 0
             local slotsAvailable = math.ceil((backpackCapacity - backpackWeight) / weight)
             local item2 = cloneItem(item)
             item2.count = slotsAvailable
             item.count = item.count - slotsAvailable
-            iprint("taking", slotsAvailable)
             if item.count > 0 then
                 item.lootElement = element
                 element:setData("loot_item", item)
@@ -129,7 +127,6 @@ addEventHandler("pickupLootItem", resourceRoot, function (element, weaponSlot, i
             addBackpackItem(client, item2)
             animatePlayerPickup(client)
         else
-            iprint("taking all?")
             addBackpackItem(client, item)
             destroyElement(element)
             animatePlayerPickup(client)
