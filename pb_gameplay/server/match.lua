@@ -244,3 +244,7 @@ setTimer(function ()
         end
     end
 end, 1000, 0)
+
+setTimer(function ()
+    triggerClientEvent("updateLobbyPlayersCount", root, getLobbyPlayersCount(), #matchesList)
+end, 10000, 0)

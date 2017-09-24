@@ -7,6 +7,8 @@ local mouseX = 0
 local mouseY = 0
 
 local startGamePressed = false
+local lobbyPlayersCount
+local lobbyMatchesCount
 
 function isMouseOver(x, y, w, h)
     return mouseX >= x     and
@@ -87,6 +89,20 @@ addEventHandler("onClientRender", root, function ()
     drawStartGameButton()
     drawBetaLogo()
     drawArrows()
+
+    local y = screenSize.y - 65
+    if lobbyPlayersCount then
+        local lobbyText = "Игроков в лобби: " .. tostring(lobbyPlayersCount)
+        dxDrawText(lobbyText, 26, y + 1, 0, 0, tocolor(0, 0, 0, 150), 1, "default-bold", "left", "top")
+        dxDrawText(lobbyText, 25, y, 0, 0, tocolor(255, 255, 255), 1, "default-bold", "left", "top")
+
+        y = y + 25
+    end
+    if lobbyMatchesCount then
+        local text = "Запущено матчей: " .. tostring(lobbyMatchesCount)
+        dxDrawText(text, 26, y + 1, 0, 0, tocolor(0, 0, 0, 150), 1, "default-bold", "left", "top")
+        dxDrawText(text, 25, y, 0, 0, tocolor(255, 255, 255), 1, "default-bold", "left", "top")
+    end
 end)
 
 function setVisible(visible)
@@ -104,3 +120,9 @@ function setVisible(visible)
         stopSkinSelect()
     end
 end
+
+addEvent("updateLobbyPlayersCount", true)
+addEventHandler("updateLobbyPlayersCount", root, function (count, matches)
+    lobbyPlayersCount = count
+    lobbyMatchesCount = matches
+end)

@@ -12,9 +12,9 @@ setTimer(function ()
     -- local weapon = createItem("weapon_crowbar")
     -- addPlayerWeapon(player, weapon)
 
-    local weapon = createItem("weapon_awm")
-    weapon.clip = 5
-    addPlayerWeapon(player, weapon)
+    -- local weapon = createItem("weapon_awm")
+    -- weapon.clip = 5
+    -- addPlayerWeapon(player, weapon)
 
     -- local weapon = createItem("weapon_shotgun")
     -- weapon.clip = 5
@@ -24,15 +24,15 @@ setTimer(function ()
     -- addPlayerWeapon(player, weapon)
 
     -- Снаряжение
-    addPlayerEquipment(player, createItem("armor2"))
-    addPlayerEquipment(player, createItem("backpack_small"))
+    -- addPlayerEquipment(player, createItem("helmet2"))
+    -- addPlayerEquipment(player, createItem("backpack_small"))
     -- addPlayerEquipment(player, createItem("helmet3",1,{health=5}))
 
     -- Вещи
-    local item = createItem("painkiller", 1)
-    addBackpackItem(player, item)
+    -- local item = createItem("painkiller", 1)
+    -- addBackpackItem(player, item)
 
-    spawnPlayerLootItem(player, createItem("ammo_556mm", 999))
+    -- spawnPlayerLootItem(player, createItem("jerrycan", 1))
     -- addBackpackItem(player, createItem("ammo_556mm", 999))
     -- addBackpackItem(player, createItem("ammo_12gauge", 30))
 
