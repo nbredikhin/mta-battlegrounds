@@ -42,9 +42,13 @@ local colors = {
 
 local itemLists = {}
 
-local testItems = {}
-for i = 1, 100 do
-    table.insert(testItems, {name="bandage", count=i})
+function localize(name)
+    local res = getResourceFromName("pb_lang")
+    if (res) and (getResourceState(res) == "running") then
+        return exports.pb_lang:localize(name)
+    else
+        return name
+    end
 end
 
 function isMouseOver(x, y, w, h)
@@ -190,7 +194,7 @@ function createItemsList(title, dragType)
 end
 
 function drawItemsList(list, items, x, y)
-    local title = list.title
+    local title = localize(list.title)
     local dragType = list.dragType
     local width = list.width
     local height = list.height
@@ -216,7 +220,7 @@ function drawItemsList(list, items, x, y)
                 if item.count and item.count >= 100 then
                     offset = 35
                 end
-                dxDrawText(Items[item.name].readableName, x + itemIconSize + 5, cy, x + listItemWidth - offset, cy + listItemHeight, tocolor(255, 255, 255, 200), 1, "default", "left", "center", true)
+                dxDrawText(localize(Items[item.name].readableName), x + itemIconSize + 5, cy, x + listItemWidth - offset, cy + listItemHeight, tocolor(255, 255, 255, 200), 1, "default", "left", "center", true)
             end
             if item.count and item.count > 1 then
                 dxDrawText(item.count, x, cy, x + listItemWidth - 10, cy + listItemHeight, tocolor(255, 255, 255, 200), 1, "default-bold", "right", "center")
@@ -275,14 +279,14 @@ local function drawWeaponSlot(slot, x, y, size, hotkey)
         dxDrawText(hotkey, rx, ry, rx + rs, ry + rs, tocolor(255, 255, 255, 255), 1.5, "default-bold", "center", "center")
     end
     if Items[item.name].readableName then
-        dxDrawText(Items[item.name].readableName, x + nameX, y, x + size - 3, y + 30, tocolor(255, 255, 255, 200), 1.5, "default-bold", "left", "center", true)
+        dxDrawText(localize(Items[item.name].readableName), x + nameX, y, x + size - 3, y + 30, tocolor(255, 255, 255, 200), 1.5, "default-bold", "left", "center", true)
     end
     local ammoText = ""
     local ammoName = ""
     local clip, ammo = getWeaponAmmo(item)
     if slot ~= "melee" and clip and ammo then
         ammoText = clip .. " / " .. ammo
-        ammoName = Items[Items[item.name].ammo].readableName
+        ammoName = localize(Items[Items[item.name].ammo].readableName)
     end
     if slot == "grenade" and clip then
         ammoText = clip
@@ -339,7 +343,7 @@ local function drawBackpackCapacity(x, y, width, height)
     dxDrawImageSection(x, y + height * (1-mul), width, height * mul, 0, 128-128*mul, 1, 128*mul, capacityBarTexture)
 
     if isMouseOver(x, y, width, height) and not isDragging then
-        local str = "Носимый вес: " .. tostring(totalWeight) .. "/" .. tostring(capacity)
+        local str = localize("inventory_backpack_weight") .. ": " .. tostring(totalWeight) .. "/" .. tostring(capacity)
         local width = dxGetTextWidth(str) + 10
         local height = 20
         local x = mouseX - 5
@@ -352,7 +356,7 @@ local function drawBackpackCapacity(x, y, width, height)
 end
 
 local function drawWeightError()
-    local str = "Недостаточно места!"
+    local str = localize("inventory_no_space")
     dxDrawText(str, 2, screenSize.y*0.5 + 2, screenSize.x + 2, screenSize.y + 2, tocolor(0, 0, 0, 200), 2.5, "default-bold", "center", "center")
     dxDrawText(str, 0, screenSize.y*0.5, screenSize.x, screenSize.y, tocolor(255, 255, 255, 200), 2.5, "default-bold", "center", "center")
 end
@@ -381,17 +385,17 @@ local function drawSeparateWindow(x, y, width, height)
     end
     dxDrawRectangle(x-1, y-1, width+2, height+2, tocolor(255, 255, 255, 50))
     dxDrawRectangle(x, y, width, height, tocolor(0, 0, 0, 255))
-    dxDrawText("Введите количество: #FFFFFF" .. tostring(Items[separateItem.name].readableName), x + 10, y, x + width, y + height * 0.4, tocolor(120, 120, 120), 1.2, "default-bold", "left", "center", true, false, false, true)
+    dxDrawText(localize("invetory_split_enter_amount")..": #FFFFFF" .. localize(tostring(Items[separateItem.name].readableName)), x + 10, y, x + width, y + height * 0.4, tocolor(120, 120, 120), 1.2, "default-bold", "left", "center", true, false, false, true)
     local bw = (width - 25) / 2
     local bh = 50
     local bx = x + 10
     local by = y + height - bh - 10
-    if drawButton("БРОСИТЬ", bx, by, bw, bh) then
+    if drawButton(localize("invetory_split_drop"), bx, by, bw, bh) then
         hideSeparateWindow(true)
         return
     end
     bx = bx + bw + 5
-    if drawButton("ОТМЕНИТЬ", bx, by, bw, bh) then
+    if drawButton(localize("invetory_split_cancel"), bx, by, bw, bh) then
         hideSeparateWindow()
         return
     end
@@ -455,7 +459,7 @@ addEventHandler("onClientRender", root, function ()
 
     -- Слоты оружия
     local x = screenSize.x - borderSpace - weaponSlotSize - slotSpace - weaponSlotSize
-    dxDrawText("Оружие", x + 5, y - 25, x + weaponSlotSize, y - 5, tocolor(255, 255, 255, 200), 1, "default", "left", "bottom")
+    dxDrawText(localize("inventory_section_weapons"), x + 5, y - 25, x + weaponSlotSize, y - 5, tocolor(255, 255, 255, 200), 1, "default", "left", "bottom")
     drawWeaponSlot("primary1", x, y, weaponSlotSize, "1")
     drawWeaponSlot("primary2", x + slotSpace + weaponSlotSize, y, weaponSlotSize, "2")
     drawWeaponSlot("secondary", x, y + slotSpace + weaponSlotSize, weaponSlotSize, "3")
@@ -464,7 +468,7 @@ addEventHandler("onClientRender", root, function ()
 
     -- Слоты снаряжения
     x = x - slotSpace - equipSlotSize
-    dxDrawText("Снаряжение", x + 5, y - 25, x + equipSlotSize, y - 5, tocolor(255, 255, 255, 200), 1, "default", "left", "bottom")
+    dxDrawText(localize("inventory_section_equipment"), x + 5, y - 25, x + equipSlotSize, y - 5, tocolor(255, 255, 255, 200), 1, "default", "left", "bottom")
     drawEquipmentSlot("helmet", x, y, equipSlotSize)
     drawEquipmentSlot("backpack", x, y + slotSpace + equipSlotSize, equipSlotSize)
     drawEquipmentSlot("armor", x, y + slotSpace * 2 + equipSlotSize * 2, equipSlotSize)
@@ -526,8 +530,8 @@ addEventHandler("onClientResourceStart", resourceRoot, function ()
         borderSpace = 15
     end
 
-    itemLists.loot = createItemsList("Земля", "loot")
-    itemLists.backpack = createItemsList("Рюкзак", "backpack")
+    itemLists.loot = createItemsList("inventory_section_loot", "loot")
+    itemLists.backpack = createItemsList("inventory_section_backpack", "backpack")
 
     isInventoryVisible = false
 end)

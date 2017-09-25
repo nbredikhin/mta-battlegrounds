@@ -45,7 +45,7 @@ function updateMatchZones(match)
     else
         if match.shrinkTimer > 0 then
             if match.zoneTimer == 0 then
-                exports.pb_alert:show(match.players, "ОГРАНИЧЕНИЕ ИГРОВОЙ ОБЛАСТИ!", 4000)
+                exports.pb_alert:show(match.players, "alert_shrink_started", 4000)
                 triggerMatchEvent(match, "onZoneShrink", resourceRoot, match.shrinkTimer)
                 match.zoneTimer = -1
             end

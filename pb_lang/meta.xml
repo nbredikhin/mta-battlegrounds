@@ -1,0 +1,13 @@
+<meta>
+    <oop>true</oop>
+
+    <script type="shared" src="shared/utils.lua"/>
+    <script type="shared" src="shared/lang.lua"/>
+    <script type="shared" src="shared/locales/english.lua"/>
+    <script type="shared" src="shared/locales/russian.lua"/>
+
+    <script type="client" src="client/main.lua"/>
+
+    <export type="client" function="localize"/>
+    <export type="client" function="setLanguage"/>
+</meta>

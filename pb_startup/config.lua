@@ -17,6 +17,7 @@ Config.resourceList = {
     "parachute",
     -- "blood",
 
+    "pb_lang",
     "pb_mapping",
     "pb_models",
     "pb_zones",
