@@ -233,8 +233,11 @@ function initMatch(match)
     for i, element in ipairs(vehicles) do
         addMatchElement(match, element)
     end
-    -- TODO: Выбор времени, погоды и т д (match.settings)
-    match.settings.weather = math.random(1, #Config.weathers)
+    -- Выбор времени, погоды и т д (match.settings)
+    match.settings.weather = 1
+    if math.random() > 0.85 then
+        match.settings.weather = 2
+    end
     match.settings.hour = math.random(0, 23)
 end
 

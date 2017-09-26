@@ -90,7 +90,7 @@ function useItem(item)
         usageTimer = setTimer(startBoost, usingTime, 1, item)
         usingPosition = localPlayer.position
 
-        usingItemName = itemClass.readableName
+        usingItemName = localize(itemClass.readableName)
     end
 end
 

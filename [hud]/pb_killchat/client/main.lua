@@ -38,7 +38,7 @@ addEventHandler("onMatchPlayerWasted", root, function (aliveCount, killerPlayer,
         local killerName = string.gsub(killerPlayer.name, '#%x%x%x%x%x%x', '')
         message = string.format(localize("killchat_kill"), tostring(killerName), tostring(wastedName))
         if weaponName then
-            message = message .. string.format(localize("killchat_weapon"), tostring(weaponName))
+            message = message .. string.format(localize("killchat_weapon"), localize(tostring(weaponName)))
         end
     end
 

@@ -10,6 +10,10 @@ local startGamePressed = false
 local lobbyPlayersCount
 local lobbyMatchesCount
 
+local afkSeconds = 0
+local afkTimer
+local afkMaxTime = 300
+
 function localize(name)
     local res = getResourceFromName("pb_lang")
     if (res) and (getResourceState(res) == "running") then
@@ -137,6 +141,21 @@ addEventHandler("onClientRender", root, function ()
     dxDrawImage(x, y, 120, 120, "assets/en.png", 0, 0, 0, tocolor(255, 255, 255, alpha))
 end)
 
+local function addAFKTime()
+    if not isLobbyVisible then
+        return
+    end
+    afkSeconds = afkSeconds + 1
+    if afkSeconds > afkMaxTime then
+        triggerServerEvent("afkKickSelf", resourceRoot)
+        afkSeconds = 0
+    end
+end
+
+local function clearAFKTime()
+    afkSeconds = 0
+end
+
 function setVisible(visible)
     if isLobbyVisible == not not visible then
         return
@@ -146,10 +165,19 @@ function setVisible(visible)
     startGamePressed = false
     showCursor(isLobbyVisible)
 
+    if isTimer(afkTimer) then
+        killTimer(afkTimer)
+    end
+    afkSeconds = 0
     if isLobbyVisible then
         startSkinSelect()
+        afkTimer = setTimer(addAFKTime, 1000, 0)
+        addEventHandler("onClientCursorMove", root, clearAFKTime)
+        addEventHandler("onClientKey", root, clearAFKTime)
     else
         stopSkinSelect()
+        removeEventHandler("onClientCursorMove", root, clearAFKTime)
+        removeEventHandler("onClientKey", root, clearAFKTime)
     end
 end
 
