@@ -45,7 +45,6 @@ function updateMatchZones(match)
     else
         if match.shrinkTimer > 0 then
             if match.zoneTimer == 0 then
-                exports.pb_alert:show(match.players, "alert_shrink_started", 4000)
                 triggerMatchEvent(match, "onZoneShrink", resourceRoot, match.shrinkTimer)
                 match.zoneTimer = -1
             end
@@ -83,14 +82,14 @@ function updateMatch(match)
         local needPlayers = math.min(math.floor(#getElementsByType("player") * 0.5), Config.minMatchPlayers)
         if #match.players < needPlayers then
             match.stateTime = 0
-            exports.pb_alert:show(match.players, "ОЖИДАНИЕ ПРИСОЕДИНЕНИЯ ДРУГИХ ИГРОКОВ\n"..tostring(#match.players).." из "..tostring(needPlayers), 2000, 0xFFAAFAE1)
+            triggerMatchEvent(match, "onMatchAlert", resourceRoot, "need_players", { current = #match.players, need = needPlayers })
         else
             if #match.players > 30 then
 
             end
             local timeLeft = Config.matchWaitingTime - match.stateTime
             if timeLeft > 0 then
-                exports.pb_alert:show(match.players, "МАТЧ НАЧИНАЕТСЯ ЧЕРЕЗ\n"..tostring(timeLeft), 2000, 0xFFAAFAE1)
+                triggerMatchEvent(match, "onMatchAlert", resourceRoot, "waiting_start", { timeLeft = timeLeft})
             end
         end
 
@@ -135,7 +134,7 @@ function updateMatch(match)
 
         local timeLeft = Config.matchEndedTime - match.stateTime
         if timeLeft > 0 then
-            exports.pb_alert:show(match.players, "МАТЧ ЗАКАНЧИВАЕТСЯ ЧЕРЕЗ\n"..tostring(timeLeft - 1), 2000, 0xFFAAFAE1)
+            triggerMatchEvent(match, "onMatchAlert", resourceRoot, "waiting_end", { timeLeft = timeLeft - 1})
         end
     end
 end

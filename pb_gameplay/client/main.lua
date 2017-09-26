@@ -37,3 +37,12 @@ addEventHandler("onClientVehicleDamage", root, function (attacker, weapon, loss)
     localPlayer.health = localPlayer.health - loss
     triggerEvent("onClientCustomDamage", localPlayer)
 end)
+
+function localize(name)
+    local res = getResourceFromName("pb_lang")
+    if (res) and (getResourceState(res) == "running") then
+        return exports.pb_lang:localize(name)
+    else
+        return name
+    end
+end

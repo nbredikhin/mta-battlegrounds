@@ -19,23 +19,32 @@ function outputMessage(text, info, isHighlight)
     })
 end
 
+function localize(name)
+    local res = getResourceFromName("pb_lang")
+    if (res) and (getResourceState(res) == "running") then
+        return exports.pb_lang:localize(name)
+    else
+        return name
+    end
+end
+
 addEvent("onMatchPlayerWasted", true)
 addEventHandler("onMatchPlayerWasted", root, function (aliveCount, killerPlayer, weaponId)
     local wastedName = string.gsub(source.name, '#%x%x%x%x%x%x', '')
-    local message = "Игрок " ..tostring(wastedName) .. " умер"
+    local message = string.format(localize("killchat_death"), tostring(wastedName))
 
     if isElement(killerPlayer) then
         local weaponName = exports.pb_inventory:getWeaponNameFromId(weaponId)
         local killerName = string.gsub(killerPlayer.name, '#%x%x%x%x%x%x', '')
-        message = "Игрок "..killerName.." убил игрока "..wastedName
+        message = string.format(localize("killchat_kill", tostring(killerName), tostring(wastedName)))
         if weaponName then
-            message = message .. ", используя "..weaponName
+            message = message .. string.format(localize("killchat_weapon"), tostring(weaponName))
         end
     end
 
-    local aliveText = " - " .. tostring(aliveCount) .. " в живых"
+    local aliveText = " - " .. tostring(aliveCount) .. " " .. localize("killchat_alive_count")
     if aliveCount == 1 then
-        aliveText = "МАТЧ ЗАВЕРШЕН"
+        aliveText = localize("killchat_match_ended")
     end
     outputMessage(message, aliveText, aliveCount <= 10)
 end)

@@ -6,7 +6,7 @@ Items = {
         spawnStacks  = 1,
 
         icon         = "jerrycan.png",
-        readableName = "Канистра с топливом",
+        readableName = "item_jerrycan",
         stackable    = true,
         use_time     = 6000,
         fuel_amount  = 250,
@@ -21,7 +21,7 @@ Items = {
         spawnStacks  = 1,
 
         icon         = "bandage.png",
-        readableName = "Бинт",
+        readableName = "item_bandage",
         stackable    = true,
         heal         = 10,
         heal_max     = 75,
@@ -35,7 +35,7 @@ Items = {
         tag          = "medicine",
 
         icon         = "medkit.png",
-        readableName = "Большая аптечка",
+        readableName = "item_medkit",
         stackable    = true,
         heal         = 100,
         heal_max     = 100,
@@ -50,7 +50,7 @@ Items = {
         spawnStacks  = 1,
 
         icon         = "first_aid.png",
-        readableName = "Малая аптечка",
+        readableName = "item_first_aid",
         stackable    = true,
         heal         = 75,
         heal_max     = 75,
@@ -66,7 +66,7 @@ Items = {
         spawnStacks  = 2,
 
         icon         = "energy_drink.png",
-        readableName = "Энергетик",
+        readableName = "item_energy_drink",
         stackable    = true,
         boost        = 15,
         use_time     = 3000,
@@ -81,7 +81,7 @@ Items = {
         spawnStacks  = 1,
 
         icon         = "painkiller.png",
-        readableName = "Обезболивающее",
+        readableName = "item_painkiller",
         stackable    = true,
         boost        = 35,
         use_time     = 4000,
@@ -174,7 +174,7 @@ Items = {
         tag          = "weapon",
 
         icon         = "shotgun.png",
-        readableName = "Дробовик",
+        readableName = "item_shotgun",
         category     = "weapon_primary",
         weaponId     = 25,
         clip         = 5,
@@ -222,7 +222,7 @@ Items = {
         tag          = "weapon",
 
         icon         = "crowbar.png",
-        readableName = "Монтировка",
+        readableName = "item_crowbar",
         category     = "weapon_melee",
         weaponId     = 2,
         stackable    = false,
@@ -236,7 +236,7 @@ Items = {
         tag          = "weapon",
 
         icon         = "grenade.png",
-        readableName = "Осколочная граната",
+        readableName = "item_grenade",
         category     = "weapon_grenade",
         weaponId     = 16,
         stackable    = true,
@@ -248,7 +248,7 @@ Items = {
         tag          = "weapon",
 
         icon         = "molotov.png",
-        readableName = "Коктейль Молотова",
+        readableName = "item_molotov",
         category     = "weapon_grenade",
         weaponId     = 18,
         stackable    = true,
@@ -260,7 +260,7 @@ Items = {
         tag          = "equipment",
 
         icon         = "backpack_small.png",
-        readableName = "Рюкзак (ур.1)",
+        readableName = "item_backpack1",
         category     = "backpack",
         capacity     = 150,
     },
@@ -270,7 +270,7 @@ Items = {
         tag          = "equipment",
 
         icon         = "backpack_medium.png",
-        readableName = "Рюкзак (ур.2)",
+        readableName = "item_backpack2",
         category     = "backpack",
         capacity     = 200,
     },
@@ -280,7 +280,7 @@ Items = {
         tag          = "equipment",
 
         icon         = "backpack_large.png",
-        readableName = "Рюкзак (ур.3)",
+        readableName = "item_backpack3",
         category     = "backpack",
         capacity     = 250,
     },
@@ -290,7 +290,7 @@ Items = {
         tag               = "equipment",
 
         icon              = "helmet1.png",
-        readableName      = "Мотоциклетный шлем (ур.1)",
+        readableName      = "item_helmet1",
         category          = "helmet",
         penetration_ratio = 0.8,
         vars = {
@@ -303,7 +303,7 @@ Items = {
         tag               = "equipment",
 
         icon              = "helmet2.png",
-        readableName      = "Шлем (ур.2)",
+        readableName      = "item_helmet2",
         category          = "helmet",
         penetration_ratio = 0.9,
         vars = {
@@ -316,7 +316,7 @@ Items = {
         tag               = "equipment",
 
         icon              = "helmet3.png",
-        readableName      = "Шлем спецназа (ур.3)",
+        readableName      = "item_helmet3",
         category          = "helmet",
         penetration_ratio = 1,
         vars = {
@@ -329,7 +329,7 @@ Items = {
         tag               = "equipment",
 
         icon              = "armor1.png",
-        readableName      = "Бронежилет (ур.1)",
+        readableName      = "item_armor1",
         category          = "armor",
         penetration_ratio = 0.8,
         vars = {
@@ -342,7 +342,7 @@ Items = {
         tag               = "equipment",
 
         icon              = "armor2.png",
-        readableName      = "Бронежилет (ур.2)",
+        readableName      = "item_armor2",
         category          = "armor",
         penetration_ratio = 0.5,
         vars = {
@@ -355,7 +355,7 @@ Items = {
         tag               = "equipment",
 
         icon              = "armor3.png",
-        readableName      = "Бронежилет (ур.3)",
+        readableName      = "item_armor3",
         category          = "armor",
         penetration_ratio = 0.2,
         vars = {
@@ -370,7 +370,7 @@ Items = {
         spawnStacks  = 3,
 
         icon         = "ammo_9mm.png",
-        readableName = "9 мм",
+        readableName = "item_9mm",
         category     = "ammo",
         stackable    = true,
         weight       = 0.375,
@@ -383,7 +383,7 @@ Items = {
         spawnStacks  = 2,
 
         icon         = "ammo_762mm.png",
-        readableName = "7.62мм",
+        readableName = "item_762mm",
         category     = "ammo",
         stackable    = true,
         weight       = 0.7,
@@ -396,7 +396,7 @@ Items = {
         spawnStacks  = 2,
 
         icon         = "ammo_556mm.png",
-        readableName = "5.56мм",
+        readableName = "item_556mm",
         category     = "ammo",
         stackable    = true,
         weight       = 0.5,
@@ -409,7 +409,7 @@ Items = {
         spawnStacks  = 3,
 
         icon         = "ammo_12gauge.png",
-        readableName = "12 калибр",
+        readableName = "item_12gauge",
         category     = "ammo",
         stackable    = true,
         weight       = 0.5,

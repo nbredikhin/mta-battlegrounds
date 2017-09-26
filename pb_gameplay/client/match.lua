@@ -106,3 +106,31 @@ addEventHandler("onMatchPlayerWasted", root, function (aliveCount, killer)
         -- TODO: Killchat message
     end
 end)
+
+addEvent("onZoneShrink", true)
+addEventHandler("onZoneShrink", resourceRoot, function (messageType, params)
+    exports.pb_alert:show(localize("alert_shrink_started"), 4000)
+end)
+
+addEvent("onMatchAlert", true)
+addEventHandler("onMatchAlert", resourceRoot, function (messageType, params)
+    if messageType == "need_players" then
+        local str = string.format(
+            localize("alert_waiting_players"),
+            tostring(params.current),
+            tostring(params.need))
+
+        exports.pb_alert:show(str, 2000, 0xFFAAFAE1)
+    elseif messageType == "waiting_start" then
+        local str = string.format(
+            localize("alert_match_starts_in"),
+            tostring(params.timeLeft))
+        exports.pb_alert:show(str, 2000, 0xFFAAFAE1)
+    elseif messageType == "waiting_end" then
+        local str = string.format(
+            localize("alert_match_ends_in"),
+            tostring(params.timeLeft))
+
+        exports.pb_alert:show(str, 2000, 0xFFAAFAE1)
+    end
+end)

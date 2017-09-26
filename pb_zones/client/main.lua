@@ -16,10 +16,19 @@ local blueZone = {0, 0, 0}
 local ZONE_DAMAGE_TIME = 800
 
 local zoneTimeMessages = {
-    [60] = "1 МИНУТУ",
-    [30] = "30 СЕКУНД",
-    [10] = "10 СЕКУНД",
+    [60] = "shrink_in_1_minute",
+    [30] = "shrink_in_30_seconds",
+    [10] = "shrink_in_10_seconds",
 }
+
+function localize(name)
+    local res = getResourceFromName("pb_lang")
+    if (res) and (getResourceState(res) == "running") then
+        return exports.pb_lang:localize(name)
+    else
+        return name
+    end
+end
 
 function removeZones()
     zoneProgress = 0
@@ -60,12 +69,12 @@ addEventHandler("onWhiteZoneUpdate", root, function (zone, time)
         local mins = math.floor(zoneTime / 60)
         local secs = zoneTime % 60
         if secs == 0 then
-            text = string.format("%d МИН", mins)
+            text = string.format("%d "..localize("alert_min"), mins)
         else
-            text = string.format("%d МИН %d СЕК", mins, zoneTime % 60)
+            text = string.format("%d "..localize("alert_min").." %d "..localize("alert_sec"), mins, zoneTime % 60)
         end
     end
-    exports.pb_alert:show("ПРОСЛЕДУЙТЕ В ИГРОВУЮ ОБЛАСТЬ, ОТМЕЧЕННУЮ НА КАРТЕ ЗА  "..tostring(text) .. "!", 4000)
+    exports.pb_alert:show(localize("alert_new_zone").." "..tostring(text) .. "!", 4000)
 end)
 
 addEvent("onZoneShrink", true)
@@ -104,7 +113,7 @@ addEventHandler("onClientPreRender", root, function (dt)
     if zoneTime then
         zoneTime = zoneTime - dt
         if zoneTimeMessages[math.floor(zoneTime)] then
-            exports.pb_alert:show("ОГРАНИЧЕНИЕ ИГРОВОЙ ОБЛАСТИ ЧЕРЕЗ "..tostring(zoneTimeMessages[math.floor(zoneTime)]) .. "", 3000)
+            exports.pb_alert:show(localize("alert_shrink_after") .. " "..localize(tostring(zoneTimeMessages[math.floor(zoneTime)])) .. "!", 3000)
         end
         if zoneTime < 0 then
             zoneTime = 0
