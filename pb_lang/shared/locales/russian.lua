@@ -85,4 +85,9 @@ Languages.russian = {
     rank_healed_hp = "ВЫЛЕЧЕНО HP",
     rank_reward = "НАГРАДА",
     rank_exit_to_lobby = "Выйти в лобби",
+
+    -- HUD
+    hud_alive_counter = "В ЖИВЫХ",
+    hud_join_counter = "ПРИСОЕДИНИЛИСЬ",
+    hud_kills_counter = "УБИТО",
 }

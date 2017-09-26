@@ -4,7 +4,6 @@ function setLanguage(language)
     if not language or not Languages[language] then
         return
     end
-    iprint("UI language changed to " .. tostring(language))
     currentLanguage = language
     saveFile("language", language)
 end
@@ -14,6 +13,9 @@ function localize(name)
 end
 
 addEventHandler("onClientResourceStart", resourceRoot, function ()
-    setLanguage(loadFile("language") or "english")
-    currentLanguage = "russian"
+    local defaultLanguage = "english"
+    if string.find(string.lower(getLocalization().code), "ru") then
+        defaultLanguage = "russian"
+    end
+    setLanguage(loadFile("language") or defaultLanguage)
 end)

@@ -112,6 +112,29 @@ addEventHandler("onClientRender", root, function ()
         dxDrawText(text, 26, y + 1, 0, 0, tocolor(0, 0, 0, 150), 1, "default-bold", "left", "top")
         dxDrawText(text, 25, y, 0, 0, tocolor(255, 255, 255), 1, "default-bold", "left", "top")
     end
+
+    local x = screenSize.x - 150
+    local y = 20
+    local alpha = 150
+    if isMouseOver(x, y, 120, 120) then
+        alpha = 255
+        if isMousePressed then
+            exports.pb_lang:setLanguage("russian")
+            playSoundFrontEnd(1)
+        end
+    end
+    dxDrawImage(x, y, 120, 120, "assets/ru.png", 0, 0, 0, tocolor(255, 255, 255, alpha))
+
+    y = y + 130
+    alpha = 150
+    if isMouseOver(x, y, 120, 120) then
+        alpha = 255
+        if isMousePressed then
+            exports.pb_lang:setLanguage("english")
+            playSoundFrontEnd(1)
+        end
+    end
+    dxDrawImage(x, y, 120, 120, "assets/en.png", 0, 0, 0, tocolor(255, 255, 255, alpha))
 end)
 
 function setVisible(visible)

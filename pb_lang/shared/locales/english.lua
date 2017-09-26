@@ -24,7 +24,7 @@ Languages.english = {
     inventory_using = "Using",
     inventory_using_cancel = "Press F, to cancel",
 
-    inventory_pick_up = "TAKE",
+    inventory_pick_up = "PICK UP",
 
     -- ITEMS
     item_jerrycan = "Gas Can",
@@ -85,4 +85,9 @@ Languages.english = {
     rank_healed_hp = "HP HEALED",
     rank_reward = "REWARD",
     rank_exit_to_lobby = "Exit to Lobby",
+
+    -- HUD
+    hud_alive_counter = "ALIVE",
+    hud_join_counter = "JOINED",
+    hud_kills_counter = "KILLED",
 }

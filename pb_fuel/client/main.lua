@@ -45,3 +45,10 @@ setTimer(function ()
     end
     vehicle:setData("fuel", fuelAmount)
 end, 2000, 0)
+
+addEventHandler("onClientPlayerVehicleEnter", localPlayer, function (vehicle)
+    local fuelAmount = vehicle:getData("fuel")
+    if not fuelAmount or fuelAmount == 0 then
+        vehicle.engineState = false
+    end
+end)

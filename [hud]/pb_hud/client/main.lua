@@ -13,6 +13,15 @@ local counters = {
     kills = 0,
 }
 
+function localize(name)
+    local res = getResourceFromName("pb_lang")
+    if (res) and (getResourceState(res) == "running") then
+        return exports.pb_lang:localize(name)
+    else
+        return name
+    end
+end
+
 function isResourceRunning(resName)
     local res = getResourceFromName(resName)
     return (res) and (getResourceState(res) == "running")
@@ -122,15 +131,17 @@ addEventHandler("onClientRender", root, function ()
 
     local y = 30
     local x = screenSize.x - 36
-    local aliveText = "В ЖИВЫХ"
+    local aliveText
     if localPlayer:getData("match_waiting") then
-        aliveText = "ПРИСОЕДИНИЛИСЬ"
+        aliveText = localize("hud_join_counter")
+    else
+        aliveText = localize("hud_alive_counter")
     end
     x = x - drawCounter(x, y, counters.alive, aliveText) - 45
     if (isResourceRunning("pb_map") and exports.pb_map:isVisible()) or
        (isResourceRunning("pb_inventory") and exports.pb_inventory:isVisible())
     then
-        drawCounter(x, y, localPlayer:getData("kills") or 0, "УБИТО")
+        drawCounter(x, y, localPlayer:getData("kills") or 0, localize("hud_kills_counter"))
     end
 end, false, "low-1")
 
