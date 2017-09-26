@@ -16,5 +16,8 @@ function fillVehicleFuel(vehicle, amount)
     local fuel = vehicle:getData("fuel") or 0
     local newFuelAmount = math.min(fuel + amount, maxAmount)
     vehicle:setData("fuel", newFuelAmount)
+    if newFuelAmount > 0 then
+        vehicle.engineState = true
+    end
     return newFuelAmount
 end

@@ -13,6 +13,9 @@ ReplacedModels = {
 
     awm   = 358,
     m16a4 = 356,
+    pan   = 321,
+    crowbar = 333,
+    machete = 339,
 }
 
 function getItemModel(name)

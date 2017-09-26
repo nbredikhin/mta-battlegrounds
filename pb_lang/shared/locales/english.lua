@@ -35,6 +35,8 @@ Languages.english = {
     item_painkiller = "Painkillers",
     item_shotgun = "Shotgun",
     item_crowbar = "Crowbar",
+    item_pan     = "Pan",
+    item_machete = "Machete",
     item_grenade = "Frag Grenade",
     item_molotov = "Molotov Cocktail",
     item_backpack1 = "Backpack (Lv.1)",
@@ -90,4 +92,5 @@ Languages.english = {
     hud_alive_counter = "ALIVE",
     hud_join_counter = "JOINED",
     hud_kills_counter = "KILLED",
+    hud_kmh = "km/h"
 }

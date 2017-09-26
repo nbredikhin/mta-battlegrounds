@@ -21,7 +21,7 @@ addEventHandler("onClientPlayerVehicleEnter", localPlayer, function ()
 end)
 
 addEventHandler("onClientVehicleDamage", root, function (attacker, weapon, loss)
-    if source ~= localPlayer.vehicle then
+    if source ~= localPlayer.vehicle or localPlayer.dead then
         return
     end
     if attacker then

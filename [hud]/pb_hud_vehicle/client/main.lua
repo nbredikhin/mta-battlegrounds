@@ -86,9 +86,9 @@ addEventHandler("onClientRender", root, function ()
     y = y - barHeight - 10
     drawFuelBar(x, y)
     y = y - barHeight - 50
-    local speed = tostring(math.floor(getElementSpeed(localPlayer.vehicle, "km/h")))
-    dxDrawText(speed.." км/ч", x+2, y+2, 0, 0, tocolor(0, 0, 0, 80), 2.5, "default-bold", "left", "top")
-    dxDrawText(speed.." км/ч", x, y, 0, 0, tocolor(255, 255, 255), 2.5, "default-bold", "left", "top")
+    local speed = tostring(math.floor(getElementSpeed(localPlayer.vehicle, "km/h"))) .. " " .. exports.pb_lang:localize("hud_kmh")
+    dxDrawText(speed, x+2, y+2, 0, 0, tocolor(0, 0, 0, 80), 2.5, "default-bold", "left", "top")
+    dxDrawText(speed, x, y, 0, 0, tocolor(255, 255, 255), 2.5, "default-bold", "left", "top")
 end)
 
 function setVisible(visible)

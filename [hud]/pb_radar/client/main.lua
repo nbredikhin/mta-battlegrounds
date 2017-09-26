@@ -86,6 +86,9 @@ function drawRedZone(x, y, radius, localX, localY, color)
 end
 
 local function drawRadar()
+    if not viewport then
+        return
+    end
     dxSetRenderTarget(viewport)
     local localX, localY = worldToRadar(localPlayer.position.x, localPlayer.position.y)
     local localWidth, localHeight = viewportWidth, viewportHeight

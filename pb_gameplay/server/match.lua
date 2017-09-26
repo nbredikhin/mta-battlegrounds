@@ -210,6 +210,11 @@ function destroyMatch(match)
         removePlayerFromMatch(player, "match_destroyed")
     end
     -- Удаление элементов
+    for i, object in ipairs(getElementsByType("object")) do
+        if object.dimension == match.dimension then
+            table.insert(match.elements, object)
+        end
+    end
     Async:setPriority("low")
     Async:foreach(match.elements, function(element)
         if isElement(element) then

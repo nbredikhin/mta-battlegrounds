@@ -231,6 +231,34 @@ Items = {
         }
     },
 
+    weapon_pan = {
+        level        = 1,
+        tag          = "weapon",
+
+        icon         = "pan.png",
+        readableName = "item_pan",
+        category     = "weapon_melee",
+        weaponId     = 10,
+        stackable    = false,
+        vars = {
+            clip = 1
+        }
+    },
+
+    weapon_machete = {
+        level        = 1,
+        tag          = "weapon",
+
+        icon         = "machete.png",
+        readableName = "item_machete",
+        category     = "weapon_melee",
+        weaponId     = 8,
+        stackable    = false,
+        vars = {
+            clip = 1
+        }
+    },
+
     weapon_grenade = {
         level        = 2,
         tag          = "weapon",

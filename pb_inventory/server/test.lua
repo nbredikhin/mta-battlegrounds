@@ -32,7 +32,7 @@ setTimer(function ()
     -- local item = createItem("painkiller", 1)
     -- addBackpackItem(player, item)
 
-    -- spawnPlayerLootItem(player, createItem("jerrycan", 100))
+    -- spawnPlayerLootItem(player, createItem("weapon_machete", 1))
     -- addBackpackItem(player, createItem("ammo_556mm", 999))
     -- addBackpackItem(player, createItem("ammo_12gauge", 30))
 

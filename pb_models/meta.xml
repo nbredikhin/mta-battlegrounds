@@ -31,4 +31,10 @@
     <file src="models/m16a4.txd"/>
     <file src="models/awm.dff"/>
     <file src="models/awm.txd"/>
+    <file src="models/pan.dff"/>
+    <file src="models/pan.txd"/>
+    <file src="models/crowbar.dff"/>
+    <file src="models/crowbar.txd"/>
+    <file src="models/machete.dff"/>
+    <file src="models/machete.txd"/>
 </meta>

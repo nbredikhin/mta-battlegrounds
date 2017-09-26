@@ -150,7 +150,7 @@ setTimer(function ()
     if zonesHidden then
         return
     end
-    if not localPlayer:getData("matchId") then
+    if not localPlayer:getData("matchId") or localPlayer.dead then
         return
     end
 

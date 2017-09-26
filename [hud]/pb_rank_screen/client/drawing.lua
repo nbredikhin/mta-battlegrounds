@@ -102,12 +102,12 @@ addEventHandler("onClientRender", root, function ()
         topText = localize("rank_losetext")
     end
     dxDrawText(topText, 50, 120, 51, 121, colors.orange, 1, fonts.medium, "left", "top")
-    dxDrawText("№ "..tostring(screenData.rank), 0, 50, screenSize.x - 50 - 130, 51, colors.orange, scale, fonts.bigger_bold, "right", "top")
+    dxDrawText("#"..tostring(screenData.rank), 0, 50, screenSize.x - 50 - 130, 51, colors.orange, scale, fonts.bigger_bold, "right", "top")
     dxDrawText("/"..tostring(screenData.players_total), screenSize.x - 50 - 125, 50, screenSize.x, 51, colors.grey, scale, fonts.bigger, "left", "top")
 
     local ry = 240
     local rx = 50
-    local rtext = localize("rank_label") .. " "..tostring(screenData.rank)
+    local rtext = localize("rank_label") ..tostring(screenData.rank)
     local rw = dxGetTextWidth(rtext, 1, fonts.medium)
     local rh = dxGetFontHeight(1, fonts.medium)
     dxDrawText(rtext, rx, ry, rx + rw, ry + 1, colors.white, 1, fonts.medium, "left", "top")
