@@ -52,7 +52,11 @@ local function spawnRandomItem(position, tag, level)
 
     if itemClass.tag == "weapon" and itemClass.ammo then
         local ammoClass = exports.pb_inventory:getItemClass(itemClass.ammo)
-        local ammoItem = exports.pb_inventory:createItem(ammoClass.name, math.floor(ammoClass.spawnCount or 1))
+        local ammoCount = itemClass.clip
+        if not ammoCount then
+            ammoCount = math.floor(ammoClass.spawnCount or 1)
+        end
+        local ammoItem = exports.pb_inventory:createItem(ammoClass.name, ammoCount)
         table.insert(items, exports.pb_inventory:spawnLootItem(ammoItem, position + Vector3(offsetX, offsetY, 0)))
     end
 

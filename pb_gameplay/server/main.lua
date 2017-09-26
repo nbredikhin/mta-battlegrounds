@@ -37,3 +37,10 @@ function initPlayerSkillStats(player)
         player:setStat(i, stat)
     end
 end
+
+addCommandHandler("kill", function (player)
+    if not player:getData("matchId") or player.dead then
+        return
+    end
+    killPed(player)
+end)

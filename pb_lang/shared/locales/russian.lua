@@ -66,6 +66,7 @@ Languages.russian = {
     alert_new_zone = "ПРОСЛЕДУЙТЕ В ИГРОВУЮ ОБЛАСТЬ, ОТМЕЧЕННУЮ НА КАРТЕ ЗА",
     alert_min = "МИН",
     alert_sec = "СЕК",
+    alert_red_zone = "ВНИМАНИЕ! НАЧАЛАСЬ КРАСНАЯ ЗОНА!",
 
     -- KILLCHAT
     killchat_death = "Игрок %s умер",

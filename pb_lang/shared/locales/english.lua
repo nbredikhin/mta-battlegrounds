@@ -66,6 +66,7 @@ Languages.english = {
     alert_new_zone = "PROCEED TO PLAY AREA MARKED ON THE MAP IN",
     alert_min = "MIN",
     alert_sec = "SEC",
+    alert_red_zone = "DANGER! RED ZONE STARTED!",
 
     -- KILLCHAT
     killchat_death = "Player %s died",

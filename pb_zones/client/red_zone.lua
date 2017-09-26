@@ -67,6 +67,6 @@ addEventHandler("onRedZoneCreated", resourceRoot, function (x, y, seed)
         end
     end, zoneTime, 1)
 
-    exports.pb_alert:show("ВНИМАНИЕ! НАЧАЛАСЬ КРАСНАЯ ЗОНА!", 6000)
+    exports.pb_alert:show(localize("alert_red_zone"), 6000)
     createNextExplosion()
 end)
