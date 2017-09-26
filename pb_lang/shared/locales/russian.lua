@@ -71,4 +71,18 @@ Languages.russian = {
     killchat_weapon = ", используя %s",
     killchat_alive_count = "в живых",
     killchat_match_ended = "МАТЧ ЗАВЕРШЕН!",
+
+    -- RANK SCREEN
+    rank_wintext1 = "ПОБЕДА-ПОБЕДА ВМЕСТО ОБЕДА!",
+    rank_top10text = "ВЫ ПОПАЛИ В ТОП-10!",
+    rank_losetext = "В СЛЕДУЮЩИЙ РАЗ ПОВЕЗЕТ!",
+    rank_label = "РАНГ №",
+    rank_time_survived = "ВРЕМЯ ЖИЗНИ",
+    rank_minutes = "МИН",
+    rank_kills = "УБИЙСТВ",
+    rank_accuracy = "ТОЧНОСТЬ",
+    rank_damage_taken = "ПОЛУЧЕНО УРОНА",
+    rank_healed_hp = "ВЫЛЕЧЕНО HP",
+    rank_reward = "НАГРАДА",
+    rank_exit_to_lobby = "Выйти в лобби",
 }

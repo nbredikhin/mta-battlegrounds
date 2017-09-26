@@ -71,4 +71,18 @@ Languages.english = {
     killchat_weapon = " with %s",
     killchat_alive_count = "left",
     killchat_match_ended = "MATCH FINISHED!",
+
+    -- RANK SCREEN
+    rank_wintext1 = "WINNER WINNER CHICKEN DINNER!",
+    rank_top10text = "YOU MADE IT TO TOP 10!",
+    rank_losetext = "BETTER LUCK NEXT TIME!",
+    rank_label = "RANK #",
+    rank_time_survived = "TIME ALIVE",
+    rank_minutes = "MIN",
+    rank_kills = "KILLS",
+    rank_accuracy = "ACCURACY",
+    rank_damage_taken = "DAMAGE TAKEN",
+    rank_healed_hp = "HP HEALED",
+    rank_reward = "REWARD",
+    rank_exit_to_lobby = "Exit to Lobby",
 }

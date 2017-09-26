@@ -32,10 +32,19 @@ local screenData = {
 }
 
 local winTexts = {
-    "ПОБЕДА-ПОБЕДА ВМЕСТО ОБЕДА!"
+    "rank_wintext1"
 }
 
 local currentWinText = ""
+
+function localize(name)
+    local res = getResourceFromName("pb_lang")
+    if (res) and (getResourceState(res) == "running") then
+        return exports.pb_lang:localize(name)
+    else
+        return name
+    end
+end
 
 function isMouseOver(x, y, w, h)
     return mouseX >= x and mouseX <= x + w and mouseY >= y and mouseY <= y + h
@@ -82,12 +91,15 @@ addEventHandler("onClientRender", root, function ()
 
     dxDrawRectangle(0, 0, screenSize.x, screenSize.y, tocolor(0, 0, 0, 230))
     dxDrawText(tostring(screenData.nickname), 50, 50, 51, 51, colors.white, 1, fonts.big, "left", "top")
-    local topText = "В СЛЕДУЮЩИЙ РАЗ ПОВЕЗЕТ!"
+    local topText
     if screenData.rank and screenData.rank <= 10 then
-        topText = "ВЫ ПОПАЛИ В ТОП-10!"
         if screenData.rank == 1 then
-            topText = currentWinText
+            topText = localize(currentWinText)
+        else
+            topText = localize("rank_top10text")
         end
+    else
+        topText = localize("rank_losetext")
     end
     dxDrawText(topText, 50, 120, 51, 121, colors.orange, 1, fonts.medium, "left", "top")
     dxDrawText("№ "..tostring(screenData.rank), 0, 50, screenSize.x - 50 - 130, 51, colors.orange, scale, fonts.bigger_bold, "right", "top")
@@ -95,15 +107,15 @@ addEventHandler("onClientRender", root, function ()
 
     local ry = 240
     local rx = 50
-    local rtext = "РАНГ № "..tostring(screenData.rank)
+    local rtext = localize("rank_label") .. " "..tostring(screenData.rank)
     local rw = dxGetTextWidth(rtext, 1, fonts.medium)
     local rh = dxGetFontHeight(1, fonts.medium)
     dxDrawText(rtext, rx, ry, rx + rw, ry + 1, colors.white, 1, fonts.medium, "left", "top")
     dxDrawLine(rx, ry + rh + 15, rx + rw, ry + rh + 15, colors.grey)
 
     ry = ry + rh + 30
-    dxDrawText("ВРЕМЯ ЖИЗНИ", rx, ry, rx + rw, ry + 1, colors.grey, 1, fonts.small, "left", "top")
-    dxDrawText(tostring(screenData.time_alive).." МИН", rx, ry, rx + rw, ry + 1, colors.grey, 1, fonts.small, "right", "top")
+    dxDrawText(localize("rank_time_survived"), rx, ry, rx + rw, ry + 1, colors.grey, 1, fonts.small, "left", "top")
+    dxDrawText(tostring(screenData.time_alive).." "..localize("rank_minutes"), rx, ry, rx + rw, ry + 1, colors.grey, 1, fonts.small, "right", "top")
     -- ry = ry + 25
     -- dxDrawText("ОЧКИ УБИЙСТВ", rx, ry, rx + rw, ry + 1, colors.grey, 1, fonts.small, "left", "top")
     -- dxDrawText("9999", rx, ry, rx + rw, ry + 1, colors.grey, 1, fonts.small, "right", "top")
@@ -114,26 +126,26 @@ addEventHandler("onClientRender", root, function ()
     if scale > 0.9 then
         ry = 240
         rx = rx + rw + 40
-        rtext = "УБИЙСТВ "..tostring(screenData.kills)
+        rtext = localize("rank_kills") .." "..tostring(screenData.kills)
         rw = dxGetTextWidth(rtext, 1, fonts.medium)
         dxDrawText(rtext, rx, ry, rx + rw, ry + 1, colors.white, 1, fonts.medium, "left", "top")
         dxDrawLine(rx, ry + rh + 15, rx + rw, ry + rh + 15, colors.grey)
 
         ry = ry + rh + 30
-        dxDrawText("ТОЧНОСТЬ", rx, ry, rx + rw, ry + 1, colors.grey, 1, fonts.small, "left", "top")
+        dxDrawText(localize("rank_accuracy"), rx, ry, rx + rw, ry + 1, colors.grey, 1, fonts.small, "left", "top")
         dxDrawText(tostring(screenData.accuracy).."%", rx, ry, rx + rw, ry + 1, colors.grey, 1, fonts.small, "right", "top")
         ry = ry + 25
-        dxDrawText("ПОЛУЧЕНО УРОНА", rx, ry, rx + rw, ry + 1, colors.grey, 1, fonts.small, "left", "top")
+        dxDrawText(localize("rank_damage_taken"), rx, ry, rx + rw, ry + 1, colors.grey, 1, fonts.small, "left", "top")
         dxDrawText(screenData.damage_taken, rx, ry, rx + rw, ry + 1, colors.grey, 1, fonts.small, "right", "top")
         ry = ry + 25
-        dxDrawText("ВЫЛЕЧЕНО HP", rx, ry, rx + rw, ry + 1, colors.grey, 1, fonts.small, "left", "top")
+        dxDrawText(localize("rank_healed_hp"), rx, ry, rx + rw, ry + 1, colors.grey, 1, fonts.small, "left", "top")
         dxDrawText(screenData.hp_healed, rx, ry, rx + rw, ry + 1, colors.grey, 1, fonts.small, "right", "top")
 
     end
 
     ry = 240
     rx = rx + rw + 40
-    rtext = "НАГРАДА "..tostring(screenData.reward)
+    rtext = localize("rank_reward") .. " "..tostring(screenData.reward)
     rw = dxGetTextWidth(rtext, 1, fonts.medium)
     dxDrawText(rtext, rx, ry, rx + rw, ry + 1, colors.white, 1, fonts.medium, "left", "top")
     dxDrawLine(rx, ry + rh + 15, rx + rw, ry + rh + 15, colors.grey)
@@ -150,7 +162,7 @@ addEventHandler("onClientRender", root, function ()
 
     local bw = 200
     local bh = 50
-    if drawButton("Выйти в лобби", screenSize.x / 2 - bw / 2, screenSize.y - bh - 50, bw, bh) then
+    if drawButton(localize("rank_exit_to_lobby"), screenSize.x / 2 - bw / 2, screenSize.y - bh - 50, bw, bh) then
         setVisible(false)
         triggerEvent("onExitToLobby", resourceRoot)
     end
