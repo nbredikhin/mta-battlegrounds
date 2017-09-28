@@ -4,6 +4,9 @@ function findMatch()
     end, 1000, 1)
 end
 
+function addLobbyPlayer(player)
+
+end
 
 addEventHandler("onClientResourceStart", resourceRoot, function ()
     setVisible(true)

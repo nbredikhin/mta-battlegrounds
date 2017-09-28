@@ -1,12 +1,14 @@
 local matchTypes = {
     ["solo"]   = 1,
-    ["duo"]    = 2,
-    ["triple"] = 3
+    ["squad"]  = 2,
+    ["squad"]  = 3,
+    ["squad"]  = 4
 }
 local maxMatchPlayers = 100
 local matchCounter = 0
 local matchesList = {}
 local lobbyPlayersCount = 0
+local maxTeamPlayers = 4
 
 function getLobbyPlayersCount()
     return lobbyPlayersCount
@@ -18,8 +20,9 @@ function getMatchTypeFromPlayersCount(count)
     end
     local t = {
         [1] = "solo",
-        [2] = "duo",
-        [3] = "triple",
+        [2] = "squad",
+        [3] = "squad",
+        [4] = "squad",
     }
     return t[count]
 end
@@ -35,6 +38,10 @@ end
 function findMatch(players)
     if type(players) ~= "table" then
         outputDebugString("[Matchmaking] findMatch: bad 'players' value (expected list of players)")
+        return false
+    end
+    if #players > maxTeamPlayers then
+        outputDebugString("[Matchmaking] findMatch: too many players in team")
         return false
     end
     for i, player in ipairs(players) do

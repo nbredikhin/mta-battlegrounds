@@ -10,9 +10,8 @@ local startGamePressed = false
 local lobbyPlayersCount
 local lobbyMatchesCount
 
-local afkSeconds = 0
-local afkTimer
-local afkMaxTime = 300
+local currentMessageBoxText = nil
+local currentWindow = nil
 
 function localize(name)
     local res = getResourceFromName("pb_lang")
@@ -28,6 +27,25 @@ function isMouseOver(x, y, w, h)
            mouseX <= x + w and
            mouseY >= y     and
            mouseY <= y + h
+end
+
+function showMessageBox(text)
+    currentMessageBoxText = tostring(text)
+    setTimer(function() currentMessageBoxText = nil end, 5000, 1)
+end
+
+function showInviteWindow(player)
+    if currentWindow then
+        return
+    end
+
+    currentWindow = {
+        text = "Игрок " .. tostring(string.gsub(player.name, '#%x%x%x%x%x%x', '')) .. " приглашает вас в игру",
+        cancel_text = "ОТМЕНА",
+        accept_text = "ПРИНЯТЬ",
+        width = 450,
+        height = 170
+    }
 end
 
 function drawStartGameButton()
@@ -75,6 +93,57 @@ function drawArrows()
     dxDrawImage(x, y, w, h, "assets/arrow.png")
     if isMousePressed and isMouseOver(x-20, y-20, w+40, h+40) then
         changeSkin(1)
+    end
+end
+
+function drawMessageBox()
+    if not currentMessageBoxText then
+        return
+    end
+    local width = dxGetTextWidth(currentMessageBoxText, 2.5, "default-bold") + 50
+    local height = 150
+    dxDrawRectangle(screenSize.x / 2 - width / 2 - 1, screenSize.y / 2 - height / 2 - 1, width + 2, height + 2, tocolor(255, 255, 255))
+    dxDrawRectangle(screenSize.x / 2 - width / 2, screenSize.y / 2 - height / 2, width, height, tocolor(0, 0, 0))
+    dxDrawText(currentMessageBoxText, 0, 0, screenSize.x, screenSize.y, tocolor(255, 255, 255), 2.5, "default-bold", "center", "center")
+end
+
+local function drawButton(text, x, y, width, height, bg, color, scale)
+    if not bg then bg = tocolor(250, 250, 250) end
+    if not color then color = tocolor(0, 0, 0, 200) end
+    if not scale then scale = 1.5 end
+    dxDrawRectangle(x, y, width, height, bg)
+    dxDrawRectangle(x, y + height - 5, width, 5, tocolor(0, 0, 0, 10))
+    dxDrawText(text, x, y, x + width, y + height, color, scale, "default-bold", "center", "center")
+
+    if isMouseOver(x, y, width, height) then
+        dxDrawRectangle(x, y, width, height, tocolor(0, 0, 0, 100))
+        if isMousePressed then
+            return true
+        end
+    end
+    return false
+end
+
+function drawWindow()
+    if not currentWindow then
+        return
+    end
+    dxDrawRectangle(0, 0, screenSize.x, screenSize.y, tocolor(0, 0, 0, 150))
+
+    local x = screenSize.x / 2 - currentWindow.width / 2
+    local y = screenSize.y / 2 - currentWindow.height / 2
+
+    dxDrawRectangle(x-1, y-1, currentWindow.width+2, currentWindow.height+2, tocolor(255, 255, 255))
+    dxDrawRectangle(x, y, currentWindow.width, currentWindow.height, tocolor(0, 0, 0))
+    dxDrawText(currentWindow.text, x + 15, y, x + currentWindow.width - 30, y + currentWindow.height / 2 + 15, tocolor(255, 255, 255), 2, "default-bold", "center", "center", true, true)
+
+    local bw = 140
+    local bh = 45
+    if drawButton(currentWindow.cancel_text, x + currentWindow.width / 2 - bw - 10, y + currentWindow.height - bh - 15, bw, bh) then
+        currentWindow = nil
+    end
+    if drawButton(currentWindow.accept_text, x + currentWindow.width / 2 + 10, y + currentWindow.height - bh - 15, bw, bh) then
+        currentWindow = nil
     end
 end
 
@@ -139,22 +208,10 @@ addEventHandler("onClientRender", root, function ()
         end
     end
     dxDrawImage(x, y, 120, 120, "assets/en.png", 0, 0, 0, tocolor(255, 255, 255, alpha))
+
+    drawMessageBox()
+    drawWindow()
 end)
-
-local function addAFKTime()
-    if not isLobbyVisible then
-        return
-    end
-    afkSeconds = afkSeconds + 1
-    if afkSeconds > afkMaxTime then
-        triggerServerEvent("afkKickSelf", resourceRoot)
-        afkSeconds = 0
-    end
-end
-
-local function clearAFKTime()
-    afkSeconds = 0
-end
 
 function setVisible(visible)
     if isLobbyVisible == not not visible then
@@ -165,19 +222,10 @@ function setVisible(visible)
     startGamePressed = false
     showCursor(isLobbyVisible)
 
-    if isTimer(afkTimer) then
-        killTimer(afkTimer)
-    end
-    afkSeconds = 0
     if isLobbyVisible then
         startSkinSelect()
-        afkTimer = setTimer(addAFKTime, 1000, 0)
-        addEventHandler("onClientCursorMove", root, clearAFKTime)
-        addEventHandler("onClientKey", root, clearAFKTime)
     else
         stopSkinSelect()
-        removeEventHandler("onClientCursorMove", root, clearAFKTime)
-        removeEventHandler("onClientKey", root, clearAFKTime)
     end
 end
 

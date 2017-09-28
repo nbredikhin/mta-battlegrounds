@@ -3,6 +3,11 @@ addEventHandler("playerFindMatch", root, function ()
     findMatch({client})
 end)
 
+addEvent("teamFindMatch", true)
+addEventHandler("teamFindMatch", root, function (players)
+    findMatch(players)
+end)
+
 addEvent("clientLeaveMatch", true)
 addEventHandler("clientLeaveMatch", resourceRoot, function ()
     removePlayerFromMatch(client, "leave")
