@@ -21,7 +21,7 @@ function getMatchAlivePlayers(match)
     end
     local list = {}
     for i, player in ipairs(match.players) do
-        if not player.dead then
+        if isElement(player) and not player.dead then
             table.insert(list, player)
         end
     end

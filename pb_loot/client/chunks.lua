@@ -23,6 +23,9 @@ function updateChunks()
     if localPlayer.vehicle and localPlayer.vehicle.velocity.length > 0.81 then
         return
     end
+    if localPlayer.position.z > 530 then
+        return
+    end
     local cx, cy = getChunkFromWorldPosition(localPlayer.position.x, localPlayer.position.y)
     local currentChunks = {}
     if prevDimension ~= localPlayer.dimension then

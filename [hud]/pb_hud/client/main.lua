@@ -34,24 +34,30 @@ local function dxDrawBorderRect(x, y, width, height, color, borderWidth)
     dxDrawLine(x, y + height, x, y, color, borderWidth)
 end
 
-local function drawHealthbar()
-    local x = screenSize.x / 2 - healthbarWidth / 2
-    local y = screenSize.y - 35 - healthbarHeight
+local function drawHealthbar(player, x, y, width, height)
+    if not isElement(player) then
+        return
+    end
+    dxDrawRectangle(x - 1, y - 1, width + 2, height + 2, tocolor(0, 0, 0, 150))
 
-    dxDrawRectangle(x - 1, y - 1, healthbarWidth + 2, healthbarHeight + 2, tocolor(0, 0, 0, 150))
-
-    local hpMul = localPlayer.health / 100
+    local hpMul = player.health / 100
     local color = tocolor(255, 255, 255)
     local borderColor = tocolor(255, 255, 255, 150)
-    if localPlayer.health < 75 then
+    if player.health < 75 then
         color = tocolor(255, 150, 150)
-    elseif localPlayer.health > 99.5 then
+    elseif player.health > 99.5 then
         color = tocolor(255, 255, 255, 100)
         borderColor = tocolor(255, 255, 255, 120)
     end
-    dxDrawBorderRect(x - 1, y - 1, healthbarWidth + 2, healthbarHeight + 2, borderColor, 2)
-    dxDrawRectangle(x, y, healthbarWidth * hpMul, healthbarHeight, color)
+    dxDrawBorderRect(x - 1, y - 1, width + 2, height + 2, borderColor, 2)
+    dxDrawRectangle(x, y, width * hpMul, height, color)
+end
 
+local function drawPlayerHealthbar()
+    local x = screenSize.x / 2 - healthbarWidth / 2
+    local y = screenSize.y - 35 - healthbarHeight
+
+    drawHealthbar(localPlayer, x, y, healthbarWidth, healthbarHeight)
     local healthbarText = string.gsub(localPlayer.name, '#%x%x%x%x%x%x', '') .. " - " .. tostring(getVersion().sortable)
     dxDrawText(healthbarText, x + 1, screenSize.y - 34, x + healthbarWidth + 1, screenSize.y + 1, tocolor(0, 0, 0, 150), 1, "default", "center", "center")
     dxDrawText(healthbarText, x, screenSize.y - 35, x + healthbarWidth, screenSize.y, tocolor(255, 255, 255, 150), 1, "default", "center", "center")
@@ -126,7 +132,7 @@ addEventHandler("onClientRender", root, function ()
     if not isVisible then
         return
     end
-    drawHealthbar()
+    drawPlayerHealthbar()
     drawBoost()
 
     local y = 30
