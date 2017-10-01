@@ -99,16 +99,15 @@ function createMatch(matchType)
         totalTime   = 0,
         runningTime = 0,
 
-        settings    = {}
-    }
+        settings    = {},
 
-    if matchType == "squad" then
-        match.squadPlayers = {}
-    end
+        squadCounter = 0,
+        squadPlayers = {}
+    }
 
     table.insert(matchesList, match)
     initMatch(match)
-    outputDebugString("[Matchmaking] Created new match (" .. tostring(match.id) .. ")")
+    outputDebugString("[Matchmaking] Created new "..tostring(match.matchType).." match (" .. tostring(match.id) .. ")")
     return match
 end
 
@@ -141,11 +140,11 @@ function addMatchPlayers(match, players)
         return false
     end
     match.squadCounter = match.squadCounter + 1
-    match.squadPlayers[squadCounter] = {}
+    match.squadPlayers[match.squadCounter] = {}
     for i, player in ipairs(players) do
         addMatchPlayer(match, player, players)
-        match.squadPlayers[squadCounter][player] = true
-        player:setData("squadId", squadCounter)
+        match.squadPlayers[match.squadCounter][player] = true
+        player:setData("squadId", match.squadCounter)
     end
     return true
 end

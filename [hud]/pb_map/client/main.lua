@@ -10,6 +10,13 @@ local lineColor = tocolor(255, 255, 150, 150)
 local markerSize = 20
 local markerAnim = 0
 
+local markerColors = {
+    { 253, 218, 14  },
+    { 46,  198, 2   },
+    { 0,   170, 240 },
+    { 237, 5,   3   },
+}
+
 local renderTarget = dxCreateRenderTarget(mapSize, mapSize)
 
 local sectionNames = {
@@ -100,13 +107,29 @@ addEventHandler("onClientRender", root, function ()
         end
     end
 
-    local marker = localPlayer:getData("map_marker")
-    if marker then
-        markerAnim = math.min(1, markerAnim + 0.1)
-        local x, y = worldToMap(unpack(marker))
-        local offset = 10 * markerAnim - 10
-        dxDrawImage(x + viewX - markerSize / 2, y + viewY - markerSize + offset, markerSize, markerSize, textures.marker, 0, 0, 0, tocolor(255, 255, 255, 255 * markerAnim))
+    local squadPlayers = exports.pb_gameplay:getSquadPlayers()
+    if #squadPlayers > 0 then
+        for i, player in ipairs(squadPlayers) do
+            local marker = player:getData("map_marker")
+            if marker then
+                local x, y = worldToMap(unpack(marker))
+                local anim = 1
+                if player == localPlayer then
+                    anim = markerAnim
+                end
+                local offset = 10 * anim - 10
+                dxDrawImage(x + viewX - markerSize / 2, y + viewY - markerSize + offset, markerSize, markerSize, textures.marker, 0, 0, 0, tocolor(markerColors[i][1], markerColors[i][2], markerColors[i][3], 255 * anim))
+            end
+        end
+    else
+        local marker = localPlayer:getData("map_marker")
+        if marker then
+            local x, y = worldToMap(unpack(marker))
+            local offset = 10 * markerAnim - 10
+            dxDrawImage(x + viewX - markerSize / 2, y + viewY - markerSize + offset, markerSize, markerSize, textures.marker, 0, 0, 0, tocolor(markerColors[1][1], markerColors[1][2], markerColors[1][3], 255 * markerAnim))
+        end
     end
+    markerAnim = math.min(1, markerAnim + 0.1)
     dxSetRenderTarget()
 
     dxDrawRectangle(0, 0, screenSize.x, screenSize.y, tocolor(0, 0, 0, 150))
@@ -133,9 +156,9 @@ addEventHandler("onClientClick", root, function (button, state, x, y)
         x = x * 6000 - 3000
         y = (6000 - y * 6000) - 3000
         if marker and (Vector2(unpack(marker)) - Vector2(x, y)).length < 50 then
-            localPlayer:setData("map_marker", false, false)
+            localPlayer:setData("map_marker", false, true)
         else
-            localPlayer:setData("map_marker", {x, y}, false)
+            localPlayer:setData("map_marker", {x, y}, true)
             markerAnim = 0
         end
     end

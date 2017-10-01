@@ -21,5 +21,6 @@
     <script type="server" src="server/match_events.lua"/>
     <script type="server" src="server/admin.lua"/>
 
+    <export type="client" function="getSquadPlayers"/>
     <export type="server" function="findMatch"/>
 </meta>
