@@ -102,6 +102,10 @@ function createMatch(matchType)
         settings    = {}
     }
 
+    if matchType == "squad" then
+        match.squadPlayers = {}
+    end
+
     table.insert(matchesList, match)
     initMatch(match)
     outputDebugString("[Matchmaking] Created new match (" .. tostring(match.id) .. ")")
@@ -136,8 +140,12 @@ function addMatchPlayers(match, players)
         outputDebugString("[Matchmaking] addMatchPlayers: bad 'players' value (expected list of players)")
         return false
     end
+    match.squadCounter = match.squadCounter + 1
+    match.squadPlayers[squadCounter] = {}
     for i, player in ipairs(players) do
-        addMatchPlayer(match, player)
+        addMatchPlayer(match, player, players)
+        match.squadPlayers[squadCounter][player] = true
+        player:setData("squadId", squadCounter)
     end
     return true
 end
@@ -153,7 +161,7 @@ function addMatchElement(match, element)
     table.insert(match.elements, element)
 end
 
-function addMatchPlayer(match, player)
+function addMatchPlayer(match, player, squadPlayers)
     if not isMatch(match) then
         outputDebugString("[Matchmaking] addMatchPlayer: bad match '" .. tostring(match) .. "'")
         return false
@@ -169,7 +177,7 @@ function addMatchPlayer(match, player)
     player:setData("matchId", match.id)
     table.insert(match.players, player)
 
-    handlePlayerJoinMatch(match, player)
+    handlePlayerJoinMatch(match, player, squadPlayers)
     outputDebugString("[Matchmaking] Player "..tostring(player.name).." joined match " .. tostring(match.id))
     return true
 end
@@ -183,6 +191,16 @@ function removePlayerFromMatch(player, reason)
     if not matchId then
         outputDebugString("[Matchmaking] removePlayerFromMatch: player is not in match")
         return false
+    end
+    if match.matchType == "squad" then
+        local squadId = player:getData("squadId")
+        if squadId then
+            match.squadPlayers[squadId][player] = nil
+            if not next(match.squadPlayers[squadId]) then
+                match.squadPlayers[squadId] = nil
+            end
+        end
+        player:removeData("squadId")
     end
     player:removeData("matchId")
     local match = getMatchById(matchId)

@@ -1,4 +1,7 @@
+local squadPlayers = {}
+
 local function handleLeavingMatch()
+    squadPlayers = {}
     exports.pb_zones:removeZones()
     showGameHUD(false)
     fadeCamera(false, 0)
@@ -13,9 +16,19 @@ addEventHandler("onExitToLobby", root, function ()
     triggerServerEvent("clientLeaveMatch", resourceRoot)
 end)
 
+function getSquadPlayers()
+    return squadPlayers
+end
+
 addEvent("onJoinedMatch", true)
-addEventHandler("onJoinedMatch", resourceRoot, function (settings, aliveCount)
-    showChat(true)
+addEventHandler("onJoinedMatch", resourceRoot, function (settings, aliveCount, squadPlayersList)
+    if type(squadPlayersList) == "table" then
+        squadPlayers = squadPlayersList
+    else
+        squadPlayers = {}
+    end
+
+    showChat(false)
     resetMatchStats()
 
     exports.pb_lobby:setVisible(false)

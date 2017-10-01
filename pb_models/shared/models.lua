@@ -16,6 +16,8 @@ ReplacedModels = {
     pan   = 321,
     crowbar = 333,
     machete = 339,
+
+    lobby = 2288,
 }
 
 function getItemModel(name)

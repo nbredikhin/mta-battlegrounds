@@ -15,6 +15,7 @@ Config.welcomeMessage = "Welcome to PUBG MTA"
 Config.resourceList = {
     "bone_attach",
     "parachute",
+    "no_chat",
 
     "pb_afk",
     "pb_lang",

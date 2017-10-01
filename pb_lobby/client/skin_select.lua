@@ -1,6 +1,6 @@
 local isActive = false
 
-local pedPosition = Vector3(-2048.503, 304.355, 46.258)
+local pedPosition = Vector3(5157.4, -944, 37.5)
 
 local skins = {46, 10, 62, 72, 142, 154, 170, 182, 217, 68, 70, 213, 206, 243, 204, 49, 39, 312, 309, 295, 129}
 local skinIndex = 1
@@ -17,9 +17,13 @@ end
 local function updateSkin()
     skinIndex = math.max(1, math.min(#skins, skinIndex))
     playerPed.model = skins[skinIndex]
-
-    setPedLookAt(playerPed, playerPed.matrix:transformPosition(-2, 4, 1), -1, 0)
 end
+
+setTimer(function ()
+    if isElement(playerPed) then
+        setPedLookAt(playerPed, playerPed.matrix:transformPosition(-2, 4, 1), -1, 1000)
+    end
+end, 1000, 0)
 
 function changeSkin(delta)
     skinIndex = skinIndex + delta
@@ -62,8 +66,8 @@ function startSkinSelect()
 
     addEventHandler("onClientKey", root, handleKey)
 
-    local cameraPosition = playerPed.matrix:transformPosition(0, 4, 1)
-    setCameraMatrix(cameraPosition, playerPed.position + Vector3(0, 0, 0.3), 0, 70)
+    local cameraPosition = Vector3(5155.76, -945.65, 38.2)
+    setCameraMatrix(cameraPosition, playerPed.position + Vector3(0, 0, 0.3), 0, 90)
 
     changeSkin(0)
 

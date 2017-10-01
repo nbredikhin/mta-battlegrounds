@@ -247,7 +247,7 @@ function spawnWaitingPlayer(match, player)
     player.dimension = match.dimension
 end
 
-function handlePlayerJoinMatch(match, player)
+function handlePlayerJoinMatch(match, player, squadPlayers)
     spawnWaitingPlayer(match, player)
 
     player:setData("kills", 0)
@@ -256,7 +256,7 @@ function handlePlayerJoinMatch(match, player)
 
     local aliveCount = getMatchAlivePlayersCount(match)
     triggerMatchEvent(match, "onPlayerJoinedMatch", root, player, aliveCount)
-    triggerClientEvent(player, "onJoinedMatch", resourceRoot, match.settings, aliveCount)
+    triggerClientEvent(player, "onJoinedMatch", resourceRoot, match.settings, aliveCount, squadPlayers)
 
     initPlayerSkillStats(player)
 

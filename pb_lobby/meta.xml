@@ -1,9 +1,13 @@
 <meta>
     <oop>true</oop>
+    <min_mta_version client="1.5.4" server="1.5.4" />
+
+    <script type="server" src="server/main.lua"/>
 
     <script type="client" src="client/main.lua"/>
     <script type="client" src="client/skin_select.lua"/>
     <script type="client" src="client/drawing.lua"/>
+    <script type="client" src="client/ui_invite.lua"/>
 
     <export type="client" function="setVisible"/>
 
@@ -13,4 +17,5 @@
     <file src="assets/arrow.png"/>
     <file src="assets/ru.png"/>
     <file src="assets/en.png"/>
+    <file src="assets/invite.png"/>
 </meta>

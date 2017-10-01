@@ -37,4 +37,8 @@
     <file src="models/crowbar.txd"/>
     <file src="models/machete.dff"/>
     <file src="models/machete.txd"/>
+
+    <file src="models/lobby.col"/>
+    <file src="models/lobby.dff"/>
+    <file src="models/lobby.txd"/>
 </meta>
