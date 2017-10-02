@@ -142,10 +142,11 @@ function addMatchPlayers(match, players)
     match.squadCounter = match.squadCounter + 1
     match.squadPlayers[match.squadCounter] = {}
     for i, player in ipairs(players) do
-        addMatchPlayer(match, player, players)
+        addMatchPlayer(match, player)
         match.squadPlayers[match.squadCounter][player] = true
         player:setData("squadId", match.squadCounter)
     end
+    triggerClientEvent(players, "onMatchSquadJoined", resourceRoot, players)
     return true
 end
 
@@ -160,7 +161,7 @@ function addMatchElement(match, element)
     table.insert(match.elements, element)
 end
 
-function addMatchPlayer(match, player, squadPlayers)
+function addMatchPlayer(match, player)
     if not isMatch(match) then
         outputDebugString("[Matchmaking] addMatchPlayer: bad match '" .. tostring(match) .. "'")
         return false
@@ -176,7 +177,7 @@ function addMatchPlayer(match, player, squadPlayers)
     player:setData("matchId", match.id)
     table.insert(match.players, player)
 
-    handlePlayerJoinMatch(match, player, squadPlayers)
+    handlePlayerJoinMatch(match, player)
     outputDebugString("[Matchmaking] Player "..tostring(player.name).." joined match " .. tostring(match.id))
     return true
 end

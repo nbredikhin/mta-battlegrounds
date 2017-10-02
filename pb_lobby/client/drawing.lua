@@ -262,9 +262,15 @@ function setVisible(visible)
     showCursor(isLobbyVisible)
 
     if isLobbyVisible then
-        setFarClipDistance(20)
+        setFarClipDistance(30)
         setFogDistance(0)
-        setTime(12, 0)
+        if math.random() > 0.5 then
+            setWeather(3)
+            setTime(19, 40)
+        else
+            setWeather(2)
+            setTime(12, 0)
+        end
         setMinuteDuration(600000)
         startSkinSelect()
         triggerServerEvent("updateLobby", resourceRoot)
@@ -284,4 +290,9 @@ addEvent("updateLobbyPlayersCount", true)
 addEventHandler("updateLobbyPlayersCount", root, function (count, matches)
     lobbyPlayersCount = count
     lobbyMatchesCount = matches
+end)
+
+addEventHandler("onClientResourceStop", resourceRoot, function ()
+    resetFarClipDistance()
+    resetFogDistance()
 end)

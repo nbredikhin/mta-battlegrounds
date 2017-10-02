@@ -70,9 +70,6 @@ function startSkinSelect()
     setCameraMatrix(cameraPosition, playerPed.position + Vector3(0, 0, 0.3), 0, 90)
 
     changeSkin(0)
-
-    setTime(12, 0)
-    setWeather(12)
 end
 
 function stopSkinSelect()

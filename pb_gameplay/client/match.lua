@@ -20,14 +20,18 @@ function getSquadPlayers()
     return squadPlayers
 end
 
-addEvent("onJoinedMatch", true)
-addEventHandler("onJoinedMatch", resourceRoot, function (settings, aliveCount, squadPlayersList)
+-- Когда отряд игрока присоединился к матчу
+addEvent("onMatchSquadJoined", true)
+addEventHandler("onMatchSquadJoined", resourceRoot, function (squadPlayersList)
     if type(squadPlayersList) == "table" then
         squadPlayers = squadPlayersList
     else
         squadPlayers = {}
     end
+end)
 
+addEvent("onJoinedMatch", true)
+addEventHandler("onJoinedMatch", resourceRoot, function (settings, aliveCount, squadPlayersList)
     showChat(false)
     resetMatchStats()
 
