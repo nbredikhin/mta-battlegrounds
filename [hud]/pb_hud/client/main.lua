@@ -34,22 +34,22 @@ local function dxDrawBorderRect(x, y, width, height, color, borderWidth)
     dxDrawLine(x, y + height, x, y, color, borderWidth)
 end
 
-local function drawHealthbar(player, x, y, width, height)
-    if not isElement(player) then
+local function drawHealthbar(health, x, y, width, height)
+    if not health then
         return
     end
     dxDrawRectangle(x - 1, y - 1, width + 2, height + 2, tocolor(0, 0, 0, 150))
 
-    local hpMul = player.health / 100
+    local hpMul = health / 100
     local color = tocolor(255, 255, 255)
     local borderColor = tocolor(255, 255, 255, 150)
-    if player.health < 75 then
+    if health < 75 then
         color = tocolor(255, 150, 150)
-    elseif player.health > 99.5 then
+    elseif health > 99.5 then
         color = tocolor(255, 255, 255, 100)
         borderColor = tocolor(255, 255, 255, 120)
     end
-    dxDrawBorderRect(x - 1, y - 1, width + 2, height + 2, borderColor, 2)
+    dxDrawBorderRect(x - 1, y - 1, width + 1, height + 1, borderColor, 1)
     dxDrawRectangle(x, y, width * hpMul, height, color)
 end
 
@@ -57,7 +57,7 @@ local function drawPlayerHealthbar()
     local x = screenSize.x / 2 - healthbarWidth / 2
     local y = screenSize.y - 35 - healthbarHeight
 
-    drawHealthbar(localPlayer, x, y, healthbarWidth, healthbarHeight)
+    drawHealthbar(localPlayer.health, x, y, healthbarWidth, healthbarHeight)
     local healthbarText = string.gsub(localPlayer.name, '#%x%x%x%x%x%x', '') .. " - " .. tostring(getVersion().sortable)
     dxDrawText(healthbarText, x + 1, screenSize.y - 34, x + healthbarWidth + 1, screenSize.y + 1, tocolor(0, 0, 0, 150), 1, "default", "center", "center")
     dxDrawText(healthbarText, x, screenSize.y - 35, x + healthbarWidth, screenSize.y, tocolor(255, 255, 255, 150), 1, "default", "center", "center")
@@ -148,6 +148,45 @@ addEventHandler("onClientRender", root, function ()
        (isResourceRunning("pb_inventory") and exports.pb_inventory:isVisible())
     then
         drawCounter(x, y, localPlayer:getData("kills") or 0, localize("hud_kills_counter"))
+    end
+
+    if isResourceRunning("pb_gameplay") then
+        local squadPlayers = exports.pb_gameplay:getSquadPlayers()
+        if #squadPlayers > 1 then
+            local y = 20
+            local x = 20
+            for i, player in ipairs(squadPlayers) do
+                local playerName = ""
+                local playerHealth = 0
+                local icon
+                if isElement(player) and player:getData("matchId") == localPlayer:getData("matchId") then
+                    playerName = player.name or ""
+                    playerHealth = player.health
+                    if player.vehicle then
+                        icon = "driving"
+                    end
+                    if player:getData("parachuting") then
+                        icon = "parachute"
+                    end
+                end
+                dxDrawText(playerName, x+1, y+1, x, y, tocolor(0, 0, 0), 1, "default")
+                dxDrawText(playerName, x, y, x, y, tocolor(49, 177, 178), 1, "default")
+                y = y + 20
+                local ix = x
+                local isize = 20
+                local iy = y + 5 - isize / 2
+                if playerHealth > 0 then
+                    drawHealthbar(playerHealth, x, y, 150, 10)
+                    ix = ix + 155
+                else
+                    icon = "dead"
+                end
+                if icon then
+                    dxDrawImage(ix, iy, isize, isize, "assets/"..icon..".png")
+                end
+                y = y + 20
+            end
+        end
     end
 end, false, "low-1")
 

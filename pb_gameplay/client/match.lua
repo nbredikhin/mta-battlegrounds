@@ -20,6 +20,10 @@ function getSquadPlayers()
     return squadPlayers
 end
 
+function isSquadPlayer(player)
+    return player:getData("matchId") == localPlayer:getData("matchId") and player:getData("squadId") == localPlayer:getData("squadId")
+end
+
 -- Когда отряд игрока присоединился к матчу
 addEvent("onMatchSquadJoined", true)
 addEventHandler("onMatchSquadJoined", resourceRoot, function (squadPlayersList)

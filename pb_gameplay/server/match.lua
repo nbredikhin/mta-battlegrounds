@@ -192,19 +192,21 @@ function removePlayerFromMatch(player, reason)
         outputDebugString("[Matchmaking] removePlayerFromMatch: player is not in match")
         return false
     end
-    if match.matchType == "squad" then
-        local squadId = player:getData("squadId")
-        if squadId then
-            match.squadPlayers[squadId][player] = nil
-            if not next(match.squadPlayers[squadId]) then
-                match.squadPlayers[squadId] = nil
-            end
-        end
-        player:removeData("squadId")
-    end
     player:removeData("matchId")
     local match = getMatchById(matchId)
     if match then
+
+        if match.matchType == "squad" then
+            local squadId = player:getData("squadId")
+            if squadId then
+                match.squadPlayers[squadId][player] = nil
+                if not next(match.squadPlayers[squadId]) then
+                    match.squadPlayers[squadId] = nil
+                end
+            end
+            player:removeData("squadId")
+        end
+
         handlePlayerLeaveMatch(match, player, reason)
         for i, p in ipairs(match.players) do
             if p == player then

@@ -5,4 +5,8 @@
 
     <export type="client" function="setVisible"/>
     <export type="client" function="setCounter"/>
+
+    <file src="assets/driving.png"/>
+    <file src="assets/dead.png"/>
+    <file src="assets/parachute.png"/>
 </meta>
