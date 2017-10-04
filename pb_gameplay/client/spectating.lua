@@ -2,6 +2,8 @@ local isActive = false
 local spectatingPlayerIndex = 1
 local spectatingPlayer
 
+local screenSize = Vector2(guiGetScreenSize())
+
 local cameraRotation = 0
 
 function startSpectating()
@@ -96,5 +98,37 @@ addEventHandler("onClientPreRender", root, function (dt)
     if cameraRotation == cameraRotation then
         localPlayer:setCameraRotation(cameraRotation)
     end
-    iprint(cameraRotation)
+end)
+
+local function isMouseOver(x, y, w, h)
+    return mouseX >= x and mouseX <= x + w and mouseY >= y and mouseY <= y + h
+end
+
+local function drawButton(text, x, y, width, height, bg, color, scale)
+    if not bg then bg = tocolor(250, 250, 250) end
+    if not color then color = tocolor(0, 0, 0, 200) end
+    if not scale then scale = 1.25 end
+    dxDrawRectangle(x, y, width, height, bg)
+    dxDrawRectangle(x, y + height - 5, width, 5, tocolor(0, 0, 0, 10))
+    dxDrawText(text, x, y, x + width, y + height, color, scale, "default-bold", "center", "center")
+
+    if isMouseOver(x, y, width, height) then
+        dxDrawRectangle(x, y, width, height, tocolor(0, 0, 0, 100))
+        if getKeyState("mouse1") then
+            return true
+        end
+    end
+    return false
+end
+
+addEventHandler("onClientRender", root, function ()
+    if not isActive then
+        return
+    end
+    local bw = 200
+    local bh = 50
+    if drawButton(localize("rank_exit_to_lobby"), screenSize.x / 2 - bw / 2, screenSize.y - bh - 50, bw, bh) then
+        stopSpectating()
+        triggerEvent("onExitToLobby", resourceRoot)
+    end
 end)
