@@ -6,13 +6,40 @@ local reloadableWeapons = {
     secondary = true
 }
 
+local driveByWeapons = {
+    weapon_ak47 = true,
+    weapon_m4 = true,
+    weapon_colt45 = true,
+    weapon_uzi = true,
+    weapon_mp5 = true,
+}
+
 local isFireAllowed = false
+local driveByState = false
 
 addEventHandler("onClientPreRender", root, function ()
     local isReloading = localPlayer:getData("isReloadingWeapon")
     if isReloading then
         isFireAllowed = false
     end
+
+    local isDriveByWeapon = false
+    local weaponItem = getActiveWeaponItem()
+    if weaponItem and driveByWeapons[weaponItem.name] then
+        isDriveByWeapon = true
+    end
+    local newState = isDriveByWeapon and localPlayer.vehicle and localPlayer.vehicle.controller ~= localPlayer and getKeyState("mouse2")
+    if isReloading then
+        newState = false
+    end
+    if newState ~= driveByState then
+        setPedDoingGangDriveby(localPlayer, newState)
+        if not newState then
+            setTimer(setCameraTarget, 50, 1, localPlayer)
+            resetMyAnimation()
+        end
+    end
+    driveByState = newState
 
     toggleControl("next_weapon", false)
     toggleControl("previous_weapon", false)
@@ -73,8 +100,6 @@ addEventHandler("onClientPlayerWeaponFire", localPlayer, function ()
     end
 end)
 
-local reloadTime = 0
-
 bindKey("r", "down", function ()
     if localPlayer:getData("isReloadingWeapon") then
         return
@@ -95,8 +120,6 @@ bindKey("r", "down", function ()
     localPlayer:setData("isReloadingWeapon", true, false)
     --:setAnimation("uzi", "uzi_reload", -1, false, false, false, true)
     triggerServerEvent("onPlayerReloadWeapon", resourceRoot)
-
-    reloadTime = getTickCount()
 end)
 
 bindKey("x", "down", function ()
@@ -145,15 +168,17 @@ function saveActiveWeaponClip()
     end
 end
 
-addEvent("onClientReloadFinished", true)
-addEventHandler("onClientReloadFinished", resourceRoot, function ()
-    updateFireAllowed()
+function resetMyAnimation()
     localPlayer:setAnimation("ped", "idle_stance")
     setTimer(function ()
         localPlayer:setAnimation()
     end, 50, 1)
+end
 
-    iprint(getTickCount() - reloadTime)
+addEvent("onClientReloadFinished", true)
+addEventHandler("onClientReloadFinished", resourceRoot, function ()
+    updateFireAllowed()
+    resetMyAnimation()
 end)
 
 localPlayer:setData("isReloadingWeapon", false)

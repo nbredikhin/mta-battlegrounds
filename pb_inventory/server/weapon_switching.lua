@@ -35,11 +35,6 @@ function setPlayerActiveWeaponSlot(player, slotName)
     player:setData("activeWeaponSlot", slotName)
     updatePlayerActiveWeapon(player)
     updatePlayerWeapons(player)
-    if player.vehicle and slotName == "primary1" or slotName == "primary2" or slotName == "secondary" then
-        setPedDoingGangDriveby(player, true)
-    else
-        setPedDoingGangDriveby(player, false)
-    end
     triggerClientEvent(player, "onClientSwitchWeaponSlot", resourceRoot)
 end
 
