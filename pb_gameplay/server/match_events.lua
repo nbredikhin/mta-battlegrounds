@@ -55,9 +55,28 @@ addEventHandler("onPlayerWasted", root, function (ammo, killer, weaponId)
     end
 
     local aliveCount = getMatchAlivePlayersCount(match)
-    local rank = aliveCount + 1
-    triggerClientEvent(player, "onMatchFinished", resourceRoot, rank, match.totalPlayers, match.totalTime)
     triggerMatchEvent(match, "onMatchPlayerWasted", player, aliveCount, killerPlayer, weaponId)
+
+    local playerSquad = match.squadPlayers[player:getData("squadId")]
+    local isAnyPlayerAlive = false
+    for p in pairs(playerSquad) do
+        if not p.dead then
+            isAnyPlayerAlive = true
+            break
+        end
+    end
+    if not isAnyPlayerAlive then
+        local squadsCount = #getMatchAliveSquads(match)
+        local rank = squadsCount + 1
+
+        for p in pairs(playerSquad) do
+            if isElement(p) and p:getData("matchId") == match.id then
+                triggerClientEvent(p, "onMatchFinished", resourceRoot, rank, match.totalSquads, match.totalTime)
+            end
+        end
+    else
+        triggerClientEvent(player, "onMatchWasted", resourceRoot)
+    end
 end)
 
 addEvent("onMatchElementCreated", false)

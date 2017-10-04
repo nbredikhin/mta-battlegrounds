@@ -28,6 +28,22 @@ function getMatchAlivePlayers(match)
     return list
 end
 
+function getMatchAliveSquads(match)
+    if not isMatch(match) then
+        return false
+    end
+    local squads = {}
+    for squadId, players in pairs(match.squadPlayers) do
+        for player in pairs(players) do
+            if not player.dead then
+                table.insert(squads, players)
+                break
+            end
+        end
+    end
+    return squads
+end
+
 function updateMatchZones(match)
     if not isMatch(match) then
         return false
@@ -104,8 +120,11 @@ function updateMatch(match)
             destroyMatch(match)
             return
         end
-        if match.totalPlayers > 1 and #alivePlayers == 1 then
-            setMatchState(match, "ended")
+        local aliveSquads = getMatchAliveSquads(match)
+        if match.totalSquads > 1 and match.totalPlayers > 1 and #alivePlayers <= 4 then
+            if #aliveSquads <= 1 then
+                setMatchState(match, "ended")
+            end
         end
 
         -- Красные зоны
@@ -208,11 +227,22 @@ function setMatchState(match, state)
         end
 
         match.totalPlayers = getMatchAlivePlayersCount(match)
+        match.totalSquads = #getMatchAliveSquads(match)
         triggerMatchEvent(match, "onMatchStarted", resourceRoot, match.totalPlayers)
     elseif state == "ended" then
         local alivePlayers = getMatchAlivePlayers(match)
-        if #alivePlayers == 1 then
-            triggerClientEvent(alivePlayers[1], "onMatchFinished", resourceRoot, 1, match.totalPlayers, match.totalTime)
+        if #alivePlayers >= 1 then
+            local player = alivePlayers[1]
+            local aliveSquad = match.squadPlayers[player:getData("squadId")]
+            if not aliveSquad then
+                return
+            end
+            for p in pairs(aliveSquad) do
+                local playerMatchId = p:getData("matchId")
+                if isElement(p) and p:getData("matchId") == match.id then
+                    triggerClientEvent(p, "onMatchFinished", resourceRoot, 1, match.totalSquads, match.totalTime)
+                end
+            end
         end
     end
 end

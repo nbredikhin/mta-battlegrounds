@@ -2,6 +2,7 @@ Languages.english = {
     -- LOBBY
     lobby_start_game = "START GAME",
     lobby_searching  = "SEARCHING",
+    lobby_ready      = "READY",
 
     lobby_beta_label = "OPEN BETA",
 

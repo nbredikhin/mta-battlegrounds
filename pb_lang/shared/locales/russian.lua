@@ -2,6 +2,7 @@ Languages.russian = {
     -- LOBBY
     lobby_start_game = "НАЧАТЬ ИГРУ",
     lobby_searching  = "ПОИСК МАТЧА",
+    lobby_ready      = "ГОТОВ",
 
     lobby_beta_label = "БЕТА-ТЕСТ",
 

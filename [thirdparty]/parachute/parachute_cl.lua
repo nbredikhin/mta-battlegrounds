@@ -193,7 +193,9 @@ function activateParachute()
 end
 
 function onFire ( key, keyState )
-	activateParachute()
+	if not getElementData(localPlayer, "parachuting") and not getElementData(localPlayer, "isInPlane") then
+		activateParachute()
+	end
 	-- if ( not getElementData ( localPlayer, "parachuting" ) ) and getElementData(localPlayer,"skydiving") then
 	-- 	local x,y,z = getElementPosition(localPlayer)
 	-- 	if not processLineOfSight ( x,y,z, x,y,z-MIN_GROUND_HEIGHT, true, true,false,true,true,false,false,false,localPlayer ) then

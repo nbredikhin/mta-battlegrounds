@@ -35,6 +35,11 @@ function setPlayerActiveWeaponSlot(player, slotName)
     player:setData("activeWeaponSlot", slotName)
     updatePlayerActiveWeapon(player)
     updatePlayerWeapons(player)
+    if player.vehicle and slotName == "primary1" or slotName == "primary2" or slotName == "secondary" then
+        setPedDoingGangDriveby(player, true)
+    else
+        setPedDoingGangDriveby(player, false)
+    end
     triggerClientEvent(player, "onClientSwitchWeaponSlot", resourceRoot)
 end
 
@@ -63,7 +68,9 @@ addEventHandler("onPlayerReloadWeapon", resourceRoot, function ()
     end
 
     player:setData("isReloadingWeapon", true)
-    player:setAnimation("COLT45", "colt45_reload", -1, false)
+    setTimer(function ()
+        player:setAnimation("uzi", "uzi_reload", 1, false, false, false, true)
+    end, 200, 1)
 
     local item = getPlayerActiveWeaponItem(player)
     if isItem(item) then
@@ -83,7 +90,7 @@ addEventHandler("onPlayerReloadWeapon", resourceRoot, function ()
             updatePlayerWeapons(player)
             triggerClientEvent(player, "onClientReloadFinished", resourceRoot)
         end
-    end, 1200, 1)
+    end, 1600, 1)
 end)
 
 addEvent("onPlayerSaveWeapon", true)

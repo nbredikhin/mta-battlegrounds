@@ -162,7 +162,7 @@ addEventHandler("onClientRender", root, function ()
                 if isElement(player) and player:getData("matchId") == localPlayer:getData("matchId") then
                     playerName = player.name or ""
                     playerHealth = player.health
-                    if player.vehicle then
+                    if player.vehicle or player:getData("isInPlane") then
                         icon = "driving"
                     end
                     if player:getData("parachuting") then

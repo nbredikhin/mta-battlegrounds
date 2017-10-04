@@ -14,6 +14,7 @@
     <script type="client" src="client/plane.lua"/>
     <script type="client" src="client/plane_camera.lua"/>
     <script type="client" src="client/match_stats.lua"/>
+    <script type="client" src="client/spectating.lua"/>
     <script type="client" src="client/debug.lua"/>
 
     <script type="server" src="server/main.lua"/>

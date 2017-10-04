@@ -9,11 +9,42 @@ local reloadableWeapons = {
 local isFireAllowed = false
 
 addEventHandler("onClientPreRender", root, function ()
+    local isReloading = localPlayer:getData("isReloadingWeapon")
+    if isReloading then
+        isFireAllowed = false
+    end
+
     toggleControl("next_weapon", false)
     toggleControl("previous_weapon", false)
 
     toggleControl("fire", isFireAllowed)
-    toggleControl("aim_weapon", true)
+    toggleControl("vehicle_fire", isFireAllowed)
+    if not isFireAllowed then
+        setPedControlState(localPlayer, "fire", false)
+        setPedControlState(localPlayer, "vehicle_fire", false)
+    end
+
+    toggleControl("aim_weapon", not isReloading)
+    if isReloading then
+        setPedControlState(localPlayer, "aim_weapon", false)
+    end
+    toggleControl("jump", not isReloading)
+    toggleControl("sprint", not isReloading)
+    toggleControl("enter_exit", not isReloading)
+    toggleControl("crouch", not isReloading)
+    if localPlayer.ducked then
+        toggleControl("forwards", not isReloading)
+        toggleControl("backwards", not isReloading)
+        toggleControl("left", not isReloading)
+        toggleControl("right", not isReloading)
+
+        if isReloading then
+            setPedControlState(localPlayer, "forwards", false)
+            setPedControlState(localPlayer, "backwards", false)
+            setPedControlState(localPlayer, "left", false)
+            setPedControlState(localPlayer, "right", false)
+        end
+    end
 end)
 
 function getActiveWeaponItem()
@@ -36,7 +67,13 @@ addEventHandler("onClientPlayerWeaponFire", localPlayer, function ()
     else
         isFireAllowed = false
     end
+
+    if localPlayer:getData("isReloading") then
+        isFireAllowed = false
+    end
 end)
+
+local reloadTime = 0
 
 bindKey("r", "down", function ()
     if localPlayer:getData("isReloadingWeapon") then
@@ -56,7 +93,10 @@ bindKey("r", "down", function ()
     isFireAllowed = false
 
     localPlayer:setData("isReloadingWeapon", true, false)
+    --:setAnimation("uzi", "uzi_reload", -1, false, false, false, true)
     triggerServerEvent("onPlayerReloadWeapon", resourceRoot)
+
+    reloadTime = getTickCount()
 end)
 
 bindKey("x", "down", function ()
@@ -81,7 +121,7 @@ function setActiveWeaponSlot(slotName)
     if localPlayer:getData("isReloadingWeapon") then
         return
     end
-    if localPlayer.vehicle then
+    if localPlayer.vehicle and localPlayer.vehicle.controller == localPlayer then
         slotName = ""
     end
     saveActiveWeaponClip()
@@ -108,6 +148,12 @@ end
 addEvent("onClientReloadFinished", true)
 addEventHandler("onClientReloadFinished", resourceRoot, function ()
     updateFireAllowed()
+    localPlayer:setAnimation("ped", "idle_stance")
+    setTimer(function ()
+        localPlayer:setAnimation()
+    end, 50, 1)
+
+    iprint(getTickCount() - reloadTime)
 end)
 
 localPlayer:setData("isReloadingWeapon", false)

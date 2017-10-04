@@ -6,7 +6,6 @@ local prevMouseState = false
 local mouseX = 0
 local mouseY = 0
 
-local startGamePressed = false
 local lobbyPlayersCount
 local lobbyMatchesCount
 
@@ -258,7 +257,6 @@ function setVisible(visible)
     end
     isLobbyVisible = not not visible
 
-    startGamePressed = false
     showCursor(isLobbyVisible)
 
     if isLobbyVisible then
@@ -270,6 +268,9 @@ function setVisible(visible)
         else
             setWeather(2)
             setTime(12, 0)
+        end
+        for i, element in ipairs(getResourceFromName("pb_mapping").rootElement:getChildren()) do
+            element.dimension = localPlayer.dimension
         end
         setMinuteDuration(600000)
         startSkinSelect()

@@ -61,6 +61,7 @@ function startSkinSelect()
 
     localPlayer.alpha = 0
     localPlayer.frozen = true
+    localPlayer.position = pedPosition - Vector3(0, 0, 10)
 
     playerPed = createLobbyPed(pedPosition)
 

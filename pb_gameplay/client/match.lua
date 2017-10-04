@@ -1,6 +1,7 @@
 local squadPlayers = {}
 
 local function handleLeavingMatch()
+    stopSpectating()
     squadPlayers = {}
     exports.pb_zones:removeZones()
     showGameHUD(false)
@@ -97,6 +98,7 @@ end)
 addEvent("onMatchFinished", true)
 addEventHandler("onMatchFinished", resourceRoot, function (rank, totalPlayers, timeAlive)
     showGameHUD(false)
+    stopSpectating()
 
     local matchStats = getMatchStats()
     local accuracy = 0
@@ -154,4 +156,11 @@ addEventHandler("onMatchAlert", resourceRoot, function (messageType, params)
 
         exports.pb_alert:show(str, 2000, 0xFFAAFAE1)
     end
+end)
+
+addEvent("onMatchWasted", true)
+addEventHandler("onMatchWasted", resourceRoot, function ()
+    fadeCamera(false, 0.5)
+    setTimer(startSpectating, 500, 1)
+    showGameHUD(false)
 end)
