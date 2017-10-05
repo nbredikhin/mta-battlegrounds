@@ -7,6 +7,9 @@ local function inviteSelectedPlayer()
         return
     end
     local name = ui.playersList:getItemData(row, column)
+    if not name then
+        return
+    end
     local player = getPlayerFromName(name)
     if not isElement(player) then
         return
@@ -45,7 +48,7 @@ function showInviteSendWindow()
 
     ui.playersList:clear()
     for i, player in ipairs(getElementsByType("player")) do
-        if player ~= localPlayer and not player:getData("matchId") then
+        if player ~= localPlayer and not player:getData("matchId") and not player:getData("lobbyOwner") then
             local name = string.gsub(player.name, '#%x%x%x%x%x%x', '')
             local rowIndex = ui.playersList:addRow(name)
             ui.playersList:setItemData(rowIndex, 1, player.name)

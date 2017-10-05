@@ -2,6 +2,9 @@ local isActive = false
 local spectatingPlayerIndex = 1
 local spectatingPlayer
 
+local mouseX = 0
+local mouseY = 0
+
 local screenSize = Vector2(guiGetScreenSize())
 
 local cameraRotation = 0
@@ -34,7 +37,7 @@ end
 local function getPlayersList()
     local players = {}
     for i, p in ipairs(getSquadPlayers()) do
-        if isElement(p) and p ~= localPlayer and p:getData("matchId") == localPlayer:getData("matchId") then
+        if isElement(p) and p ~= localPlayer and p:getData("matchId") == localPlayer:getData("matchId") and not p.dead then
             table.insert(players, p)
         end
     end
@@ -94,11 +97,18 @@ addEventHandler("onClientPreRender", root, function (dt)
     if not isActive or not isElement(spectatingPlayer) then
         return
     end
+    if spectatingPlayer.dead then
+        return
+    end
+    if getCameraTarget() ~= spectatingPlayer then
+        setCameraTarget(spectatingPlayer)
+    end
     cameraRotation = cameraRotation + (smallestAngleDiff(360 - spectatingPlayer:getCameraRotation(), cameraRotation)) * 0.15
     if cameraRotation == cameraRotation then
         localPlayer:setCameraRotation(cameraRotation)
     end
 end)
+
 
 local function isMouseOver(x, y, w, h)
     return mouseX >= x and mouseX <= x + w and mouseY >= y and mouseY <= y + h
@@ -125,6 +135,16 @@ addEventHandler("onClientRender", root, function ()
     if not isActive then
         return
     end
+
+    local mx, my = getCursorPosition()
+    if mx then
+        mx = mx * screenSize.x
+        my = my * screenSize.y
+    else
+        mx, my = 0, 0
+    end
+    mouseX, mouseY = mx, my
+
     local bw = 200
     local bh = 50
     if drawButton(localize("rank_exit_to_lobby"), screenSize.x / 2 - bw / 2, screenSize.y - bh - 50, bw, bh) then

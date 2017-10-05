@@ -1,6 +1,4 @@
 addEventHandler("onResourceStart", resourceRoot, function ()
-    setGameType("Battle Royale")
-
     for i, player in ipairs(getElementsByType("player")) do
         player:removeData("matchId")
         player.dimension = 0

@@ -8,6 +8,9 @@ Languages.english = {
 
     lobby_players_in_lobby = "Players in lobby",
     lobby_matches_running  = "Matches running",
+    lobby_type_solo  = "Match type: SOLO",
+    lobby_type_squad = "Match type: SQUAD",
+    lobby_not_enough_players = "Not enough players",
 
     -- INVENTORY
     inventory_backpack_weight = "Total weight",

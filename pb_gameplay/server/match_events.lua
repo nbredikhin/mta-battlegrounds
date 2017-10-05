@@ -65,10 +65,11 @@ addEventHandler("onPlayerWasted", root, function (ammo, killer, weaponId)
             break
         end
     end
+    iprint("Squad player dead", player:getData("squadId"), isAnyPlayerAlive)
     if not isAnyPlayerAlive then
         local squadsCount = #getMatchAliveSquads(match)
         local rank = squadsCount + 1
-
+        iprint("rank", rank)
         for p in pairs(playerSquad) do
             if isElement(p) and p:getData("matchId") == match.id then
                 triggerClientEvent(p, "onMatchFinished", resourceRoot, rank, match.totalSquads, match.totalTime)

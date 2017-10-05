@@ -8,6 +8,9 @@ Languages.russian = {
 
     lobby_players_in_lobby = "Игроков в лобби",
     lobby_matches_running = "Запущено матчей",
+    lobby_type_solo  = "Тип игры: SOLO",
+    lobby_type_squad = "Тип игры: ОТРЯД",
+    lobby_not_enough_players = "Недостаточно игроков",
 
     -- INVENTORY
     inventory_backpack_weight = "Носимый вес",

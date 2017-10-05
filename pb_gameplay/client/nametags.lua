@@ -21,6 +21,9 @@ addEventHandler("onClientRender", root, function ()
     local tr, tg, tb = 49, 177, 178
     local cx, cy, cz = getCameraMatrix()
     for player, info in pairs(streamedPlayers) do
+        if not isElement(player) then
+            streamedPlayers[player] = nil
+        end
         local px, py, pz = getElementPosition(player)
         local x, y = getScreenFromWorldPosition(px, py, pz + NAMETAG_OFFSET)
         if x then
@@ -38,6 +41,12 @@ addEventHandler("onClientRender", root, function ()
         end
     end
 end)
+
+function addElementNametag(element, text)
+    streamedPlayers[element] = {
+        name = tostring(text)
+    }
+end
 
 local function showPlayer(player)
     if not isElement(player) then
@@ -60,9 +69,7 @@ addEventHandler("onClientElementStreamIn", root, function ()
 end)
 
 addEventHandler("onClientElementStreamOut", root, function ()
-    if source.type == "player" then
-        streamedPlayers[source] = nil
-    end
+    streamedPlayers[source] = nil
 end)
 
 addEventHandler("onClientPlayerQuit", root, function ()

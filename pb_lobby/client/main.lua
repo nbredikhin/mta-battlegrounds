@@ -9,6 +9,12 @@ local lobbyPeds = {}
 local currentLobbyOwner = localPlayer
 local lobbyPlayersList = {}
 
+local currentLobbyType = "solo"
+
+function getLobbyType()
+    return currentLobbyType
+end
+
 -- for i, p in ipairs(pedPositions) do
 --     local ped = createPed(46+i, p.pos, p.rot)
 --     setPedAnimation(ped, "ped", "IDLE_HBHB", -1, true, false)
@@ -26,6 +32,7 @@ function respawnPeds(playersList)
             local ped = createPed(player:getData("skin") or player.model, pedPositions[i].pos, pedPositions[i].rot)
             ped:setData("lobbyPlayer", player, false)
             lobbyPeds[player] = ped
+            exports.pb_gameplay:addElementNametag(ped, string.gsub(player.name, '#%x%x%x%x%x%x', ''))
         end
     end
 end
@@ -50,12 +57,6 @@ setTimer(function ()
     end
 end, 500, 0)
 
-function findMatch()
-    setTimer(function ()
-        triggerServerEvent("playerFindMatch", resourceRoot)
-    end, 1000, 1)
-end
-
 addEventHandler("onClientResourceStart", resourceRoot, function ()
     setVisible(true)
 end)
@@ -66,10 +67,11 @@ addEventHandler("onClientReceiveLobbyInvite", resourceRoot, function (fromPlayer
 end)
 
 addEvent("onLobbyUpdated", true)
-addEventHandler("onLobbyUpdated", resourceRoot, function (lobbyOwner, playersList)
+addEventHandler("onLobbyUpdated", resourceRoot, function (lobbyOwner, playersList, lobbyType)
     if not isVisible() then
         return
     end
+    currentLobbyType = lobbyType
     currentLobbyOwner = lobbyOwner
     respawnPeds(playersList)
     lobbyPlayersList = playersList
@@ -91,6 +93,10 @@ addEventHandler("onClientElementDataChange", root, function (dataName)
     end
 end)
 
+addEvent("onClientInviteDeclined", true)
+addEventHandler("onClientInviteDeclined", resourceRoot, function (player, reason)
+    showMessageBox("Invite declined\nReason: " .. tostring(reason))
+end)
 
 setTimer(function ()
     if not isVisible() or not isOwnLobby() then

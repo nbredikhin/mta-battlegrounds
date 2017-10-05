@@ -11,7 +11,11 @@ function updateLobby(player, triggerTo)
     if not triggerTo then
         triggerTo = playersList
     end
-    triggerClientEvent(triggerTo, "onLobbyUpdated", resourceRoot, player, playersList)
+    local lobbyType = "solo"
+    if string.find(string.lower(getServerName()), "squad") or string.find(string.lower(getServerName()), "test") then
+        lobbyType = "squad"
+    end
+    triggerClientEvent(triggerTo, "onLobbyUpdated", resourceRoot, player, playersList, lobbyType)
 end
 
 function getLobbyPlayers(lobbyOwner)
@@ -95,12 +99,16 @@ addEventHandler("onPlayerSendLobbyInvite", resourceRoot, function (targetPlayer)
         triggerClientEvent(client, "onClientInviteDeclined", resourceRoot, targetPlayer, "invalid_player")
         return
     end
-    if not isPlayerInOwnLobby(targetPlayer) then
+    if not isPlayerInOwnLobby(targetPlayer) or #getLobbyPlayers(targetPlayer) > 1 then
         triggerClientEvent(client, "onClientInviteDeclined", resourceRoot, targetPlayer, "in_other_lobby")
         return
     end
     if targetPlayer:getData("lobbyInvite") then
         triggerClientEvent(client, "onClientInviteDeclined", resourceRoot, targetPlayer, "already_invited")
+        return
+    end
+    if targetPlayer:getData("matchId") then
+        triggerClientEvent(client, "onClientInviteDeclined", resourceRoot, targetPlayer, "playing_match")
         return
     end
     targetPlayer:setData("lobbyInvite", client)
@@ -117,6 +125,15 @@ addEventHandler("onPlayerAcceptLobbyInvite", resourceRoot, function ()
     setPlayerLobby(client, lobbyOwner)
 end)
 
+addEvent("onPlayerDeclineLobbyInvite", true)
+addEventHandler("onPlayerDeclineLobbyInvite", resourceRoot, function ()
+    local lobbyOwner = client:getData("lobbyInvite")
+    if isElement(lobbyOwner) then
+        triggerClientEvent(lobbyOwner, "onClientInviteDeclined", resourceRoot, client, "declined_by_player")
+    end
+    client:removeData("lobbyInvite")
+end)
+
 addEvent("onPlayerLeaveLobby", true)
 addEventHandler("onPlayerLeaveLobby", resourceRoot, function ()
     resetPlayerLobby(client)
@@ -125,6 +142,10 @@ end)
 addEvent("updateLobby", true)
 addEventHandler("updateLobby", resourceRoot, function ()
     updateLobby(client, client)
+end)
+
+addCommandHandler("updatelobby", function (player)
+    updateLobby(player, player)
 end)
 
 addEvent("onLobbyStartSearch", true)

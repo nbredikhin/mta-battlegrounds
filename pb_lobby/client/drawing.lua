@@ -50,13 +50,21 @@ end
 function drawStartGameButton()
     local texture = "assets/corner0.png"
     local w, h = 496, 250
+    local lobbyEnoughPlayers = true
+    if getLobbyType() == "squad" and #getLobbyPlayers() <= 1 then
+        lobbyEnoughPlayers = false
+    end
     if isMouseOver(0, 0, w, h) then
-        texture = "assets/corner1.png"
+        if lobbyEnoughPlayers then
+            texture = "assets/corner1.png"
+        end
 
         if isMousePressed then
-            -- findMatch()
-            -- startGamePressed = true
-            localPlayer:setData("lobbyReady", not localPlayer:getData("lobbyReady"))
+            if lobbyEnoughPlayers then
+                localPlayer:setData("lobbyReady", not localPlayer:getData("lobbyReady"))
+            else
+                localPlayer:setData("lobbyReady", false)
+            end
         end
     end
     dxDrawImage(0, 0, w, h, texture)
@@ -75,8 +83,19 @@ function drawStartGameButton()
             text = localize("lobby_searching")
         end
     end
-    dxDrawText(text, 25 + 5, 20 + 5, 0, 0, tocolor(0, 0, 0, 150), 5, "default-bold", "left", "top")
-    dxDrawText(text, 25, 20, 0, 0, tocolor(255, 255, 255), 5, "default-bold", "left", "top")
+    local color = tocolor(255, 255, 255)
+    if not lobbyEnoughPlayers then
+        color = tocolor(150, 150, 150)
+    end
+    dxDrawText(text, 25 + 5, 15 + 5, 0, 0, tocolor(0, 0, 0, 150), 3.5, "default-bold", "left", "top")
+    dxDrawText(text, 25, 15, 0, 0, color, 3.5, "default-bold", "left", "top")
+
+    local smallText = localize("lobby_type_"..tostring(getLobbyType()))
+    if not lobbyEnoughPlayers then
+        smallText = localize("lobby_not_enough_players")
+    end
+    dxDrawText(smallText, 25 + 3, 70 + 3, 0, 0, tocolor(0, 0, 0, 150), 2, "default-bold", "left", "top")
+    dxDrawText(smallText, 25, 70, 0, 0, tocolor(255, 255, 255), 2, "default-bold", "left", "top")
 end
 
 function drawBetaLogo()
@@ -152,10 +171,13 @@ function drawWindow()
     local bh = 45
     if drawButton(currentWindow.cancel_text, x + currentWindow.width / 2 - bw - 10, y + currentWindow.height - bh - 15, bw, bh) then
         currentWindow = nil
+        triggerServerEvent("onPlayerDeclineLobbyInvite", resourceRoot)
+        return
     end
     if drawButton(currentWindow.accept_text, x + currentWindow.width / 2 + 10, y + currentWindow.height - bh - 15, bw, bh) then
         triggerServerEvent("onPlayerAcceptLobbyInvite", resourceRoot)
         currentWindow = nil
+        return
     end
 end
 
@@ -174,8 +196,12 @@ function drawInvitePanel()
     x = x + 150
     local bh = 30
     if isOwnLobby() then
-        if drawButton("ПРИГЛАСИТЬ ИГРОКА", x, y + h/2-bh/2,w-x,bh) then
-            showInviteSendWindow()
+        if playersCount >= 4 then
+            drawButton("ЛОББИ ЗАПОЛНЕНО", x, y + h/2-bh/2,w-x,bh)
+        else
+            if drawButton("ПРИГЛАСИТЬ ИГРОКА", x, y + h/2-bh/2,w-x,bh) then
+                showInviteSendWindow()
+            end
         end
     else
         if drawButton("ПОКИНУТЬ ЛОББИ", x, y + h/2-bh/2,w-x,bh) then
@@ -209,19 +235,21 @@ addEventHandler("onClientRender", root, function ()
     drawBetaLogo()
     drawArrows()
 
-    -- local y = screenSize.y - 65
-    -- if lobbyPlayersCount then
-    --     local lobbyText = localize("lobby_players_in_lobby") .. ": " .. tostring(lobbyPlayersCount)
-    --     dxDrawText(lobbyText, 26, y + 1, 0, 0, tocolor(0, 0, 0, 150), 1, "default-bold", "left", "top")
-    --     dxDrawText(lobbyText, 25, y, 0, 0, tocolor(255, 255, 255), 1, "default-bold", "left", "top")
+    if getLobbyType() == "solo" then
+        local y = screenSize.y - 65
+        if lobbyPlayersCount then
+            local lobbyText = localize("lobby_players_in_lobby") .. ": " .. tostring(lobbyPlayersCount)
+            dxDrawText(lobbyText, 26, y + 1, 0, 0, tocolor(0, 0, 0, 150), 1, "default-bold", "left", "top")
+            dxDrawText(lobbyText, 25, y, 0, 0, tocolor(255, 255, 255), 1, "default-bold", "left", "top")
 
-    --     y = y + 25
-    -- end
-    -- if lobbyMatchesCount then
-    --     local text = localize("lobby_matches_running") .. ": " .. tostring(lobbyMatchesCount)
-    --     dxDrawText(text, 26, y + 1, 0, 0, tocolor(0, 0, 0, 150), 1, "default-bold", "left", "top")
-    --     dxDrawText(text, 25, y, 0, 0, tocolor(255, 255, 255), 1, "default-bold", "left", "top")
-    -- end
+            y = y + 25
+        end
+        if lobbyMatchesCount then
+            local text = localize("lobby_matches_running") .. ": " .. tostring(lobbyMatchesCount)
+            dxDrawText(text, 26, y + 1, 0, 0, tocolor(0, 0, 0, 150), 1, "default-bold", "left", "top")
+            dxDrawText(text, 25, y, 0, 0, tocolor(255, 255, 255), 1, "default-bold", "left", "top")
+        end
+    end
 
     local x = screenSize.x - 150
     local y = 20
@@ -248,7 +276,9 @@ addEventHandler("onClientRender", root, function ()
 
     drawMessageBox()
     drawWindow()
-    drawInvitePanel()
+    if getLobbyType() == "squad" then
+        drawInvitePanel()
+    end
 end)
 
 function setVisible(visible)
