@@ -1,114 +1,65 @@
-local matchTypes = {
-    ["solo"]   = 1,
-    ["squad"]  = 2,
-    ["squad"]  = 3,
-    ["squad"]  = 4
-}
-local maxMatchPlayers = 100
-local matchCounter = 0
 local matchesList = {}
-local lobbyPlayersCount = 0
-local maxTeamPlayers = 4
+local matchCounter = 0
 
-function getLobbyPlayersCount()
-    return lobbyPlayersCount
-end
-
-function getMatchTypeFromPlayersCount(count)
-    if not count then
-        return
-    end
-    local t = {
-        [1] = "solo",
-        [2] = "squad",
-        [3] = "squad",
-        [4] = "squad",
-    }
-    return t[count]
-end
-
-function getPlayersCountFromMatchType(matchType)
-    if not matchType then
-        return
-    end
-    return matchTypes[matchType]
-end
-
--- Поиск матча для игроков
 function findMatch(players)
-    if type(players) ~= "table" then
-        outputDebugString("[Matchmaking] findMatch: bad 'players' value (expected list of players)")
+    if type(players) ~= "table" or #players == 0 then
         return false
     end
-    if #players > maxTeamPlayers then
-        outputDebugString("[Matchmaking] findMatch: too many players in team")
+    if #players > Config.maxSquadPlayers then
         return false
     end
+    -- Проверка нахождения игроков в других матчах
     for i, player in ipairs(players) do
-        if player:getData("matchId") then
-            outputDebugString("[Matchmaking] findMatch: one of players is already in match")
+        if isPlayerInMatch(player) then
             return false
         end
     end
-    local matchType = getMatchTypeFromPlayersCount(#players)
-    if not matchType or not matchTypes[matchType] then
-        outputDebugString("[Matchmaking] findMatch: invalid match type '" .. tostring(matchType) .. "'")
-        return false
+    -- Выбор типа матча
+    local matchType = "solo"
+    if #players > 1 then
+        matchType = "squad"
     end
-
-    -- Выбор свободного матча
+    -- Поиск подходящего матча
     for i, match in ipairs(matchesList) do
         if match.state == "waiting" and #match.players + #players <= match.maxPlayers then
-            return addMatchPlayers(match, players)
+            return addMatchSquad(players)
         end
     end
 
-    -- Создание нового пустого матча
+    -- Матч не найден - создаём новый
     local match = createMatch(matchType)
-    if not match then
-        return false
-    end
-    return addMatchPlayers(match, players)
+    return addMatchSquad(match, players)
 end
 
-function getAllMatches()
-    return matchesList
-end
-
--- Создание нового матча типа matchType
 function createMatch(matchType)
-    if not matchType or not matchTypes[matchType] then
-        outputDebugString("[Matchmaking] createMatch: invalid match type '" .. tostring(matchType) .. "'")
+    if type(matchType) ~= "string" then
         return false
     end
-
     matchCounter = matchCounter + 1
-    local matchId = matchCounter
 
     local match = {
-        id          = matchId,
+        id = matchCounter,
+        maxPlayers = Config.maxMatchPlayers,
+        matchType = matchType,
 
-        players     = {},
-        elements    = {},
-        dimension   = matchId,
+        state = "waiting",
+        tickCount = 0,
 
-        maxPlayers  = maxMatchPlayers,
-        matchType   = matchType,
-        state       = "waiting",
-        stateTime   = 0,
-        totalTime   = 0,
-        runningTime = 0,
-
-        settings    = {},
-
-        squadCounter = 0,
-        squadPlayers = {}
+        dimension = matchCounter,
+        allPlayers = {},
+        players  = {},
+        squads   = {},
+        elements = {},
+        settings = {},
     }
 
     table.insert(matchesList, match)
     initMatch(match)
     outputDebugString("[Matchmaking] Created new "..tostring(match.matchType).." match (" .. tostring(match.id) .. ")")
-    return match
+end
+
+function isMatch(match)
+    return type(match) == "table" and match.id and match.players and match.matchType
 end
 
 function getMatchById(id)
@@ -130,99 +81,72 @@ function getPlayerMatch(player)
     return getMatchById(player:getData("matchId"))
 end
 
-function addMatchPlayers(match, players)
+function isPlayerInMatch(player, match)
+    if not isElement(player) then
+        return false
+    end
+    local playerMatchId = player:getData("matchId")
+    if match ~= nil then
+        if not isMatch(match) then
+            return false
+        end
+        return not not (playerMatchId == match.id)
+    else
+        return not not playerMatchId
+    end
+end
+
+function addMatchSquad(match, players)
     if not isMatch(match) then
-        outputDebugString("[Matchmaking] addMatchPlayers: bad match '" .. tostring(match) .. "'")
         return false
     end
-    if type(players) ~= "table" then
-        outputDebugString("[Matchmaking] addMatchPlayers: bad 'players' value (expected list of players)")
+    if type(players) ~= "table" or #players == 0 then
         return false
     end
-    match.squadCounter = match.squadCounter + 1
-    match.squadPlayers[match.squadCounter] = {}
+    table.insert(match.squads, {
+        players = players,
+        alive   = true,
+        rank    = false,
+    })
+    local squadId = #match.squads
     for i, player in ipairs(players) do
-        addMatchPlayer(match, player)
-        match.squadPlayers[match.squadCounter][player] = true
-        player:setData("squadId", match.squadCounter)
+        player:setData("matchId", match.id)
+        player:setData("squadId", squadId)
+
+        table.insert(match.allPlayers, player)
+        match.players[player] = squadId
+
+        handlePlayerJoinMatch(match, player, players)
     end
     triggerClientEvent(players, "onMatchSquadJoined", resourceRoot, players)
-    return true
 end
 
-function addMatchElement(match, element)
-    if not isMatch(match) then
-        return false
-    end
-    if not isElement(element) then
-        return false
-    end
-
-    table.insert(match.elements, element)
-end
-
-function addMatchPlayer(match, player)
-    if not isMatch(match) then
-        outputDebugString("[Matchmaking] addMatchPlayer: bad match '" .. tostring(match) .. "'")
-        return false
-    end
+function removePlayerFromMatch(player)
     if not isElement(player) then
-        outputDebugString("[Matchmaking] addMatchPlayer: bad player '" .. tostring(player) .. "'")
-        return false
-    end
-    if player:getData("matchId") then
-        outputDebugString("[Matchmaking] addMatchPlayer: player is already in match")
-        return false
-    end
-    player:setData("matchId", match.id)
-    table.insert(match.players, player)
-
-    handlePlayerJoinMatch(match, player)
-    outputDebugString("[Matchmaking] Player "..tostring(player.name).." joined match " .. tostring(match.id))
-    return true
-end
-
-function removePlayerFromMatch(player, reason)
-    if not isElement(player) then
-        outputDebugString("[Matchmaking] removePlayerFromMatch: bad player '" .. tostring(player) .. "'")
         return false
     end
     local matchId = player:getData("matchId")
     if not matchId then
-        outputDebugString("[Matchmaking] removePlayerFromMatch: player is not in match")
         return false
     end
-    player:removeData("matchId")
     local match = getMatchById(matchId)
     if match then
-        handlePlayerLeaveMatch(match, player, reason)
-        for i, p in ipairs(match.players) do
-            if p == player then
-                table.remove(match.players, i)
-                break
-            end
-        end
-        outputDebugString("[Matchmaking] Player "..tostring(player.name).." left match " .. tostring(match.id))
-    else
-        outputDebugString("[Matchmaking] Player "..tostring(player.name).." was removed from destroyed match")
-        triggerClientEvent(player, "onLeftMatch", resourceRoot)
+        handlePlayerLeaveMatch(match, player)
+        match.players[player] = nil
     end
+    player:removeData("matchId")
+    triggerClientEvent(player, "onLeftMatch", resourceRoot)
     spawnPlayer(player, 0, 0, 0)
     return true
 end
 
-function isMatch(match)
-    return type(match) == "table" and match.id and match.players and match.matchType
-end
-
 function destroyMatch(match)
     if not isMatch(match) then
-        outputDebugString("[Matchmaking] destroyMatch: bad match '" .. tostring(match) .. "'")
         return false
     end
-    -- Удаление игроков из матча
-    for i, player in ipairs(match.players) do
-        removePlayerFromMatch(player, "match_destroyed")
+
+    for player in pairs(match.players) do
+        removePlayerFromMatch(player)
     end
     -- Удаление элементов
     for i, object in ipairs(getElementsByType("object")) do
@@ -239,7 +163,8 @@ function destroyMatch(match)
     if isResourceRunning("pb_loot") then
         exports.pb_loot:unloadDimension(match.dimension)
     end
-    -- Удалить матч из списка матчей
+
+    -- Удалить матч
     for i, m in ipairs(matchesList) do
         if m == match then
             table.remove(matchesList, i)
@@ -252,19 +177,6 @@ end
 
 setTimer(function ()
     for i, match in ipairs(matchesList) do
-        match.stateTime = match.stateTime + 1
-        match.totalTime = match.totalTime + 1
         updateMatch(match)
     end
-
-    lobbyPlayersCount = 0
-    for i, player in ipairs(getElementsByType("player")) do
-        if not player:getData("matchId") then
-            lobbyPlayersCount = lobbyPlayersCount + 1
-        end
-    end
 end, 1000, 0)
-
-setTimer(function ()
-    triggerClientEvent("updateLobbyPlayersCount", root, getLobbyPlayersCount(), #matchesList)
-end, 10000, 0)
