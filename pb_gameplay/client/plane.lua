@@ -58,6 +58,7 @@ addEventHandler("onClientPreRender", root, function (deltaTime)
        math.abs(currentPlane.position.y) > Config.planeDistance + 50
     then
         destroyElement(currentPlane)
+        return
     end
 
     local flightDistance = getFlightDistance()
@@ -76,6 +77,9 @@ end)
 
 function jumpFromPlane()
     if isClientInPlane then
+        if localPlayer.dead then
+            return
+        end
         if getFlightDistance() < 800 then
             return
         end
@@ -89,6 +93,10 @@ function destroyPlane()
     if isElement(currentPlane) then
         destroyElement(currentPlane)
     end
+end
+
+function getPlane()
+    return currentPlane
 end
 
 bindKey("f", "down", function ()

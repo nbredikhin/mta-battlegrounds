@@ -1,106 +1,120 @@
-local lobbyTable = {}
+local playerLobbies = {}
+local serverLobbyType = "squad"
 
-function updateLobby(player, triggerTo)
-    if not player or not lobbyTable[player] then
+function createLobby(owner)
+    if not isElement(owner) then
         return
     end
-    local playersList = getLobbyPlayers(player)
-    for i, player in ipairs(playersList) do
-        player:setData("lobbyReady", false)
-    end
-    if not triggerTo then
-        triggerTo = playersList
-    end
-    local lobbyType = "solo"
-    if string.find(string.lower(getServerName()), "squad") or string.find(string.lower(getServerName()), "test") then
-        lobbyType = "squad"
-    end
-    triggerClientEvent(triggerTo, "onLobbyUpdated", resourceRoot, player, playersList, lobbyType)
+    destroyLobby(owner)
+    local lobby = {
+        players = {},
+        owner = owner
+    }
+    playerLobbies[owner] = lobby
+    addLobbyPlayer(owner, owner)
+    return lobby
 end
 
-function getLobbyPlayers(lobbyOwner)
-    if not lobbyOwner or not lobbyTable[lobbyOwner] then
+function destroyLobby(owner)
+    if not owner then
+        return false
+    end
+    if playerLobbies[owner] then
+        for player in pairs(playerLobbies[owner].players) do
+            removeLobbyPlayer(player)
+        end
+    end
+    playerLobbies[owner] = nil
+end
+
+function addLobbyPlayer(owner, player)
+    if not isElement(owner) or not isElement(player) or not playerLobbies[owner] then
+        return false
+    end
+    if owner ~= player then
+        destroyLobby(player)
+    else
+        removeLobbyPlayer(player)
+    end
+    playerLobbies[owner].players[player] = true
+    player:setData("lobbyOwner", owner)
+    updateLobby(owner)
+end
+
+function removeLobbyPlayer(player)
+    if not isElement(player) then
+        return false
+    end
+    local owner = player:getData("lobbyOwner")
+    player:removeData("lobbyOwner")
+    if owner and playerLobbies[owner] then
+        playerLobbies[owner].players[player] = nil
+        updateLobby(owner)
+    else
+        return
+    end
+    createLobby(player)
+end
+
+function getPlayerLobby(player)
+    if not isElement(player) then
+        return false
+    end
+    local owner = player:getData("lobbyOwner")
+    if owner then
+        return playerLobbies[owner]
+    end
+end
+
+function getLobbyPlayers(owner)
+    if not owner or not playerLobbies[owner] then
         return
     end
     local playersList = {}
-
-    for player in pairs(lobbyTable[lobbyOwner]) do
-        if not isElement(player) then
-            lobbyTable[lobbyOwner][player] = nil
-        else
-            table.insert(playersList, player)
-        end
+    for player in pairs(playerLobbies[owner].players) do
+        table.insert(playersList, player)
     end
-    table.insert(playersList, lobbyOwner)
     return playersList
 end
 
-function isPlayerInOwnLobby(player)
-    if not player then
-        return false
-    end
-    local lobbyOwner = player:getData("lobbyOwner")
-    if lobbyOwner and lobbyTable[lobbyOwner] then
-        return false
-    end
-    return true
-end
-
-function resetPlayerLobby(player, omitEvent)
-    if not player then
+function updateLobby(owner)
+    if not owner or not playerLobbies[owner] then
         return
     end
-    local lobbyOwner = player:getData("lobbyOwner")
-    if lobbyOwner and lobbyTable[lobbyOwner] then
-        lobbyTable[lobbyOwner][player] = nil
-        updateLobby(lobbyOwner)
+    if not next(playerLobbies[owner].players) then
+        return destroyLobby(owner)
     end
-    player:removeData("lobbyOwner")
-    player:removeData("lobbyInvite")
-    lobbyTable[player] = {}
-    if not omitEvent then
-        updateLobby(player)
+    for player in pairs(playerLobbies[owner].players) do
+        triggerClientEvent(player, "onLobbyUpdated", resourceRoot, owner, getLobbyPlayers(owner), serverLobbyType)
     end
-end
-
-function setPlayerLobby(player, lobbyOwner)
-    if not player or not lobbyOwner then
-        return
-    end
-    local targetLobby = lobbyTable[lobbyOwner]
-    if targetLobby[player] then
-        return
-    end
-
-    targetLobby[player] = true
-    lobbyTable[player] = {}
-    player:setData("lobbyOwner", lobbyOwner)
-    updateLobby(lobbyOwner)
 end
 
 addEventHandler("onPlayerJoin", root, function ()
-    resetPlayerLobby(source)
+    createLobby(source)
 end)
 
 addEventHandler("onPlayerQuit", root, function ()
-    resetPlayerLobby(source)
-    lobbyTable[source] = nil
+    removeLobbyPlayer(source)
 end)
 
 addEventHandler("onResourceStart", resourceRoot, function ()
+    serverLobbyType = "solo"
+    if string.find(string.lower(getServerName()), "squad") or string.find(string.lower(getServerName()), "test") then
+        serverLobbyType = "squad"
+    end
     for i, player in ipairs(getElementsByType("player")) do
-        resetPlayerLobby(player, true)
+        createLobby(player)
     end
 end)
 
 addEvent("onPlayerSendLobbyInvite", true)
 addEventHandler("onPlayerSendLobbyInvite", resourceRoot, function (targetPlayer)
     if not isElement(targetPlayer) then
-        triggerClientEvent(client, "onClientInviteDeclined", resourceRoot, targetPlayer, "invalid_player")
+        triggerClientEvent(client, "onClientInviteDeclined", resourceRoot, targetPlayer, "disconnected")
         return
     end
-    if not isPlayerInOwnLobby(targetPlayer) or #getLobbyPlayers(targetPlayer) > 1 then
-        triggerClientEvent(client, "onClientInviteDeclined", resourceRoot, targetPlayer, "in_other_lobby")
+    if not getPlayerLobby(targetPlayer) then
+        triggerClientEvent(client, "onClientInviteDeclined", resourceRoot, targetPlayer, "joining")
         return
     end
     if targetPlayer:getData("lobbyInvite") then
@@ -117,40 +131,48 @@ end)
 
 addEvent("onPlayerAcceptLobbyInvite", true)
 addEventHandler("onPlayerAcceptLobbyInvite", resourceRoot, function ()
-    local lobbyOwner = client:getData("lobbyInvite")
-    if not isElement(lobbyOwner) then
+    local owner = client:getData("lobbyInvite")
+    if not isElement(owner) then
         return
     end
     client:removeData("lobbyInvite")
-    setPlayerLobby(client, lobbyOwner)
+    addLobbyPlayer(owner, client)
 end)
 
 addEvent("onPlayerDeclineLobbyInvite", true)
 addEventHandler("onPlayerDeclineLobbyInvite", resourceRoot, function ()
-    local lobbyOwner = client:getData("lobbyInvite")
-    if isElement(lobbyOwner) then
-        triggerClientEvent(lobbyOwner, "onClientInviteDeclined", resourceRoot, client, "declined_by_player")
+    local owner = client:getData("lobbyInvite")
+    if isElement(owner) then
+        triggerClientEvent(owner, "onClientInviteDeclined", resourceRoot, client, "declined")
     end
     client:removeData("lobbyInvite")
 end)
 
 addEvent("onPlayerLeaveLobby", true)
 addEventHandler("onPlayerLeaveLobby", resourceRoot, function ()
-    resetPlayerLobby(client)
+    removeLobbyPlayer(client)
 end)
 
 addEvent("updateLobby", true)
 addEventHandler("updateLobby", resourceRoot, function ()
-    updateLobby(client, client)
+    local lobby = getPlayerLobby(client)
+    if lobby then
+        triggerClientEvent(client, "onLobbyUpdated", resourceRoot, lobby.owner, getLobbyPlayers(lobby.owner), serverLobbyType)
+    end
 end)
 
 addCommandHandler("updatelobby", function (player)
-    updateLobby(player, player)
+    updateLobby(player)
+end)
+
+addCommandHandler("lobby", function (player)
+    outputConsole(inspect(playerLobbies))
 end)
 
 addEvent("onLobbyStartSearch", true)
 addEventHandler("onLobbyStartSearch", resourceRoot, function ()
-    if not isPlayerInOwnLobby(client) then
+    local lobby = getPlayerLobby(client)
+    if not lobby or lobby.owner ~= client then
         return
     end
     local players = getLobbyPlayers(client)

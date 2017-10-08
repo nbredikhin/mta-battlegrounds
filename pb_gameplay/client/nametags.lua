@@ -23,6 +23,7 @@ addEventHandler("onClientRender", root, function ()
     for player, info in pairs(streamedPlayers) do
         if not isElement(player) then
             streamedPlayers[player] = nil
+            return
         end
         local px, py, pz = getElementPosition(player)
         local x, y = getScreenFromWorldPosition(px, py, pz + NAMETAG_OFFSET)

@@ -8,12 +8,15 @@ local mouseY = 0
 local screenSize = Vector2(guiGetScreenSize())
 
 local cameraRotation = 0
+local cameraVertical = 15
 
 function startSpectating()
     if isActive then
         return
     end
     isActive = true
+
+    localPlayer.frozen = true
 
     fadeCamera(true)
     showCursor(true)
@@ -49,7 +52,9 @@ function stopSpectating()
         return
     end
     isActive = false
+    localPlayer.frozen = false
     showCursor(false)
+    setCameraTarget(localPlayer)
 end
 
 function updateSpectatingPlayer()
@@ -58,7 +63,6 @@ function updateSpectatingPlayer()
         return
     end
     spectatingPlayer = players[spectatingPlayerIndex]
-    setCameraTarget(spectatingPlayer)
 end
 
 bindKey("arrow_r", "down", function ()
@@ -94,18 +98,46 @@ bindKey("arrow_l", "down", function ()
 end)
 
 addEventHandler("onClientPreRender", root, function (dt)
+    dt = dt / 1000
     if not isActive or not isElement(spectatingPlayer) then
         return
     end
     if spectatingPlayer.dead then
         return
     end
-    if getCameraTarget() ~= spectatingPlayer then
-        setCameraTarget(spectatingPlayer)
+
+    local targetVertical = 15
+    if spectatingPlayer.ducked then
+        targetVertical = 5
     end
-    cameraRotation = cameraRotation + (smallestAngleDiff(360 - spectatingPlayer:getCameraRotation(), cameraRotation)) * 0.15
+    cameraRotation = cameraRotation + (smallestAngleDiff(360 - spectatingPlayer:getCameraRotation(), cameraRotation)) * 7 * dt
+    cameraVertical = cameraVertical + (targetVertical - cameraVertical) * 3 * dt
     if cameraRotation == cameraRotation then
-        localPlayer:setCameraRotation(cameraRotation)
+        local plane = getPlane()
+        if spectatingPlayer:getData("isInPlane") and isElement(plane) then
+            setCameraMatrix(
+                plane.position + Vector3(40, 40, 40),
+                plane.position,
+                0,
+                70
+            )
+        else
+            local distance = 3
+            local camPosition = spectatingPlayer.position
+            if spectatingPlayer.vehicle then
+                distance = 8
+                camPosition = spectatingPlayer.vehicle.position
+            end
+            local pitch = math.rad(cameraVertical)
+            local yaw = math.rad(cameraRotation - 90)
+            local cameraOffset = Vector3(math.cos(yaw) * math.cos(pitch), math.sin(yaw) * math.cos(pitch), math.sin(pitch))
+            setCameraMatrix(
+                camPosition + cameraOffset * distance,
+                camPosition + Vector3(0, 0, 0.2),
+                0,
+                70
+            )
+        end
     end
 end)
 

@@ -174,7 +174,7 @@ function drawWindow()
         triggerServerEvent("onPlayerDeclineLobbyInvite", resourceRoot)
         return
     end
-    if drawButton(currentWindow.accept_text, x + currentWindow.width / 2 + 10, y + currentWindow.height - bh - 15, bw, bh) then
+    if drawButton(currentWindow.accept_text, x + currentWindow.width / 2 + 10, y + currentWindow.height - bh - 15, bw, bh) or true then
         triggerServerEvent("onPlayerAcceptLobbyInvite", resourceRoot)
         currentWindow = nil
         return

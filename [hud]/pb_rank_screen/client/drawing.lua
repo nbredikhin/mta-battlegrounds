@@ -89,7 +89,7 @@ addEventHandler("onClientRender", root, function ()
     end
     mouseX, mouseY = mx, my
 
-    dxDrawRectangle(0, 0, screenSize.x, screenSize.y, tocolor(0, 0, 0, 230))
+    dxDrawRectangle(0, 0, screenSize.x, screenSize.y, tocolor(0, 0, 0, 200))
     dxDrawText(tostring(screenData.nickname), 50, 50, 51, 51, colors.white, 1, fonts.big, "left", "top")
     local topText
     if screenData.rank and screenData.rank <= 10 then

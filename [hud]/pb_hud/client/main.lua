@@ -150,7 +150,7 @@ addEventHandler("onClientRender", root, function ()
         drawCounter(x, y, localPlayer:getData("kills") or 0, localize("hud_kills_counter"))
     end
 
-    if isResourceRunning("pb_gameplay") then
+    if isResourceRunning("pb_gameplay") and (isResourceRunning("pb_inventory") and not exports.pb_inventory:isVisible()) then
         local squadPlayers = exports.pb_gameplay:getSquadPlayers()
         if #squadPlayers > 1 then
             local y = 20

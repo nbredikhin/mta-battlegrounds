@@ -44,7 +44,7 @@ addEventHandler("onMatchPlayerWasted", root, function (aliveCount, killerPlayer,
 
     local aliveText = " - " .. tostring(aliveCount) .. " " .. localize("killchat_alive_count")
     if aliveCount == 1 then
-        aliveText = localize("killchat_match_ended")
+        aliveText = " - " .. localize("killchat_match_ended")
     end
     outputMessage(message, aliveText, aliveCount <= 10)
 end)

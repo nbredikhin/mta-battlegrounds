@@ -11,6 +11,7 @@ function findMatch(players)
     -- Проверка нахождения игроков в других матчах
     for i, player in ipairs(players) do
         if isPlayerInMatch(player) then
+            outputDebugString("Failed to find match, player is in another match")
             return false
         end
     end
@@ -22,7 +23,7 @@ function findMatch(players)
     -- Поиск подходящего матча
     for i, match in ipairs(matchesList) do
         if match.state == "waiting" and #match.players + #players <= match.maxPlayers then
-            return addMatchSquad(players)
+            return addMatchSquad(match, players)
         end
     end
 
@@ -124,7 +125,6 @@ function addMatchSquad(match, players)
         table.insert(match.allPlayers, player)
         match.players[player] = squadId
 
-        iprint("adding player to match")
         handlePlayerJoinMatch(match, player)
     end
     triggerClientEvent(players, "onMatchSquadJoined", resourceRoot, players)
@@ -221,6 +221,7 @@ addEventHandler("onPlayerQuit", root, function ()
 end)
 
 -- setTimer(function ()
---     findMatch(getElementsByType("player"))
+--     findMatch({getElementsByType("player")[1]})
+--     findMatch({getElementsByType("player")[2]})
 --     matchesList[1].forceStart = true
--- end, 50, 1)
+-- end, 100, 1)

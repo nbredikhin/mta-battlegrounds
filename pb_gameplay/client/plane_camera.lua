@@ -33,8 +33,10 @@ function updatePlaneCamera(deltaTime)
     deltaTime = deltaTime / 1000
 
     -- Прикрепить камеру к автомобилю
-    if currentPlane then
+    if isElement(currentPlane) then
         camera.targetPosition = currentPlane.position
+    else
+        camera.targetPosition = localPlayer.position
     end
 
     local pitch = math.rad(camera.rotationVertical)

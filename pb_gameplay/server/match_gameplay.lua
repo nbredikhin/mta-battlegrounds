@@ -114,8 +114,8 @@ function updateMatch(match)
                 local zone = exports.pb_zones:getZone(match.currentZone)
                 match.zoneState = "shrinking"
                 match.shrinkTimestamp = currentTimestamp
-                match.shrinkTime = 2
-                match.zoneTime = 1
+                match.shrinkTime = zone.shrink
+                match.zoneTime = zone.time
 
                 triggerMatchEvent(match, "onZoneShrink", resourceRoot, match.shrinkTime)
             end
@@ -127,8 +127,8 @@ function updateMatch(match)
                     match.currentZone = match.currentZone - 1
 
                     local zone = exports.pb_zones:getZone(match.currentZone)
-                    match.zoneTime = 2
-                    match.shrinkTime = 1
+                    match.shrinkTime = zone.shrink
+                    match.zoneTime = zone.time
 
                     match.shrinkTimestamp = currentTimestamp
                     match.zoneTimestamp = currentTimestamp
@@ -137,8 +137,8 @@ function updateMatch(match)
                     match.zoneState = "waiting"
                 else
                     local zone = exports.pb_zones:getZone(match.currentZone)
-                    match.zoneTime = 2
-                    match.shrinkTime = 1
+                    match.shrinkTime = zone.shrink
+                    match.zoneTime = zone.time
 
                     match.shrinkTimestamp = currentTimestamp
                     match.zoneTimestamp = currentTimestamp
@@ -158,8 +158,8 @@ function updateMatch(match)
                 match.zoneState = "waiting"
                 match.shrinkTimestamp = currentTimestamp
                 match.zoneTimestamp = currentTimestamp
-                match.shrinkTime = 0
-                match.zoneTime = 5
+                match.shrinkTime = zone.shrink
+                match.zoneTime = zone.time
 
                 triggerMatchEvent(match, "onWhiteZoneUpdate", resourceRoot, match.zones[match.currentZone], match.zoneTime)
             end
@@ -243,7 +243,7 @@ local function setMatchRunning(match)
         match.zones = exports.pb_zones:generateZones()
         match.currentZone = #match.zones
         triggerMatchEvent(match, "onZonesInit", resourceRoot, match.zones[match.currentZone])
-        match.zoneTime = 1--Config.firstZoneTime
+        match.zoneTime = Config.firstZoneTime
         match.redZoneTime = Config.firstZoneTime + 60
         match.zoneTimestamp = getRealTime().timestamp
         match.zoneState = "waiting_first"
@@ -278,6 +278,7 @@ function handlePlayerJoinMatch(match, player)
 
     player:setData("kills", 0)
     player:setData("match_waiting", true)
+    player:setData("isInPlane", false)
     player.alpha = 255
 
     initPlayerSkillStats(player)
@@ -315,21 +316,23 @@ local function showSquadFinishScreen(match, squad, rank)
     if not isMatch(match) or type(squad) ~= "table" then
         return false
     end
-    local hasAlivePlayers = false
+    local timePassed = getRealTime().timestamp - match.startTimestamp
     for i, player in ipairs(squad.players) do
-        if isElement(player) and isPlayerInMatch(player, match) and not player.dead then
-            hasAlivePlayers = true
-            break
+        if isElement(player) and isPlayerInMatch(player, match) then
+            triggerClientEvent(player, "onMatchFinished", resourceRoot, rank, match.totalSquadsCount, timePassed)
         end
     end
-    if not hasAlivePlayers then
-        local timePassed = getRealTime().timestamp - match.startTimestamp
-        for i, player in ipairs(squad.players) do
-            if isElement(player) and isPlayerInMatch(player, match) then
-                triggerClientEvent(player, "onMatchFinished", resourceRoot, rank, match.totalSquadsCount, timePassed)
-            end
+    return false
+end
+
+local function hasSquadAlivePlayers(match, squad)
+    if not isMatch(match) or type(squad) ~= "table" then
+        return false
+    end
+    for i, player in ipairs(squad.players) do
+        if isElement(player) and isPlayerInMatch(player, match) and not player.dead then
+            return true
         end
-        return true
     end
     return false
 end
@@ -367,13 +370,23 @@ function handlePlayerMatchDeath(match, player, killer)
         triggerClientEvent(player, "onMatchWasted", resourceRoot)
 
         -- Проверка оставшихся отрядов
-        local aliveSquads = getMatchAliveSquads(match)
-        local squad = getMatchSquad(match, player:getData("squadId"))
-        if #aliveSquads <= 1 then
-            showSquadFinishScreen(match, squad, 1)
-            changeMatchState(match, "ended")
+        if match.totalSquadsCount > 1 then
+            local aliveSquads = getMatchAliveSquads(match)
+
+            local squad = getMatchSquad(match, player:getData("squadId"))
+            if not hasSquadAlivePlayers(match, squad) then
+                showSquadFinishScreen(match, squad, #aliveSquads + 1)
+            end
+
+            if #aliveSquads <= 1 then
+                showSquadFinishScreen(match, aliveSquads[1], 1)
+                changeMatchState(match, "ended")
+            end
         else
-            showSquadFinishScreen(match, squad, #aliveSquads + 1)
+            local aliveSquads = getMatchAliveSquads(match)
+            if #aliveSquads == 0 then
+                changeMatchState(match, "ended")
+            end
         end
     end
 end

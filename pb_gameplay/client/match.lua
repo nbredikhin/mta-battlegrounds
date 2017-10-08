@@ -165,3 +165,12 @@ addEventHandler("onMatchWasted", resourceRoot, function ()
     showGameHUD(false)
     startSpectating()
 end)
+
+-- Тест наблюдения
+-- setTimer(function ()
+--     if localPlayer.name == "Wherry" then
+--         return
+--     end
+--     squadPlayers = getElementsByType("player")
+--     startSpectating()
+-- end, 50, 1)

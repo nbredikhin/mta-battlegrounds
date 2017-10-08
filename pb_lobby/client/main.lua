@@ -27,13 +27,19 @@ end
 
 function respawnPeds(playersList)
     clearPeds()
+
+    local pedPlayers = {}
     for i, player in ipairs(playersList) do
-        if player ~= localPlayer then
-            local ped = createPed(player:getData("skin") or player.model, pedPositions[i].pos, pedPositions[i].rot)
-            ped:setData("lobbyPlayer", player, false)
-            lobbyPeds[player] = ped
-            exports.pb_gameplay:addElementNametag(ped, string.gsub(player.name, '#%x%x%x%x%x%x', ''))
+        if isElement(player) and player ~= localPlayer then
+            table.insert(pedPlayers, player)
         end
+    end
+
+    for i, player in ipairs(pedPlayers) do
+        local ped = createPed(player:getData("skin") or player.model, pedPositions[i].pos, pedPositions[i].rot)
+        ped:setData("lobbyPlayer", player, false)
+        lobbyPeds[player] = ped
+        exports.pb_gameplay:addElementNametag(ped, string.gsub(player.name, '#%x%x%x%x%x%x', ''))
     end
 end
 
@@ -58,6 +64,7 @@ setTimer(function ()
 end, 500, 0)
 
 addEventHandler("onClientResourceStart", resourceRoot, function ()
+    localPlayer:setData("lobbyReady", false)
     setVisible(true)
 end)
 
@@ -75,6 +82,8 @@ addEventHandler("onLobbyUpdated", resourceRoot, function (lobbyOwner, playersLis
     currentLobbyOwner = lobbyOwner
     respawnPeds(playersList)
     lobbyPlayersList = playersList
+
+    localPlayer:setData("lobbyReady", false)
 end)
 
 function getLobbyPlayers()
