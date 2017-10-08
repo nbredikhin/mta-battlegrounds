@@ -3,12 +3,12 @@ local SMALL_ZONE_RADIUS = 30
 local GAME_MAP_SIZE = 6000
 
 local radiusMultipliers = {
-    0.6,
-    0.4,
-    0.4,
     0.5,
-    0.6,
-    0.62,
+    0.5,
+    0.5,
+    0.5,
+    0.5,
+    0.55,
 }
 
 local function generateFirstZone()

@@ -82,8 +82,8 @@ addEventHandler("onPlayerJoinedMatch", resourceRoot, function (player, aliveCoun
 end)
 
 addEvent("onPlayerLeftMatch", true)
-addEventHandler("onPlayerLeftMatch", resourceRoot, function (player, reason, aliveCount)
-    exports.pb_hud:setCounter("alive", aliveCount)
+addEventHandler("onPlayerLeftMatch", resourceRoot, function (player, reason)
+    --exports.pb_hud:setCounter("alive", aliveCount)
 end)
 
 addEvent("onMatchStarted", true)
@@ -160,7 +160,8 @@ end)
 
 addEvent("onMatchWasted", true)
 addEventHandler("onMatchWasted", resourceRoot, function ()
-    fadeCamera(false, 0.5)
-    setTimer(startSpectating, 500, 1)
+    -- fadeCamera(false, 0.5)
+    -- setTimer(startSpectating, 500, 1)
     showGameHUD(false)
+    startSpectating()
 end)

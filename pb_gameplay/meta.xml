@@ -20,7 +20,6 @@
     <script type="server" src="server/main.lua"/>
     <script type="server" src="server/match.lua"/>
     <script type="server" src="server/match_gameplay.lua"/>
-    <script type="server" src="server/match_events.lua"/>
     <script type="server" src="server/admin.lua"/>
 
     <export type="client" function="getSquadPlayers"/>

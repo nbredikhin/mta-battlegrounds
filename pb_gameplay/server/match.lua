@@ -42,7 +42,7 @@ function createMatch(matchType)
         maxPlayers = Config.maxMatchPlayers,
         matchType = matchType,
 
-        state = "waiting",
+        state = "none",
         tickCount = 0,
 
         dimension = matchCounter,
@@ -56,6 +56,7 @@ function createMatch(matchType)
     table.insert(matchesList, match)
     initMatch(match)
     outputDebugString("[Matchmaking] Created new "..tostring(match.matchType).." match (" .. tostring(match.id) .. ")")
+    return match
 end
 
 function isMatch(match)
@@ -96,6 +97,13 @@ function isPlayerInMatch(player, match)
     end
 end
 
+function getMatchSquad(match, squadId)
+    if not isMatch(match) or type(squadId) ~= "number" then
+        return false
+    end
+    return match.squads[squadId]
+end
+
 function addMatchSquad(match, players)
     if not isMatch(match) then
         return false
@@ -103,12 +111,12 @@ function addMatchSquad(match, players)
     if type(players) ~= "table" or #players == 0 then
         return false
     end
-    table.insert(match.squads, {
+    local newSquad = {
         players = players,
-        alive   = true,
-        rank    = false,
-    })
+    }
+    table.insert(match.squads, newSquad)
     local squadId = #match.squads
+    newSquad.id = squadId
     for i, player in ipairs(players) do
         player:setData("matchId", match.id)
         player:setData("squadId", squadId)
@@ -116,7 +124,8 @@ function addMatchSquad(match, players)
         table.insert(match.allPlayers, player)
         match.players[player] = squadId
 
-        handlePlayerJoinMatch(match, player, players)
+        iprint("adding player to match")
+        handlePlayerJoinMatch(match, player)
     end
     triggerClientEvent(players, "onMatchSquadJoined", resourceRoot, players)
 end
@@ -175,8 +184,43 @@ function destroyMatch(match)
     return true
 end
 
+function addMatchElement(match, element)
+    if not isMatch(match) then
+        return false
+    end
+    if not isElement(element) then
+        return false
+    end
+
+    table.insert(match.elements, element)
+end
+
+function triggerMatchEvent(match, ...)
+    if not isMatch(match) then
+        return false
+    end
+    for player in pairs(match.players) do
+        triggerClientEvent(player, ...)
+    end
+    return true
+end
+
 setTimer(function ()
     for i, match in ipairs(matchesList) do
         updateMatch(match)
     end
 end, 1000, 0)
+
+addEvent("clientLeaveMatch", true)
+addEventHandler("clientLeaveMatch", resourceRoot, function ()
+    removePlayerFromMatch(client)
+end)
+
+addEventHandler("onPlayerQuit", root, function ()
+    removePlayerFromMatch(source)
+end)
+
+-- setTimer(function ()
+--     findMatch(getElementsByType("player"))
+--     matchesList[1].forceStart = true
+-- end, 50, 1)

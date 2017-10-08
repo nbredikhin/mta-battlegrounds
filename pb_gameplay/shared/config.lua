@@ -3,7 +3,7 @@ Config = {}
 Config.maxSquadPlayers = 4
 Config.maxMatchPlayers = 100
 
-Config.minMatchPlayers = 32
+Config.minMatchSquads = 25
 
 -- В секундах
 Config.matchWaitingTime = 60
