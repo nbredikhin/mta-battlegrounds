@@ -25,6 +25,16 @@ function isOwnLobby()
     return currentLobbyOwner == localPlayer
 end
 
+local function updatePlayerReadyState(player)
+    if player and lobbyPeds[player] then
+        local state = "[not ready]"
+        if player:getData("lobbyReady") then
+            state = "[ready]"
+        end
+        exports.pb_gameplay:addElementNametag(lobbyPeds[player], string.gsub(player.name, '#%x%x%x%x%x%x', '') .. "\n" .. state)
+    end
+end
+
 function respawnPeds(playersList)
     clearPeds()
 
@@ -39,7 +49,7 @@ function respawnPeds(playersList)
         local ped = createPed(player:getData("skin") or player.model, pedPositions[i].pos, pedPositions[i].rot)
         ped:setData("lobbyPlayer", player, false)
         lobbyPeds[player] = ped
-        exports.pb_gameplay:addElementNametag(ped, string.gsub(player.name, '#%x%x%x%x%x%x', ''))
+        updatePlayerReadyState(player)
     end
 end
 
@@ -94,11 +104,14 @@ addEventHandler("onClientElementDataChange", root, function (dataName)
     if not isVisible() then
         return
     end
-    if dataName ~= "skin" then
-        return
-    end
-    if lobbyPeds[source] then
-        lobbyPeds[source].model = source:getData("skin")
+    if dataName == "skin" then
+        if lobbyPeds[source] then
+            lobbyPeds[source].model = source:getData("skin")
+        end
+    elseif dataName == "lobbyReady" then
+        if lobbyPeds[source] then
+            updatePlayerReadyState(source)
+        end
     end
 end)
 

@@ -8,6 +8,14 @@ local healthbarWidth = 400
 local healthbarHeight = 28
 local healthbarBorder = 1
 
+local markerTexture
+local markerColors = {
+    { 253, 218, 14  },
+    { 46,  198, 2   },
+    { 0,   170, 240 },
+    { 237, 5,   3   },
+}
+
 local counters = {
     alive = 0,
     kills = 0,
@@ -169,8 +177,12 @@ addEventHandler("onClientRender", root, function ()
                         icon = "parachute"
                     end
                 end
+                local textWidth = dxGetTextWidth(playerName, 1, "default")
                 dxDrawText(playerName, x+1, y+1, x, y, tocolor(0, 0, 0), 1, "default")
                 dxDrawText(playerName, x, y, x, y, tocolor(49, 177, 178), 1, "default")
+                if isElement(player) and player:getData("map_marker") then
+                    dxDrawImage(x + textWidth + 5, y, 13, 15, markerTexture, 0, 0, 0, tocolor(markerColors[i][1], markerColors[i][2], markerColors[i][3]))
+                end
                 y = y + 20
                 local ix = x
                 local isize = 20
@@ -193,6 +205,8 @@ end, false, "low-1")
 addEventHandler("onClientResourceStart", resourceRoot, function ()
     showPlayerHudComponent("all", false)
     showPlayerHudComponent("crosshair", true)
+
+    markerTexture = dxCreateTexture(":pb_map/assets/marker.png", "argb", true, "clamp")
 end)
 
 function setVisible(visible)

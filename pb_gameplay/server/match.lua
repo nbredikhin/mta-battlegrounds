@@ -222,6 +222,6 @@ end)
 
 -- setTimer(function ()
 --     findMatch({getElementsByType("player")[1]})
---     findMatch({getElementsByType("player")[2]})
---     matchesList[1].forceStart = true
+--     -- findMatch({getElementsByType("player")[2]})
+--     -- matchesList[1].forceStart = true
 -- end, 100, 1)

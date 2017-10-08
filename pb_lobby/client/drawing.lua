@@ -74,7 +74,7 @@ function drawStartGameButton()
 
         local allReady = true
         for i, player in ipairs(getLobbyPlayers()) do
-            if not player:getData("lobbyReady") then
+            if isElement(player) and not player:getData("lobbyReady") then
                 allReady = false
                 break
             end
@@ -174,7 +174,7 @@ function drawWindow()
         triggerServerEvent("onPlayerDeclineLobbyInvite", resourceRoot)
         return
     end
-    if drawButton(currentWindow.accept_text, x + currentWindow.width / 2 + 10, y + currentWindow.height - bh - 15, bw, bh) or true then
+    if drawButton(currentWindow.accept_text, x + currentWindow.width / 2 + 10, y + currentWindow.height - bh - 15, bw, bh) then
         triggerServerEvent("onPlayerAcceptLobbyInvite", resourceRoot)
         currentWindow = nil
         return

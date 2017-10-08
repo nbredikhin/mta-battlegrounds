@@ -95,6 +95,7 @@ end)
 
 addEventHandler("onPlayerQuit", root, function ()
     removeLobbyPlayer(source)
+    destroyLobby(source)
 end)
 
 addEventHandler("onResourceStart", resourceRoot, function ()
@@ -115,10 +116,6 @@ addEventHandler("onPlayerSendLobbyInvite", resourceRoot, function (targetPlayer)
     end
     if not getPlayerLobby(targetPlayer) then
         triggerClientEvent(client, "onClientInviteDeclined", resourceRoot, targetPlayer, "joining")
-        return
-    end
-    if targetPlayer:getData("lobbyInvite") then
-        triggerClientEvent(client, "onClientInviteDeclined", resourceRoot, targetPlayer, "already_invited")
         return
     end
     if targetPlayer:getData("matchId") then

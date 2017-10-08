@@ -1,13 +1,4 @@
 local zoneProperties = {
-    -- { time = 2,  shrink = 2 }, -- Нулевая зона
-    -- { time = 1,  shrink = 1 },
-    -- { time = 1,  shrink = 1 },
-    -- { time = 1,  shrink = 1 },
-    -- { time = 1,  shrink = 1 },
-    -- { time = 1,  shrink = 1 },
-    -- { time = 1,  shrink = 1 },
-    -- { time = 1,  shrink = 1 },
-    -- { time = 1,  shrink = 1 },
     { time = 15,  shrink = 15 },
     { time = 30,  shrink = 20 },
     { time = 30,  shrink = 30 },

@@ -64,7 +64,7 @@ function updateMatch(match)
             changeMatchState(match, "running")
             return
         end
-        local needSquadsCount = math.min(math.floor(#getElementsByType("player") / 4), Config.minMatchSquads)
+        local needSquadsCount = math.min(math.max(1, math.floor(#getElementsByType("player") / 4)), Config.minMatchSquads)
         local aliveSquads = getMatchAliveSquads(match)
         local waitingTimePassed = currentTimestamp - match.waitingTimestamp
         -- Если зашло слишком мало игроков
@@ -126,7 +126,7 @@ function updateMatch(match)
                 if match.currentZone > 1 then
                     match.currentZone = match.currentZone - 1
 
-                    local zone = exports.pb_zones:getZone(match.currentZone)
+                    local zone = exports.pb_zones:getZone(match.currentZone + 1)
                     match.shrinkTime = zone.shrink
                     match.zoneTime = zone.time
 
@@ -154,12 +154,13 @@ function updateMatch(match)
             if zoneTimePassed > match.zoneTime then
                 match.currentZone = match.currentZone - 1
 
-                local zone = exports.pb_zones:getZone(match.currentZone)
+                local zone = exports.pb_zones:getZone(match.currentZone + 1)
                 match.zoneState = "waiting"
                 match.shrinkTimestamp = currentTimestamp
                 match.zoneTimestamp = currentTimestamp
                 match.shrinkTime = zone.shrink
                 match.zoneTime = zone.time
+                iprint("First zone time", zone.time)
 
                 triggerMatchEvent(match, "onWhiteZoneUpdate", resourceRoot, match.zones[match.currentZone], match.zoneTime)
             end
@@ -186,6 +187,7 @@ function spawnMatchPlayer(match, player, position)
     spawnPlayer(player, position)
     player.model = player:getData("skin") or 0
     player.dimension = match.dimension
+    player:setData("dead", false)
 end
 
 local function setMatchRunning(match)
@@ -279,6 +281,7 @@ function handlePlayerJoinMatch(match, player)
     player:setData("kills", 0)
     player:setData("match_waiting", true)
     player:setData("isInPlane", false)
+    player:setData("dead", false)
     player.alpha = 255
 
     initPlayerSkillStats(player)
@@ -337,7 +340,7 @@ local function hasSquadAlivePlayers(match, squad)
     return false
 end
 
-function handlePlayerMatchDeath(match, player, killer)
+function handlePlayerMatchDeath(match, player, killer, weaponId)
     if not isMatch(match) or not isElement(player) then
         return
     end
@@ -349,9 +352,11 @@ function handlePlayerMatchDeath(match, player, killer)
             exports.pb_inventory:spawnPlayerLootBox(player)
         end
 
+        player:setData("dead", true)
+
         -- Обновление счётчика у убийцы
+        local killerPlayer
         if isElement(killer) then
-            local killerPlayer
             if killer.type == "player" then
                 killerPlayer = killer
             elseif killer.type == "vehicle" then
@@ -372,13 +377,18 @@ function handlePlayerMatchDeath(match, player, killer)
         -- Проверка оставшихся отрядов
         if match.totalSquadsCount > 1 then
             local aliveSquads = getMatchAliveSquads(match)
-
+            iprint("Dead", #aliveSquads)
             local squad = getMatchSquad(match, player:getData("squadId"))
             if not hasSquadAlivePlayers(match, squad) then
+                iprint("Squad dead", squad.id)
                 showSquadFinishScreen(match, squad, #aliveSquads + 1)
             end
 
             if #aliveSquads <= 1 then
+                if aliveSquads[1] then
+                    iprint("Squad won", aliveSquads[1].id)
+                end
+                iprint("Squad won", #aliveSquads)
                 showSquadFinishScreen(match, aliveSquads[1], 1)
                 changeMatchState(match, "ended")
             end
@@ -419,7 +429,7 @@ addEventHandler("planeJump", resourceRoot, function ()
 end)
 
 addEventHandler("onPlayerWasted", root, function (ammo, killer, weaponId)
-    handlePlayerMatchDeath(getPlayerMatch(source), source, killer)
+    handlePlayerMatchDeath(getPlayerMatch(source), source, killer, weaponId)
 end)
 
 addEvent("onMatchElementCreated", false)

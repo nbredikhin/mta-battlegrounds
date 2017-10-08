@@ -21,6 +21,14 @@ local zoneProgressColor = tocolor(7, 95, 192, 255)
 
 local runnerIconSize = 42
 
+local markerSize = 20
+local markerColors = {
+    { 253, 218, 14  },
+    { 46,  198, 2   },
+    { 0,   170, 240 },
+    { 237, 5,   3   },
+}
+
 local textures = {}
 
 local sectionNames = {
@@ -118,15 +126,6 @@ local function drawRadar()
         dxDrawText(sy..iy, 8, ly + 3, 8, ly + 3, radarTextColor)
     end
 
-    -- Игрок
-    local camera = getCamera()
-    local psize = 32
-    local prot = 180-camera.rotation.z
-    local px = viewportWidth / 2 - psize / 2
-    local py = viewportHeight / 2 - psize / 2
-    dxDrawImage(px, py, psize, psize, textures.p_circle)
-    dxDrawImage(px, py, psize, psize, textures.p_location, prot, 0, 0)
-
     -- Зоны
     if exports.pb_zones:isZonesVisible() then
         local x, y, radius = exports.pb_zones:getWhiteZone()
@@ -155,14 +154,65 @@ local function drawRadar()
     end
 
     -- Маркер
-    local marker = localPlayer:getData("map_marker")
-    if marker then
-        local markerSize = 20
-        local x, y = worldToRadar(unpack(marker))
-        x = -(localX - localWidth / 2) + x
-        y = -(localY - localHeight / 2) + y
-        dxDrawImage(x - markerSize / 2, y - markerSize, markerSize, markerSize, textures.marker)
+    -- local marker = localPlayer:getData("map_marker")
+    -- if marker then
+    --     local markerSize = 20
+    --     local x, y = worldToRadar(unpack(marker))
+    --     x = -(localX - localWidth / 2) + x
+    --     y = -(localY - localHeight / 2) + y
+    --     dxDrawImage(x - markerSize / 2, y - markerSize, markerSize, markerSize, textures.marker)
+    -- end
+    local squadPlayers = exports.pb_gameplay:getSquadPlayers()
+    if #squadPlayers > 0 then
+        for i, player in ipairs(squadPlayers) do
+            if isElement(player) then
+                local marker = player:getData("map_marker")
+                if marker then
+                    local x, y = worldToRadar(unpack(marker))
+                    x = -(localX - localWidth / 2) + x
+                    y = -(localY - localHeight / 2) + y
+                    dxDrawImage(x - markerSize / 2, y - markerSize, markerSize, markerSize, textures.marker, 0, 0, 0, tocolor(markerColors[i][1], markerColors[i][2], markerColors[i][3], 255))
+                end
+            end
+        end
+    else
+        local marker = localPlayer:getData("map_marker")
+        if marker then
+            local x, y = worldToRadar(unpack(marker))
+            x = -(localX - localWidth / 2) + x
+            y = -(localY - localHeight / 2) + y
+            dxDrawImage(x - markerSize / 2, y - markerSize, markerSize, markerSize, textures.marker, 0, 0, 0, tocolor(markerColors[1][1], markerColors[1][2], markerColors[1][3], 255))
+        end
     end
+
+    -- Сквад
+    local squadPlayers = exports.pb_gameplay:getSquadPlayers()
+    local squadColor = tocolor(49, 177, 178)
+    for i, player in ipairs(squadPlayers) do
+        if isElement(player) and player:getData("matchId") == localPlayer:getData("matchId") and not player:getData("dead") and player ~= localPlayer then
+            local markerSize = 20
+            local x, y = worldToRadar(getElementPosition(player))
+            x = -(localX - localWidth / 2) + x
+            y = -(localY - localHeight / 2) + y
+
+            local psize = 32
+            local prot = 180-player.rotation.z
+            local px = x - psize / 2
+            local py = y - psize / 2
+            dxDrawImage(px, py, psize, psize, textures.p_circle, 0, 0, 0, squadColor)
+            dxDrawImage(px, py, psize, psize, textures.p_location, prot, 0, 0, squadColor)
+        end
+    end
+
+    -- Игрок
+    local camera = getCamera()
+    local psize = 32
+    local prot = 180-camera.rotation.z
+    local px = viewportWidth / 2 - psize / 2
+    local py = viewportHeight / 2 - psize / 2
+    dxDrawImage(px, py, psize, psize, textures.p_circle)
+    dxDrawImage(px, py, psize, psize, textures.p_location, prot, 0, 0)
+
     dxSetRenderTarget()
 end
 

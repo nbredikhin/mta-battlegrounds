@@ -71,16 +71,6 @@ addEventHandler("onClientRender", root, function ()
     local y = viewY
     dxDrawImage(x, y, mapSize, mapSize, textures.map)
 
-    -- Игрок
-    local camera = getCamera()
-    local psize = 32
-    local prot = 180-camera.rotation.z
-    local px, py = worldToMap(localPlayer.position.x, localPlayer.position.y)
-    px = px - psize / 2 + x
-    py = py - psize / 2 + y
-    dxDrawImage(px, py, psize, psize, textures.p_circle)
-    dxDrawImage(px, py, psize, psize, textures.p_location, prot, 0, 0)
-
     -- Сетка
     for i = 1, 7 do
         local offset = i * mapSize / 8
@@ -110,15 +100,17 @@ addEventHandler("onClientRender", root, function ()
     local squadPlayers = exports.pb_gameplay:getSquadPlayers()
     if #squadPlayers > 0 then
         for i, player in ipairs(squadPlayers) do
-            local marker = player:getData("map_marker")
-            if marker then
-                local x, y = worldToMap(unpack(marker))
-                local anim = 1
-                if player == localPlayer then
-                    anim = markerAnim
+            if isElement(player) then
+                local marker = player:getData("map_marker")
+                if marker then
+                    local x, y = worldToMap(unpack(marker))
+                    local anim = 1
+                    if player == localPlayer then
+                        anim = markerAnim
+                    end
+                    local offset = 10 * anim - 10
+                    dxDrawImage(x + viewX - markerSize / 2, y + viewY - markerSize + offset, markerSize, markerSize, textures.marker, 0, 0, 0, tocolor(markerColors[i][1], markerColors[i][2], markerColors[i][3], 255 * anim))
                 end
-                local offset = 10 * anim - 10
-                dxDrawImage(x + viewX - markerSize / 2, y + viewY - markerSize + offset, markerSize, markerSize, textures.marker, 0, 0, 0, tocolor(markerColors[i][1], markerColors[i][2], markerColors[i][3], 255 * anim))
             end
         end
     else
@@ -130,6 +122,39 @@ addEventHandler("onClientRender", root, function ()
         end
     end
     markerAnim = math.min(1, markerAnim + 0.1)
+
+    -- Сквад
+    local squadPlayers = exports.pb_gameplay:getSquadPlayers()
+    local squadColor = tocolor(49, 177, 178)
+    for i, player in ipairs(squadPlayers) do
+        if isElement(player) and player:getData("matchId") == localPlayer:getData("matchId") and player ~= localPlayer and not player:getData("dead") then
+            local markerSize = 20
+            local x, y = worldToMap(getElementPosition(player))
+            x = x + viewX
+            y = y + viewY
+
+            local psize = 32
+            local prot = 180-player.rotation.z
+            local px = x - psize / 2
+            local py = y - psize / 2
+            dxDrawImage(px, py, psize, psize, textures.p_circle, 0, 0, 0, squadColor)
+            dxDrawImage(px, py, psize, psize, textures.p_location, prot, 0, 0, squadColor)
+
+            dxDrawRectangle(x - 50, y + psize / 2 + 3, 100, 15, tocolor(0, 0, 0, 150))
+            dxDrawText(player.name, x - 50, y + psize / 2 + 3, x + 50, y + psize / 2 + 18, tocolor(255, 255, 255), 1, "default", "center", "center", true, false)
+        end
+    end
+
+    -- Игрок
+    local camera = getCamera()
+    local psize = 32
+    local prot = 180-camera.rotation.z
+    local px, py = worldToMap(localPlayer.position.x, localPlayer.position.y)
+    px = px - psize / 2 + x
+    py = py - psize / 2 + y
+    dxDrawImage(px, py, psize, psize, textures.p_circle)
+    dxDrawImage(px, py, psize, psize, textures.p_location, prot, 0, 0)
+
     dxSetRenderTarget()
 
     dxDrawRectangle(0, 0, screenSize.x, screenSize.y, tocolor(0, 0, 0, 150))

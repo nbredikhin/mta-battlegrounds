@@ -40,7 +40,7 @@ end
 local function getPlayersList()
     local players = {}
     for i, p in ipairs(getSquadPlayers()) do
-        if isElement(p) and p ~= localPlayer and p:getData("matchId") == localPlayer:getData("matchId") and not p.dead then
+        if isElement(p) and p ~= localPlayer and p:getData("matchId") == localPlayer:getData("matchId") and not p:getData("dead") then
             table.insert(players, p)
         end
     end
