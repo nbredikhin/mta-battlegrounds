@@ -31,29 +31,32 @@ function addLobbyPlayer(owner, player)
     if not isElement(owner) or not isElement(player) or not playerLobbies[owner] then
         return false
     end
-    if owner ~= player then
-        destroyLobby(player)
-    else
-        removeLobbyPlayer(player)
-    end
+    removeLobbyPlayer(player, true)
     playerLobbies[owner].players[player] = true
     player:setData("lobbyOwner", owner)
     updateLobby(owner)
 end
 
-function removeLobbyPlayer(player)
+function removeLobbyPlayer(player, preventCreatingLobby)
     if not isElement(player) then
         return false
     end
     local owner = player:getData("lobbyOwner")
+    if not owner or not playerLobbies[owner] then
+        return
+    end
     player:removeData("lobbyOwner")
     if owner and playerLobbies[owner] then
         playerLobbies[owner].players[player] = nil
-        updateLobby(owner)
-    else
-        return
+        if owner == player or not next(playerLobbies[owner].players) then
+            destroyLobby(owner)
+        else
+            updateLobby(owner)
+        end
     end
-    createLobby(player)
+    if not preventCreatingLobby then
+        createLobby(player)
+    end
 end
 
 function getPlayerLobby(player)

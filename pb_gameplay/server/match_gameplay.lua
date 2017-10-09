@@ -28,7 +28,7 @@ function getMatchAlivePlayers(match)
     end
     local players = {}
     for player in pairs(match.players) do
-        if not player.dead then
+        if not player:getData("dead") then
             table.insert(players, player)
         end
     end
@@ -43,7 +43,7 @@ function getMatchAliveSquads(match)
     for i, squad in ipairs(match.squads) do
         local hasAlivePlayers = false
         for i, player in ipairs(squad.players) do
-            if isElement(player) and not player.dead then
+            if isElement(player) and not player:getData("dead") then
                 hasAlivePlayers = true
             end
         end
@@ -107,6 +107,7 @@ function updateMatch(match)
 
         if match.zoneState == "wait" then
             local zoneTimePassed = currentTimestamp - match.zoneTimestamp
+            -- Ожидание закончилось
             if zoneTimePassed >= match.zoneTime then
                 match.zoneState = "shrink"
                 match.shrinkTimestamp = currentTimestamp
@@ -119,7 +120,9 @@ function updateMatch(match)
                 return
             end
             local shrinkTimePassed = currentTimestamp - match.shrinkTimestamp
+            -- Закончилось сужение зоны
             if shrinkTimePassed >= match.shrinkTime then
+                -- Выбираем следующую зону
                 match.currentZone = match.currentZone - 1
 
                 match.zoneTime = Config.zonesTime[match.currentZone].wait
@@ -129,6 +132,7 @@ function updateMatch(match)
                 if match.currentZone > 0 then
                     triggerMatchEvent(match, "onWhiteZoneUpdate", resourceRoot, match.zones[match.currentZone], match.zoneTime)
                 else
+                    -- Нулевая зона
                     triggerMatchEvent(match, "onWhiteZoneUpdate", resourceRoot, {match.zones[1][1], match.zones[1][2], 0}, match.zoneTime)
                 end
 
@@ -349,18 +353,12 @@ function handlePlayerMatchDeath(match, player, killer, weaponId)
         -- Проверка оставшихся отрядов
         if match.totalSquadsCount > 1 then
             local aliveSquads = getMatchAliveSquads(match)
-            iprint("Dead", #aliveSquads)
             local squad = getMatchSquad(match, player:getData("squadId"))
             if not hasSquadAlivePlayers(match, squad) then
-                iprint("Squad dead", squad.id)
                 showSquadFinishScreen(match, squad, #aliveSquads + 1)
             end
 
             if #aliveSquads <= 1 then
-                if aliveSquads[1] then
-                    iprint("Squad won", aliveSquads[1].id)
-                end
-                iprint("Squad won", #aliveSquads)
                 showSquadFinishScreen(match, aliveSquads[1], 1)
                 changeMatchState(match, "ended")
             end
