@@ -101,68 +101,38 @@ function updateMatch(match)
         end
 
         -- Синие и белые зоны
-        if not match.zoneTime then
-            match.zoneTime = 0
-        end
-        if not match.shrinkTime then
-            match.shrinkTime = 0
+        if stateTimePassed < Config.zonesStartTime then
+            return
         end
 
-        if match.zoneState == "waiting" then
+        if match.zoneState == "wait" then
             local zoneTimePassed = currentTimestamp - match.zoneTimestamp
-            if zoneTimePassed > match.zoneTime then
-                local zone = exports.pb_zones:getZone(match.currentZone)
-                match.zoneState = "shrinking"
+            if zoneTimePassed >= match.zoneTime then
+                match.zoneState = "shrink"
                 match.shrinkTimestamp = currentTimestamp
-                match.shrinkTime = zone.shrink
-                match.zoneTime = zone.time
 
                 triggerMatchEvent(match, "onZoneShrink", resourceRoot, match.shrinkTime)
             end
-        elseif match.zoneState == "shrinking" then
-            local shrinkTimePassed = currentTimestamp - match.shrinkTimestamp
-
-            if shrinkTimePassed > match.shrinkTime and match.currentZone ~= 0 then
-                if match.currentZone > 1 then
-                    match.currentZone = match.currentZone - 1
-
-                    local zone = exports.pb_zones:getZone(match.currentZone + 1)
-                    match.shrinkTime = zone.shrink
-                    match.zoneTime = zone.time
-
-                    match.shrinkTimestamp = currentTimestamp
-                    match.zoneTimestamp = currentTimestamp
-
-                    triggerMatchEvent(match, "onWhiteZoneUpdate", resourceRoot, match.zones[match.currentZone], match.zoneTime)
-                    match.zoneState = "waiting"
-                else
-                    local zone = exports.pb_zones:getZone(match.currentZone)
-                    match.shrinkTime = zone.shrink
-                    match.zoneTime = zone.time
-
-                    match.shrinkTimestamp = currentTimestamp
-                    match.zoneTimestamp = currentTimestamp
-
-                    triggerMatchEvent(match, "onWhiteZoneUpdate", resourceRoot, {match.zones[1][1], match.zones[1][2], 0}, match.zoneTime)
-                    match.zoneState = "waiting"
-
-                    match.currentZone = 0
-                end
+        elseif match.zoneState == "shrink" then
+            -- Если уже на последней зоне
+            if match.currentZone == 0 then
+                return
             end
-        elseif match.zoneState == "waiting_first" then
-            local zoneTimePassed = currentTimestamp - match.zoneTimestamp
-            if zoneTimePassed > match.zoneTime then
+            local shrinkTimePassed = currentTimestamp - match.shrinkTimestamp
+            if shrinkTimePassed >= match.shrinkTime then
                 match.currentZone = match.currentZone - 1
 
-                local zone = exports.pb_zones:getZone(match.currentZone + 1)
-                match.zoneState = "waiting"
-                match.shrinkTimestamp = currentTimestamp
+                match.zoneTime = Config.zonesTime[match.currentZone].wait
+                match.shrinkTime = Config.zonesTime[match.currentZone].shrink
                 match.zoneTimestamp = currentTimestamp
-                match.shrinkTime = zone.shrink
-                match.zoneTime = zone.time
-                iprint("First zone time", zone.time)
 
-                triggerMatchEvent(match, "onWhiteZoneUpdate", resourceRoot, match.zones[match.currentZone], match.zoneTime)
+                if match.currentZone > 0 then
+                    triggerMatchEvent(match, "onWhiteZoneUpdate", resourceRoot, match.zones[match.currentZone], match.zoneTime)
+                else
+                    triggerMatchEvent(match, "onWhiteZoneUpdate", resourceRoot, {match.zones[1][1], match.zones[1][2], 0}, match.zoneTime)
+                end
+
+                match.zoneState = "wait"
             end
         end
     elseif match.state == "ended" then
@@ -245,10 +215,12 @@ local function setMatchRunning(match)
         match.zones = exports.pb_zones:generateZones()
         match.currentZone = #match.zones
         triggerMatchEvent(match, "onZonesInit", resourceRoot, match.zones[match.currentZone])
-        match.zoneTime = Config.firstZoneTime
-        match.redZoneTime = Config.firstZoneTime + 60
+        match.zoneTime = Config.zonesTime[match.currentZone].wait
+        match.shrinkTime = Config.zonesTime[match.currentZone].shrink
+        match.redZoneTime = Config.zonesStartTime + 60
+        match.shrinkTimestamp = getRealTime().timestamp
         match.zoneTimestamp = getRealTime().timestamp
-        match.zoneState = "waiting_first"
+        match.zoneState = "shrink"
     end
 
     triggerMatchEvent(match, "onMatchStarted", resourceRoot, match.totalPlayersCount)

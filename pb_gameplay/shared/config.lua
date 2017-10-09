@@ -8,7 +8,23 @@ Config.minMatchSquads = 25
 -- В секундах
 Config.matchWaitingTime = 60
 Config.matchEndedTime = 61
-Config.firstZoneTime = 95
+
+Config.zonesStartTime = 95
+
+Config.zonesTime = {
+    -- Нулевая область
+    [0] = { wait = 30, shrink = 20 },
+    -- Самая маленькая область
+    { wait = 30,  shrink = 20 },
+    { wait = 40,  shrink = 30 },
+    { wait = 60,  shrink = 40 },
+    { wait = 80,  shrink = 50 },
+    { wait = 100, shrink = 70 },
+    { wait = 120, shrink = 100 },
+    { wait = 240, shrink = 200 },
+    -- Первая область на всю карту
+    { wait = 0,   shrink = 0 },
+}
 
 Config.redZoneTimeMin = 70
 Config.redZoneTimeMax = 120

@@ -2,15 +2,6 @@ ZONES_COUNT = 8
 local SMALL_ZONE_RADIUS = 30
 local GAME_MAP_SIZE = 6000
 
-local radiusMultipliers = {
-    0.5,
-    0.5,
-    0.5,
-    0.5,
-    0.5,
-    0.55,
-}
-
 local function generateFirstZone()
     local x, y = unpack(ZonePoints[math.random(1, #ZonePoints)])
     local radius = SMALL_ZONE_RADIUS / GAME_MAP_SIZE
@@ -26,7 +17,7 @@ function generateZones()
 
     for i = 1, ZONES_COUNT - 2 do
         local pradius = zradius
-        zradius = zradius / radiusMultipliers[i]
+        zradius = zradius / 0.5
         local ox, oy = getRandomPoint(zradius - pradius)
         zx = zx + ox
         zy = zy + oy

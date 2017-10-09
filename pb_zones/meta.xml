@@ -8,7 +8,6 @@
     <script type="client" src="client/main.lua"/>
     <script type="client" src="client/red_zone.lua"/>
 
-    <script type="server" src="server/zone_properties.lua"/>
     <script type="server" src="server/zone_points.lua"/>
     <script type="server" src="server/zones.lua"/>
     <script type="server" src="server/red_zones.lua"/>

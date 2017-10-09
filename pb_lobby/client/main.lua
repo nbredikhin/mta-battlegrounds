@@ -120,6 +120,13 @@ addEventHandler("onClientInviteDeclined", resourceRoot, function (player, reason
     showMessageBox("Invite declined\nReason: " .. tostring(reason))
 end)
 
+addEvent("onMatchSearchFailed", true)
+addEventHandler("onMatchSearchFailed", resourceRoot, function ()
+    localPlayer:setData("lobbyReady", false)
+
+    showMessageBox("Не удалось найти матч\nодин из игроков уже в игре")
+end)
+
 setTimer(function ()
     if not isVisible() or not isOwnLobby() then
         return

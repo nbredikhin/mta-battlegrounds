@@ -220,8 +220,8 @@ addEventHandler("onPlayerQuit", root, function ()
     removePlayerFromMatch(source)
 end)
 
--- setTimer(function ()
---     findMatch({getElementsByType("player")[1]})
---     -- findMatch({getElementsByType("player")[2]})
---     -- matchesList[1].forceStart = true
--- end, 100, 1)
+setTimer(function ()
+    findMatch({getElementsByType("player")[1]})
+    -- findMatch({getElementsByType("player")[2]})
+    matchesList[1].forceStart = true
+end, 100, 1)

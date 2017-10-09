@@ -173,5 +173,11 @@ addEventHandler("onLobbyStartSearch", resourceRoot, function ()
         return
     end
     local players = getLobbyPlayers(client)
+    for i, player in ipairs(players) do
+        if player:getData("matchId") then
+            triggerClientEvent(players, "onMatchSearchFailed", resourceRoot)
+            return
+        end
+    end
     exports.pb_gameplay:findMatch(players)
 end)

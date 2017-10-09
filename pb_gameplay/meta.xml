@@ -8,8 +8,8 @@
 
     <script type="client" src="client/waiting.lua"/>
     <script type="client" src="client/main.lua"/>
-    <script type="client" src="client/game_hud.lua"/>
     <script type="client" src="client/nametags.lua"/>
+    <script type="client" src="client/game_hud.lua"/>
     <script type="client" src="client/match.lua"/>
     <script type="client" src="client/plane.lua"/>
     <script type="client" src="client/plane_camera.lua"/>
