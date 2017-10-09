@@ -16,6 +16,7 @@ local function hideGameHUD()
     setComponentVisible("pb_inventory",   false)
     setComponentVisible("pb_hud_weapon",  false)
     setComponentVisible("pb_hud_vehicle", false)
+    setNametagsVisible(false)
 end
 
 -- Включает/выключает интерфейс игры
@@ -30,6 +31,7 @@ function showGameHUD(visible)
     isHudVisible = not not visible
     hideGameHUD()
     if visible then
+        setNametagsVisible(true)
         setComponentVisible("pb_hud",         true)
         setComponentVisible("pb_radar",       true)
         setComponentVisible("pb_compass",     true)
@@ -54,6 +56,7 @@ function toggleMap()
     setComponentVisible("pb_killchat", not visible)
     setComponentVisible("pb_hud_weapon", not visible)
     setComponentVisible("pb_hud_vehicle", not visible)
+    setNametagsVisible(not visible)
     if visible then
         setComponentVisible("pb_inventory", false)
     end
@@ -79,6 +82,7 @@ bindKey("tab", "down", function ()
     setComponentVisible("pb_killchat", not visible)
     setComponentVisible("pb_hud_weapon", not visible)
     setComponentVisible("pb_hud_vehicle", not visible)
+    setNametagsVisible(not visible)
     if visible then
         setComponentVisible("pb_map", false)
     end

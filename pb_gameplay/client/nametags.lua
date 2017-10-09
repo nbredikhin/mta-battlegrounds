@@ -1,3 +1,5 @@
+local nametagsVisible = true
+
 local NAMETAG_OFFSET = 1.1
 local NAMETAG_WIDTH = 100
 local NAMETAG_HEIGHT = 20
@@ -9,6 +11,10 @@ local streamedPlayers = {}
 local nametagFont = "default-bold"
 local icons = {}
 
+function setNametagsVisible(visible)
+    nametagsVisible = not not visible
+end
+
 local function dxDrawNametagText(text, x1, y1, x2, y2, color, scale)
     dxDrawText(text, x1 - 1, y1, x2 - 1, y2, tocolor(0, 0, 0, 150), scale, nametagFont, "center", "center")
     dxDrawText(text, x1 + 1, y1, x2 + 1, y2, tocolor(0, 0, 0, 150), scale, nametagFont, "center", "center")
@@ -18,6 +24,9 @@ local function dxDrawNametagText(text, x1, y1, x2, y2, color, scale)
 end
 
 addEventHandler("onClientRender", root, function ()
+    if not nametagsVisible then
+        return
+    end
     local tr, tg, tb = 49, 177, 178
     local cx, cy, cz = getCameraMatrix()
     for player, info in pairs(streamedPlayers) do
