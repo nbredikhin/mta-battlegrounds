@@ -38,7 +38,7 @@ local sectionNames = {
 
 local function worldToRadar(x, y)
     if not x then
-        return -500, 0
+        return 0, 0
     end
     x = (x + 3000) / 6000 * radarTextureSize
     y = radarTextureSize - (y + 3000) / 6000 * radarTextureSize
@@ -135,7 +135,16 @@ local function drawRadar()
         if x then
             drawZone(x, y, radius, localX - localWidth / 2, localY - localHeight / 2, tocolor(255, 255, 255, 180))
         end
+
+        -- Линия к белой зоне
         local wx, wy, wrad = x, y, radius
+        local lx = -(localX - localWidth / 2)
+        local ly = -(localY - localHeight / 2)
+        local x, y = worldToRadar(localPlayer.position.x, localPlayer.position.y)
+        if (Vector2(localPlayer.position.x, localPlayer.position.y) - Vector2(wx, wy)).length > wrad then
+            local wx, wy = worldToRadar(wx, wy)
+            dxDrawLineDotted(lx + wx, ly + wy, lx + x, ly + y, tocolor(255, 255, 255, 200), 2)
+        end
 
         local x, y, radius = exports.pb_zones:getBlueZone()
         if x then
@@ -146,26 +155,10 @@ local function drawRadar()
         if x then
             drawRedZone(x, y, radius, localX - localWidth / 2, localY - localHeight / 2)
         end
-
-        local lx = -(localX - localWidth / 2)
-        local ly = -(localY - localHeight / 2)
-        local x, y = worldToRadar(localPlayer.position.x, localPlayer.position.y)
-        if (Vector2(localPlayer.position.x, localPlayer.position.y) - Vector2(wx, wy)).length > wrad then
-            local wx, wy = worldToRadar(wx, wy)
-            dxDrawLineDotted(lx + wx, ly + wy, lx + x, ly + y, tocolor(255, 255, 255, 200), 2)
-        end
     end
 
 
-    -- Маркер
-    -- local marker = localPlayer:getData("map_marker")
-    -- if marker then
-    --     local markerSize = 20
-    --     local x, y = worldToRadar(unpack(marker))
-    --     x = -(localX - localWidth / 2) + x
-    --     y = -(localY - localHeight / 2) + y
-    --     dxDrawImage(x - markerSize / 2, y - markerSize, markerSize, markerSize, textures.marker)
-    -- end
+    -- Маркеры отряда
     local squadPlayers = exports.pb_gameplay:getSquadPlayers()
     if #squadPlayers > 0 then
         for i, player in ipairs(squadPlayers) do

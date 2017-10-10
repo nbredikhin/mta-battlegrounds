@@ -29,12 +29,19 @@ addEventHandler("onClientRender", root, function ()
     end
     local tr, tg, tb = 49, 177, 178
     local cx, cy, cz = getCameraMatrix()
+    local plane = getPlane()
+    if not isElement(plane) then
+        plane = nil
+    end
     for player, info in pairs(streamedPlayers) do
         if not isElement(player) or player:getData("dead") then
             streamedPlayers[player] = nil
             return
         end
         local px, py, pz = getElementPosition(player)
+        if player:getData("isInPlane") and plane then
+            px, py, pz = getElementPosition(plane)
+        end
         local x, y = getScreenFromWorldPosition(px, py, pz + NAMETAG_OFFSET)
         if x then
             local a = 255

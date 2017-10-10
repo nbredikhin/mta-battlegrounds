@@ -99,7 +99,6 @@ end)
 
 addEvent("onMatchFinished", true)
 addEventHandler("onMatchFinished", resourceRoot, function (rank, totalPlayers, timeAlive)
-    stopSpectating()
     showGameHUD(false)
 
     local matchStats = getMatchStats()
@@ -162,17 +161,7 @@ end)
 
 addEvent("onMatchWasted", true)
 addEventHandler("onMatchWasted", resourceRoot, function ()
-    -- fadeCamera(false, 0.5)
-    -- setTimer(startSpectating, 500, 1)
     showGameHUD(false)
-    startSpectating()
+    fadeCamera(false, 0.5)
+    setTimer(startSpectating, 500, 1)
 end)
-
--- Тест наблюдения
--- setTimer(function ()
---     if localPlayer.name == "Wherry" then
---         return
---     end
---     squadPlayers = getElementsByType("player")
---     startSpectating()
--- end, 50, 1)

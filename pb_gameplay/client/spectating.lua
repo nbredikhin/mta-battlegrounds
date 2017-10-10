@@ -54,6 +54,10 @@ function stopSpectating()
     if not isActive then
         return
     end
+
+    setComponentVisible("pb_hud", false)
+    setComponentVisible("pb_killchat", false)
+
     isActive = false
     localPlayer.frozen = false
     showCursor(false)

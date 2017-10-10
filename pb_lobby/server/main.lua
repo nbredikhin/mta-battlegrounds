@@ -135,6 +135,10 @@ addEventHandler("onPlayerSendLobbyInvite", resourceRoot, function (targetPlayer)
         triggerClientEvent(client, "onClientInviteDeclined", resourceRoot, targetPlayer, "joining")
         return
     end
+    if #getLobbyPlayers(targetPlayer:getData("lobbyOwner")) > 1 then
+        triggerClientEvent(client, "onClientInviteDeclined", resourceRoot, targetPlayer, "another_lobby")
+        return
+    end
     if targetPlayer:getData("matchId") then
         triggerClientEvent(client, "onClientInviteDeclined", resourceRoot, targetPlayer, "playing_match")
         return

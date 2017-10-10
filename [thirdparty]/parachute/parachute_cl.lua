@@ -42,7 +42,7 @@ local g_parachuters = {}
 local parachutes = {}
 
 local function onResourceStart ( resource )
-	-- bindKey ( "fire", "down", onFire )
+	bindKey ( "fire", "down", onFire )
 	bindKey ( "enter_exit", "down", onFire )
 end
 addEventHandler ( "onClientResourceStart", resourceRoot, onResourceStart )
@@ -204,13 +204,6 @@ function onFire ( key, keyState )
 	-- 		addEventHandler ( "onClientPlayerWasted", localPlayer, onWasted )
 	-- 	end
 	-- end
-end
-
-function onEnter ()
-	if ( getElementData ( localPlayer, "parachuting" ) ) then
-		removeParachute(localPlayer,"water")
-		setPedAnimation(localPlayer)
-	end
 end
 
 function onWasted()

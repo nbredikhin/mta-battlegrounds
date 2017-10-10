@@ -77,13 +77,14 @@ end)
 
 function jumpFromPlane()
     if isClientInPlane then
-        if localPlayer.dead then
+        if localPlayer:getData("dead") then
             return
         end
         if getFlightDistance() < 800 then
             return
         end
         isClientInPlane = false
+        localPlayer:setData("isInPlane", false, false)
         triggerServerEvent("planeJump", resourceRoot)
         fadeCamera(false, 0)
     end
