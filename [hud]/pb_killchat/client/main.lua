@@ -1,14 +1,19 @@
 local screenSize = Vector2(guiGetScreenSize())
-local isKillChatVisible = false
+local isKillChatVisible = true
 local chatX = 25
 local chatY = screenSize.y - 190
 
 local messagesList = {}
 
-local messageLifetime = 8
+local messageLifetime = 15
 local messageFadeTime = 1.5
 
 local messageScale = 1.5
+
+local isTextInputActive = false
+local inputText = ""
+
+local skipCharacter = false
 
 function outputMessage(text, info, isHighlight)
     table.insert(messagesList, 1, {
@@ -57,6 +62,14 @@ addEventHandler("onClientRender", root, function ()
     local x = chatX
     local y = chatY
     local h = 17 * messageScale
+
+    if isTextInputActive then
+        local str = "Team: " .. inputText
+        dxDrawText(str, x+1, y+1, x+1, y+1, tocolor(0, 0, 0, 150), messageScale)
+        dxDrawText(str, x, y, x, y, tocolor(49, 177, 178, 255), messageScale)
+    end
+
+    y = y - h - 5
 
     for i = 1, 5 do
         local message = messagesList[i]
@@ -110,8 +123,60 @@ function setVisible(visible)
     end
 
     isKillChatVisible = not not visible
-
-    if isKillChatVisible then
-        messagesList = {}
-    end
 end
+
+addEventHandler("onClientCharacter", root, function (character)
+    if skipCharacter then
+        skipCharacter = false
+        return
+    end
+    if isTextInputActive then
+        inputText = inputText .. character
+        if utf8.len(inputText) > 100 then
+            inputText = utf8.sub(inputText, 1, 100)
+        end
+    end
+end)
+
+addEventHandler("onClientKey", root, function (key, down)
+    if not down then
+        return
+    end
+    if key == "enter" then
+        isTextInputActive = false
+        guiSetInputEnabled(false)
+        if inputText == "" or inputText == " " then
+            return
+        end
+        triggerServerEvent("sendTeamChat", resourceRoot, inputText)
+        inputText = ""
+    elseif key == "backspace" then
+        inputText = utf8.sub(inputText, 1, -2)
+    elseif key == "t" then
+        if isTextInputActive then
+            return
+        end
+        guiSetInputMode("no_binds")
+        if not isKillChatVisible then
+            isTextInputActive = false
+            guiSetInputEnabled(false)
+            return
+        end
+        inputText = ""
+        isTextInputActive = true
+        skipCharacter = true
+        guiSetInputEnabled(true)
+    end
+end)
+
+addEvent("sendTeamChat", true)
+addEventHandler("sendTeamChat", resourceRoot, function (player, msg)
+    if not isElement(player) then
+        return
+    end
+    outputMessage(string.gsub(player.name, '#%x%x%x%x%x%x', '') .. ": " .. msg)
+end)
+
+addEventHandler("onClientResourceStop", resourceRoot, function ()
+    guiSetInputEnabled(false)
+end)

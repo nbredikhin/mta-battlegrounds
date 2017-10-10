@@ -98,6 +98,21 @@ function isPlayerInMatch(player, match)
     end
 end
 
+-- Возвращает список игроков
+function getPlayerSquad(player)
+    if not isElement(player) then
+        return false
+    end
+    local playerMatchId = player:getData("matchId")
+    local match = getMatchById(playerMatchId)
+    local squad = getMatchSquad(match, player:getData("squadId"))
+    if squad then
+        return squad.players
+    else
+        return false
+    end
+end
+
 function getMatchSquad(match, squadId)
     if not isMatch(match) or type(squadId) ~= "number" then
         return false
