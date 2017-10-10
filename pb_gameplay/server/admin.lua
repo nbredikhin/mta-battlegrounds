@@ -13,8 +13,10 @@ addEventHandler("requireMatchesList", resourceRoot, function ()
         table.insert(list, {
             id            = match.id,
             dimension     = match.dimension,
-            players_total = match.totalPlayers,
-            players_count = #match.players,
+            players_total = match.totalPlayersCount,
+            squads_total  = match.totalSquadsCount,
+            players_count = #getMatchAlivePlayers(match),
+            squads_count  = #getMatchAliveSquads(match),
             players_max   = match.maxPlayers,
             state         = match.state,
             totalTime     = match.totalTime,

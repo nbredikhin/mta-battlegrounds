@@ -76,6 +76,8 @@ end, 500, 0)
 addEventHandler("onClientResourceStart", resourceRoot, function ()
     localPlayer:setData("lobbyReady", false)
     setVisible(true)
+
+    triggerServerEvent("updateLobby", resourceRoot)
 end)
 
 addEvent("onClientReceiveLobbyInvite", true)
@@ -85,10 +87,10 @@ end)
 
 addEvent("onLobbyUpdated", true)
 addEventHandler("onLobbyUpdated", resourceRoot, function (lobbyOwner, playersList, lobbyType)
+    currentLobbyType = lobbyType
     if not isVisible() then
         return
     end
-    currentLobbyType = lobbyType
     currentLobbyOwner = lobbyOwner
     respawnPeds(playersList)
     lobbyPlayersList = playersList
@@ -133,7 +135,7 @@ setTimer(function ()
     end
 
     for i, player in ipairs(getLobbyPlayers()) do
-        if not player:getData("lobbyReady") then
+        if isElement(player) and not player:getData("lobbyReady") then
             return
         end
     end

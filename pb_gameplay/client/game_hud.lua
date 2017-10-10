@@ -1,6 +1,6 @@
 local isHudVisible = false
 
-local function setComponentVisible(name, visible)
+function setComponentVisible(name, visible)
     if isResourceRunning(name) then
         exports[name]:setVisible(visible)
     end
@@ -16,7 +16,6 @@ local function hideGameHUD()
     setComponentVisible("pb_inventory",   false)
     setComponentVisible("pb_hud_weapon",  false)
     setComponentVisible("pb_hud_vehicle", false)
-    setNametagsVisible(false)
 end
 
 -- Включает/выключает интерфейс игры

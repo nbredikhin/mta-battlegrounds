@@ -65,7 +65,12 @@ local function drawPlayerHealthbar()
     local x = screenSize.x / 2 - healthbarWidth / 2
     local y = screenSize.y - 35 - healthbarHeight
 
-    drawHealthbar(localPlayer.health, x, y, healthbarWidth, healthbarHeight)
+    local spectatingPlayer = localPlayer:getData("spectatingPlayer")
+    if isElement(spectatingPlayer) then
+        drawHealthbar(spectatingPlayer.health, x, y, healthbarWidth, healthbarHeight)
+    else
+        drawHealthbar(localPlayer.health, x, y, healthbarWidth, healthbarHeight)
+    end
     local healthbarText = string.gsub(localPlayer.name, '#%x%x%x%x%x%x', '') .. " - " .. tostring(getVersion().sortable)
     dxDrawText(healthbarText, x + 1, screenSize.y - 34, x + healthbarWidth + 1, screenSize.y + 1, tocolor(0, 0, 0, 150), 1, "default", "center", "center")
     dxDrawText(healthbarText, x, screenSize.y - 35, x + healthbarWidth, screenSize.y, tocolor(255, 255, 255, 150), 1, "default", "center", "center")

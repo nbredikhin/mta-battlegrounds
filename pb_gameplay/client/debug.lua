@@ -20,6 +20,8 @@ addEventHandler("onClientRender", root, function ()
             .. "players_count="..tostring(match.players_count) .. ", "
             .. "players_max="..tostring(match.players_max) .. ", "
             .. "state="..tostring(match.state) .. ", "
+            .. "squads_total="..tostring(match.squads_total) .. ", "
+            .. "squads_count="..tostring(match.squads_count) .. ", "
             .. "time="..tostring(match.totalTime) .. " ]"
         dxDrawText(str, x, y)
         y = y + 25

@@ -1,17 +1,20 @@
 local playerLobbies = {}
 local serverLobbyType = "squad"
+-- local FORCE_LOBBY_TYPE = "solo"
 
 function createLobby(owner)
     if not isElement(owner) then
         return
     end
-    destroyLobby(owner)
+    -- iprint("createLobby", owner)
+    removeLobbyPlayer(owner, true)
     local lobby = {
-        players = {},
+        players = { [owner] = true },
         owner = owner
     }
+    owner:setData("lobbyOwner", owner)
     playerLobbies[owner] = lobby
-    addLobbyPlayer(owner, owner)
+    updateLobby(owner)
     return lobby
 end
 
@@ -19,9 +22,11 @@ function destroyLobby(owner)
     if not owner then
         return false
     end
+    -- iprint("destroyLobby", owner)
     if playerLobbies[owner] then
         for player in pairs(playerLobbies[owner].players) do
-            removeLobbyPlayer(player)
+            player:removeData("lobbyOwner")
+            createLobby(player)
         end
     end
     playerLobbies[owner] = nil
@@ -31,28 +36,33 @@ function addLobbyPlayer(owner, player)
     if not isElement(owner) or not isElement(player) or not playerLobbies[owner] then
         return false
     end
+    -- iprint("addLobbyPlayer", owner, player)
     removeLobbyPlayer(player, true)
     playerLobbies[owner].players[player] = true
     player:setData("lobbyOwner", owner)
     updateLobby(owner)
 end
 
-function removeLobbyPlayer(player, preventCreatingLobby)
+function removeLobbyPlayer(player, preventCreatingLobby, isDestroying)
     if not isElement(player) then
         return false
     end
     local owner = player:getData("lobbyOwner")
+    player:removeData("lobbyOwner")
     if not owner or not playerLobbies[owner] then
         return
     end
-    player:removeData("lobbyOwner")
-    if owner and playerLobbies[owner] then
-        playerLobbies[owner].players[player] = nil
-        if owner == player or not next(playerLobbies[owner].players) then
-            destroyLobby(owner)
+    -- iprint("removeLobbyPlayer", player, preventCreatingLobby)
+    playerLobbies[owner].players[player] = nil
+    if not isDestroying then
+        if owner == player then
+            destroyLobby(player)
         else
             updateLobby(owner)
         end
+    end
+    if not preventCreatingLobby then
+        createLobby(player)
     end
     if not preventCreatingLobby then
         createLobby(player)
@@ -84,11 +94,11 @@ function updateLobby(owner)
     if not owner or not playerLobbies[owner] then
         return
     end
-    if not next(playerLobbies[owner].players) then
-        return destroyLobby(owner)
-    end
+    -- iprint("updateLobby", owner)
     for player in pairs(playerLobbies[owner].players) do
-        triggerClientEvent(player, "onLobbyUpdated", resourceRoot, owner, getLobbyPlayers(owner), serverLobbyType)
+        if isElement(player) then
+            triggerClientEvent(player, "onLobbyUpdated", resourceRoot, owner, getLobbyPlayers(owner), serverLobbyType)
+        end
     end
 end
 
@@ -106,7 +116,11 @@ addEventHandler("onResourceStart", resourceRoot, function ()
     if string.find(string.lower(getServerName()), "squad") or string.find(string.lower(getServerName()), "test") then
         serverLobbyType = "squad"
     end
+    if FORCE_LOBBY_TYPE then
+        serverLobbyType = FORCE_LOBBY_TYPE
+    end
     for i, player in ipairs(getElementsByType("player")) do
+        player:removeData("lobbyOwner")
         createLobby(player)
     end
 end)

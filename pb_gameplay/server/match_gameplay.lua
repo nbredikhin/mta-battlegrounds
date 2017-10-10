@@ -43,7 +43,7 @@ function getMatchAliveSquads(match)
     for i, squad in ipairs(match.squads) do
         local hasAlivePlayers = false
         for i, player in ipairs(squad.players) do
-            if isElement(player) and not player:getData("dead") then
+            if isElement(player) and match.players[player] and not player:getData("dead") then
                 hasAlivePlayers = true
             end
         end

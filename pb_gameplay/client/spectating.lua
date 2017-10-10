@@ -23,6 +23,9 @@ function startSpectating()
 
     spectatingPlayerIndex = 1
     updateSpectatingPlayer()
+
+    setComponentVisible("pb_hud", true)
+    setComponentVisible("pb_killchat", true)
 end
 
 local function smallestAngleDiff( target, source )
@@ -55,6 +58,7 @@ function stopSpectating()
     localPlayer.frozen = false
     showCursor(false)
     setCameraTarget(localPlayer)
+    localPlayer:setData("spectatingPlayer", false, false)
 end
 
 function updateSpectatingPlayer()
@@ -63,6 +67,7 @@ function updateSpectatingPlayer()
         return
     end
     spectatingPlayer = players[spectatingPlayerIndex]
+    localPlayer:setData("spectatingPlayer", spectatingPlayer, false)
 end
 
 bindKey("arrow_r", "down", function ()
@@ -102,7 +107,7 @@ addEventHandler("onClientPreRender", root, function (dt)
     if not isActive or not isElement(spectatingPlayer) then
         return
     end
-    if spectatingPlayer.dead then
+    if spectatingPlayer:getData("dead") then
         return
     end
 
@@ -179,7 +184,7 @@ addEventHandler("onClientRender", root, function ()
 
     local bw = 200
     local bh = 50
-    if drawButton(localize("rank_exit_to_lobby"), screenSize.x / 2 - bw / 2, screenSize.y - bh - 50, bw, bh) then
+    if drawButton(localize("rank_exit_to_lobby"), screenSize.x / 2 - bw / 2, screenSize.y - bh - 100, bw, bh) then
         stopSpectating()
         triggerEvent("onExitToLobby", resourceRoot)
     end

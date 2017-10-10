@@ -1,6 +1,10 @@
 local matchesList = {}
 local matchCounter = 0
 
+function getAllMatches()
+    return matchesList
+end
+
 function findMatch(players)
     if type(players) ~= "table" or #players == 0 then
         return false
@@ -22,7 +26,7 @@ function findMatch(players)
     end
     -- Поиск подходящего матча
     for i, match in ipairs(matchesList) do
-        if match.state == "waiting" and #match.players + #players <= match.maxPlayers then
+        if match.state == "waiting" and #getMatchAlivePlayers(match) + #players <= match.maxPlayers then
             return addMatchSquad(match, players)
         end
     end
