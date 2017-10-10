@@ -15,12 +15,6 @@ function getLobbyType()
     return currentLobbyType
 end
 
--- for i, p in ipairs(pedPositions) do
---     local ped = createPed(46+i, p.pos, p.rot)
---     setPedAnimation(ped, "ped", "IDLE_HBHB", -1, true, false)
---     lobbyPeds[ped] = ped
--- end
-
 function isOwnLobby()
     return currentLobbyOwner == localPlayer
 end
@@ -48,6 +42,7 @@ function respawnPeds(playersList)
     for i, player in ipairs(pedPlayers) do
         local ped = createPed(player:getData("skin") or player.model, pedPositions[i].pos, pedPositions[i].rot)
         ped:setData("lobbyPlayer", player, false)
+        ped.dimension = localPlayer.dimension
         lobbyPeds[player] = ped
         updatePlayerReadyState(player)
     end
@@ -119,14 +114,14 @@ end)
 
 addEvent("onClientInviteDeclined", true)
 addEventHandler("onClientInviteDeclined", resourceRoot, function (player, reason)
-    showMessageBox("Invite declined\nReason: " .. tostring(reason))
+    showMessageBox(localize("lobby_invite_declined") .. "\n[" .. tostring(reason) .. "]")
 end)
 
 addEvent("onMatchSearchFailed", true)
 addEventHandler("onMatchSearchFailed", resourceRoot, function ()
     localPlayer:setData("lobbyReady", false)
 
-    showMessageBox("Не удалось найти матч\nодин из игроков уже в игре")
+    showMessageBox(localize("lobby_search_failed"))
 end)
 
 setTimer(function ()

@@ -39,9 +39,9 @@ function showInviteWindow(player)
     end
 
     currentWindow = {
-        text = "Игрок " .. tostring(string.gsub(player.name, '#%x%x%x%x%x%x', '')) .. " приглашает вас в игру",
-        cancel_text = "ОТМЕНА",
-        accept_text = "ПРИНЯТЬ",
+        text = string.format(localize("lobby_invite_text"), tostring(string.gsub(player.name, '#%x%x%x%x%x%x', ''))),
+        cancel_text = localize("lobby_invite_decline"),
+        accept_text = localize("lobby_invite_accept"),
         width = 450,
         height = 170
     }
@@ -197,14 +197,14 @@ function drawInvitePanel()
     local bh = 30
     if isOwnLobby() then
         if playersCount >= 4 then
-            drawButton("ЛОББИ ЗАПОЛНЕНО", x, y + h/2-bh/2,w-x,bh)
+            drawButton(localize("lobby_button_full"), x, y + h/2-bh/2,w-x,bh)
         else
-            if drawButton("ПРИГЛАСИТЬ ИГРОКА", x, y + h/2-bh/2,w-x,bh) then
+            if drawButton(localize("lobby_button_invite"), x, y + h/2-bh/2,w-x,bh) then
                 showInviteSendWindow()
             end
         end
     else
-        if drawButton("ПОКИНУТЬ ЛОББИ", x, y + h/2-bh/2,w-x,bh) then
+        if drawButton(localize("lobby_button_leave"), x, y + h/2-bh/2,w-x,bh) then
             triggerServerEvent("onPlayerLeaveLobby", resourceRoot)
         end
     end

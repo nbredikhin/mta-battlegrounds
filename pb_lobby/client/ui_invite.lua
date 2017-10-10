@@ -61,15 +61,15 @@ end
 addEventHandler("onClientResourceStart", resourceRoot, function ()
     local width = 350
     local height = 310
-    ui.window = GuiWindow((screenSize.x - width) / 2, (screenSize.y - height) / 2, width, height, "Пригласить игрока", false)
+    ui.window = GuiWindow((screenSize.x - width) / 2, (screenSize.y - height) / 2, width, height, "Invite player", false)
     ui.playersList = GuiGridList(5, 25, width - 10, height - 30 - 40, false, ui.window)
     ui.playersList:setSortingEnabled(false)
-    ui.playersList:addColumn("Имя игрока", 0.9)
+    ui.playersList:addColumn("Name", 0.9)
     addEventHandler("onClientGUIClick", ui.playersList, handleSelectionChange, false)
 
     local buttonWidth = 140
-    ui.cancelButton = GuiButton(width / 2 - 5 - buttonWidth, height - 40, buttonWidth, 30, "Отмена", false, ui.window)
-    ui.inviteButton = GuiButton(width / 2 + 5, height - 40, buttonWidth, 30, "Пригласить", false, ui.window)
+    ui.cancelButton = GuiButton(width / 2 - 5 - buttonWidth, height - 40, buttonWidth, 30, "Cancel", false, ui.window)
+    ui.inviteButton = GuiButton(width / 2 + 5, height - 40, buttonWidth, 30, "Invite", false, ui.window)
     addEventHandler("onClientGUIClick", ui.inviteButton, inviteSelectedPlayer, false)
     addEventHandler("onClientGUIClick", ui.cancelButton, function ()
         ui.window.visible = false

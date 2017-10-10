@@ -64,13 +64,13 @@ function updateMatch(match)
             changeMatchState(match, "running")
             return
         end
-        local needSquadsCount = math.min(math.max(1, math.floor(#getElementsByType("player") / 4)), Config.minMatchSquads)
-        local aliveSquads = getMatchAliveSquads(match)
+        local needPlayersCount = math.min(math.max(1, math.floor(#getElementsByType("player") * 0.25)), Config.minMatchPlayers)
+        local alivePlayers = getMatchAlivePlayers(match)
         local waitingTimePassed = currentTimestamp - match.waitingTimestamp
         -- Если зашло слишком мало игроков
-        if #aliveSquads < needSquadsCount then
+        if #alivePlayers < needPlayersCount then
             match.waitingTimestamp = currentTimestamp
-            triggerMatchEvent(match, "onMatchAlert", resourceRoot, "need_players", { current = #aliveSquads, need = needSquadsCount })
+            triggerMatchEvent(match, "onMatchAlert", resourceRoot, "need_players", { current = #alivePlayers, need = needPlayersCount })
         else
             -- Иначе ждём начала матча
             local timeLeft = Config.matchWaitingTime - waitingTimePassed

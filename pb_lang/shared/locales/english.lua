@@ -12,6 +12,15 @@ Languages.english = {
     lobby_type_squad = "Match type: SQUAD",
     lobby_not_enough_players = "Not enough players",
 
+    lobby_invite_text = "You have received an invite from %s",
+    lobby_invite_accept = "ACCEPT",
+    lobby_invite_decline = "DECLINE",
+    lobby_button_full = "LOBBY IS FULL",
+    lobby_button_invite = "INVITE PLAYER",
+    lobby_button_leave = "LEAVE LOBBY",
+    lobby_invite_declined = "Player has declined your invite",
+    lobby_search_failed = "Failed to find game.\nOne or more players are in a match.",
+
     -- INVENTORY
     inventory_backpack_weight = "Total weight",
     inventory_no_space = "Not enough space!",
@@ -59,7 +68,7 @@ Languages.english = {
 
     -- ALERS
     alert_shrink_started  = "RESTRICTING PLAY AREA!",
-    alert_waiting_players = "WAITING FOR OTHER SQUADS TO JOIN\n%s of %s",
+    alert_waiting_players = "WAITING FOR OTHER PLAYERS TO JOIN\n%s of %s",
     alert_match_starts_in = "MATCH STARTS IN\n%s",
     alert_match_ends_in   = "MATCH ENDS IN\n%s",
 

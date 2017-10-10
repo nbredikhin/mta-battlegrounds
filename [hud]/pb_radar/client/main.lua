@@ -37,6 +37,9 @@ local sectionNames = {
 }
 
 local function worldToRadar(x, y)
+    if not x then
+        return -500, 0
+    end
     x = (x + 3000) / 6000 * radarTextureSize
     y = radarTextureSize - (y + 3000) / 6000 * radarTextureSize
     return x, y

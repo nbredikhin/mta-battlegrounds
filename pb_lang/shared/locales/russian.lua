@@ -12,6 +12,15 @@ Languages.russian = {
     lobby_type_squad = "Тип игры: ОТРЯД",
     lobby_not_enough_players = "Недостаточно игроков",
 
+    lobby_invite_text = "Игрок %s приглашает вас в лобби",
+    lobby_invite_accept = "ПРИНЯТЬ",
+    lobby_invite_decline = "ОТКЛОНИТЬ",
+    lobby_button_full = "ЛОББИ ЗАПОЛНЕНО",
+    lobby_button_invite = "ПРИГЛАСИТЬ ИГРОКА",
+    lobby_button_leave = "ПОКИНУТЬ ЛОББИ",
+    lobby_invite_declined = "Игрок не принял приглашение",
+    lobby_search_failed = "Не удалось найти матч\nодин из игроков уже в игре",
+
     -- INVENTORY
     inventory_backpack_weight = "Носимый вес",
     inventory_no_space = "Недостаточно места!",
@@ -59,7 +68,7 @@ Languages.russian = {
 
     -- ALERS
     alert_shrink_started  = "ОГРАНИЧЕНИЕ ИГРОВОЙ ОБЛАСТИ!",
-    alert_waiting_players = "ОЖИДАНИЕ ПРИСОЕДИНЕНИЯ ДРУГИХ ОТРЯДОВ\n%s из %s",
+    alert_waiting_players = "ОЖИДАНИЕ ПРИСОЕДИНЕНИЯ ДРУГИХ ИГРОКОВ\n%s из %s",
     alert_match_starts_in = "МАТЧ НАЧИНАЕТСЯ ЧЕРЕЗ\n%s",
     alert_match_ends_in   = "МАТЧ ЗАКАНЧИВАЕТСЯ ЧЕРЕЗ\n%s",
 
