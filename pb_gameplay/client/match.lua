@@ -45,7 +45,7 @@ addEventHandler("onJoinedMatch", resourceRoot, function (settings, aliveCount, s
     exports.pb_hud:setCounter("alive", aliveCount)
 
     setTimer(fadeCamera, 50, 1, false, 0)
-    setTimer(fadeCamera, 1000, 1, true, 1)
+    setTimer(fadeCamera, 1000, 3, true, 1)
     setTimer(showGameHUD, 1500, 1, true)
 
     for i, element in ipairs(getResourceFromName("pb_mapping").rootElement:getChildren()) do
@@ -53,6 +53,7 @@ addEventHandler("onJoinedMatch", resourceRoot, function (settings, aliveCount, s
     end
 
     localPlayer:setData("map_marker", false)
+    localPlayer:setData("spectatingPlayer", false, false)
 
     local weather = Config.weathers[settings.weather]
     if weather then
@@ -90,6 +91,7 @@ addEvent("onMatchStarted", true)
 addEventHandler("onMatchStarted", resourceRoot, function (aliveCount)
     resetMatchStats()
     showChat(false)
+    fadeCamera(true)
     exports.pb_hud:setCounter("alive", aliveCount)
 
     setWindowFlashing(true, 10)
@@ -97,8 +99,8 @@ end)
 
 addEvent("onMatchFinished", true)
 addEventHandler("onMatchFinished", resourceRoot, function (rank, totalPlayers, timeAlive)
-    showGameHUD(false)
     stopSpectating()
+    showGameHUD(false)
 
     local matchStats = getMatchStats()
     local accuracy = 0

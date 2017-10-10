@@ -14,6 +14,8 @@ addEventHandler("onClientResourceStart", resourceRoot, function ()
     fadeCamera(true, 1)
 
     showChat(false)
+
+    localPlayer:setData("spectatingPlayer", false, false)
 end)
 
 addEventHandler("onClientPlayerVehicleEnter", localPlayer, function ()

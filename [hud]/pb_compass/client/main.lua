@@ -13,6 +13,14 @@ local viewHeight
 local arrowSize = 32
 local compassAngle = 360 * 0.55
 
+local markerColors = {
+    { 253, 218, 14  },
+    { 46,  198, 2   },
+    { 0,   170, 240 },
+    { 237, 5,   3   },
+}
+
+
 addEventHandler("onClientResourceStart", resourceRoot, function ()
     textures.arrow = dxCreateTexture("assets/pubg_arrow.png", "dxt3", true)
     textures.compass = dxCreateTexture("assets/pubg_compass.png", "dxt3", true)
@@ -41,17 +49,24 @@ addEventHandler("onClientRender", root, function ()
     dxDrawImageSection(x, y, width, height, offset, 0, viewWidth, viewHeight, textures.compass, 0, 0, 0, tocolor(255, 255, 255, 200))
 
     -- Маркер
-    local marker = localPlayer:getData("map_marker")
-    if marker then
-        local mx, my = unpack(marker)
-        local angle = math.deg(math.atan2(my - localPlayer.position.y, mx - localPlayer.position.x))
-        local offset = camera.rotation.z - angle + 180
-        if offset > 360 then
-            offset = offset - 360
-        end
-        if offset < compassAngle then
-            offset = x + offset / (compassAngle) * width
-            dxDrawImage(offset - arrowSize / 2, y - arrowSize, arrowSize, arrowSize, textures.marker, 0, 0, 0, tocolor(255, 216, 0))
+    local squadPlayers = exports.pb_gameplay:getSquadPlayers()
+    if #squadPlayers > 0 then
+        for i, player in ipairs(squadPlayers) do
+            if isElement(player) then
+                local marker = player:getData("map_marker")
+                if marker then
+                    local mx, my = unpack(marker)
+                    local angle = math.deg(math.atan2(my - localPlayer.position.y, mx - localPlayer.position.x))
+                    local offset = camera.rotation.z - angle + 180
+                    if offset > 360 then
+                        offset = offset - 360
+                    end
+                    if offset < compassAngle then
+                        offset = x + offset / (compassAngle) * width
+                        dxDrawImage(offset - arrowSize / 2, y - arrowSize, arrowSize, arrowSize, textures.marker, 0, 0, 0, tocolor(markerColors[i][1], markerColors[i][2], markerColors[i][3]))
+                    end
+                end
+            end
         end
     end
 

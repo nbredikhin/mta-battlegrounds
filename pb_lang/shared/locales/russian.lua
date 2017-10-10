@@ -59,7 +59,7 @@ Languages.russian = {
 
     -- ALERS
     alert_shrink_started  = "ОГРАНИЧЕНИЕ ИГРОВОЙ ОБЛАСТИ!",
-    alert_waiting_players = "ОЖИДАНИЕ ПРИСОЕДИНЕНИЯ ДРУГИХ ИГРОКОВ\n%s из %s",
+    alert_waiting_players = "ОЖИДАНИЕ ПРИСОЕДИНЕНИЯ ДРУГИХ ОТРЯДОВ\n%s из %s",
     alert_match_starts_in = "МАТЧ НАЧИНАЕТСЯ ЧЕРЕЗ\n%s",
     alert_match_ends_in   = "МАТЧ ЗАКАНЧИВАЕТСЯ ЧЕРЕЗ\n%s",
 

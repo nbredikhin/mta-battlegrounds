@@ -90,7 +90,6 @@ addEventHandler("onClientRender", root, function ()
         if x then
             drawZone(x, y, radius,tocolor(0, 0, 200, 150))
         end
-
         local x, y, radius = exports.pb_zones:getRedZone()
         if x then
             drawRedZone(x, y, radius,tocolor(255, 0, 0, 180))
@@ -171,8 +170,17 @@ addEventHandler("onClientResourceStart", resourceRoot, function ()
     textures.marker = dxCreateTexture("assets/marker.png", "argb", true, "clamp")
 end)
 
-addEventHandler("onClientClick", root, function (button, state, x, y)
-    if isMapVisible and button == "left" and state == "down" then
+addEventHandler("onClientKey", root, function (key, down)
+    if not isMapVisible or not down then
+        return
+    end
+
+    if key == "mouse1" then
+        local mx, my = getCursorPosition()
+        if not mx then
+            return
+        end
+        local x, y = mx * screenSize.x, my * screenSize.y
         local marker = localPlayer:getData("map_marker")
         x = x - mapX
         y = y - mapY
@@ -186,6 +194,8 @@ addEventHandler("onClientClick", root, function (button, state, x, y)
             localPlayer:setData("map_marker", {x, y}, true)
             markerAnim = 0
         end
+
+        cancelEvent()
     end
 end)
 

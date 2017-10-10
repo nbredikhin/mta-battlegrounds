@@ -4,11 +4,11 @@ local NAMETAG_OFFSET = 1.1
 local NAMETAG_WIDTH = 100
 local NAMETAG_HEIGHT = 20
 local NAMETAG_MAX_DISTANCE = 25
-local NAMETAG_SCALE = 10
+local NAMETAG_SCALE = 1
 
 local streamedPlayers = {}
 
-local nametagFont = "default-bold"
+local nametagFont = "default"
 local icons = {}
 
 function setNametagsVisible(visible)
@@ -16,10 +16,10 @@ function setNametagsVisible(visible)
 end
 
 local function dxDrawNametagText(text, x1, y1, x2, y2, color, scale)
-    dxDrawText(text, x1 - 1, y1, x2 - 1, y2, tocolor(0, 0, 0, 150), scale, nametagFont, "center", "center")
-    dxDrawText(text, x1 + 1, y1, x2 + 1, y2, tocolor(0, 0, 0, 150), scale, nametagFont, "center", "center")
-    dxDrawText(text, x1, y1 - 1, x2, y2 - 1, tocolor(0, 0, 0, 150), scale, nametagFont, "center", "center")
-    dxDrawText(text, x1, y1 + 1, x2, y2 + 1, tocolor(0, 0, 0, 150), scale, nametagFont, "center", "center")
+    dxDrawText(text, x1 - 1, y1, x2 - 1, y2, tocolor(0, 0, 0, 100), scale, nametagFont, "center", "center")
+    dxDrawText(text, x1 + 1, y1, x2 + 1, y2, tocolor(0, 0, 0, 100), scale, nametagFont, "center", "center")
+    dxDrawText(text, x1, y1 - 1, x2, y2 - 1, tocolor(0, 0, 0, 100), scale, nametagFont, "center", "center")
+    dxDrawText(text, x1, y1 + 1, x2, y2 + 1, tocolor(0, 0, 0, 100), scale, nametagFont, "center", "center")
     dxDrawText(text, x1, y1, x2, y2, color, scale, nametagFont, "center", "center")
 end
 
@@ -30,23 +30,45 @@ addEventHandler("onClientRender", root, function ()
     local tr, tg, tb = 49, 177, 178
     local cx, cy, cz = getCameraMatrix()
     for player, info in pairs(streamedPlayers) do
-        if not isElement(player) then
+        if not isElement(player) or player:getData("dead") then
             streamedPlayers[player] = nil
             return
         end
         local px, py, pz = getElementPosition(player)
         local x, y = getScreenFromWorldPosition(px, py, pz + NAMETAG_OFFSET)
         if x then
-            local distance = getDistanceBetweenPoints3D(cx, cy, cz, px, py, pz)
-            if distance < NAMETAG_MAX_DISTANCE then
-                local a = 255
-                local name = info.name
-                local scale = 1 / distance * NAMETAG_SCALE
-                local width = NAMETAG_WIDTH * scale
-                local height = NAMETAG_HEIGHT * scale
-                local nx, ny = x - width / 2, y - height / 2
-                local r, g, b = tr, tg, tb
-                dxDrawNametagText(name, nx, ny, nx + width, ny + height, tocolor(r, g, b, a), scale)
+            local a = 255
+            local name = info.name
+            local scale = 1 * NAMETAG_SCALE
+            local width = NAMETAG_WIDTH * scale
+            local height = NAMETAG_HEIGHT * scale
+            local nx, ny = x - width / 2, y - height / 2
+            local r, g, b = tr, tg, tb
+            dxDrawNametagText(name, nx, ny, nx + width, ny + height, tocolor(r, g, b, a), scale)
+
+            if getElementType(player) == "player" then
+                if not isSquadPlayer(player) then
+                    streamedPlayers[player] = nil
+                end
+                local icon = "default"
+                local playerHealth = 0
+                if isElement(player) and player:getData("matchId") == localPlayer:getData("matchId") then
+                    playerName = player.name or ""
+                    playerHealth = player.health
+                    if player.vehicle or player:getData("isInPlane") then
+                        icon = "driving"
+                    end
+                    if player:getData("parachuting") then
+                        icon = "parachute"
+                    end
+                end
+                if playerHealth <= 0 then
+                    icon = "dead"
+                end
+                local isize = 25
+                if icon then
+                    dxDrawImage(x - isize / 2, y + height / 2, isize, isize, icons[icon])
+                end
             end
         end
     end
@@ -58,12 +80,16 @@ function addElementNametag(element, text)
     }
 end
 
+-- local ped = createPed(0, Vector3{ x = -1294.118, y = -124.183, z = 13.548 })
+-- addElementNametag(ped, "TEST NAMETAG")
+
 local function showPlayer(player)
     if not isElement(player) then
         return false
     end
     setPlayerNametagShowing(player, false)
     if player == localPlayer or not isSquadPlayer(player) then
+        streamedPlayers[player] = nil
         return
     end
     streamedPlayers[player] = {
@@ -78,9 +104,9 @@ addEventHandler("onClientElementStreamIn", root, function ()
     end
 end)
 
-addEventHandler("onClientElementStreamOut", root, function ()
-    streamedPlayers[source] = nil
-end)
+-- addEventHandler("onClientElementStreamOut", root, function ()
+--     streamedPlayers[source] = nil
+-- end)
 
 addEventHandler("onClientPlayerQuit", root, function ()
     streamedPlayers[source] = nil
@@ -90,7 +116,6 @@ addEventHandler("onClientPlayerJoin", root, function ()
     if isElementStreamedIn(source) then
         showPlayer(source)
     end
-    setPlayerNametagShowing(source, false)
 end)
 
 
@@ -101,6 +126,11 @@ addEventHandler("onClientResourceStart", resourceRoot, function ()
         end
         setPlayerNametagShowing(player, false)
     end
+
+    icons.dead = dxCreateTexture(":pb_hud/assets/dead.png")
+    icons.driving = dxCreateTexture(":pb_hud/assets/driving.png")
+    icons.parachute = dxCreateTexture(":pb_hud/assets/parachute.png")
+    icons.default = dxCreateTexture(":pb_hud/assets/default.png")
 
     -- local ped = createPed(0, Vector3{ x = 1739.240, y = -1440.502, z = 13.366 })
     -- streamedPlayers[ped] = {name = "TESTPLAYER123", premium = true}

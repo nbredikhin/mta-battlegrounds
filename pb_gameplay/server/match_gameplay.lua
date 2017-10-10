@@ -89,11 +89,11 @@ function updateMatch(match)
 
         if currentTimestamp - match.redZoneTimestamp > match.redZoneTime then
             local alivePlayers = getMatchAlivePlayers(match)
-            if #alivePlayers > Config.redZoneMinPlayers and match.currentZone > 3 then
+            if #alivePlayers > Config.redZoneMinPlayers and match.currentZone > 2 then
                 local randomPlayer = alivePlayers[math.random(1, #alivePlayers)]
-                local zoneX = randomPlayer.position.x + math.random(-30, 30)
-                local zoneY = randomPlayer.position.y + math.random(-30, 30)
-                exports.pb_zones:createRedZone(match.players, zoneX, zoneY)
+                local zoneX = randomPlayer.position.x + math.random(-50, 50)
+                local zoneY = randomPlayer.position.y + math.random(-50, 50)
+                exports.pb_zones:createRedZone(alivePlayers, zoneX, zoneY)
 
                 match.redZoneTimestamp = currentTimestamp
                 match.redZoneTime = math.random(Config.redZoneTimeMin, Config.redZoneTimeMax)
@@ -221,7 +221,7 @@ local function setMatchRunning(match)
         triggerMatchEvent(match, "onZonesInit", resourceRoot, match.zones[match.currentZone])
         match.zoneTime = Config.zonesTime[match.currentZone].wait
         match.shrinkTime = Config.zonesTime[match.currentZone].shrink
-        match.redZoneTime = Config.zonesStartTime + 60
+        match.redZoneTime = Config.zonesStartTime + math.random(30, 60)
         match.shrinkTimestamp = getRealTime().timestamp
         match.zoneTimestamp = getRealTime().timestamp
         match.zoneState = "shrink"

@@ -6,8 +6,6 @@ local MOUSE_LOOK_DISTANCE_DELTA = 0.25
 
 local screenSize = Vector2(guiGetScreenSize())
 
-local currentPlane
-
 local isActive = false
 local mouseLookActive = false
 local mouseScrollEnabled = true
@@ -33,6 +31,7 @@ function updatePlaneCamera(deltaTime)
     deltaTime = deltaTime / 1000
 
     -- Прикрепить камеру к автомобилю
+    local currentPlane = getPlane()
     if isElement(currentPlane) then
         camera.targetPosition = currentPlane.position
     else
@@ -72,7 +71,7 @@ local function mouseMove(x, y)
     end
 end
 
-function startPlaneCamera(plane)
+function startPlaneCamera()
     if isActive then
         return
     end
@@ -89,8 +88,6 @@ function startPlaneCamera(plane)
     showCursor(false)
     mouseLookActive = true
     skipMouseMoveEvent = true
-
-    currentPlane = plane
 end
 
 function stopPlaneCamera()

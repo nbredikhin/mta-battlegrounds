@@ -153,6 +153,7 @@ local function drawRadar()
         end
     end
 
+
     -- Маркер
     -- local marker = localPlayer:getData("map_marker")
     -- if marker then
@@ -174,14 +175,6 @@ local function drawRadar()
                     dxDrawImage(x - markerSize / 2, y - markerSize, markerSize, markerSize, textures.marker, 0, 0, 0, tocolor(markerColors[i][1], markerColors[i][2], markerColors[i][3], 255))
                 end
             end
-        end
-    else
-        local marker = localPlayer:getData("map_marker")
-        if marker then
-            local x, y = worldToRadar(unpack(marker))
-            x = -(localX - localWidth / 2) + x
-            y = -(localY - localHeight / 2) + y
-            dxDrawImage(x - markerSize / 2, y - markerSize, markerSize, markerSize, textures.marker, 0, 0, 0, tocolor(markerColors[1][1], markerColors[1][2], markerColors[1][3], 255))
         end
     end
 

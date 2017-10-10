@@ -59,7 +59,7 @@ Languages.english = {
 
     -- ALERS
     alert_shrink_started  = "RESTRICTING PLAY AREA!",
-    alert_waiting_players = "WAITING FOR OTHER PLAYERS TO JOIN\n%s of %s",
+    alert_waiting_players = "WAITING FOR OTHER SQUADS TO JOIN\n%s of %s",
     alert_match_starts_in = "MATCH STARTS IN\n%s",
     alert_match_ends_in   = "MATCH ENDS IN\n%s",
 
