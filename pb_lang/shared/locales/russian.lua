@@ -15,6 +15,13 @@ Languages.russian = {
     lobby_invite_text = "Игрок %s приглашает вас в лобби",
     lobby_invite_accept = "ПРИНЯТЬ",
     lobby_invite_decline = "ОТКЛОНИТЬ",
+
+    lobby_kick_text = "Вы уверены, что хотите выгнать %s из лобби?",
+    lobby_kick_accept = "ВЫГНАТЬ",
+    lobby_kick_decline = "ОТМЕНА",
+
+    lobby_counter_text = "Игроков в лобби",
+
     lobby_button_full = "ЛОББИ ЗАПОЛНЕНО",
     lobby_button_invite = "ПРИГЛАСИТЬ ИГРОКА",
     lobby_button_leave = "ПОКИНУТЬ ЛОББИ",

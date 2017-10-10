@@ -33,6 +33,10 @@ function showMessageBox(text)
     setTimer(function() currentMessageBoxText = nil end, 5000, 1)
 end
 
+function isLobbyWindowVisible()
+    return not not currentWindow
+end
+
 function showInviteWindow(player)
     if currentWindow then
         return
@@ -43,7 +47,30 @@ function showInviteWindow(player)
         cancel_text = localize("lobby_invite_decline"),
         accept_text = localize("lobby_invite_accept"),
         width = 450,
-        height = 170
+        height = 170,
+        acceptCallback = function ()
+            triggerServerEvent("onPlayerAcceptLobbyInvite", resourceRoot)
+        end,
+        declineCallback = function ()
+            triggerServerEvent("onPlayerDeclineLobbyInvite", resourceRoot)
+        end
+    }
+end
+
+function showKickWindow(player)
+    if currentWindow then
+        return
+    end
+
+    currentWindow = {
+        text = string.format(localize("lobby_kick_text"), tostring(string.gsub(player.name, '#%x%x%x%x%x%x', ''))),
+        cancel_text = localize("lobby_kick_decline"),
+        accept_text = localize("lobby_kick_accept"),
+        width = 450,
+        height = 170,
+        acceptCallback = function ()
+            triggerServerEvent("onPlayerLobbyKick", resourceRoot, player)
+        end,
     }
 end
 
@@ -112,14 +139,14 @@ function drawArrows()
     local arrowSize = 80
     local offset = math.sin(getTickCount() * 0.008) * arrowSize * 0.1
 
-    local x = screenSize.x * 0.3 - arrowSize / 2 + offset
-    local y = screenSize.y * 0.55
+    local x = screenSize.x * 0.4 - arrowSize / 2 + offset
+    local y = screenSize.y * 0.8
     local w, h = arrowSize, arrowSize
     dxDrawImage(x, y, w, h, "assets/arrow.png", 180)
     if isMousePressed and isMouseOver(x-20, y-20, w+40, h+40) then
         changeSkin(-1)
     end
-    x, y = screenSize.x * 0.7 - arrowSize / 2 - offset, screenSize.y * 0.55
+    x, y = screenSize.x * 0.6 - arrowSize / 2 - offset, screenSize.y * 0.8
     dxDrawImage(x, y, w, h, "assets/arrow.png")
     if isMousePressed and isMouseOver(x-20, y-20, w+40, h+40) then
         changeSkin(1)
@@ -170,12 +197,16 @@ function drawWindow()
     local bw = 140
     local bh = 45
     if drawButton(currentWindow.cancel_text, x + currentWindow.width / 2 - bw - 10, y + currentWindow.height - bh - 15, bw, bh) then
+        if type(currentWindow.declineCallback) == "function" then
+            currentWindow.declineCallback()
+        end
         currentWindow = nil
-        triggerServerEvent("onPlayerDeclineLobbyInvite", resourceRoot)
         return
     end
     if drawButton(currentWindow.accept_text, x + currentWindow.width / 2 + 10, y + currentWindow.height - bh - 15, bw, bh) then
-        triggerServerEvent("onPlayerAcceptLobbyInvite", resourceRoot)
+        if type(currentWindow.acceptCallback) == "function" then
+            currentWindow.acceptCallback()
+        end
         currentWindow = nil
         return
     end
@@ -192,7 +223,7 @@ function drawInvitePanel()
     dxDrawImage(x, y+h/2-iconSize/2, iconSize, iconSize, "assets/invite.png")
     x = x + iconSize
     local playersCount = #getLobbyPlayers()
-    dxDrawText("Игроков в лобби: "..tostring(playersCount).."/4", x, y, x + 150, y + h, tocolor(255, 255, 255), 1, "default-bold", "center", "center", true, true)
+    dxDrawText(localize("lobby_counter_text") .. ": "..tostring(playersCount).."/4", x, y, x + 150, y + h, tocolor(255, 255, 255), 1, "default-bold", "center", "center", true, true)
     x = x + 150
     local bh = 30
     if isOwnLobby() then

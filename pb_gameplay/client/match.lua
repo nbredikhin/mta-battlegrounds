@@ -99,6 +99,7 @@ end)
 
 addEvent("onMatchFinished", true)
 addEventHandler("onMatchFinished", resourceRoot, function (rank, totalPlayers, timeAlive)
+    stopSpectating(true)
     showGameHUD(false)
 
     local matchStats = getMatchStats()

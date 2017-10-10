@@ -16,6 +16,8 @@ local markerColors = {
     { 237, 5,   3   },
 }
 
+local playerNames = {}
+
 local counters = {
     alive = 0,
     kills = 0,
@@ -169,11 +171,12 @@ addEventHandler("onClientRender", root, function ()
             local y = 20
             local x = 20
             for i, player in ipairs(squadPlayers) do
-                local playerName = ""
+                local playerName = playerNames[i] or ""
                 local playerHealth = 0
                 local icon
                 if isElement(player) and player:getData("matchId") == localPlayer:getData("matchId") then
                     playerName = player.name or ""
+                    playerNames[i] = playerName
                     playerHealth = player.health
                     if player.vehicle or player:getData("isInPlane") then
                         icon = "driving"

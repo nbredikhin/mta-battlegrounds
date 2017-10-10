@@ -19,6 +19,22 @@ function isOwnLobby()
     return currentLobbyOwner == localPlayer
 end
 
+addEventHandler("onClientClick", root, function (button, state, _, _, _, _, _, element)
+    if button ~= "left" or state ~= "down" or isLobbyWindowVisible() then
+        return
+    end
+    if not isOwnLobby() then
+        return
+    end
+
+    if isElement(element) and getElementType(element) == "ped" then
+        local player = element:getData("lobbyPlayer")
+        if player then
+            showKickWindow(player)
+        end
+    end
+end)
+
 local function updatePlayerReadyState(player)
     if player and lobbyPeds[player] then
         local state = "[not ready]"

@@ -179,6 +179,14 @@ addEventHandler("updateLobby", resourceRoot, function ()
     end
 end)
 
+addEvent("onPlayerLobbyKick", true)
+addEventHandler("onPlayerLobbyKick", resourceRoot, function (targetPlayer)
+    local lobby = getPlayerLobby(client)
+    if lobby and lobby.owner == client then
+        removeLobbyPlayer(targetPlayer)
+    end
+end)
+
 addCommandHandler("updatelobby", function (player)
     updateLobby(player)
 end)

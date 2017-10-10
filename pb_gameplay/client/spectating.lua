@@ -50,7 +50,7 @@ local function getPlayersList()
     return players
 end
 
-function stopSpectating()
+function stopSpectating(keepCamera)
     if not isActive then
         return
     end
@@ -61,7 +61,9 @@ function stopSpectating()
     isActive = false
     localPlayer.frozen = false
     showCursor(false)
-    setCameraTarget(localPlayer)
+    if not keepCamera then
+        setCameraTarget(localPlayer)
+    end
     localPlayer:setData("spectatingPlayer", false, false)
 end
 

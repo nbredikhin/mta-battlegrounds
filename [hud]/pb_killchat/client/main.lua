@@ -15,6 +15,8 @@ local inputText = ""
 
 local skipCharacter = false
 
+local messageTimer
+
 function outputMessage(text, info, isHighlight)
     table.insert(messagesList, 1, {
         text = text,
@@ -148,8 +150,11 @@ addEventHandler("onClientKey", root, function (key, down)
         if inputText == "" or inputText == " " then
             return
         end
-        triggerServerEvent("sendTeamChat", resourceRoot, inputText)
-        inputText = ""
+        if not isTimer(messageTimer) then
+            triggerServerEvent("sendTeamChat", resourceRoot, inputText)
+            inputText = ""
+            setTimer(messageTimer, 500, 1)
+        end
     elseif key == "backspace" then
         inputText = utf8.sub(inputText, 1, -2)
     elseif key == "t" then

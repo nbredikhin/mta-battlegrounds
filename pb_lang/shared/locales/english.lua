@@ -15,6 +15,13 @@ Languages.english = {
     lobby_invite_text = "You have received an invite from %s",
     lobby_invite_accept = "ACCEPT",
     lobby_invite_decline = "DECLINE",
+
+    lobby_kick_text = "Kick player %s from your lobby?",
+    lobby_kick_accept = "YES",
+    lobby_kick_decline = "NO",
+
+    lobby_counter_text = "Players in lobby",
+
     lobby_button_full = "LOBBY IS FULL",
     lobby_button_invite = "INVITE PLAYER",
     lobby_button_leave = "LEAVE LOBBY",
