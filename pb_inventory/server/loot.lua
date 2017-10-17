@@ -40,7 +40,12 @@ function spawnPlayerLootItem(player, item)
     end
     local offsetX = math.random() * 0.4 - 0.2
     local offsetY = math.random() * 0.4 - 0.2
-    local position = player.position - Vector3(offsetX, offsetY, 1)
+    local position
+    if player.vehicle then
+        position = player.vehicle.position + Vector3(offsetX, offsetY, -0.3)
+    else
+        position = player.position + Vector3(offsetX, offsetY, -1)
+    end
     local color = "white"
     return spawnLootItem(item, position, player.dimension)
 end
