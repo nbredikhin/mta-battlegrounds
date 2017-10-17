@@ -1,3 +1,6 @@
+-- Команда /spectateself для тестирования наблюдения
+local DEBUG_SPECTATING = false
+
 local isActive = false
 local spectatingPlayerIndex = 1
 local spectatingPlayer
@@ -9,6 +12,8 @@ local screenSize = Vector2(guiGetScreenSize())
 
 local cameraRotation = 0
 local cameraVertical = 15
+
+local autoSwitchTimer
 
 function startSpectating()
     if isActive then
@@ -24,6 +29,7 @@ function startSpectating()
     spectatingPlayerIndex = 1
     updateSpectatingPlayer()
 
+    showGameHUD(false)
     setComponentVisible("pb_hud", true)
     setComponentVisible("pb_killchat", true)
 end
@@ -41,6 +47,9 @@ local function smallestAngleDiff( target, source )
 end
 
 local function getPlayersList()
+    if DEBUG_SPECTATING then
+        return {localPlayer}
+    end
     local players = {}
     for i, p in ipairs(getSquadPlayers()) do
         if isElement(p) and p ~= localPlayer and p:getData("matchId") == localPlayer:getData("matchId") and not p:getData("dead") then
@@ -76,36 +85,36 @@ function updateSpectatingPlayer()
     localPlayer:setData("spectatingPlayer", spectatingPlayer, false)
 end
 
-bindKey("arrow_r", "down", function ()
+local function switchSpectatingPlayer(delta)
     if not isActive then
         return
     end
-
-    local players = getPlayersList()
-    if #players <= 1 then
-        return
+    if not delta then
+        delta = 1
     end
-    spectatingPlayerIndex = spectatingPlayerIndex - 1
-    if spectatingPlayerIndex < 1 then
-        spectatingPlayerIndex = #players
-    end
-    updateSpectatingPlayer()
-end)
-
-bindKey("arrow_l", "down", function ()
-    if not isActive then
-        return
+    if isTimer(autoSwitchTimer) then
+        killTimer(autoSwitchTimer)
     end
 
     local players = getPlayersList()
-    if #players <= 1 then
+    if #players == 0 then
         return
     end
     spectatingPlayerIndex = spectatingPlayerIndex + 1
     if spectatingPlayerIndex > #players then
         spectatingPlayerIndex = 1
+    elseif spectatingPlayerIndex < 1 then
+        spectatingPlayerIndex = #players
     end
     updateSpectatingPlayer()
+end
+
+bindKey("arrow_r", "down", function ()
+    switchSpectatingPlayer(1)
+end)
+
+bindKey("arrow_l", "down", function ()
+    switchSpectatingPlayer(-1)
 end)
 
 addEventHandler("onClientPreRender", root, function (dt)
@@ -114,6 +123,8 @@ addEventHandler("onClientPreRender", root, function (dt)
         return
     end
     if spectatingPlayer:getData("dead") then
+        spectatingPlayer = nil
+        autoSwitchTimer = setTimer(switchSpectatingPlayer, 1500, 1)
         return
     end
 
@@ -195,3 +206,7 @@ addEventHandler("onClientRender", root, function ()
         triggerEvent("onExitToLobby", resourceRoot)
     end
 end)
+
+if DEBUG_SPECTATING then
+    addCommandHandler("selfspectate", startSpectating)
+end

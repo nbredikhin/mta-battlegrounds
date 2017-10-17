@@ -164,6 +164,7 @@ function removePlayerFromMatch(player)
     if match then
         handlePlayerLeaveMatch(match, player)
         match.players[player] = nil
+        handlePlayerLeftMatch(match, player)
     end
     player:removeData("matchId")
     triggerClientEvent(player, "onLeftMatch", resourceRoot)
@@ -235,6 +236,10 @@ end, 1000, 0)
 addEvent("clientLeaveMatch", true)
 addEventHandler("clientLeaveMatch", resourceRoot, function ()
     removePlayerFromMatch(client)
+end)
+
+addCommandHandler("leavematch", function (player)
+    removePlayerFromMatch(player)
 end)
 
 addEventHandler("onPlayerQuit", root, function ()

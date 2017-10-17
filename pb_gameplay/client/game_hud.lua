@@ -20,9 +20,6 @@ end
 
 -- Включает/выключает интерфейс игры
 function showGameHUD(visible)
-    if visible == isHudVisible then
-        return
-    end
     showPlayerHudComponent("all", false)
     showPlayerHudComponent("crosshair", true)
     showPlayerHudComponent("radio", true)
@@ -42,7 +39,6 @@ end
 
 function toggleMap()
     if not isHudVisible then
-        hideGameHUD()
         return
     end
     if not isResourceRunning("pb_map") then
@@ -67,8 +63,7 @@ bindKey("f11", "down", toggleMap)
 
 -- Инвентарь
 bindKey("tab", "down", function ()
-    if not isHudVisible then
-        hideGameHUD()
+    if not isHudVisible then        
         return
     end
     if not isResourceRunning("pb_inventory") then

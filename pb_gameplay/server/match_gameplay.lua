@@ -22,6 +22,19 @@ function initMatch(match)
     changeMatchState(match, "waiting")
 end
 
+function getMatchPlayers(match)
+    if not isMatch(match) then
+        return {}
+    end
+    local players = {}
+    for player in pairs(match.players) do
+        if isElement(player) then
+            table.insert(players, player)
+        end
+    end
+    return players
+end
+
 function getMatchAlivePlayers(match)
     if not isMatch(match) then
         return {}
@@ -292,6 +305,17 @@ function handlePlayerLeaveMatch(match, player)
     triggerClientEvent(player, "onLeftMatch", resourceRoot, reason)
 end
 
+function handlePlayerLeftMatch(match, player)
+    if not isMatch(match) or not isElement(player) then
+        return
+    end
+    if match.state == "waiting" or match.state == "ended" then
+        if #getMatchPlayers(match) == 0 then
+            destroyMatch(match)
+        end
+    end
+end
+
 local function showSquadFinishScreen(match, squad, rank)
     if not isMatch(match) or type(squad) ~= "table" then
         return false
@@ -319,6 +343,9 @@ end
 
 function handlePlayerMatchDeath(match, player, killer, weaponId)
     if not isMatch(match) or not isElement(player) then
+        return
+    end
+    if player:getData("dead") then
         return
     end
     if match.state == "waiting" then
