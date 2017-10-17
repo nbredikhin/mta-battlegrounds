@@ -9,3 +9,11 @@ addEventHandler("onClientPreRender", root, function ()
         localPlayer.health = 100
     end
 end)
+
+setTimer(function ()
+    if localPlayer:getData("match_waiting") then
+    	if #(Config.waitingPosition - localPlayer.position) > 400 then
+    		localPlayer.position = Config.waitingPosition
+    	end
+    end
+end, 1000, 0)

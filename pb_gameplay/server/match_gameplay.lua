@@ -200,6 +200,7 @@ local function setMatchRunning(match)
     triggerMatchEvent(match, "createPlane", resourceRoot, x, y, angle, velocityX, velocityY)
 
     for player in pairs(match.players) do
+        player:setOnFire(false)
         player:setData("isInPlane", true)
         player.alpha = 0
         player.frozen = true

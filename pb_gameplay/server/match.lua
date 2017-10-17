@@ -138,6 +138,8 @@ function addMatchSquad(match, players)
     local squadId = #match.squads
     newSquad.id = squadId
     for i, player in ipairs(players) do
+        player:setOnFire(false)
+
         player:setData("matchId", match.id)
         player:setData("squadId", squadId)
 
@@ -153,6 +155,7 @@ function removePlayerFromMatch(player)
     if not isElement(player) then
         return false
     end
+    player:setOnFire(false)
     local matchId = player:getData("matchId")
     if not matchId then
         return false
@@ -164,7 +167,6 @@ function removePlayerFromMatch(player)
     end
     player:removeData("matchId")
     triggerClientEvent(player, "onLeftMatch", resourceRoot)
-    spawnPlayer(player, 0, 0, 0)
     return true
 end
 
