@@ -38,6 +38,10 @@ local function handleSelectionChange()
     ui.inviteButton.enabled = true
 end
 
+function hideInviteSendWindow()
+    ui.window.visible = false
+end
+
 function showInviteSendWindow()
     if ui.window.visible then
         ui.window.visible = false

@@ -41,6 +41,11 @@ local function updatePlayerReadyState(player)
         if player:getData("lobbyReady") then
             state = "[ready]"
         end
+        lobbyPeds[player].alpha = 255
+        if player:getData("matchId") then
+            state = "[in match]"
+            lobbyPeds[player].alpha = 150
+        end
         exports.pb_gameplay:addElementNametag(lobbyPeds[player], string.gsub(player.name, '#%x%x%x%x%x%x', '') .. "\n" .. state)
     end
 end
@@ -122,6 +127,10 @@ addEventHandler("onClientElementDataChange", root, function (dataName)
             lobbyPeds[source].model = source:getData("skin")
         end
     elseif dataName == "lobbyReady" then
+        if lobbyPeds[source] then
+            updatePlayerReadyState(source)
+        end
+    elseif dataName == "matchId" then
         if lobbyPeds[source] then
             updatePlayerReadyState(source)
         end

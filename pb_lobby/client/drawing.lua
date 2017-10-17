@@ -341,6 +341,7 @@ function setVisible(visible)
         resetFogDistance()
         stopSkinSelect()
         clearPeds()
+        hideInviteSendWindow()
     end
 end
 
