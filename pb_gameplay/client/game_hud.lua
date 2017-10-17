@@ -12,7 +12,7 @@ local function hideGameHUD()
     setComponentVisible("pb_hud",         false)
     setComponentVisible("pb_radar",       false)
     setComponentVisible("pb_compass",     false)
-    setComponentVisible("pb_killchat",    false)
+    -- setComponentVisible("pb_killchat",    false)
     setComponentVisible("pb_inventory",   false)
     setComponentVisible("pb_hud_weapon",  false)
     setComponentVisible("pb_hud_vehicle", false)
@@ -23,7 +23,8 @@ function showGameHUD(visible)
     showPlayerHudComponent("all", false)
     showPlayerHudComponent("crosshair", true)
     showPlayerHudComponent("radio", true)
-
+    setComponentVisible("pb_killchat", true)
+    
     isHudVisible = not not visible
     hideGameHUD()
     if visible then
@@ -31,7 +32,7 @@ function showGameHUD(visible)
         setComponentVisible("pb_hud",         true)
         setComponentVisible("pb_radar",       true)
         setComponentVisible("pb_compass",     true)
-        setComponentVisible("pb_killchat",    true)
+        -- setComponentVisible("pb_killchat",    true)
         setComponentVisible("pb_hud_weapon",  true)
         setComponentVisible("pb_hud_vehicle", true)
     end

@@ -1,6 +1,6 @@
 local playerLobbies = {}
 local serverLobbyType = "squad"
--- local FORCE_LOBBY_TYPE = "solo"
+-- local FORCE_LOBBY_TYPE = "squad"
 
 function createLobby(owner)
     if not isElement(owner) then

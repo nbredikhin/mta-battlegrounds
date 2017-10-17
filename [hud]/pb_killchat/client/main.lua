@@ -66,7 +66,11 @@ addEventHandler("onClientRender", root, function ()
     local h = 17 * messageScale
 
     if isTextInputActive then
-        local str = "Team: " .. inputText
+        local chatName = "Lobby"
+        if localPlayer:getData("matchId") then
+            chatName = "Team"
+        end
+        local str = chatName .. ": " .. inputText
         dxDrawText(str, x+1, y+1, x+1, y+1, tocolor(0, 0, 0, 150), messageScale)
         dxDrawText(str, x, y, x, y, tocolor(49, 177, 178, 255), messageScale)
     end
@@ -153,12 +157,12 @@ addEventHandler("onClientKey", root, function (key, down)
         if not isTimer(messageTimer) then
             triggerServerEvent("sendTeamChat", resourceRoot, inputText)
             inputText = ""
-            setTimer(messageTimer, 500, 1)
+            messageTimer = setTimer(function () end, 500, 1)
         end
     elseif key == "backspace" then
         inputText = utf8.sub(inputText, 1, -2)
     elseif key == "t" then
-        if isTextInputActive then
+        if isTextInputActive or guiGetInputEnabled() then
             return
         end
         guiSetInputMode("no_binds")
