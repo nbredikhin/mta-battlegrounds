@@ -248,15 +248,15 @@ function showKillMessage(player, weaponName, leftPlayers, killsCount)
     end
     -- Формирования текста сообщения об убийстве
     local playerName = string.gsub(player.name, '#%x%x%x%x%x%x', '')
-    local killMessage = "YOU killed " .. tostring(playerName)
+    local killMessage = localize("kill_message_you_killed") .. " " .. tostring(playerName)
     if type(weaponName) == "string" then
-        killMessage = killMessage .. " with " .. tostring(weaponName)
+        killMessage = killMessage .. " " .. localize("kill_message_with") .." " .. tostring(weaponName)
     end
-    killMessage = killMessage .. " - " .. tostring(leftPlayers) .. " left" 
+    killMessage = killMessage .. " - " .. tostring(leftPlayers) .. " " .. localize("kill_message_left")
     -- Отображение сообщения
     currentKillMessage = {
         text1 = killMessage,
-        text2 = string.format("Kills: %s", tostring(killsCount))
+        text2 = localize("kill_message_Kills") .. ": " .. tostring(killsCount)
     }
 
     -- Таймер для скрытия сообщения

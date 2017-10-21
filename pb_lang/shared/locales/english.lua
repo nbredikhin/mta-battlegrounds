@@ -113,5 +113,15 @@ Languages.english = {
     hud_alive_counter = "ALIVE",
     hud_join_counter = "JOINED",
     hud_kills_counter = "KILLED",
-    hud_kmh = "km/h"
+    hud_kmh = "km/h",
+
+    -- Actions
+    action_open_parachute = "Open parachute",
+    action_jump_plane = "Jump",
+
+    -- Kill messages
+    kill_message_you_killed = "YOU killed",
+    kill_message_with = "with",
+    kill_message_left = "left",
+    kill_message_Kills = "Kills", 
 }

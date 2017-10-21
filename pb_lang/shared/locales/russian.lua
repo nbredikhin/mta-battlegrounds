@@ -114,4 +114,14 @@ Languages.russian = {
     hud_join_counter = "ПРИСОЕДИНИЛИСЬ",
     hud_kills_counter = "УБИТО",
     hud_kmh = "км/ч"
+
+    -- Actions
+    action_open_parachute = "Раскрыть парашют",
+    action_jump_plane = "Прыгнуть",
+
+    -- Kill messages
+    kill_message_you_killed = "Вы убили",
+    kill_message_with = "из",
+    kill_message_left = "в живых",
+    kill_message_Kills = "Убийств",     
 }

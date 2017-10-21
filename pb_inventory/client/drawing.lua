@@ -517,9 +517,9 @@ addEventHandler("onClientRender", root, function ()
     end
 
     if localPlayer:getData("isInPlane") then
-        drawActionMessage("Jump")
+        drawActionMessage(localize("action_jump_plane"))
     elseif localPlayer:getData("has_parachute") then
-        drawActionMessage("Open parachute")
+        drawActionMessage(localize("action_open_parachute"))
     end
 end)
 
