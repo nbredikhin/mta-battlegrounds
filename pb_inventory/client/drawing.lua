@@ -413,6 +413,22 @@ local function drawSeparateWindow(x, y, width, height)
     dxDrawText(tostring(separateCount), bx, by, bx + bw, by + bh, tocolor(255, 255, 255), 1.8, "default-bold", "center", "center")
 end
 
+function drawActionMessage(text)
+    local x = screenSize.x * 0.62
+    local y = screenSize.y * 0.55
+
+    local width = dxGetTextWidth(text, 1.5, "default") + 20
+    local height = 30
+    dxDrawRectangle(x-1, y-1, height+2, height+2, tocolor(255, 255, 255, 38))
+    dxDrawRectangle(x, y, height, height, tocolor(0, 0, 0, 220))
+    dxDrawText("F", x, y, x+height,y+height, tocolor(255, 255, 255, 255), 1.5, "default-bold", "center", "center")
+
+    x = x + height + 5
+    dxDrawRectangle(x, y, width, height, tocolor(0, 0, 0, 100))
+    dxDrawText(text, x+2, y+2, x+width+2,y+height+2, tocolor(0, 0, 0, 255), 1.5, "default", "center", "center")
+    dxDrawText(text, x, y, x+width,y+height, tocolor(255, 255, 255, 255), 1.5, "default", "center", "center")
+end
+
 addEventHandler("onClientRender", root, function ()
     if not isInventoryVisible then
         return
@@ -495,6 +511,12 @@ addEventHandler("onClientRender", root, function ()
             separateWindowWidth,
             separateWindowHeight
         )
+    end
+
+    if localPlayer:getData("isInPlane") then
+        drawActionMessage("Jump")
+    elseif localPlayer:getData("has_parachute") then
+        drawActionMessage("Open parachute")
     end
 end)
 

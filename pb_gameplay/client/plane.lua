@@ -7,8 +7,6 @@ local velocityY = 0
 local startTime = 0
 local startX, startY = 0, 0
 
-local didPrintMessage = false
-
 addEvent("createPlane", true)
 addEventHandler("createPlane", resourceRoot, function (x, y, angle, vx, vy)
     if isElement(currentPlane) then
@@ -67,11 +65,6 @@ addEventHandler("onClientPreRender", root, function (deltaTime)
        math.abs(currentPlane.position.y) > Config.autoParachuteDistance)
     then
         jumpFromPlane()
-    end
-
-    if flightDistance >= 800 and not didPrintMessage then
-        didPrintMessage = true
-        exports.pb_alert:show("НАЖМИТЕ F, ЧТОБЫ ВЫПРЫГНУТЬ С САМОЛЕТА", 6000, 0xFFAAFAE1)
     end
 end)
 

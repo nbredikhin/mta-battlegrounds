@@ -7,20 +7,10 @@ function drawPickupMessage(item)
         return
     end
 
-    local x = screenSize.x * 0.62
-    local y = screenSize.y * 0.55
     local str = localize("inventory_pick_up") .. " " .. utf8.upper(localize(tostring(Items[item.name].readableName))) .. " (" .. tostring(item.count) .. ")"
-    local width = dxGetTextWidth(str, 1.5, "default") + 20
-    local height = 30
-    dxDrawRectangle(x-1, y-1, height+2, height+2, tocolor(255, 255, 255, 38))
-    dxDrawRectangle(x, y, height, height, tocolor(0, 0, 0, 220))
-    dxDrawText("F", x, y, x+height,y+height, tocolor(255, 255, 255, 255), 1.5, "default-bold", "center", "center")
-
-    x = x + height + 5
-    dxDrawRectangle(x, y, width, height, tocolor(0, 0, 0, 100))
-    dxDrawText(str, x+2, y+2, x+width+2,y+height+2, tocolor(0, 0, 0, 255), 1.5, "default", "center", "center")
-    dxDrawText(str, x, y, x+width,y+height, tocolor(255, 255, 255, 255), 1.5, "default", "center", "center")
-
+    
+    drawActionMessage(str)
+    
     pickupItem = item
 end
 

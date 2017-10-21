@@ -42,8 +42,8 @@ local g_parachuters = {}
 local parachutes = {}
 
 local function onResourceStart ( resource )
-	bindKey ( "fire", "down", onFire )
-	bindKey ( "enter_exit", "down", onFire )
+	-- bindKey ( "fire", "down", onFire )
+	bindKey ( "f", "down", onFire )
 end
 addEventHandler ( "onClientResourceStart", resourceRoot, onResourceStart )
 
