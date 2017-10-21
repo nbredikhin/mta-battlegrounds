@@ -23,6 +23,9 @@ local counters = {
     kills = 0,
 }
 
+local currentKillMessage = {}
+local killMessageTimer = nil
+
 function localize(name)
     local res = getResourceFromName("pb_lang")
     if (res) and (getResourceState(res) == "running") then
@@ -208,6 +211,13 @@ addEventHandler("onClientRender", root, function ()
             end
         end
     end
+
+    if currentKillMessage then
+        local y = screenSize.y * 0.6
+        dxDrawText(currentKillMessage.text1, 0, 0, screenSize.x, screenSize.y * 0.75, tocolor(255, 255, 255), 2, "default-bold", "center", "bottom")
+        y = y + 30
+        dxDrawText(currentKillMessage.text2, 0, 0, screenSize.x, screenSize.y * 0.75, tocolor(255, 0, 0), 2.5, "default-bold", "center", "bottom")
+    end
 end, false, "low-1")
 
 addEventHandler("onClientResourceStart", resourceRoot, function ()
@@ -231,3 +241,39 @@ function setCounter(name, count)
         counters[name] = count
     end
 end
+
+function showKillMessage(player, weaponName, leftPlayers, killsCount)
+    if not isElement(player) then
+        return false
+    end
+    -- Формирования текста сообщения об убийстве
+    local playerName = string.gsub(player.name, '#%x%x%x%x%x%x', '')
+    local killMessage = "YOU killed " .. tostring(playerName)
+    if type(weaponName) == "string" then
+        killMessage = killMessage .. " with " .. tostring(weaponName)
+    end
+    killMessage = killMessage .. " - " .. tostring(leftPlayers) .. " left" 
+    -- Отображение сообщения
+    currentKillMessage = {
+        text1 = killMessage,
+        text2 = string.format("Kills: %s", tostring(killsCount))
+    }
+
+    -- Таймер для скрытия сообщения
+    if isTimer(killMessageTimer) then
+        killTimer(killMessageTimer)
+    end
+
+    killMessageTimer = setTimer(function ()
+        currentKillMessage = nil
+    end, 3000, 1)
+end
+
+addEvent("onMatchPlayerWasted", true)
+addEventHandler("onMatchPlayerWasted", root, function (aliveCount, killerPlayer, weaponId)
+    if killerPlayer ~= localPlayer then
+        return
+    end
+    local weaponName = exports.pb_inventory:getWeaponNameFromId(weaponId)
+    showKillMessage(source, weaponName, aliveCount, localPlayer:getData("kills"))
+end)
