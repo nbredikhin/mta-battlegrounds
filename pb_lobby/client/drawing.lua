@@ -252,6 +252,9 @@ addEventHandler("onClientRender", root, function ()
         isMousePressed = false
     end
     prevMouseState = currentMouseState
+    if isMTAWindowActive() then
+        isMousePressed = false
+    end
 
     local mx, my = getCursorPosition()
     if mx then

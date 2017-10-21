@@ -439,6 +439,9 @@ addEventHandler("onClientRender", root, function ()
     else
         isMousePressed = false
     end
+    if isMTAWindowActive() then
+        isMousePressed = false
+    end    
     if prevMouseState and not currentMouseState then
         isMouseReleased = true
     else
