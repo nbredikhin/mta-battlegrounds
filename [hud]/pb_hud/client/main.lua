@@ -213,7 +213,7 @@ addEventHandler("onClientRender", root, function ()
     end
 
     if currentKillMessage then
-        local y = screenSize.y * 0.75
+        local y = screenSize.y - 300
         dxDrawText(currentKillMessage.text1, 0, 0, screenSize.x, y, tocolor(255, 255, 255), 1.5, "default-bold", "center", "bottom")
         y = y + 35
         dxDrawText(currentKillMessage.text2, 0, 0, screenSize.x, y, tocolor(255, 0, 0), 2, "default-bold", "center", "bottom")

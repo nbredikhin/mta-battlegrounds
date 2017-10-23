@@ -1,6 +1,8 @@
 -- Все возможные точки спавна лута
 local vehicleSpawnpoints = {}
 
+local EDITOR_MODE = false
+
 local vehicleModels = {
     [400] = {
         400, 500, 579, 489
@@ -8,6 +10,14 @@ local vehicleModels = {
 
     [426] = {
         426, 445, 507, 585, 466, 492, 546, 551, 516, 467, 547, 405, 580, 550, 566
+    },
+
+    [461] = {
+        461, 521, 463, 468
+    },
+
+    [521] = {
+        521, 461, 463, 468
     }
 }
 
@@ -60,19 +70,21 @@ function createVehicleSpawnpoints(model, position, rotation)
     saveFile("data/spawnpoints.json", toJSON(vehicleSpawnpoints))
 end
 
--- addCommandHandler("addcar", function (player)
---     if not player.vehicle then
---         return
---     end
---     createVehicleSpawnpoints(player.vehicle.model, player.vehicle.position, player.vehicle.rotation)
+if EDITOR_MODE then
+    addCommandHandler("addcar", function (player)
+        if not player.vehicle then
+            return
+        end
+        createVehicleSpawnpoints(player.vehicle.model, player.vehicle.position, player.vehicle.rotation)
 
---     local vehicle = createVehicle(player.vehicle.model, player.vehicle.position, player.vehicle.rotation)
---     vehicle.frozen = true
---     vehicle:setCollisionsEnabled(false)
---     createBlip(player.vehicle.position)
+        local vehicle = createVehicle(player.vehicle.model, player.vehicle.position, player.vehicle.rotation)
+        vehicle.frozen = true
+        vehicle:setCollisionsEnabled(false)
+        createBlip(player.vehicle.position)
 
---     outputChatBox("Car added")
--- end)
+        outputChatBox("Car added")
+    end)
+end
 
 local function randomChance(chance)
     return math.random() <= chance
@@ -101,10 +113,12 @@ end
 addEventHandler("onResourceStart", resourceRoot, function ()
     vehicleSpawnpoints = fromJSON(loadFile("data/spawnpoints.json") or "[[]]") or {}
 
-    -- for i, s in ipairs(vehicleSpawnpoints) do
-    --     local vehicle = createVehicle(s.model, s.x, s.y, s.z, s.rx, s.ry, s.rz)
-    --     vehicle.frozen = true
-    --     vehicle:setCollisionsEnabled(false)
-    --     createBlip(s.x, s.y, s.z)
-    -- end
+    if EDITOR_MODE then
+        for i, s in ipairs(vehicleSpawnpoints) do
+            local vehicle = createVehicle(s.model, s.x, s.y, s.z, s.rx, s.ry, s.rz)
+            vehicle.frozen = true
+            vehicle:setCollisionsEnabled(false)
+            createBlip(s.x, s.y, s.z)
+        end
+    end
 end)
