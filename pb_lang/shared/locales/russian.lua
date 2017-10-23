@@ -113,15 +113,15 @@ Languages.russian = {
     hud_alive_counter = "В ЖИВЫХ",
     hud_join_counter = "ПРИСОЕДИНИЛИСЬ",
     hud_kills_counter = "УБИТО",
-    hud_kmh = "км/ч"
+    hud_kmh = "км/ч",
 
     -- Actions
-    action_open_parachute = "Раскрыть парашют",
-    action_jump_plane = "Прыгнуть",
+    action_open_parachute = "РАСКРЫТЬ парашют",
+    action_jump_plane = "Катапультироваться",
 
     -- Kill messages
     kill_message_you_killed = "Вы убили",
     kill_message_with = "из",
     kill_message_left = "в живых",
-    kill_message_Kills = "Убийств",     
+    kill_message_Kills = "Убийств",
 }

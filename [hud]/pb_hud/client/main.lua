@@ -23,7 +23,7 @@ local counters = {
     kills = 0,
 }
 
-local currentKillMessage = {}
+local currentKillMessage = nil
 local killMessageTimer = nil
 
 function localize(name)
@@ -213,10 +213,10 @@ addEventHandler("onClientRender", root, function ()
     end
 
     if currentKillMessage then
-        local y = screenSize.y * 0.6
-        dxDrawText(currentKillMessage.text1, 0, 0, screenSize.x, screenSize.y * 0.75, tocolor(255, 255, 255), 2, "default-bold", "center", "bottom")
-        y = y + 30
-        dxDrawText(currentKillMessage.text2, 0, 0, screenSize.x, screenSize.y * 0.75, tocolor(255, 0, 0), 2.5, "default-bold", "center", "bottom")
+        local y = screenSize.y * 0.75
+        dxDrawText(currentKillMessage.text1, 0, 0, screenSize.x, y, tocolor(255, 255, 255), 1.5, "default-bold", "center", "bottom")
+        y = y + 35
+        dxDrawText(currentKillMessage.text2, 0, 0, screenSize.x, y, tocolor(255, 0, 0), 2, "default-bold", "center", "bottom")
     end
 end, false, "low-1")
 
@@ -250,7 +250,7 @@ function showKillMessage(player, weaponName, leftPlayers, killsCount)
     local playerName = string.gsub(player.name, '#%x%x%x%x%x%x', '')
     local killMessage = localize("kill_message_you_killed") .. " " .. tostring(playerName)
     if type(weaponName) == "string" then
-        killMessage = killMessage .. " " .. localize("kill_message_with") .." " .. tostring(weaponName)
+        killMessage = killMessage .. " " .. localize("kill_message_with") .." " .. localize(tostring(weaponName))
     end
     killMessage = killMessage .. " - " .. tostring(leftPlayers) .. " " .. localize("kill_message_left")
     -- Отображение сообщения
@@ -266,7 +266,7 @@ function showKillMessage(player, weaponName, leftPlayers, killsCount)
 
     killMessageTimer = setTimer(function ()
         currentKillMessage = nil
-    end, 3000, 1)
+    end, 4000, 1)
 end
 
 addEvent("onMatchPlayerWasted", true)

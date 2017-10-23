@@ -8,9 +8,9 @@ function drawPickupMessage(item)
     end
 
     local str = localize("inventory_pick_up") .. " " .. utf8.upper(localize(tostring(Items[item.name].readableName))) .. " (" .. tostring(item.count) .. ")"
-    
+
     drawActionMessage(str)
-    
+
     pickupItem = item
 end
 
@@ -19,6 +19,17 @@ addEventHandler("onClientRender", root, function()
     if isInventoryShowing() then
         return
     end
+
+    if localPlayer:getData("isInPlane") then
+        if exports.pb_gameplay:canJumpFromPlane() then
+            drawActionMessage(localize("action_jump_plane"))
+        end
+        return
+    elseif localPlayer:getData("has_parachute") then
+        drawActionMessage(localize("action_open_parachute"))
+        return
+    end
+
     local centerX, centerY = screenSize.x / 2, screenSize.y / 2
     local minDistance = screenSize.x
     local minItem

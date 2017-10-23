@@ -27,13 +27,13 @@ addEventHandler("onClientRender", root, function ()
 	if not localPlayer:getData("has_parachute") then
 		return
 	end
-	dxDrawRectangle(barX, barOffset - barHeight, barWidth, barHeight, tocolor(255, 255, 255, 100))
+	dxDrawRectangle(barX, screenSize.y - barOffset - barHeight, barWidth, barHeight, tocolor(255, 255, 255, 100))
 	local groundBarHeight = barGroundHeight / barMaxHeight * barHeight
-	dxDrawRectangle(barX, barOffset - groundBarHeight, barWidth, groundBarHeight, tocolor(255, 255, 255))
+	dxDrawRectangle(barX, screenSize.y - barOffset - groundBarHeight, barWidth, groundBarHeight, tocolor(255, 255, 255))
 
-    local speed = tostring(math.floor(getElementSpeed(localPlayer.vehicle, "km/h"))) .. " " .. exports.pb_lang:localize("hud_kmh")
+    local speed = tostring(math.floor(getElementSpeed(localPlayer, "km/h"))) .. " " .. exports.pb_lang:localize("hud_kmh")
     local x = barX + barWidth + 10
-    local y = screenSize.y - barOffset - barHeight * localPlayer.position.z / barMaxHeight
-    dxDrawText(speed, x+2, y+2, 0, 0, tocolor(0, 0, 0, 80), 2.5, "default-bold", "left", "top")
-    dxDrawText(speed, x, y, 0, 0, tocolor(255, 255, 255), 2.5, "default-bold", "left", "top")	
+    local y = screenSize.y - barOffset - barHeight * localPlayer.position.z / barMaxHeight - 15
+    dxDrawText(speed, x+2, y+2, 0, 0, tocolor(0, 0, 0, 80), 2, "default-bold", "left", "top")
+    dxDrawText(speed, x, y, 0, 0, tocolor(255, 255, 255), 2, "default-bold", "left", "top")
 end)

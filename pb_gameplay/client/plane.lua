@@ -68,6 +68,16 @@ addEventHandler("onClientPreRender", root, function (deltaTime)
     end
 end)
 
+function canJumpFromPlane()
+    if not isClientInPlane then
+        return false
+    end
+    if getFlightDistance() < 800 then
+        return false
+    end
+    return true
+end
+
 function jumpFromPlane()
     if isClientInPlane then
         if localPlayer:getData("dead") then

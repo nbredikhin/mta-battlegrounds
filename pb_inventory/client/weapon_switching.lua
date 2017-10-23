@@ -6,40 +6,13 @@ local reloadableWeapons = {
     secondary = true
 }
 
--- local driveByWeapons = {
---     weapon_ak47 = true,
---     weapon_m4 = true,
---     weapon_colt45 = true,
---     weapon_uzi = true,
---     weapon_mp5 = true,
--- }
-
 local isFireAllowed = false
--- local driveByState = false
 
 addEventHandler("onClientPreRender", root, function ()
     local isReloading = localPlayer:getData("isReloadingWeapon")
     if isReloading then
         isFireAllowed = false
     end
-
-    -- local isDriveByWeapon = false
-    -- local weaponItem = getActiveWeaponItem()
-    -- if weaponItem and driveByWeapons[weaponItem.name] then
-    --     isDriveByWeapon = true
-    -- end
-    -- local newState = isDriveByWeapon and localPlayer.vehicle and localPlayer.vehicle.controller ~= localPlayer and getKeyState("mouse2")
-    -- if isReloading then
-    --     newState = false
-    -- end
-    -- if newState ~= driveByState then
-    --     setPedDoingGangDriveby(localPlayer, newState)
-    --     if not newState then
-    --         setTimer(setCameraTarget, 50, 1, localPlayer)
-    --         resetMyAnimation()
-    --     end
-    -- end
-    -- driveByState = newState
 
     toggleControl("next_weapon", false)
     toggleControl("previous_weapon", false)

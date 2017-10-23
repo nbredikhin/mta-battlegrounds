@@ -79,6 +79,13 @@ function getPlayerLobby(player)
     end
 end
 
+function getPlayerLobbyPlayers(player)
+    if not isElement(player) then
+        return false
+    end
+    return getLobbyPlayers(player:getData("lobbyOwner"))
+end
+
 function getLobbyPlayers(owner)
     if not owner or not playerLobbies[owner] then
         return

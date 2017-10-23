@@ -7,7 +7,7 @@ addEventHandler("sendTeamChat", resourceRoot, function (msg)
 	        players = client
 	    end
 	else
-		local lobbyPlayers = exports.pb_lobby:getLobbyPlayers(client)
+		local lobbyPlayers = exports.pb_lobby:getPlayerLobbyPlayers(client)
 		if lobbyPlayers then
 			players = {}
 			for i, player in ipairs(lobbyPlayers) do

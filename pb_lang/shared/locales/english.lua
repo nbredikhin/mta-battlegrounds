@@ -116,12 +116,12 @@ Languages.english = {
     hud_kmh = "km/h",
 
     -- Actions
-    action_open_parachute = "Open parachute",
-    action_jump_plane = "Jump",
+    action_open_parachute = "RELEASE parachute",
+    action_jump_plane = "Eject",
 
     -- Kill messages
     kill_message_you_killed = "YOU killed",
     kill_message_with = "with",
     kill_message_left = "left",
-    kill_message_Kills = "Kills", 
+    kill_message_Kills = "Kills",
 }

@@ -10,7 +10,7 @@
     <script type="client" src="client/ui_invite.lua"/>
 
     <export type="client" function="setVisible"/>
-    <export type="server" function="getLobbyPlayers"/>
+    <export type="server" function="getPlayerLobbyPlayers"/>
 
     <file src="assets/corner0.png"/>
     <file src="assets/corner1.png"/>

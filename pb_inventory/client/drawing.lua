@@ -441,7 +441,7 @@ addEventHandler("onClientRender", root, function ()
     end
     if isMTAWindowActive() then
         isMousePressed = false
-    end    
+    end
     if prevMouseState and not currentMouseState then
         isMouseReleased = true
     else
@@ -514,12 +514,6 @@ addEventHandler("onClientRender", root, function ()
             separateWindowWidth,
             separateWindowHeight
         )
-    end
-
-    if localPlayer:getData("isInPlane") then
-        drawActionMessage(localize("action_jump_plane"))
-    elseif localPlayer:getData("has_parachute") then
-        drawActionMessage(localize("action_open_parachute"))
     end
 end)
 

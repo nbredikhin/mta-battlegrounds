@@ -24,6 +24,7 @@
 
     <export type="client" function="getSquadPlayers"/>
     <export type="client" function="addElementNametag"/>
+    <export type="client" function="canJumpFromPlane"/>
     <export type="server" function="findMatch"/>
     <export type="server" function="getPlayerSquad"/>
 </meta>

@@ -1,14 +1,18 @@
 local squadPlayers = {}
+local isMatchRunning = false
+local spectatingTimer
 
 local function handleLeavingMatch()
     stopSpectating()
     squadPlayers = {}
     exports.pb_zones:removeZones()
-    showGameHUD(false)    
+    showGameHUD(false)
     fadeCamera(false, 0)
     showChat(false)
     setWeather(0)
     setTime(12, 0)
+
+    isMatchRunning = false
 end
 
 addEvent("onExitToLobby", true)
@@ -89,6 +93,8 @@ end)
 
 addEvent("onMatchStarted", true)
 addEventHandler("onMatchStarted", resourceRoot, function (aliveCount)
+    isMatchRunning = true
+
     resetMatchStats()
     showChat(false)
     fadeCamera(true)
@@ -99,6 +105,11 @@ end)
 
 addEvent("onMatchFinished", true)
 addEventHandler("onMatchFinished", resourceRoot, function (rank, totalPlayers, timeAlive)
+    if isTimer(spectatingTimer) then
+        killTimer(spectatingTimer)
+        fadeCamera(true)
+    end
+    isMatchRunning = false
     stopSpectating(true)
     showGameHUD(false)
 
@@ -162,6 +173,9 @@ end)
 
 addEvent("onMatchWasted", true)
 addEventHandler("onMatchWasted", resourceRoot, function ()
+    if not isMatchRunning then
+        return
+    end
     fadeCamera(false, 0.5)
-    setTimer(startSpectating, 500, 1)
+    spectatingTimer = setTimer(startSpectating, 500, 1)
 end)
