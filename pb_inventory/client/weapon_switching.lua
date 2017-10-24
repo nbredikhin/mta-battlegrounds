@@ -16,6 +16,7 @@ addEventHandler("onClientPreRender", root, function ()
 
     toggleControl("next_weapon", false)
     toggleControl("previous_weapon", false)
+    toggleControl("action", false)
 
     toggleControl("fire", isFireAllowed)
     toggleControl("vehicle_fire", isFireAllowed)
