@@ -24,7 +24,7 @@ function showGameHUD(visible)
     showPlayerHudComponent("crosshair", true)
     showPlayerHudComponent("radio", true)
     setComponentVisible("pb_killchat", true)
-    
+
     isHudVisible = not not visible
     hideGameHUD()
     if visible then
@@ -58,13 +58,8 @@ function toggleMap()
     end
 end
 
--- Карта
-bindKey("m", "down", toggleMap)
-bindKey("f11", "down", toggleMap)
-
--- Инвентарь
-bindKey("tab", "down", function ()
-    if not isHudVisible then        
+function toggleInventory()
+    if not isHudVisible then
         return
     end
     if not isResourceRunning("pb_inventory") then
@@ -81,6 +76,14 @@ bindKey("tab", "down", function ()
     if visible then
         setComponentVisible("pb_map", false)
     end
-end)
+end
+
+addCommandHandler("map", toggleMap, false, false)
+addCommandHandler("inventory", toggleInventory, false, false)
+
+-- Бинды
+bindKey("m", "down", "map")
+bindKey("f11", "down", "map")
+bindKey("tab", "down", "inventory")
 
 showGameHUD(true)

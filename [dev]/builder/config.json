@@ -1,0 +1,39 @@
+{
+    "resourcePrefix": "pb_",
+
+    "enableScriptCache": false,
+    "enableShaderCache": false,
+
+    "enableCompilation": true,
+    "enablePathEncrypt": true,
+    "enableExportEncrypt": false,
+
+    "enableReadmeFiles": true,
+
+    "only": [],
+
+    "include": [
+        "bone_attach",
+        "parachute",
+        "nochat",
+    ],
+
+    "pathEncryptExclude": [
+        "mta-helper.fx",
+        "tex_matrix.fx",
+        "light1.fx",
+        "light0.fx",
+        "common.fx",
+        ".json",
+        ".txt",
+        ".map",
+        "_DPASSET",
+        "@",
+        "api",
+        "html",
+        "serials.json",
+        ".log",
+        "http://",
+        "https://",
+    ]
+}

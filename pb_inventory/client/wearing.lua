@@ -140,7 +140,9 @@ end)
 
 addEvent("updateWearableItems", true)
 addEventHandler("updateWearableItems", resourceRoot, function (player)
-    updatePlayerWearingItems(player)
+    if isElementStreamedIn(player) then
+        updatePlayerWearingItems(player)
+    end
 end)
 
 bindKey("mouse2", "down", function ()
