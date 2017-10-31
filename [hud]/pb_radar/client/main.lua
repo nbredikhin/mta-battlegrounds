@@ -1,4 +1,4 @@
-local isRadarVisible = true
+local isRadarVisible = false
 
 local screenSize = Vector2(guiGetScreenSize())
 local viewportWidth  = 256
@@ -118,15 +118,17 @@ local function drawRadar()
     local gridSize = 40
     for i = 1, gridSize do
         local lx = (i - 1) * radarTextureSize / gridSize - localX
-        local ix = i - math.floor((i - 1) / 5) * 5
         local ly = (i - 1) * radarTextureSize / gridSize - localY
-        local iy = i - math.floor((i - 1) / 5) * 5
+        if lx > -20 and lx < localWidth or ly > -20 and ly < localHeight then
+            local ix = i - math.floor((i - 1) / 5) * 5
+            local iy = i - math.floor((i - 1) / 5) * 5
 
-        local sx, sy = getSectionName(lx + localX, ly + localY)
-        dxDrawLine(lx, 0, lx, 0 + radarTextureSize, radarLinesColor, 2)
-        dxDrawText(sx..ix, lx + 5, 8, lx + 5, 8, radarTextColor)
-        dxDrawLine(0, ly, 0 + radarTextureSize, ly, radarLinesColor, 2)
-        dxDrawText(sy..iy, 8, ly + 3, 8, ly + 3, radarTextColor)
+            local sx, sy = getSectionName(lx + localX, ly + localY)
+            dxDrawLine(lx, 0, lx, 0 + radarTextureSize, radarLinesColor, 2)
+            dxDrawText(sx..ix, lx + 5, 8, lx + 5, 8, radarTextColor)
+            dxDrawLine(0, ly, 0 + radarTextureSize, ly, radarLinesColor, 2)
+            dxDrawText(sy..iy, 8, ly + 3, 8, ly + 3, radarTextColor)
+        end
     end
 
     -- Зоны
@@ -275,7 +277,7 @@ addEventHandler("onClientRender", root, function ()
 end)
 
 addEventHandler("onClientResourceStart", resourceRoot, function ()
-    textures.map = dxCreateTexture(":pb_map/assets/map.png", "argb", true, "clamp")
+    textures.map = dxCreateTexture(":pb_map/assets/map.jpg", "argb", true, "clamp")
     radarTextureSize = dxGetMaterialSize(textures.map)
 
     textures.p_circle = dxCreateTexture(":pb_map/assets/p_circle.png", "argb", true, "clamp")

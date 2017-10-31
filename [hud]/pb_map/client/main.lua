@@ -161,7 +161,7 @@ addEventHandler("onClientRender", root, function ()
 end)
 
 addEventHandler("onClientResourceStart", resourceRoot, function ()
-    textures.map = dxCreateTexture("assets/map.png", "argb", true, "clamp")
+    textures.map = dxCreateTexture("assets/map.jpg", "argb", true, "clamp")
     mapTextureSize = dxGetMaterialSize(textures.map)
 
     textures.p_circle = dxCreateTexture("assets/p_circle.png", "argb", true, "clamp")
