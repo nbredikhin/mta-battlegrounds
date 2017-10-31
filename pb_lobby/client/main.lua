@@ -26,7 +26,9 @@ addEventHandler("onClientClick", root, function (button, state, _, _, _, _, _, e
     if not isOwnLobby() then
         return
     end
-
+    if getCurrentTabName() ~= "home" then
+        return
+    end
     if isElement(element) and getElementType(element) == "ped" then
         local player = element:getData("lobbyPlayer")
         if player then

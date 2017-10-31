@@ -9,6 +9,9 @@
     <script type="client" src="client/drawing.lua"/>
     <script type="client" src="client/ui_invite.lua"/>
 
+    <script type="client" src="client/tabs.lua"/>
+    <script type="client" src="client/tab_character.lua"/>
+
     <export type="client" function="setVisible"/>
     <export type="server" function="getPlayerLobbyPlayers"/>
 
