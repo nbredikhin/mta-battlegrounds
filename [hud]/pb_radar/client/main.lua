@@ -53,7 +53,7 @@ end
 
 function dxDrawCircle(x, y, radius, ...)
     if not segments then
-        segments = math.max(12, math.floor(radius / 4))
+        segments = math.max(12, math.floor(radius / 5))
     end
 
     local px, py
@@ -116,19 +116,28 @@ local function drawRadar()
     )
     -- Сетка
     local gridSize = 40
-    for i = 1, gridSize do
+
+    local g1 = math.max(1, math.floor((localX) / radarTextureSize * gridSize) + 1)
+    local g2 = math.min(40, math.floor((localX + localWidth) / radarTextureSize * gridSize) + 1)
+    for i = g1, g2 do
         local lx = (i - 1) * radarTextureSize / gridSize - localX
         local ly = (i - 1) * radarTextureSize / gridSize - localY
-        if lx > -20 and lx < localWidth or ly > -20 and ly < localHeight then
-            local ix = i - math.floor((i - 1) / 5) * 5
-            local iy = i - math.floor((i - 1) / 5) * 5
+        local ix = i - math.floor((i - 1) / 5) * 5
+        local sx, sy = getSectionName(lx + localX, ly + localY)
+        dxDrawLine(lx, 0, lx, 0 + radarTextureSize, radarLinesColor, 2)
+        dxDrawText(sx..ix, lx + 5, 8, lx + 5, 8, radarTextColor)
+    end
 
-            local sx, sy = getSectionName(lx + localX, ly + localY)
-            dxDrawLine(lx, 0, lx, 0 + radarTextureSize, radarLinesColor, 2)
-            dxDrawText(sx..ix, lx + 5, 8, lx + 5, 8, radarTextColor)
-            dxDrawLine(0, ly, 0 + radarTextureSize, ly, radarLinesColor, 2)
-            dxDrawText(sy..iy, 8, ly + 3, 8, ly + 3, radarTextColor)
-        end
+    g1 = math.max(1, math.floor((localY) / radarTextureSize * gridSize) + 1)
+    g2 = math.min(40, math.floor((localY + localHeight) / radarTextureSize * gridSize) + 1)
+    for i = g1, g2 do
+        local lx = (i - 1) * radarTextureSize / gridSize - localX
+        local ly = (i - 1) * radarTextureSize / gridSize - localY
+
+        local iy = i - math.floor((i - 1) / 5) * 5
+        local sx, sy = getSectionName(lx + localX, ly + localY)
+        dxDrawLine(0, ly, 0 + radarTextureSize, ly, radarLinesColor, 2)
+        dxDrawText(sy..iy, 8, ly + 3, 8, ly + 3, radarTextColor)
     end
 
     -- Зоны
