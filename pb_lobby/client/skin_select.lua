@@ -49,10 +49,6 @@ local function handleKey(key, isDown)
         changeSkin(-1)
     elseif key == "arrow_r" then
         changeSkin(1)
-    elseif key == "mouse_wheel_up" then
-        playerPed.rotation = playerPed.rotation + Vector3(0, 0, 360 * 0.035)
-    elseif key == "mouse_wheel_down" then
-        playerPed.rotation = playerPed.rotation - Vector3(0, 0, 360 * 0.035)
     end
 end
 

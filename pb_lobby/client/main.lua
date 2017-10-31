@@ -1,3 +1,7 @@
+-- function guiGetScreenSize()
+--     return 800, 600
+-- end
+
 local pedPositions = {
     { pos = Vector3 { x = 5157.101, y = -942.891, z = 37.566 }, rot = 130 },
     { pos = Vector3 { x = 5158.386, y = -944.354, z = 37.566 }, rot = 145 },

@@ -22,4 +22,10 @@
     <file src="assets/ru.png"/>
     <file src="assets/en.png"/>
     <file src="assets/invite.png"/>
+
+    <file src="assets/icons/tags/hat.png"/>
+    <file src="assets/icons/tags/pants.png"/>
+    <file src="assets/icons/tags/shirt.png"/>
+    <file src="assets/icons/tags/shoes.png"/>
+    <file src="assets/icons/jacket1.png"/>
 </meta>
