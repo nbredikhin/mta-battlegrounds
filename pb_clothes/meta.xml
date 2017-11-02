@@ -1,3 +1,68 @@
 <meta>
     <oop>true</oop>
+
+    <script type="client" src="client/clothes_table.lua"/>
+    <script type="client" src="client/main.lua"/>
+
+    <file src="assets/shaders/mta-helper.fx"/>
+    <file src="assets/shaders/tex_matrix.fx"/>
+    <file src="assets/shaders/replace.fx"/>
+
+    <file src="assets/models/playermodel.dff"/>
+    <file src="assets/models/playermodel.txd"/>
+
+    <file src="assets/placeholder.png"/>
+    <file src="assets/elbow.png"/>
+    <file src="assets/wrist.png"/>
+
+    <file src="assets/clothes/head/head1.png"/>
+    <file src="assets/clothes/head/head2.png"/>
+    <file src="assets/clothes/head/head3.png"/>
+    <file src="assets/clothes/head/head4.png"/>
+    <file src="assets/clothes/head/head5.png"/>
+    <file src="assets/clothes/head/head6.png"/>
+    <file src="assets/clothes/head/head7.png"/>
+    <file src="assets/clothes/head/putin.png"/>
+
+    <file src="assets/clothes/shirt/bomber.png"/>
+    <file src="assets/clothes/shirt/blouse.png"/>
+    <file src="assets/clothes/shirt/bubblegoose.png"/>
+    <file src="assets/clothes/shirt/firefighter.png"/>
+    <file src="assets/clothes/shirt/gorka.png"/>
+    <file src="assets/clothes/shirt/hoodie.png"/>
+    <file src="assets/clothes/shirt/hunting.png"/>
+    <file src="assets/clothes/shirt/labcoat.png"/>
+    <file src="assets/clothes/shirt/medic.png"/>
+    <file src="assets/clothes/shirt/mjacket.png"/>
+    <file src="assets/clothes/shirt/nbc.png"/>
+    <file src="assets/clothes/shirt/pcu.png"/>
+    <file src="assets/clothes/shirt/police.png"/>
+    <file src="assets/clothes/shirt/quilted.png"/>
+    <file src="assets/clothes/shirt/raincoat.png"/>
+    <file src="assets/clothes/shirt/riders.png"/>
+    <file src="assets/clothes/shirt/shirt.png"/>
+    <file src="assets/clothes/shirt/sweater.png"/>
+    <file src="assets/clothes/shirt/tracksuit.png"/>
+    <file src="assets/clothes/shirt/tshirt.png"/>
+    <file src="assets/clothes/shirt/woolcoat.png"/>
+
+    <file src="assets/clothes/pants/jeans.png"/>
+    <file src="assets/clothes/pants/cargopnts.png"/>
+    <file src="assets/clothes/pants/firefightpnts.png"/>
+    <file src="assets/clothes/pants/hunterpnts.png"/>
+    <file src="assets/clothes/pants/medcpnts.png"/>
+    <file src="assets/clothes/pants/policpnts.png"/>
+    <file src="assets/clothes/pants/slacks.png"/>
+    <file src="assets/clothes/pants/tracksuitpnts.png"/>
+
+    <file src="assets/clothes/shoes/athletics.png"/>
+    <file src="assets/clothes/shoes/combat.png"/>
+    <file src="assets/clothes/shoes/hiking.png"/>
+    <file src="assets/clothes/shoes/hikingbh.png"/>
+    <file src="assets/clothes/shoes/joggings.png"/>
+    <file src="assets/clothes/shoes/jungleb.png"/>
+    <file src="assets/clothes/shoes/militaryb.png"/>
+    <file src="assets/clothes/shoes/sneakers.png"/>
+    <file src="assets/clothes/shoes/wellies.png"/>
+    <file src="assets/clothes/shoes/workingb.png"/>
 </meta>
