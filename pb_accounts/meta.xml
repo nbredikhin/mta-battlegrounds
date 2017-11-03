@@ -2,6 +2,8 @@
     <oop>true</oop>
 
     <script type="shared" src="shared/usercheck.lua"/>
+    <script type="shared" src="shared/item_classes.lua"/>
+    <script type="shared" src="shared/item_clothes.lua"/>
 
     <script type="server" src="server/utils.lua"/>
     <script type="server" src="server/inventory.lua"/>

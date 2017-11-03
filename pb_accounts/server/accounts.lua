@@ -62,6 +62,9 @@ function savePlayerAccount(player, isLogout)
         table.insert(saveArgs, value)
     end
 
+    table.insert(saveQuery, "items = ?")
+    table.insert(saveArgs, toJSON(getPlayerInventory(player)))
+
     if isLogout then
         table.insert(saveQuery, "online_server = ?")
         table.insert(saveArgs, 0)
@@ -104,7 +107,7 @@ function dbLoginPlayer(result, params)
             player:setData(name, result[name])
         end
 
-        setupPlayerInventory(player, result.items)
+        setupPlayerInventory(player, fromJSON(result.items))
         loggedPlayers[player] = true
 
         exports.mysql:dbExec(dbTableName, [[
