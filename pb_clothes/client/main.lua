@@ -54,7 +54,7 @@ function loadPedClothes(ped)
             if ClothesTable[name].hideElbow then
                 hideElbow = true
             end
-            local path = ClothesTable[name].path or "assets/clothes/"..layer.."/"..name..".png"
+            local path = ClothesTable[name].path or "assets/clothes/"..layer.."/"..ClothesTable[name].material.."/"..name..".png"
             local texture = getTexture(path)
             local shader = createClothesShader(ped, ClothesTable[name].material or name, texture)
             table.insert(loadedClothes[ped], shader)
