@@ -1,0 +1,14 @@
+<meta>
+	<info author="Daeman" type="script" version="2017-09-19" name="MySQL database interface" />
+	<min_mta_version server="1.5.2"/>
+
+	<script src="server_connectionParams.lua" type="server"/>
+	<script src="server.lua" type="server"/>
+
+	<export function="dbQueryAsync" type="server"/>
+	<export function="dbQuery" type="server"/>
+	<export function="dbExec" type="server"/>
+	<export function="getTableName" type="server"/>
+	<export function="dbPrepareString" type="server"/>
+	<export function="dbQueryAsyncMultiple" type="server"/>
+</meta>
