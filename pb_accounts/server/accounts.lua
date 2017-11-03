@@ -1,18 +1,19 @@
 local dbTableName = "users"
+local serverId = 1337
 
 local loadAccountData = {
     "username",
     "battlepoints",
-    "donatpoints",
-    "winrating",
-    "killrating"
+    "donatepoints",
+    "rating_wins",
+    "rating_kills"
 }
 
 local saveAccountData = {
     "battlepoints",
-    "donatpoints",
-    "winrating",
-    "killrating"
+    "donatepoints",
+    "rating_wins",
+    "rating_kills"
 }
 
 local loggedPlayers = {}
@@ -66,10 +67,12 @@ function savePlayerAccount(player, isLogout)
         table.insert(saveArgs, 0)
     end
 
+    table.insert(saveArgs, player:getData("username"))
+
     exports.mysql:dbExec(dbTableName, [[
         UPDATE ?? SET ]]
             .. table.concat(saveQuery, ",") ..
-        [[;
+        [[ WHERE username = ?;
     ]], unpack(saveArgs))
 end
 
@@ -82,6 +85,10 @@ function dbLoginPlayer(result, params)
         return
     end
     result = result[1]
+    if result.online_server and result.online_server > 0 then
+        -- Already logged in (other server)
+        return
+    end
     local player = params.player
 
     passwordVerify(params.password, result.password, function (match)
@@ -99,6 +106,10 @@ function dbLoginPlayer(result, params)
 
         setupPlayerInventory(player, result.items)
         loggedPlayers[player] = true
+
+        exports.mysql:dbExec(dbTableName, [[
+            UPDATE ?? SET online_server = ? WHERE username = ?;
+        ]], serverId, result.username)
 
         iprint("Login succ", result.username)
     end)
@@ -159,10 +170,17 @@ setTimer(function ()
 end, 15000, 0)
 
 addEventHandler("onResourceStart", resourceRoot, function ()
+    --serverId =
     for i, player in ipairs(getElementsByType("player")) do
         for i, name in ipairs(loadAccountData) do
             player:removeData(name)
         end
+    end
+end)
+
+addEventHandler("onResourceStop", resourceRoot, function ()
+    for i, player in ipairs(getElementsByType("player")) do
+        savePlayerAccount(player, true)
     end
 end)
 
