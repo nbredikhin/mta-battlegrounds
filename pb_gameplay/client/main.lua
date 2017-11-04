@@ -10,7 +10,8 @@ addEventHandler("onClientResourceStart", resourceRoot, function ()
 
     showGameHUD(false)
     fadeCamera(false, 0)
-    exports.pb_lobby:setVisible(true)
+    exports.pb_login:setVisible(true)
+    -- exports.pb_lobby:setVisible(true)
     fadeCamera(true, 1)
 
     showChat(false)

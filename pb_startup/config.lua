@@ -25,6 +25,7 @@ Config.resourceList = {
     "pb_fuel",
     "pb_loot",
     "pb_vehicles",
+    "pb_login",
     "pb_compass",
     "pb_killchat",
     "pb_map",
