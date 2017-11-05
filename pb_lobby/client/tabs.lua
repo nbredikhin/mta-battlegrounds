@@ -5,7 +5,7 @@ Tabs.home = {
     title = "HOME",
 
     draw = function ()
-        drawArrows()
+
     end
 }
 

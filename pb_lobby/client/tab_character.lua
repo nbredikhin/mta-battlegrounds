@@ -9,6 +9,7 @@ local animOffset = 0
 local tagIcons = {}
 
 local visibleItemsCount = math.min(10, math.floor((screenSize.y - 200) / (itemHeight + itemSpace)))
+local visibleItemsOffset = 1
 
 local tagNames = {
     "hat",
@@ -18,6 +19,16 @@ local tagNames = {
 }
 
 local currentTag = nil
+local inventoryItems = {}
+
+local function scrollTEST()
+    if visibleItemsOffset > #inventoryItems - visibleItemsCount + 1 then
+        visibleItemsOffset = #inventoryItems - visibleItemsCount + 1
+    end
+    if visibleItemsOffset < 1 then
+        visibleItemsOffset = 1
+    end
+end
 
 local function draw()
     local height = visibleItemsCount * (itemHeight + itemSpace) - itemSpace
@@ -29,15 +40,23 @@ local function draw()
     end
     dxDrawText(tagName, x, 0, 0, y - 8, tocolor(255, 255, 255), 2, "default-bold", "left", "bottom")
     dxDrawLine(x, y - 6, x + itemWidth - 1, y - 6, tocolor(255, 255, 255, 150))
-    for i = 1, visibleItemsCount do
-        dxDrawRectangle(x, y, itemWidth, itemHeight, tocolor(0, 0, 0, 200))
-        dxDrawImage(x + 5, y + 5, itemHeight - 10, itemHeight - 10, "assets/icons/jacket1.png")
-        dxDrawText("Одежда " .. i, x + itemHeight + 10, y, 0, y + itemHeight, tocolor(255, 255, 255), 1, "default", "left", "center")
-        dxDrawText("x1", 0, y, x + itemWidth - 10, y + itemHeight, tocolor(255, 255, 255, 150), 1, "default", "right", "center")
-        if isMouseOver(x, y, itemWidth, itemHeight) then
-            dxDrawRectangle(x, y, itemWidth, itemHeight, tocolor(255, 255, 255, 50))
+    inventoryItems = exports.pb_accounts:getInventory()
+    local i = 1
+    for index = visibleItemsOffset, visibleItemsOffset + visibleItemsCount - 1 do
+        if inventoryItems[index] and ((currentTag and exports.pb_accounts:getItemClass(inventoryItems[index].name).layer == currentTag) or not currentTag) then
+            dxDrawRectangle(x, y, itemWidth, itemHeight, tocolor(0, 0, 0, 200))
+            dxDrawImage(x + 5, y + 5, itemHeight - 10, itemHeight - 10, "assets/icons/jacket1.png")
+            dxDrawText(inventoryItems[index].name, x + itemHeight + 10, y, 0, y + itemHeight, tocolor(255, 255, 255), 1, "default", "left", "center")
+            dxDrawText("x" .. inventoryItems[index].count, 0, y, x + itemWidth - 10, y + itemHeight, tocolor(255, 255, 255, 150), 1, "default", "right", "center")
+            if isMouseOver(x, y, itemWidth, itemHeight) then
+                dxDrawRectangle(x, y, itemWidth, itemHeight, tocolor(255, 255, 255, 50))
+                if isMousePressed then
+                    addPedClothes(inventoryItems[index])
+                end
+            end
+            y = y + itemHeight + itemSpace
         end
-        y = y + itemHeight + itemSpace
+        i = i + 1
     end
 
     y = screenSize.y / 2 - height / 2

@@ -16,8 +16,11 @@ Config.resourceList = {
     "bone_attach",
     "parachute",
     "nochat",
+    "mysql",
 
     "pb_afk",
+    "pb_clothes",
+    "pb_accounts",
     "pb_lang",
     "pb_mapping",
     "pb_models",

@@ -1,19 +1,27 @@
 local dbTableName = "users"
-local serverId = 1337
+local serverId = 0
 
 local loadAccountData = {
     "username",
     "battlepoints",
     "donatepoints",
     "rating_wins",
-    "rating_kills"
+    "rating_kills",
+    "clothes_head",
+    "clothes_shirt",
+    "clothes_pants",
+    "clothes_shoes",
 }
 
 local saveAccountData = {
     "battlepoints",
     "donatepoints",
     "rating_wins",
-    "rating_kills"
+    "rating_kills",
+    "clothes_head",
+    "clothes_shirt",
+    "clothes_pants",
+    "clothes_shoes"
 }
 
 local loggedPlayers = {}
@@ -36,7 +44,12 @@ addEventHandler("onResourceStart", resourceRoot, function ()
             rating_wins   BIGINT        UNSIGNED NOT NULL DEFAULT 0,
             rating_kills  BIGINT        UNSIGNED NOT NULL DEFAULT 0,
 
-            online_server INTEGER       UNSIGNED NOT NULL DEFAULT 0
+            online_server INTEGER       UNSIGNED NOT NULL DEFAULT 0,
+
+            clothes_head  VARCHAR(255),
+            clothes_shirt VARCHAR(255),
+            clothes_pants VARCHAR(255),
+            clothes_shoes VARCHAR(255),
         );
     ]])
 end)
@@ -83,16 +96,18 @@ function dbLoginPlayer(result, params)
     if not params or not isElement(params.player) then
         return
     end
+    local player = params.player
     if not result or #result == 0 then
         -- Account not found
+        triggerClientEvent(player, "onClientLoginError", resourceRoot, "account_not_found")
         return
     end
     result = result[1]
     if result.online_server and result.online_server > 0 then
         -- Already logged in (other server)
+        triggerClientEvent(player, "onClientLoginError", resourceRoot, "already_logged")
         return
     end
-    local player = params.player
 
     passwordVerify(params.password, result.password, function (match)
         if not isElement(player) then
@@ -100,6 +115,7 @@ function dbLoginPlayer(result, params)
         end
         if not match then
             -- Passwords dont match
+            triggerClientEvent(player, "onClientLoginError", resourceRoot, "invalid_password")
             return
         end
 
@@ -114,7 +130,23 @@ function dbLoginPlayer(result, params)
             UPDATE ?? SET online_server = ? WHERE username = ?;
         ]], serverId, result.username)
 
-        iprint("Login succ", result.username)
+        triggerClientEvent("onClientLoginSuccess", root)
+    end)
+end
+
+function dbRegisterCheckAccount(result, params)
+    if result and #result > 0 then
+        triggerClientEvent(params.player, "onClientRegisterResult", resourceRoot, false, "account_exists")
+        return
+    end
+    passwordHash(params.password, "bcrypt", { cost = 10 }, function (password)
+        exports.mysql:dbQueryAsync("dbRegisterPlayer", { player = params.player }, dbTableName, [[
+            INSERT INTO ?? (
+                username,
+                password,
+                items
+            ) VALUES (?, ?, ?);
+        ]], params.username, password, toJSON(getDefaultInventory()))
     end)
 end
 
@@ -123,10 +155,10 @@ function dbRegisterPlayer(result, params)
         return
     end
     if not result then
-        -- Failed to register
+        triggerClientEvent(params.player, "onClientRegisterResult", resourceRoot, false)
         return
     end
-    iprint("Register", result)
+    triggerClientEvent(params.player, "onClientRegisterResult", resourceRoot, true)
 end
 
 function loginPlayer(player, username, password)
@@ -146,17 +178,12 @@ function registerPlayer(player, username, password)
         return false
     end
     if not checkUsername(username) or not checkPassword(password) then
+        triggerClientEvent(player, "onClientRegisterResult", resourceRoot, false)
         return false
     end
-    passwordHash(password, "bcrypt", { cost = 10 }, function (password)
-        exports.mysql:dbQueryAsync("dbRegisterPlayer", { player = player }, dbTableName, [[
-            INSERT INTO ?? (
-                username,
-                password,
-                items
-            ) VALUES (?, ?, ?);
-        ]], username, password, toJSON(getDefaultInventory()))
-    end)
+    exports.mysql:dbQueryAsync("dbRegisterCheckAccount", { player = player, username = username, password = password }, dbTableName, [[
+        SELECT * FROM ?? WHERE username = ?;
+    ]], username)
 end
 
 addEventHandler("onPlayerQuit", root, function ()
@@ -195,3 +222,12 @@ addCommandHandler("pblogin", function (player, cmd, username, password)
     loginPlayer(player, username, password)
 end)
 
+addEvent("onPlayerRequestLogin", true)
+addEventHandler("onPlayerRequestLogin", root, function (username, password)
+    loginPlayer(client, username, password)
+end)
+
+addEvent("onPlayerRequestRegister", true)
+addEventHandler("onPlayerRequestRegister", root, function (username, password)
+    registerPlayer(client, username, password)
+end)

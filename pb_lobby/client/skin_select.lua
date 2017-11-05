@@ -2,7 +2,7 @@ local isActive = false
 
 local pedPosition = Vector3(5157.4, -944, 37.5)
 
-local skins = {46, 10, 62, 72, 142, 154, 170, 182, 217, 68, 70, 213, 206, 243, 204, 49, 39, 312, 309, 295, 129}
+local skins = {235}
 local skinIndex = 1
 local playerPed
 
@@ -11,6 +11,10 @@ local targetLookAt = Vector3()
 
 local function createLobbyPed(position)
     local ped = createPed(skins[1], position, 150)
+    ped:setData("clothes_head", localPlayer:getData("clothes_head"))
+    ped:setData("clothes_shirt", localPlayer:getData("clothes_shirt"))
+    ped:setData("clothes_pants", localPlayer:getData("clothes_pants"))
+    ped:setData("clothes_shoes", localPlayer:getData("clothes_pants"))
     ped.frozen = true
     ped.dimension = localPlayer.dimension
     setPedAnimation(ped, "ped", "IDLE_HBHB", -1, true, false)
@@ -18,8 +22,7 @@ local function createLobbyPed(position)
 end
 
 local function updateSkin()
-    skinIndex = math.max(1, math.min(#skins, skinIndex))
-    playerPed.model = skins[skinIndex]
+    playerPed.model = 235
 end
 
 setTimer(function ()
@@ -29,13 +32,6 @@ setTimer(function ()
 end, 1000, 0)
 
 function changeSkin(delta)
-    skinIndex = skinIndex + delta
-    if skinIndex < 1 then
-        skinIndex = #skins
-    elseif skinIndex > #skins then
-        skinIndex = 1
-    end
-
     updateSkin()
     localPlayer:setData("skin", playerPed.model)
 end
@@ -43,12 +39,6 @@ end
 local function handleKey(key, isDown)
     if not isActive or not isDown then
         return
-    end
-
-    if key == "arrow_l" then
-        changeSkin(-1)
-    elseif key == "arrow_r" then
-        changeSkin(1)
     end
 end
 
@@ -61,6 +51,15 @@ end)
 function resetCamera()
     cameraLookAt = playerPed.position + Vector3(0, 0, 0.3)
     targetLookAt = playerPed.position + Vector3(0, 0, 0.3)
+end
+
+function addPedClothes(item)
+    local itemClass = exports.pb_accounts:getItemClass(item.name)
+    if not itemClass then
+        return
+    end
+    exports.pb_clothes:addPedClothes(playerPed, itemClass.clothes)
+    exports.pb_clothes:addPedClothes(localPlayer, itemClass.clothes, true)
 end
 
 function setClothesCamera(active)

@@ -3,9 +3,14 @@
 
     <script type="shared" src="shared/usercheck.lua"/>
     <script type="shared" src="shared/item_classes.lua"/>
-    <script type="shared" src="shared/item_clothes.lua"/>
+
+    <script type="client" src="client/inventory.lua"/>
 
     <script type="server" src="server/utils.lua"/>
     <script type="server" src="server/inventory.lua"/>
     <script type="server" src="server/accounts.lua"/>
+
+    <export type="shared" function="checkUsername"/>
+    <export type="shared" function="getItemClass"/>
+    <export type="client" function="getInventory"/>
 </meta>

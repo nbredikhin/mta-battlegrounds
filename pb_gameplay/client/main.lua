@@ -11,12 +11,17 @@ addEventHandler("onClientResourceStart", resourceRoot, function ()
     showGameHUD(false)
     fadeCamera(false, 0)
     exports.pb_login:setVisible(true)
-    -- exports.pb_lobby:setVisible(true)
     fadeCamera(true, 1)
 
     showChat(false)
 
     localPlayer:setData("spectatingPlayer", false, false)
+end)
+
+addEvent("onClientLoginSuccess", true)
+addEventHandler("onClientLoginSuccess", root, function ()
+    exports.pb_login:setVisible(false)
+    exports.pb_lobby:setVisible(true)
 end)
 
 addEventHandler("onClientPlayerVehicleEnter", localPlayer, function ()

@@ -69,8 +69,14 @@ addEventHandler("onClientResourceStart", resourceRoot, function ()
     local y = screenSize.y * 0.4 + 10
 
     ui.login.username = createCustomEdit(x, y, editWidth, editHeight, "Логин")
+    addEventHandler("onClientGUIChanged", ui.login.username, function ()
+        ui.login.loginButton.enabled = utf8.len(ui.login.username.text) > 0 and utf8.len(ui.login.password.text) > 0
+    end, false)
     y = y + editSpace + editHeight
     ui.login.password = createCustomEdit(x, y, editWidth, editHeight, "Пароль")
+    addEventHandler("onClientGUIChanged", ui.login.password, function ()
+        ui.login.loginButton.enabled = utf8.len(ui.login.username.text) > 0 and utf8.len(ui.login.password.text) > 0
+    end, false)
     ui.login.password.masked = true
     ui.login.password:setData("masked", true)
     y = y +  editHeight + 5
@@ -78,6 +84,7 @@ addEventHandler("onClientResourceStart", resourceRoot, function ()
     y = y + 25 + 5
     x = screenSize.x / 2 - buttonWidth / 2
     ui.login.loginButton = createCustomButton(x, y, buttonWidth, buttonHeight, "Войти")
+    ui.login.loginButton.enabled = false
     y = y + buttonHeight + 10
     local label = GuiLabel(x, y, buttonWidth, buttonHeight, "Регистрация", false)
     label:setHorizontalAlign("center")
@@ -85,9 +92,18 @@ addEventHandler("onClientResourceStart", resourceRoot, function ()
     ui.login.registerButton.alpha = 0
     childElements[ui.login.registerButton] = {label}
 
+    y = y + buttonHeight
+    x = screenSize.x / 2 - editWidth / 2
+    ui.login.messageLabel = GuiLabel(0, y, screenSize.x, 25, "", false)
+    ui.login.messageLabel:setHorizontalAlign("center")
+    ui.login.messageLabel:setColor(255, 0, 0)
+
     local x = screenSize.x / 2 - editWidth / 2
     local y = screenSize.y * 0.4 + 10
     ui.register.username = createCustomEdit(x, y, editWidth, editHeight, "Логин")
+    addEventHandler("onClientGUIChanged", ui.register.username, function ()
+        ui.register.registerButton.enabled = exports.pb_accounts:checkUsername(ui.register.username.text)
+    end, false)
     y = y + editSpace + editHeight
     ui.register.password = createCustomEdit(x, y, editWidth, editHeight, "Пароль")
     ui.register.password.masked = true
@@ -99,6 +115,7 @@ addEventHandler("onClientResourceStart", resourceRoot, function ()
     y = y + editSpace + editHeight
     x = screenSize.x / 2 - buttonWidth / 2
     ui.register.registerButton = createCustomButton(x, y, buttonWidth, buttonHeight, "Регистрация")
+    ui.register.registerButton.enabled = false
     y = y + buttonHeight + 10
     local label = GuiLabel(x, y, buttonWidth, buttonHeight, "Вход в аккаунт", false)
     label:setHorizontalAlign("center")
@@ -106,12 +123,18 @@ addEventHandler("onClientResourceStart", resourceRoot, function ()
     ui.register.loginButton.alpha = 0
     childElements[ui.register.loginButton] = {label}
 
-    -- showCursor(true)
+    y = y + buttonHeight
+    ui.register.messageLabel = GuiLabel(0, y, screenSize.x, 25, "", false)
+    ui.register.messageLabel:setHorizontalAlign("center")
+    ui.register.messageLabel:setColor(255, 0, 0)
 
     showUI("login", false)
     showUI("register", false)
 
     setVisible(false)
+    if not localPlayer:getData("username") then
+        setVisible(true)
+    end
 end)
 
 function showUI(name, visible)
@@ -123,15 +146,22 @@ function showUI(name, visible)
             end
         end
     end
+    ui[name].messageLabel.text = ""
+end
+
+local function showLoginUI()
+    showUI("login", true)
+    showUI("register", false)
+    totalHeight = 230
 end
 
 function setVisible(visible)
     if visible then
         isVisible = true
         showCursor(true)
-        showUI("login", true)
-        showUI("register", false)
-        totalHeight = 230
+        showLoginUI()
+        ui.register.messageLabel.text = ""
+        ui.login.messageLabel.text = ""
     else
         isVisible = false
         showCursor(false)
@@ -146,13 +176,19 @@ addEventHandler("onClientGUIClick", resourceRoot, function ()
         showUI("register", true)
         totalHeight = 265
     elseif source == ui.register.loginButton then
-        showUI("login", true)
-        showUI("register", false)
-        totalHeight = 230
+        showLoginUI()
     elseif source == ui.login.loginButton then
-        iprint("Login pls")
+        triggerServerEvent("onPlayerRequestLogin", resourceRoot, ui.login.username.text, ui.login.password.text)
     elseif source == ui.register.registerButton then
-        iprint("Register pls")
+        if utf8.len(ui.register.password.text) == 0 then
+            ui.register.messageLabel.text = "Введите пароль!"
+            return
+        end
+        if ui.register.password.text ~= ui.register.passwordConfirm.text then
+            ui.register.messageLabel.text = "Пароли не совпадают"
+            return
+        end
+        triggerServerEvent("onPlayerRequestRegister", resourceRoot, ui.register.username.text, ui.register.password.text)
     end
 end)
 
@@ -182,6 +218,30 @@ addEventHandler("onClientGUIBlur", resourceRoot, function ()
         else
             editLabel.alpha = 0.5
             editLabel.text = editLabel:getData("origText")
+        end
+    end
+end)
+
+addEvent("onClientLoginError", true)
+addEventHandler("onClientLoginError", root, function (reason)
+    if reason then
+        ui.login.messageLabel.text = "Не удалось войти (" .. tostring(reason) .. ")"
+    else
+        ui.login.messageLabel.text = "Не удалось войти (неизвестная ошибка)"
+    end
+end)
+
+addEvent("onClientRegisterResult", true)
+addEventHandler("onClientRegisterResult", root, function (success, reason)
+    if success then
+        showLoginUI()
+        ui.login.username.text = ui.register.username.text
+        ui.login.password.text = ui.register.password.text
+    else
+        if reason then
+            ui.register.messageLabel.text = "Ошибка регистрации (" .. tostring(reason) .. ")"
+        else
+            ui.register.messageLabel.text = "Ошибка регистрации (неизвестная ошибка)"
         end
     end
 end)

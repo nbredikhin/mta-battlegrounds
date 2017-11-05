@@ -5,6 +5,7 @@
 
     <script type="client" src="client/main.lua"/>
 
+    <export type="shared" function="addPedClothes"/>
     <export type="shared" function="getClothesTable"/>
 
     <file src="assets/shaders/mta-helper.fx"/>
