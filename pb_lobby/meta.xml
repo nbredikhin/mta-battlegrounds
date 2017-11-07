@@ -5,7 +5,7 @@
     <script type="server" src="server/main.lua"/>
 
     <script type="client" src="client/main.lua"/>
-    <script type="client" src="client/skin_select.lua"/>
+    <script type="client" src="client/player_ped.lua"/>
     <script type="client" src="client/drawing.lua"/>
     <script type="client" src="client/ui_invite.lua"/>
 

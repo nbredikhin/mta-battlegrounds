@@ -4,6 +4,14 @@ function getClothesTable()
     return ClothesTable
 end
 
+function isValidClothesName(name)
+    if name and ClothesTable[name] then
+        return true
+    else
+        return false
+    end
+end
+
 local function addNumberedClothes(baseName, count, basePath, layer, material, hideElbow)
     for i = 1, count do
         ClothesTable[baseName..i] = {
@@ -56,7 +64,7 @@ addNumberedClothes("riders", 1, "assets/clothes/shirt/riders/", "shirt", "riders
 addNumberedClothes("shirt", 10, "assets/clothes/shirt/shirt/", "shirt", "shirt", true)
 addNumberedClothes("sweater", 4, "assets/clothes/shirt/sweater/", "shirt", "sweater", true)
 addNumberedClothes("tracksuit", 6, "assets/clothes/shirt/tracksuit/", "shirt", "tracksuit", true)
-addNumberedClothes("tshirt", 9, "assets/clothes/shirt/tshirt/", "shirt", "tshirt", false)
+addNumberedClothes("tshirt", 10, "assets/clothes/shirt/tshirt/", "shirt", "tshirt", false)
 addNumberedClothes("woolcoat", 10, "assets/clothes/shirt/woolcoat/", "shirt", "woolcoat", true)
 
 ClothesTable.tshirt_ccd = { layer = "shirt", material = "tshirt", price = 0 }

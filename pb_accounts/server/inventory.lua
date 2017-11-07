@@ -32,6 +32,7 @@ end
 
 function addPlayerInventoryItem(player, item)
     if not player or not isItem(item) then
+        iprint("Bad player or item")
         return
     end
     local inventory = getPlayerInventory(player)
@@ -43,12 +44,13 @@ function addPlayerInventoryItem(player, item)
             inventoryItem.count = inventoryItem.count + 1
             savePlayerAccount(player)
             sendPlayerInventory(player)
-            return
+            return true
         end
     end
     table.insert(inventory, item)
     savePlayerAccount(player)
     sendPlayerInventory(player)
+    return true
 end
 
 function takePlayerInventoryItemCount(player, name, count)
@@ -70,7 +72,7 @@ function takePlayerInventoryItemCount(player, name, count)
             end
             savePlayerAccount(player)
             sendPlayerInventory(player)
-            return
+            return true
         end
     end
 end
@@ -95,6 +97,20 @@ function setupPlayerInventory(player, items)
             table.insert(validItems, item)
         end
     end
+    -- Выдача дефолтной одежды, если её нет
+    for layer, name in pairs(DefaultClothes) do
+        local found = false
+        for i, item in ipairs(validItems) do
+            if getItemClass(item).clothes == name then
+                found = true
+                break
+            end
+        end
+        if not found then
+            table.insert(validItems, createItem("clothes_"..tostring(name)))
+        end
+    end
+    giveMissingPlayerClothes(player)
     playerInventories[player] = validItems
 
     sendPlayerInventory(player)
@@ -107,5 +123,13 @@ function sendPlayerInventory(player)
 end
 
 addCommandHandler("accgive", function (player, cmd, name)
-    addPlayerInventoryItem(player, createItem(name))
+    local item = createItem(name)
+    if not isItem(item) then
+        iprint("Item does not exist", name)
+    end
+    if addPlayerInventoryItem(player, item) then
+        iprint("Added item", name)
+    else
+        iprint("Failed to add", name)
+    end
 end)

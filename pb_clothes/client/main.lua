@@ -63,16 +63,26 @@ function loadPedClothes(ped)
     if not hideElbow then
         table.insert(loadedClothes[ped], createClothesShader(ped, "elbow", getTexture("assets/elbow.png")))
     end
-    -- createClothesShader(ped, "wrist", getTexture("assets/wrist.png"))
 end
 
 addEventHandler("onClientElementDataChange", root, function (dataName)
-    if not isElementStreamedIn(source) then
+    if source.type ~= "player" and source.type ~= "ped" then
+        return
+    end
+    if source ~= localPlayer and not isElementStreamedIn(source) then
         return
     end
     if string.find(dataName, "clothes_") then
         loadPedClothes(source)
     end
+end)
+
+addEventHandler("onClientElementStreamIn", root, function ()
+    loadPedClothes(source)
+end)
+
+addEventHandler("onClientElementStreamOut", root, function ()
+    unloadPedClothes(source)
 end)
 
 addEventHandler("onClientResourceStart", resourceRoot, function ()

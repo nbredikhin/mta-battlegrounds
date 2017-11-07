@@ -2,27 +2,29 @@ local isActive = false
 
 local pedPosition = Vector3(5157.4, -944, 37.5)
 
-local skins = {235}
-local skinIndex = 1
 local playerPed
+
+local localPlayerClothes = {}
 
 local cameraLookAt = Vector3()
 local targetLookAt = Vector3()
 
 local function createLobbyPed(position)
-    local ped = createPed(skins[1], position, 150)
-    ped:setData("clothes_head", localPlayer:getData("clothes_head"))
-    ped:setData("clothes_shirt", localPlayer:getData("clothes_shirt"))
-    ped:setData("clothes_pants", localPlayer:getData("clothes_pants"))
-    ped:setData("clothes_shoes", localPlayer:getData("clothes_pants"))
+    local ped = createPed(235, position, 150)
     ped.frozen = true
     ped.dimension = localPlayer.dimension
     setPedAnimation(ped, "ped", "IDLE_HBHB", -1, true, false)
+    updatePedClothes(ped, localPlayer)
     return ped
 end
 
-local function updateSkin()
-    playerPed.model = 235
+function updatePedClothes(ped, player)
+    if isElement(ped) and isElement(player) then
+        ped:setData("clothes_head", player:getData("clothes_head"))
+        ped:setData("clothes_shirt", player:getData("clothes_shirt"))
+        ped:setData("clothes_pants", player:getData("clothes_pants"))
+        ped:setData("clothes_shoes", player:getData("clothes_shoes"))
+    end
 end
 
 setTimer(function ()
@@ -30,17 +32,6 @@ setTimer(function ()
         setPedLookAt(playerPed, playerPed.matrix:transformPosition(-2, 4, 1), -1, 1000)
     end
 end, 1000, 0)
-
-function changeSkin(delta)
-    updateSkin()
-    localPlayer:setData("skin", playerPed.model)
-end
-
-local function handleKey(key, isDown)
-    if not isActive or not isDown then
-        return
-    end
-end
 
 addEventHandler("onClientPreRender", root, function (dt)
     setCameraMatrix(Vector3(5155.76, -945.65, 38.2), cameraLookAt, 0, 90)
@@ -53,13 +44,8 @@ function resetCamera()
     targetLookAt = playerPed.position + Vector3(0, 0, 0.3)
 end
 
-function addPedClothes(item)
-    local itemClass = exports.pb_accounts:getItemClass(item.name)
-    if not itemClass then
-        return
-    end
-    exports.pb_clothes:addPedClothes(playerPed, itemClass.clothes)
-    exports.pb_clothes:addPedClothes(localPlayer, itemClass.clothes, true)
+function getLocalPlayerPed()
+    return playerPed
 end
 
 function setClothesCamera(active)
@@ -82,9 +68,7 @@ function startSkinSelect()
 
     playerPed = createLobbyPed(pedPosition)
 
-    addEventHandler("onClientKey", root, handleKey)
     resetCamera()
-    changeSkin(0)
 end
 
 function stopSkinSelect()
@@ -99,8 +83,6 @@ function stopSkinSelect()
 
     localPlayer.alpha = 255
     localPlayer.frozen = false
-
-    removeEventHandler("onClientKey", root, handleKey)
 
     setCameraTarget(localPlayer)
 end

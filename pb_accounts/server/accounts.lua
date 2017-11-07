@@ -49,7 +49,7 @@ addEventHandler("onResourceStart", resourceRoot, function ()
             clothes_head  VARCHAR(255),
             clothes_shirt VARCHAR(255),
             clothes_pants VARCHAR(255),
-            clothes_shoes VARCHAR(255),
+            clothes_shoes VARCHAR(255)
         );
     ]])
 end)
@@ -121,6 +121,11 @@ function dbLoginPlayer(result, params)
 
         for i, name in ipairs(loadAccountData) do
             player:setData(name, result[name])
+        end
+
+        local head = player:getData("clothes_head")
+        if not exports.pb_clothes:isValidClothesName(head) then
+            player:setData("clothes_head", "head1")
         end
 
         setupPlayerInventory(player, fromJSON(result.items))

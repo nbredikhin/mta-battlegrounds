@@ -1,5 +1,5 @@
 local screenSize = Vector2(guiGetScreenSize())
-local isLobbyVisible = false
+isLobbyVisible = false
 
 isMousePressed = false
 local prevMouseState = false

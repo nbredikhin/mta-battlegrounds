@@ -97,7 +97,7 @@ end, 500, 0)
 
 addEventHandler("onClientResourceStart", resourceRoot, function ()
     localPlayer:setData("lobbyReady", false)
-    -- setVisible(true)
+    setVisible(true)
 
     triggerServerEvent("updateLobby", resourceRoot)
 end)
@@ -139,6 +139,12 @@ addEventHandler("onClientElementDataChange", root, function (dataName)
     elseif dataName == "matchId" then
         if lobbyPeds[source] then
             updatePlayerReadyState(source)
+        end
+    elseif string.find(dataName, "clothes_") then
+        if lobbyPeds[source] then
+            updatePedClothes(lobbyPeds[source], source)
+        elseif source == localPlayer then
+            updatePedClothes(getLocalPlayerPed(), localPlayer)
         end
     end
 end)

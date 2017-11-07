@@ -10,6 +10,12 @@ local tagIcons = {}
 
 local visibleItemsCount = math.min(10, math.floor((screenSize.y - 200) / (itemHeight + itemSpace)))
 local visibleItemsOffset = 1
+local maxVisibleItemsCount = visibleItemsCount
+
+local itemsHeight = visibleItemsCount * (itemHeight + itemSpace) - itemSpace
+
+local itemsX = screenSize.x - itemWidth - 50
+local itemsY = screenSize.y / 2 - itemsHeight / 2
 
 local tagNames = {
     "hat",
@@ -22,36 +28,65 @@ local currentTag = nil
 local inventoryItems = {}
 
 local function scrollTEST()
-    if visibleItemsOffset > #inventoryItems - visibleItemsCount + 1 then
-        visibleItemsOffset = #inventoryItems - visibleItemsCount + 1
-    end
-    if visibleItemsOffset < 1 then
-        visibleItemsOffset = 1
-    end
+
 end
 
 local function draw()
-    local height = visibleItemsCount * (itemHeight + itemSpace) - itemSpace
-    local x = screenSize.x - itemWidth - 50 + animOffset
-    local y = screenSize.y / 2 - height / 2
+    local x = itemsX + animOffset
+    local y = itemsY
     local tagName = "all"
     if currentTag then
         tagName = currentTag
     end
     dxDrawText(tagName, x, 0, 0, y - 8, tocolor(255, 255, 255), 2, "default-bold", "left", "bottom")
     dxDrawLine(x, y - 6, x + itemWidth - 1, y - 6, tocolor(255, 255, 255, 150))
-    inventoryItems = exports.pb_accounts:getInventory()
+
+    if not inventoryItems then
+        return
+    end
     local i = 1
     for index = visibleItemsOffset, visibleItemsOffset + visibleItemsCount - 1 do
-        if inventoryItems[index] and ((currentTag and exports.pb_accounts:getItemClass(inventoryItems[index].name).layer == currentTag) or not currentTag) then
+        local item = inventoryItems[index]
+        if item then
+            local itemClass = item.itemClass
             dxDrawRectangle(x, y, itemWidth, itemHeight, tocolor(0, 0, 0, 200))
             dxDrawImage(x + 5, y + 5, itemHeight - 10, itemHeight - 10, "assets/icons/jacket1.png")
-            dxDrawText(inventoryItems[index].name, x + itemHeight + 10, y, 0, y + itemHeight, tocolor(255, 255, 255), 1, "default", "left", "center")
-            dxDrawText("x" .. inventoryItems[index].count, 0, y, x + itemWidth - 10, y + itemHeight, tocolor(255, 255, 255, 150), 1, "default", "right", "center")
+            if localPlayer:getData("clothes_"..itemClass.layer) == itemClass.clothes then
+                dxDrawRectangle(x, y, itemHeight, itemHeight, tocolor(0, 255, 0, 50))
+            end
+
+            dxDrawText(item.name, x + itemHeight + 10, y, 0, y + itemHeight, tocolor(255, 255, 255), 1, "default", "left", "center")
+            dxDrawText("x" .. item.count, 0, y, x + itemWidth - 10, y + itemHeight, tocolor(255, 255, 255, 150), 1, "default", "right", "center")
             if isMouseOver(x, y, itemWidth, itemHeight) then
-                dxDrawRectangle(x, y, itemWidth, itemHeight, tocolor(255, 255, 255, 50))
-                if isMousePressed then
-                    addPedClothes(inventoryItems[index])
+                dxDrawRectangle(x, y, itemWidth, itemHeight, tocolor(0, 0, 0, 200))
+                local isSellDisabled = item.count == 1 and exports.pb_accounts:getDefaultClothes(itemClass.layer) == itemClass.clothes
+                local bx = x
+                local bw = itemWidth - itemHeight * 1.5
+                if isSellDisabled then
+                    bw = itemWidth
+                end
+                local alpha1 = 100
+                if isMouseOver(bx, y, bw, itemHeight) then
+                    alpha1 = 200
+                    if isMousePressed then
+                        triggerServerEvent("onPlayerSelectClothes", resourceRoot, item.index)
+                    end
+                end
+                dxDrawRectangle(bx, y, bw, itemHeight, tocolor(255, 255, 255, alpha1))
+                dxDrawText("Надеть", bx, y, bx + bw, y + itemHeight, tocolor(0, 0, 0, alpha1), 1.4, "default-bold", "center", "center")
+
+                if not isSellDisabled then
+                    bx = bx + bw
+                    bw = itemHeight * 1.5
+                    local alpha2 = 100
+                    if isMouseOver(bx, y, bw, itemHeight) then
+                        alpha2 = 200
+                        if isMousePressed then
+                            triggerServerEvent("onPlayerSellClothes", resourceRoot, item.index)
+                        end
+                    end
+                    dxDrawRectangle(bx, y, bw, itemHeight, tocolor(255, 0, 0, alpha2))
+                    dxDrawText("Продать\n(9999 BP)", bx, y, bx + bw, y + itemHeight, tocolor(255, 255, 255, alpha2), 1, "default", "center", "center")
                 end
             end
             y = y + itemHeight + itemSpace
@@ -59,8 +94,8 @@ local function draw()
         i = i + 1
     end
 
-    y = screenSize.y / 2 - height / 2
-    x = x - itemHeight - 20
+    x = itemsX - itemHeight - 20 + animOffset
+    y = itemsY
     for i = 1, #tagNames do
         dxDrawRectangle(x, y, itemHeight, itemHeight, tocolor(0, 0, 0, 200))
         local alpha = 100
@@ -69,6 +104,8 @@ local function draw()
 
             if isMousePressed then
                 currentTag = tagNames[i]
+                updateInventory()
+                visibleItemsOffset = 1
             end
         end
         if currentTag and tagNames[i] == currentTag then
@@ -76,6 +113,16 @@ local function draw()
         end
         dxDrawImage(x + 10, y + 10, itemHeight - 20, itemHeight - 20, tagIcons[tagNames[i]], 0, 0, 0, tocolor(255, 255, 255, alpha))
         y = y + itemHeight + itemSpace
+    end
+
+    if #inventoryItems > visibleItemsCount then
+        x = itemsX + itemWidth + 10 + animOffset
+        y = itemsY
+
+        dxDrawRectangle(x, y, 5, itemsHeight, tocolor(0, 0, 0, 50))
+        local barHeight = itemHeight * 1.5
+        local barY = y + barHeight / 2+ (itemsHeight - barHeight) * (visibleItemsOffset - 1) / (maxVisibleItemsCount - 1)
+        dxDrawRectangle(x - 2.5, barY - barHeight / 2, 10, barHeight, tocolor(255, 255, 255, 150))
     end
 
     animOffset = animOffset - animOffset * 0.1
@@ -87,6 +134,7 @@ Tabs.character = {
     load = function ()
         setClothesCamera(true)
         animOffset = itemWidth + itemHeight * 2
+        updateInventory()
     end,
 
     unload = function ()
@@ -99,5 +147,66 @@ Tabs.character = {
 addEventHandler("onClientResourceStart", resourceRoot, function ()
     for i, name in ipairs(tagNames) do
         tagIcons[name] = dxCreateTexture("assets/icons/tags/"..tostring(name)..".png")
+    end
+end)
+
+function updateInventory()
+    local items = exports.pb_accounts:getInventory()
+    inventoryItems = {}
+    for i, item in ipairs(items) do
+        local itemClass = exports.pb_accounts:getItemClass(item.name)
+        item.itemClass = itemClass
+        item.index = i
+        if currentTag then
+            if itemClass.layer == currentTag then
+                table.insert(inventoryItems, item)
+            end
+        else
+            table.insert(inventoryItems, item)
+        end
+    end
+
+    maxVisibleItemsCount = #inventoryItems - visibleItemsCount + 1
+
+    if visibleItemsOffset > maxVisibleItemsCount then
+        visibleItemsOffset = maxVisibleItemsCount
+    end
+    if visibleItemsOffset < 1 then
+        visibleItemsOffset = 1
+    end
+end
+
+addEvent("onClientInventoryUpdated", true)
+addEventHandler("onClientInventoryUpdated", root, function ()
+    if not isLobbyVisible then
+        return
+    end
+    updateInventory()
+end)
+
+addEventHandler("onClientKey", root, function (key, down)
+    if not isLobbyVisible then
+        return
+    end
+    if not down then
+        return
+    end
+    local delta
+    if key == "mouse_wheel_up" then
+        delta = -1
+    elseif key == "mouse_wheel_down" then
+        delta = 1
+    else
+        return
+    end
+    if isMouseOver(itemsX, itemsY, itemWidth, itemsHeight) then
+        visibleItemsOffset = visibleItemsOffset + delta
+
+        if visibleItemsOffset > maxVisibleItemsCount then
+            visibleItemsOffset = maxVisibleItemsCount
+        end
+        if visibleItemsOffset < 1 then
+            visibleItemsOffset = 1
+        end
     end
 end)

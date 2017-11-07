@@ -7,6 +7,7 @@
 
     <export type="shared" function="addPedClothes"/>
     <export type="shared" function="getClothesTable"/>
+    <export type="shared" function="isValidClothesName"/>
 
     <file src="assets/shaders/mta-helper.fx"/>
     <file src="assets/shaders/tex_matrix.fx"/>
@@ -229,6 +230,7 @@
     <file src="assets/clothes/shirt/bubblegoose/bubblegoose4.png"/>
 
     <file src="assets/clothes/shirt/tshirt/tshirt_ccd.png"/>
+    <file src="assets/clothes/shirt/tshirt/tshirt10.png"/>
     <file src="assets/clothes/head/head_test.png"/>
 
 </meta>
