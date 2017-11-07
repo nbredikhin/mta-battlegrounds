@@ -1,4 +1,4 @@
-local isCompassVisible = true
+local isCompassVisible = false
 
 local screenSize = Vector2(guiGetScreenSize())
 local textures = {}

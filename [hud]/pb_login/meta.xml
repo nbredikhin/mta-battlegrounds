@@ -1,6 +1,7 @@
 <meta>
     <oop>true</oop>
 
+    <script type="client" src="client/autologin.lua"/>
     <script type="client" src="client/gui.lua"/>
     <export type="client" function="setVisible"/>
 

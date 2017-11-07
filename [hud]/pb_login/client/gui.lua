@@ -80,7 +80,7 @@ addEventHandler("onClientResourceStart", resourceRoot, function ()
     ui.login.password.masked = true
     ui.login.password:setData("masked", true)
     y = y +  editHeight + 5
-    ui.login.remember = GuiCheckBox(x, y, editWidth, 25, "Автоматический вход", false, false)
+    ui.login.remember = GuiCheckBox(x, y, editWidth, 25, "Запомнить логин и пароль", false, false)
     y = y + 25 + 5
     x = screenSize.x / 2 - buttonWidth / 2
     ui.login.loginButton = createCustomButton(x, y, buttonWidth, buttonHeight, "Войти")
@@ -162,11 +162,24 @@ function setVisible(visible)
         showLoginUI()
         ui.register.messageLabel.text = ""
         ui.login.messageLabel.text = ""
+
+        local autologin = autologinLoad()
+        if autologin then
+            ui.login.remember.selected = true
+            ui.login.username.text = autologin.username
+            ui.login.password.text = autologin.password
+            updateEditLabel(ui.login.username)
+            updateEditLabel(ui.login.password)
+        end
     else
         isVisible = false
         showCursor(false)
         showUI("login", false)
         showUI("register", false)
+
+        if ui.login.remember.selected then
+            autologinRemember(ui.login.username.text, ui.login.password.text)
+        end
     end
 end
 
@@ -189,6 +202,10 @@ addEventHandler("onClientGUIClick", resourceRoot, function ()
             return
         end
         triggerServerEvent("onPlayerRequestRegister", resourceRoot, ui.register.username.text, ui.register.password.text)
+    elseif source == ui.login.remember then
+        if not ui.login.remember.selected then
+            autologinClear()
+        end
     end
 end)
 
@@ -200,19 +217,19 @@ addEventHandler("onClientGUIFocus", resourceRoot, function ()
     end
 end)
 
-addEventHandler("onClientGUIBlur", resourceRoot, function ()
-    local editLabel = source:getData("editLabel")
+function updateEditLabel(edit)
+    local editLabel = edit:getData("editLabel")
     if isElement(editLabel) then
-        source.alpha = 0
+        edit.alpha = 0
         editLabel.visible = true
-        if utf8.len(source.text) > 0 then
-            if source:getData("masked") then
+        if utf8.len(edit.text) > 0 then
+            if edit:getData("masked") then
                 editLabel.text = ""
-                for i = 1, utf8.len(source.text) do
+                for i = 1, utf8.len(edit.text) do
                     editLabel.text = editLabel.text .. "*"
                 end
             else
-                editLabel.text = source.text
+                editLabel.text = edit.text
             end
             editLabel.alpha = 1
         else
@@ -220,6 +237,10 @@ addEventHandler("onClientGUIBlur", resourceRoot, function ()
             editLabel.text = editLabel:getData("origText")
         end
     end
+end
+
+addEventHandler("onClientGUIBlur", resourceRoot, function ()
+    updateEditLabel(source)
 end)
 
 addEvent("onClientLoginError", true)

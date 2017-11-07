@@ -1,5 +1,5 @@
 local screenSize = Vector2(guiGetScreenSize())
-local isVisible = true
+local isVisible = false
 
 DEBUG_DRAW = false
 
