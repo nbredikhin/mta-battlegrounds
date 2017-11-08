@@ -1,4 +1,20 @@
 Languages.english = {
+    -- Login panel
+    login_label_username = "Username",
+    login_label_password = "Password",
+    login_label_password_repeat = "Repeat password",
+    login_remember_checkbox = "Remember this account",
+    login_button_login = "Login",
+    login_button_register = "Register",
+    login_show_register_panel = "Register new account",
+    login_show_login_panel = "Back to login",
+    login_error_default_login = "Failed to login (unknown error)",
+    login_error_default_register = "Failed to create account (unknown error)",
+    login_error_account_not_found = "Account not found",
+    login_error_already_logged = "Account is already in use",
+    login_error_invalid_password = "Invalid password",
+    login_error_account_exists = "Username is already taken",
+
     -- LOBBY
     lobby_start_game = "START GAME",
     lobby_searching  = "SEARCHING",
@@ -27,6 +43,12 @@ Languages.english = {
     lobby_button_leave = "LEAVE LOBBY",
     lobby_invite_declined = "Player has declined your invite",
     lobby_search_failed = "Failed to find game.\nOne or more players are in a match.",
+
+    lobby_tab_home = "HOME",
+    lobby_tab_shop = "SHOP",
+    lobby_tab_stats = "STATISTICS",
+    lobby_tab_rewards = "REWARDS",
+    lobby_tab_character = "CHARACTER",
 
     -- INVENTORY
     inventory_backpack_weight = "Total weight",
@@ -124,4 +146,12 @@ Languages.english = {
     kill_message_with = "with",
     kill_message_left = "left",
     kill_message_Kills = "Kills",
+
+    -- Clothes
+    clothes_head = "Head",
+    clothes_shirt = "Torso",
+    clothes_pants = "Legs",
+    clothes_shoes = "Shoes",
+    clothes_hat = "Hats",
+    clothes_all = "All clothes",
 }

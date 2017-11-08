@@ -1,6 +1,7 @@
 <meta>
     <oop>true</oop>
 
+    <script type="client" src="client/localize.lua"/>
     <script type="client" src="client/autologin.lua"/>
     <script type="client" src="client/gui.lua"/>
     <export type="client" function="setVisible"/>
@@ -8,4 +9,6 @@
     <file type="client" src="assets/edit.png"/>
     <file type="client" src="assets/bg.jpg"/>
     <file type="client" src="assets/logo.png"/>
+    <file type="client" src="assets/ru.png"/>
+    <file type="client" src="assets/en.png"/>
 </meta>

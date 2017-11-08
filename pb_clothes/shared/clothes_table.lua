@@ -19,8 +19,15 @@ local function addNumberedClothes(baseName, count, basePath, layer, material, hi
             material = material or baseName,
             hideElbow = hideElbow,
             path = basePath .. baseName..i..".png",
-            price = 10
+            price = 10,
+            readableName = baseName:gsub("^%l", string.upper) .. " " .. i
         }
+    end
+end
+
+local function renameClothes(name, newName)
+    if name and ClothesTable[name] then
+        ClothesTable[name].readableName = newName
     end
 end
 
@@ -65,9 +72,12 @@ addNumberedClothes("shirt", 10, "shirt/shirt/", "shirt", "shirt", true)
 addNumberedClothes("sweater", 4, "shirt/sweater/", "shirt", "sweater", true)
 addNumberedClothes("tracksuit", 6, "shirt/tracksuit/", "shirt", "tracksuit", true)
 addNumberedClothes("tshirt", 11, "shirt/tshirt/", "shirt", "tshirt", false)
+for i = 1, 11 do
+    renameClothes("tshirt" .. i, "T-shirt " .. i)
+end
 addNumberedClothes("woolcoat", 10, "shirt/woolcoat/", "shirt", "woolcoat", true)
 
-ClothesTable.tshirt_ccd = { layer = "shirt", material = "tshirt", price = 0 }
+ClothesTable.tshirt_ccd = { layer = "shirt", material = "tshirt", price = 0, readableName = "CCD TShirt" }
 
 -- ШТАНЫ
 
@@ -99,3 +109,15 @@ addNumberedClothes("workingb", 5, "shoes/workingb/", "shoes", "workingb")
 --     f:write('\t<file src="'..c.path..'.png"/>\n')
 -- end
 -- f:close()
+
+renameClothes("tshirt1", "Dirty T-shirt")
+renameClothes("tshirt2", "Black T-shirt")
+renameClothes("tshirt3", "Blue T-shirt")
+renameClothes("tshirt4", "Green T-shirt")
+renameClothes("tshirt5", "Grey T-shirt")
+renameClothes("tshirt6", "Striped Orange T-shirt")
+renameClothes("tshirt7", "Red T-shirt")
+renameClothes("tshirt8", "Striped Red T-shirt")
+renameClothes("tshirt9", "White T-shirt")
+renameClothes("tshirt10", "White Russian T-shirt")
+renameClothes("tshirt11", "GUCCI T-shirt")

@@ -36,9 +36,9 @@ end
 local function draw()
     local x = itemsX + animOffset
     local y = itemsY
-    local tagName = "all"
+    local tagName = localize("clothes_all")
     if currentTag then
-        tagName = currentTag
+        tagName = localize("clothes_" .. currentTag)
     end
     dxDrawText(tagName, x, 0, 0, y - 8, tocolor(255, 255, 255), 2, "default-bold", "left", "bottom")
     dxDrawLine(x, y - 6, x + itemWidth - 1, y - 6, tocolor(255, 255, 255, 150))
@@ -61,7 +61,8 @@ local function draw()
             end
             dxDrawImage(x + 5, y + 5, itemHeight - 10, itemHeight - 10, clothesIcons[itemClass.clothes])
 
-            dxDrawText(itemClass.clothes:gsub("^%l", string.upper), x + itemHeight + 10, y, 0, y + itemHeight, tocolor(255, 255, 255), 1, "default", "left", "center")
+            local clothesName = itemClass.readableName or itemClass.clothes:gsub("^%l", string.upper)
+            dxDrawText(clothesName, x + itemHeight + 10, y, 0, y + itemHeight, tocolor(255, 255, 255), 1, "default", "left", "center")
             dxDrawText("x" .. item.count, 0, y, x + itemWidth - 10, y + itemHeight, tocolor(255, 255, 255, 150), 1, "default", "right", "center")
             if isMouseOver(x, y, itemWidth, itemHeight) then
                 dxDrawRectangle(x, y, itemWidth, itemHeight, tocolor(0, 0, 0, 200))
@@ -139,7 +140,7 @@ local function draw()
 end
 
 Tabs.character = {
-    title = "CHARACTER",
+    title = localize("lobby_tab_character"),
 
     load = function ()
         setClothesCamera(true)

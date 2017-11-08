@@ -2,7 +2,7 @@ Tabs = {}
 local screenSize = Vector2(guiGetScreenSize())
 
 Tabs.home = {
-    title = "HOME",
+    title = localize("lobby_tab_home"),
 
     draw = function ()
 
@@ -10,7 +10,7 @@ Tabs.home = {
 }
 
 Tabs.shop = {
-    title = "SHOP",
+    title = localize("lobby_tab_shop"),
 
     load = function ()
         fadeCamera(false, 1)
@@ -22,11 +22,11 @@ Tabs.shop = {
 }
 
 Tabs.rewards = {
-    title = "REWARDS",
+    title = localize("lobby_tab_rewards"),
 }
 
 Tabs.statistics = {
-    title = "STATISTICS",
+    title = localize("lobby_tab_stats"),
 }
 
 local tabsOrder = {

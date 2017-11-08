@@ -1,4 +1,20 @@
 Languages.russian = {
+    -- Login panel
+    login_label_username = "Логин",
+    login_label_password = "Пароль",
+    login_label_password_repeat = "Пароль ещё раз",
+    login_remember_checkbox = "Запомнить логин и пароль",
+    login_button_login = "Войти",
+    login_button_register = "Регистрация",
+    login_show_register_panel = "Создать аккаунт",
+    login_show_login_panel = "Войти в аккаунт",
+    login_error_default_login = "Не удалось войти в аккаунт (неизвестная ошибка)",
+    login_error_default_register = "Не удалось создать аккаунт (неизвестная ошибка)",
+    login_error_account_not_found = "Аккаунт с таким именем не найден",
+    login_error_already_logged = "Аккаунт уже используется",
+    login_error_invalid_password = "Неверный пароль",
+    login_error_account_exists = "Аккаунт с таким именем уже зарегистрирован",
+
     -- LOBBY
     lobby_start_game = "НАЧАТЬ ИГРУ",
     lobby_searching  = "ПОИСК МАТЧА",
@@ -27,6 +43,12 @@ Languages.russian = {
     lobby_button_leave = "ПОКИНУТЬ ЛОББИ",
     lobby_invite_declined = "Игрок не принял приглашение",
     lobby_search_failed = "Не удалось найти матч\nодин из игроков уже в игре",
+
+    lobby_tab_home = "ГЛАВНАЯ",
+    lobby_tab_shop = "МАГАЗИН",
+    lobby_tab_stats = "СТАТИСТИКА",
+    lobby_tab_rewards = "НАГРАДЫ",
+    lobby_tab_character = "ПЕРСОНАЖ",
 
     -- INVENTORY
     inventory_backpack_weight = "Носимый вес",
@@ -124,4 +146,12 @@ Languages.russian = {
     kill_message_with = "из",
     kill_message_left = "в живых",
     kill_message_Kills = "Убийств",
+
+    -- Clothes
+    clothes_head = "Лицо",
+    clothes_shirt = "Верх",
+    clothes_pants = "Штаны",
+    clothes_shoes = "Обувь",
+    clothes_hat = "Шапки",
+    clothes_all = "Вся одежда",
 }

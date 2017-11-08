@@ -6,6 +6,12 @@ function setLanguage(language)
     end
     currentLanguage = language
     saveFile("language", language)
+
+    triggerEvent("onLanguageChanged", resourceRoot, language)
+end
+
+function getLanguage()
+    return currentLanguage
 end
 
 function localize(name)

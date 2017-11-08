@@ -113,6 +113,3 @@ function getClothesIcon(name)
     local path = ClothesTable[name].path or layer.."/"..ClothesTable[name].material.."/"..name..".png"
     return getTexture("assets/icons/" .. path)
 end
-
---srun for i = 1, 100 do     local ped = createPed(235, p.position + Vector3(i * 1, 0, 0)) mped(ped) end
---srun function mped() ped:setData("clothes_head", "head1") ped:setData("clothes_shirt", "mjacket") ped:setData("clothes_pants", "jeans") ped:setData("clothes_shoes", "sneakers") end

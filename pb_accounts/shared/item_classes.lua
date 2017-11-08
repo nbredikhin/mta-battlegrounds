@@ -5,9 +5,10 @@ if clothesTable then
     for name, data in pairs(clothesTable) do
         if data.layer ~= "head" then
             ItemClasses["clothes_"..name] = {
-                clothes = name,
-                price   = data.price or 0,
-                layer   = data.layer
+                clothes      = name,
+                price        = data.price or 0,
+                layer        = data.layer,
+                readableName = data.readableName
             }
         end
     end

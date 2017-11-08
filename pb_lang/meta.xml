@@ -10,4 +10,5 @@
 
     <export type="client" function="localize"/>
     <export type="client" function="setLanguage"/>
+    <export type="client" function="getLanguage"/>
 </meta>
