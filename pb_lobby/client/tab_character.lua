@@ -27,6 +27,8 @@ local tagNames = {
 local currentTag = nil
 local inventoryItems = {}
 
+local clothesIcons = {}
+
 local function scrollTEST()
 
 end
@@ -50,12 +52,16 @@ local function draw()
         if item then
             local itemClass = item.itemClass
             dxDrawRectangle(x, y, itemWidth, itemHeight, tocolor(0, 0, 0, 200))
-            dxDrawImage(x + 5, y + 5, itemHeight - 10, itemHeight - 10, "assets/icons/jacket1.png")
-            if localPlayer:getData("clothes_"..itemClass.layer) == itemClass.clothes then
+            if not clothesIcons[itemClass.clothes] then
+                clothesIcons[itemClass.clothes] = exports.pb_clothes:getClothesIcon(itemClass.clothes)
+            end
+            local isClothesOnPlayer = localPlayer:getData("clothes_"..itemClass.layer) == itemClass.clothes
+            if isClothesOnPlayer then
                 dxDrawRectangle(x, y, itemHeight, itemHeight, tocolor(0, 255, 0, 50))
             end
+            dxDrawImage(x + 5, y + 5, itemHeight - 10, itemHeight - 10, clothesIcons[itemClass.clothes])
 
-            dxDrawText(item.name, x + itemHeight + 10, y, 0, y + itemHeight, tocolor(255, 255, 255), 1, "default", "left", "center")
+            dxDrawText(itemClass.clothes:gsub("^%l", string.upper), x + itemHeight + 10, y, 0, y + itemHeight, tocolor(255, 255, 255), 1, "default", "left", "center")
             dxDrawText("x" .. item.count, 0, y, x + itemWidth - 10, y + itemHeight, tocolor(255, 255, 255, 150), 1, "default", "right", "center")
             if isMouseOver(x, y, itemWidth, itemHeight) then
                 dxDrawRectangle(x, y, itemWidth, itemHeight, tocolor(0, 0, 0, 200))
@@ -68,12 +74,16 @@ local function draw()
                 local alpha1 = 100
                 if isMouseOver(bx, y, bw, itemHeight) then
                     alpha1 = 200
-                    if isMousePressed then
+                    if isMousePressed and not isClothesOnPlayer then
                         triggerServerEvent("onPlayerSelectClothes", resourceRoot, item.index)
                     end
                 end
                 dxDrawRectangle(bx, y, bw, itemHeight, tocolor(255, 255, 255, alpha1))
-                dxDrawText("Надеть", bx, y, bx + bw, y + itemHeight, tocolor(0, 0, 0, alpha1), 1.4, "default-bold", "center", "center")
+                if not isClothesOnPlayer then
+                    dxDrawText("Надеть", bx, y, bx + bw, y + itemHeight, tocolor(0, 0, 0, alpha1), 1.4, "default-bold", "center", "center")
+                else
+                    dxDrawText("Надето", bx, y, bx + bw, y + itemHeight, tocolor(0, 0, 0, 50), 1.4, "default-bold", "center", "center")
+                end
 
                 if not isSellDisabled then
                     bx = bx + bw
@@ -139,6 +149,7 @@ Tabs.character = {
 
     unload = function ()
         setClothesCamera()
+        clothesIcons = {}
     end,
 
     draw = draw

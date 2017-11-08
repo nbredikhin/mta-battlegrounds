@@ -54,8 +54,8 @@ function loadPedClothes(ped)
             if ClothesTable[name].hideElbow then
                 hideElbow = true
             end
-            local path = ClothesTable[name].path or "assets/clothes/"..layer.."/"..ClothesTable[name].material.."/"..name..".png"
-            local texture = getTexture(path)
+            local path = ClothesTable[name].path or layer.."/"..ClothesTable[name].material.."/"..name..".png"
+            local texture = getTexture("assets/clothes/" .. path)
             local shader = createClothesShader(ped, ClothesTable[name].material or name, texture)
             table.insert(loadedClothes[ped], shader)
         end
@@ -105,6 +105,14 @@ end)
 addCommandHandler("addclothes", function (cmd, name)
     addPedClothes(localPlayer, name, true)
 end)
+
+function getClothesIcon(name)
+    if not name or not ClothesTable[name] then
+        return
+    end
+    local path = ClothesTable[name].path or layer.."/"..ClothesTable[name].material.."/"..name..".png"
+    return getTexture("assets/icons/" .. path)
+end
 
 --srun for i = 1, 100 do     local ped = createPed(235, p.position + Vector3(i * 1, 0, 0)) mped(ped) end
 --srun function mped() ped:setData("clothes_head", "head1") ped:setData("clothes_shirt", "mjacket") ped:setData("clothes_pants", "jeans") ped:setData("clothes_shoes", "sneakers") end
