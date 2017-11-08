@@ -165,7 +165,9 @@ function showUI(name, visible)
             end
         end
     end
-    ui[name].messageLabel.text = ""
+    if ui[name].messageLabel then
+        ui[name].messageLabel.text = ""
+    end
     if visible then
         reloadLocale()
     end
@@ -198,11 +200,13 @@ function setVisible(visible)
         if lang and ui.language[lang] then
             ui.language[lang].alpha = 1
         end
+        showUI("language", true)
     else
         isVisible = false
         showCursor(false)
         showUI("login", false)
         showUI("register", false)
+        showUI("language", false)
 
         if ui.login.remember.selected then
             autologinRemember(ui.login.username.text, ui.login.password.text)
