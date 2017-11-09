@@ -102,10 +102,6 @@ addEventHandler("onClientResourceStart", resourceRoot, function ()
     end
 end)
 
-addCommandHandler("addclothes", function (cmd, name)
-    addPedClothes(localPlayer, name, true)
-end)
-
 function getClothesIcon(name)
     if not name or not ClothesTable[name] then
         return
