@@ -5,16 +5,19 @@ function setVisible(visible)
     if isShopVisible == visible then
         return
     end
+    isShopVisible = visible
 
+    showCursor(visible)
     if visible then
         localPlayer.interior = 18
         createPreviewPed()
         local ped = getPreviewPed()
         setCameraMatrix(ped.matrix:transformPosition(-2, 0, 0.5), ped.matrix:transformPosition(0, -0.7, -0.05), 0, 90)
-        addEventHandler("onClientRender", root, drawGUI)
+        loadGUI()
+        fadeCamera(true)
     else
         destroyPreviewPed()
-        removeEventHandler("onClientRender", root, drawGUI)
+        unloadGUI()
         localPlayer.interior = 0
     end
 end

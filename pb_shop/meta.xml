@@ -1,6 +1,7 @@
 <meta>
     <oop>true</oop>
 
+    <script type="shared" src="shared/shop_clothes.lua"/>
     <script type="client" src="client/gui.lua"/>
     <script type="client" src="client/preview_ped.lua"/>
     <script type="client" src="client/main.lua"/>
