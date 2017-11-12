@@ -77,7 +77,7 @@ for i = 1, 11 do
 end
 addNumberedClothes("woolcoat", 10, "shirt/woolcoat/", "shirt", "woolcoat", true)
 
-ClothesTable.tshirt_ccd = { layer = "shirt", material = "tshirt", price = 0, readableName = "CCD TShirt" }
+ClothesTable.tshirt_ccd = { layer = "shirt", material = "tshirt", price = 0, readableName = "CCD TShirt", path = "shirt/tshirt/tshirt_ccd.png" }
 
 -- ШТАНЫ
 
@@ -94,14 +94,32 @@ addNumberedClothes("tracksuitpnts", 5, "pants/tracksuitpnts/", "pants")
 
 addNumberedClothes("athletics", 6, "shoes/athletics/", "shoes", "athletics")
 addNumberedClothes("combat", 5, "shoes/combat/", "shoes", "combat")
+for i = 1, 5 do
+    renameClothes("combat" .. i, "Combat Boots " .. i)
+end
 addNumberedClothes("hiking", 5, "shoes/hiking/", "shoes", "hiking")
+for i = 1, 5 do
+    renameClothes("hiking" .. i, "Hiking Boots " .. i)
+end
 addNumberedClothes("hikingbh", 2, "shoes/hikingbh/", "shoes", "hikingbh")
+for i = 1, 2 do
+    renameClothes("hikingbh" .. i, "Hiking Boots High " .. i)
+end
 addNumberedClothes("joggings", 5, "shoes/joggings/", "shoes", "joggings")
 addNumberedClothes("jungleb", 4, "shoes/jungleb/", "shoes", "jungleb")
+for i = 1, 4 do
+    renameClothes("jungleb" .. i, "Jungle Boots " .. i)
+end
 addNumberedClothes("militaryb", 5, "shoes/militaryb/", "shoes", "militaryb")
+for i = 1, 5 do
+    renameClothes("militaryb" .. i, "Military Boots " .. i)
+end
 addNumberedClothes("sneakers", 5, "shoes/sneakers/", "shoes", "sneakers")
 addNumberedClothes("wellies", 5, "shoes/wellies/", "shoes", "wellies")
 addNumberedClothes("workingb", 5, "shoes/workingb/", "shoes", "workingb")
+for i = 1, 5 do
+    renameClothes("workingb" .. i, "Working Boots " .. i)
+end
 
 -- Мета
 -- local f = fileCreate("out.xml")
@@ -121,3 +139,21 @@ renameClothes("tshirt8", "Striped Red T-shirt")
 renameClothes("tshirt9", "White T-shirt")
 renameClothes("tshirt10", "White Russian T-shirt")
 renameClothes("tshirt11", "GUCCI T-shirt")
+
+renameClothes("woolcoat1", "Brown Coat")
+renameClothes("woolcoat2", "Checkered Black Coat")
+renameClothes("woolcoat3", "Black Coat")
+renameClothes("woolcoat4", "Checkered Blue Coat")
+renameClothes("woolcoat5", "Blue Coat")
+renameClothes("woolcoat6", "Checkered Brown Coat")
+renameClothes("woolcoat7", "Green Coat")
+renameClothes("woolcoat8", "Checkered Grey Coat")
+renameClothes("woolcoat9", "Checkered Red Coat")
+
+renameClothes("bomber1", "Black Bomber")
+renameClothes("bomber2", "Dark Blue Bomber")
+renameClothes("bomber3", "Brown Bomber")
+renameClothes("bomber4", "Grey Bomber")
+renameClothes("bomber5", "Red Bomber")
+renameClothes("bomber6", "Green Bomber")
+renameClothes("bomber7", "Blue Bomber")

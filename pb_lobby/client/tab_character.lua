@@ -59,7 +59,9 @@ local function draw()
             if isClothesOnPlayer then
                 dxDrawRectangle(x, y, itemHeight, itemHeight, tocolor(0, 255, 0, 50))
             end
-            dxDrawImage(x + 5, y + 5, itemHeight - 10, itemHeight - 10, clothesIcons[itemClass.clothes])
+            if clothesIcons[itemClass.clothes] then
+                dxDrawImage(x + 5, y + 5, itemHeight - 10, itemHeight - 10, clothesIcons[itemClass.clothes])
+            end
 
             local clothesName = itemClass.readableName or itemClass.clothes:gsub("^%l", string.upper)
             dxDrawText(clothesName, x + itemHeight + 10, y, 0, y + itemHeight, tocolor(255, 255, 255), 1, "default", "left", "center")
@@ -176,6 +178,9 @@ function updateInventory()
             table.insert(inventoryItems, item)
         end
     end
+    table.sort(inventoryItems, function (a, b)
+        return a.itemClass.readableName < b.itemClass.readableName
+    end)
 
     maxVisibleItemsCount = #inventoryItems - visibleItemsCount + 1
 

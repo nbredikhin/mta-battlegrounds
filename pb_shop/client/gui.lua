@@ -138,7 +138,7 @@ local function handleItemSelect(index)
         return
     end
     if item.clothes then
-        iprint("BUY CONFIRM")
+        buyClothes(item.clothes)
     end
 end
 

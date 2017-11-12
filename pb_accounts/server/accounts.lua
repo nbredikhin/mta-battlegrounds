@@ -134,7 +134,6 @@ function dbLoginPlayer(result, params)
         if not exports.pb_clothes:isValidClothesName(head) then
             player:setData("clothes_head", "head1")
         end
-
         setupPlayerInventory(player, fromJSON(result.items))
         giveMissingPlayerClothes(player)
         loggedPlayers[player] = true

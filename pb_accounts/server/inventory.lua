@@ -32,7 +32,6 @@ end
 
 function addPlayerInventoryItem(player, item, omitSave)
     if not player or not isItem(item) then
-        iprint("Bad player or item")
         return
     end
     local inventory = getPlayerInventory(player)
@@ -99,35 +98,25 @@ function getDefaultInventory()
     return items
 end
 
-function setupPlayerInventory(player, items)
+function setupPlayerInventory(player, playerInventory)
     if not isElement(player) then
         return false
     end
-    if not items then
-        items = getDefaultInventory()
+    if type(playerInventory) ~= "table" then
+        playerInventory = {}
     end
-    local validItems = {}
-    for i, item in ipairs(items) do
-        if isItem(item) then
-            table.insert(validItems, item)
+    for name, item in pairs(playerInventory) do
+        if not isItem(item) then
+            playerInventory[name] = nil
         end
     end
     -- Выдача дефолтной одежды, если её нет
     for layer, name in pairs(DefaultClothes) do
-        local found = false
-        for i, item in ipairs(validItems) do
-            if getItemClass(item).clothes == name then
-                found = true
-                break
-            end
+        local itemName = "clothes_"..tostring(name)
+        if not isItem(playerInventory[itemName]) then
+            local item = createItem(itemName)
+            playerInventory[item.name] = item
         end
-        if not found then
-            table.insert(validItems, createItem("clothes_"..tostring(name)))
-        end
-    end
-    local playerInventory = {}
-    for i, item in ipairs(validItems) do
-        playerInventory[item.name] = item
     end
     playerInventories[player] = playerInventory
     savePlayerAccount(player)

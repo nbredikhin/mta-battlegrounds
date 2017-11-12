@@ -27,3 +27,10 @@ end
 addEventHandler("onClientResourceStart", resourceRoot, function ()
     -- setVisible(true)
 end)
+
+function buyClothes(name)
+    if not name then
+        return
+    end
+    triggerServerEvent("onPlayerBuyClothes", resourceRoot, "clothes_" .. name)
+end

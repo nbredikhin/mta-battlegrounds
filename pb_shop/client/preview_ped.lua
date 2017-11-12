@@ -11,6 +11,11 @@ local clothesLayers = {
 
 local playerInventory = {}
 
+addEvent("onClientInventoryUpdated", true)
+local function handleInventoryUpdated()
+    playerInventory = exports.pb_accounts:getInventory()
+end
+
 function createPreviewPed()
     if isElement(previewPed) then
         return
@@ -23,6 +28,8 @@ function createPreviewPed()
 
     resetClothesPreview()
     playerInventory = exports.pb_accounts:getInventory()
+
+    addEventHandler("onClientInventoryUpdated", root, handleInventoryUpdated)
 end
 
 function hasPlayerClothes(name)
@@ -48,6 +55,7 @@ function previewClothes(name)
 end
 
 function destroyPreviewPed()
+    removeEventHandler("onClientInventoryUpdated", resourceRoot, handleInventoryUpdated)
     if isElement(previewPed) then
         destroyElement(previewPed)
     end
