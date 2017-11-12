@@ -37,11 +37,22 @@ local currentTab = Tabs.home
 local tabsY = 20
 local tabsHeight = 45
 local tabsX = 0
+local tabsHorizontalOffset = 10
+local tabsSpace = 20
 local tabsTextScale = 1.5
 
 if screenSize.x >= 1600 then
     tabsTextScale = 2
     tabsHeight = 60
+    tabsSpace = 35
+    tabsHorizontalOffset = 20
+end
+if screenSize.x < 1024 then
+    tabsTextScale = 1
+    tabsHeight = 40
+    tabsHorizontalOffset = 5
+    tabsSpace = 15
+    tabsY = 10
 end
 
 function getCurrentTabName()
@@ -56,7 +67,7 @@ function drawTabs()
         local tab = Tabs[tabsOrder[i]]
         local str = localize(tab.title)
         local width = dxGetTextWidth(str, tabsTextScale, "default-bold")
-        x = x - width - 35
+        x = x - width - tabsSpace
         local alpha = 150
         if isMouseOver(x, y, width, tabsHeight) then
             alpha = 200

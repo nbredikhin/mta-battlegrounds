@@ -81,7 +81,7 @@ function drawStartGameButton()
     if getLobbyType() == "squad" and #getLobbyPlayers() <= 1 then
         lobbyEnoughPlayers = false
     end
-    if isMouseOver(0, 0, w, h) then
+    if isMouseOver(0, 0, w, 50) then
         if lobbyEnoughPlayers then
             texture = "assets/corner1.png"
         end
