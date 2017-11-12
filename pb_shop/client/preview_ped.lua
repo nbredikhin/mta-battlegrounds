@@ -9,6 +9,8 @@ local clothesLayers = {
     "clothes_shoes",
 }
 
+local playerInventory = {}
+
 function createPreviewPed()
     if isElement(previewPed) then
         return
@@ -20,13 +22,14 @@ function createPreviewPed()
     previewPed.interior = localPlayer.interior
 
     resetClothesPreview()
+    playerInventory = exports.pb_accounts:getInventory()
 end
 
 function hasPlayerClothes(name)
     if not name then
         return false
     end
-    return not not playerClothes[name]
+    return not not playerInventory["clothes_"..name]
 end
 
 function resetClothesPreview()

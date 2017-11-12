@@ -56,6 +56,7 @@ end
 
 local function handleSelectionChange()
     selectedItemIndex = math.max(1, math.min(selectedItemIndex, #currentItemsList))
+    visibleItemsOffset = math.max(1, math.min(visibleItemsOffset, #currentItemsList - visibleItemsCount + 1))
     if selectedItemIndex > visibleItemsOffset + visibleItemsCount - 1 then
         visibleItemsOffset = selectedItemIndex - visibleItemsCount + 1
     end
@@ -108,7 +109,11 @@ local function handleGoBack()
         resetClothesPreview()
         handleSelectionChange()
     else
-        setVisible(false)
+        fadeCamera(false)
+        setTimer(function ()
+            setVisible(false)
+            exports.pb_lobby:setVisible(true)
+        end, 1000, 1)
     end
 end
 
@@ -130,6 +135,10 @@ local function handleItemSelect(index)
     end
     if item.back then
         handleGoBack()
+        return
+    end
+    if item.clothes then
+        iprint("BUY CONFIRM")
     end
 end
 
@@ -172,31 +181,34 @@ function drawGUI()
     local gradientWidth = itemHeight * visibleItemsCount
     local graidentHeight = panelWidth
     dxDrawImage(x, y + gradientWidth, gradientWidth, graidentHeight, "assets/gradient.png", 270, -gradientWidth / 2, -graidentHeight / 2, tocolor(0, 0, 0, 200))
+    local isMouseOverItems = isMouseOver(x, y, panelWidth, itemHeight * visibleItemsCount)
     for index = visibleItemsOffset, visibleItemsOffset + visibleItemsCount - 1 do
         local item = currentItemsList[index]
         if not item then
             break
         end
-        local selected = false
-        if index == selectedItemIndex then
-            selected = true
-        end
-
-        local backgroundColor
-        local textColor
 
         local mouseOver = isMouseOver(x, y, panelWidth, itemHeight)
+        if isMouseOverItems then
+            if mouseOver and selectedItemIndex ~= index then
+                selectedItemIndex = index
+                handleSelectionChange()
+            end
+        end
+        local selected = index == selectedItemIndex
+        local backgroundColor
+        local textColor
 
         if selected then
             backgroundColor = tocolor(255, 255, 255)
             textColor = tocolor(0, 0, 0)
-        elseif mouseOver then
-            backgroundColor = tocolor(150, 150, 150, 200)
-            textColor = tocolor(255, 255, 255)
 
-            if item.clothes then
+            if mouseOver and item.clothes then
                 delayClothesPreview(item.clothes)
             end
+        -- elseif mouseOver then
+        --     backgroundColor = tocolor(150, 150, 150, 200)
+        --     textColor = tocolor(255, 255, 255)
         else
             backgroundColor = tocolor(0, 0, 0, 150)
             textColor = tocolor(200, 200, 200)
@@ -250,7 +262,10 @@ local function handleKey(key, down)
         return
     end
     if mouseX > panelX then
-        selectedItemIndex = selectedItemIndex + delta
+        visibleItemsOffset = visibleItemsOffset + delta
+        if delta > 0 then
+            selectedItemIndex = selectedItemIndex + delta
+        end
         handleSelectionChange()
     end
 end

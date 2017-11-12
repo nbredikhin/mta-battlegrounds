@@ -34,6 +34,9 @@ setTimer(function ()
 end, 1000, 0)
 
 addEventHandler("onClientPreRender", root, function (dt)
+    if not isVisible() then
+        return
+    end
     setCameraMatrix(Vector3(5155.76, -945.65, 38.2), cameraLookAt, 0, 90)
 
     cameraLookAt = cameraLookAt + (targetLookAt - cameraLookAt) * dt * 0.0035

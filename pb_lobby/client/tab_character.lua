@@ -76,7 +76,7 @@ local function draw()
                 if isMouseOver(bx, y, bw, itemHeight) then
                     alpha1 = 200
                     if isMousePressed and not isClothesOnPlayer then
-                        triggerServerEvent("onPlayerSelectClothes", resourceRoot, item.index)
+                        triggerServerEvent("onPlayerSelectClothes", resourceRoot, item.name)
                     end
                 end
                 dxDrawRectangle(bx, y, bw, itemHeight, tocolor(255, 255, 255, alpha1))
@@ -93,7 +93,7 @@ local function draw()
                     if isMouseOver(bx, y, bw, itemHeight) then
                         alpha2 = 200
                         if isMousePressed then
-                            triggerServerEvent("onPlayerSellClothes", resourceRoot, item.index)
+                            triggerServerEvent("onPlayerSellClothes", resourceRoot, item.name)
                         end
                     end
                     dxDrawRectangle(bx, y, bw, itemHeight, tocolor(255, 0, 0, alpha2))
@@ -163,12 +163,11 @@ addEventHandler("onClientResourceStart", resourceRoot, function ()
 end)
 
 function updateInventory()
-    local items = exports.pb_accounts:getInventory()
+    local localInventory = exports.pb_accounts:getInventory()
     inventoryItems = {}
-    for i, item in ipairs(items) do
+    for name, item in pairs(localInventory) do
         local itemClass = exports.pb_accounts:getItemClass(item.name)
         item.itemClass = itemClass
-        item.index = i
         if currentTag then
             if itemClass.layer == currentTag then
                 table.insert(inventoryItems, item)
@@ -190,14 +189,14 @@ end
 
 addEvent("onClientInventoryUpdated", true)
 addEventHandler("onClientInventoryUpdated", root, function ()
-    if not isLobbyVisible then
+    if not isVisible() then
         return
     end
     updateInventory()
 end)
 
 addEventHandler("onClientKey", root, function (key, down)
-    if not isLobbyVisible then
+    if not isVisible() then
         return
     end
     if not down then

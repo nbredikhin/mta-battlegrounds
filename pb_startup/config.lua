@@ -20,6 +20,7 @@ Config.resourceList = {
 
     "pb_afk",
     "pb_clothes",
+    "pb_shop",
     "pb_accounts",
     "pb_lang",
     "pb_mapping",

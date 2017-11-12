@@ -6,6 +6,8 @@
     <script type="client" src="client/preview_ped.lua"/>
     <script type="client" src="client/main.lua"/>
 
+    <export type="client" function="setVisible"/>
+
     <file src="assets/banner.png"/>
     <file src="assets/gradient.png"/>
     <file src="assets/arrows.png"/>

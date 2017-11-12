@@ -327,6 +327,7 @@ function setVisible(visible)
     if isLobbyVisible then
         setFarClipDistance(30)
         setFogDistance(0)
+        localPlayer.interior = 0
         if math.random() > 0.5 then
             setWeather(3)
             setTime(19, 40)
@@ -340,6 +341,7 @@ function setVisible(visible)
         setMinuteDuration(600000)
         startSkinSelect()
         triggerServerEvent("updateLobby", resourceRoot)
+        fadeCamera(true)
     else
         resetFarClipDistance()
         resetFogDistance()

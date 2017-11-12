@@ -1,6 +1,13 @@
 local dbTableName = "users"
 local serverId = 0
 
+local clothesData = {
+    "clothes_head",
+    "clothes_shirt",
+    "clothes_pants",
+    "clothes_shoes"
+}
+
 local loadAccountData = {
     "username",
     "battlepoints",
@@ -129,6 +136,7 @@ function dbLoginPlayer(result, params)
         end
 
         setupPlayerInventory(player, fromJSON(result.items))
+        giveMissingPlayerClothes(player)
         loggedPlayers[player] = true
 
         exports.mysql:dbExec(dbTableName, [[

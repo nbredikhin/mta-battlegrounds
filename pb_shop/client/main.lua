@@ -11,10 +11,12 @@ function setVisible(visible)
     if visible then
         localPlayer.interior = 18
         createPreviewPed()
-        local ped = getPreviewPed()
-        setCameraMatrix(ped.matrix:transformPosition(-2, 0, 0.5), ped.matrix:transformPosition(0, -0.7, -0.05), 0, 90)
-        loadGUI()
-        fadeCamera(true)
+        setTimer(function ()
+            local ped = getPreviewPed()
+            setCameraMatrix(ped.matrix:transformPosition(-2, 0, 0.5), ped.matrix:transformPosition(0, -0.7, -0.05), 0, 90)
+            loadGUI()
+            fadeCamera(true)
+        end, 500, 1)
     else
         destroyPreviewPed()
         unloadGUI()
@@ -23,5 +25,5 @@ function setVisible(visible)
 end
 
 addEventHandler("onClientResourceStart", resourceRoot, function ()
-    setVisible(true)
+    -- setVisible(true)
 end)

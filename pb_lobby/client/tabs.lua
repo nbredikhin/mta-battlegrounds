@@ -13,11 +13,9 @@ Tabs.shop = {
     title = localize("lobby_tab_shop"),
 
     load = function ()
-        fadeCamera(false, 1)
-        setTimer(function ()
-            -- setVisible(false)
-            fadeCamera(true)
-        end, 1000, 1)
+        fadeCamera(false, 0)
+        setVisible(false)
+        exports.pb_shop:setVisible(true)
     end
 }
 
@@ -35,14 +33,6 @@ local tabsOrder = {
 
 local currentTabName = "home"
 local currentTab = Tabs.home
-
--- setTimer(function ()
---     currentTab = Tabs.character
---     currentTabName = "character"
---     if currentTab.load then
---         currentTab.load()
---     end
--- end, 50, 1)
 
 local tabsY = 20
 local tabsHeight = 45

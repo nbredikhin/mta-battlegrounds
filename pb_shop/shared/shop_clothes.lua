@@ -24,3 +24,9 @@ for name, item in pairs(clothesTable) do
         addClothesToShop(name, item.layer)
     end
 end
+
+for name, clothes in pairs(ShopClothes) do
+    table.sort(clothes, function (a, b)
+        return a.name < b.name
+    end)
+end
