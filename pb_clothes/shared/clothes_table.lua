@@ -19,8 +19,8 @@ local function addNumberedClothes(baseName, count, basePath, layer, material, hi
             material = material or baseName,
             hideElbow = hideElbow,
             path = basePath .. baseName..i..".png",
-            price = 10,
-            readableName = baseName:gsub("^%l", string.upper) .. " " .. i
+            readableName = baseName:gsub("^%l", string.upper) .. " " .. i,
+            price = 999999
         }
     end
 end

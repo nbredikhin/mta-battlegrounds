@@ -5,7 +5,25 @@ Tabs.home = {
     title = localize("lobby_tab_home"),
 
     draw = function ()
+        local username = localPlayer:getData("username")
+        local y = 110
+        if username then
+            dxDrawText(string.upper(username), 2, y + 2, screenSize.x - 200 + 2, y + 2, tocolor(0, 0, 0), 2, "default-bold", "right", "top")
+            dxDrawText(string.upper(username), 0, y, screenSize.x - 200, y, tocolor(255, 255, 255), 2, "default-bold", "right", "top")
 
+            dxDrawImage(screenSize.x - 180 + 2, y - 0 + 2, 30, 30, "assets/bp.png", 0, 0, 0, tocolor(0, 0, 0))
+            dxDrawImage(screenSize.x - 180, y - 0, 30, 30, "assets/bp.png")
+            local bPoints = tostring(localPlayer:getData("battlepoints"))
+            dxDrawText(bPoints, screenSize.x - 145 + 2, y + 2, screenSize.x + 2, y + 2, tocolor(0, 0, 0), 2, "default-bold", "left", "top")
+            dxDrawText(bPoints, screenSize.x - 145, y, screenSize.x, y, tocolor(255, 255, 255), 2, "default-bold", "left", "top")
+
+            y = y + 40
+            dxDrawImage(screenSize.x - 180 + 2, y - 0 + 2, 30, 30, "assets/dp.png", 0, 0, 0, tocolor(0, 0, 0))
+            dxDrawImage(screenSize.x - 180, y - 0, 30, 30, "assets/dp.png", 0, 0, 0, tocolor(255, 255, 255))
+            local dPoints = tostring(localPlayer:getData("donatepoints"))
+            dxDrawText(dPoints, screenSize.x - 145 + 2, y + 2, screenSize.x + 2, y + 2, tocolor(0, 0, 0), 2, "default-bold", "left", "top")
+            dxDrawText(dPoints, screenSize.x - 145, y, screenSize.x, y, tocolor(51, 151, 198), 2, "default-bold", "left", "top")
+        end
     end
 }
 
@@ -57,6 +75,11 @@ end
 
 function getCurrentTabName()
     return currentTabName
+end
+
+function resetTab()
+    currentTabName = "home"
+    currentTab = Tabs.home
 end
 
 function drawTabs()

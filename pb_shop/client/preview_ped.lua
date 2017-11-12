@@ -55,7 +55,7 @@ function previewClothes(name)
 end
 
 function destroyPreviewPed()
-    removeEventHandler("onClientInventoryUpdated", resourceRoot, handleInventoryUpdated)
+    removeEventHandler("onClientInventoryUpdated", root, handleInventoryUpdated)
     if isElement(previewPed) then
         destroyElement(previewPed)
     end

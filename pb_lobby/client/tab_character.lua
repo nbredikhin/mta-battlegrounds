@@ -99,7 +99,7 @@ local function draw()
                         end
                     end
                     dxDrawRectangle(bx, y, bw, itemHeight, tocolor(255, 0, 0, alpha2))
-                    dxDrawText("Продать\n(9999 BP)", bx, y, bx + bw, y + itemHeight, tocolor(255, 255, 255, alpha2), 1, "default", "center", "center")
+                    dxDrawText("Продать\n("..tostring(item.sellPrice).." BP)", bx, y, bx + bw, y + itemHeight, tocolor(255, 255, 255, alpha2), 1, "default", "center", "center")
                 end
             end
             y = y + itemHeight + itemSpace
@@ -170,6 +170,7 @@ function updateInventory()
     for name, item in pairs(localInventory) do
         local itemClass = exports.pb_accounts:getItemClass(item.name)
         item.itemClass = itemClass
+        item.sellPrice = exports.pb_accounts:calculateClothesSellPrice(itemClass.price)
         if currentTag then
             if itemClass.layer == currentTag then
                 table.insert(inventoryItems, item)

@@ -284,29 +284,6 @@ addEventHandler("onClientRender", root, function ()
         end
     end
 
-    -- local x = screenSize.x - 150
-    -- local y = 20
-    -- local alpha = 150
-    -- if isMouseOver(x, y, 120, 120) then
-    --     alpha = 255
-    --     if isMousePressed then
-    --         exports.pb_lang:setLanguage("russian")
-    --         playSoundFrontEnd(1)
-    --     end
-    -- end
-    -- dxDrawImage(x, y, 120, 120, "assets/ru.png", 0, 0, 0, tocolor(255, 255, 255, alpha))
-
-    -- y = y + 130
-    -- alpha = 150
-    -- if isMouseOver(x, y, 120, 120) then
-    --     alpha = 255
-    --     if isMousePressed then
-    --         exports.pb_lang:setLanguage("english")
-    --         playSoundFrontEnd(1)
-    --     end
-    -- end
-    -- dxDrawImage(x, y, 120, 120, "assets/en.png", 0, 0, 0, tocolor(255, 255, 255, alpha))
-
     drawTabs()
 
     drawMessageBox()
@@ -342,6 +319,7 @@ function setVisible(visible)
         startSkinSelect()
         triggerServerEvent("updateLobby", resourceRoot)
         fadeCamera(true)
+        resetTab()
     else
         resetFarClipDistance()
         resetFogDistance()

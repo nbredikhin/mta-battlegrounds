@@ -27,6 +27,11 @@ end
 
 for name, clothes in pairs(ShopClothes) do
     table.sort(clothes, function (a, b)
-        return a.name < b.name
+        -- Сортировка по цене или по алфавиту
+        if not a.price or not b.price or a.price == b.price then
+            return a.name < b.name
+        else
+            return a.price < b.price
+        end
     end)
 end

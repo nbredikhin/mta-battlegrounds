@@ -34,6 +34,9 @@ local selectedItemIndex = 1
 local previewTimer
 local previewName
 
+local blinkPriceItem
+local blinkPriceTimer
+
 function localize(name)
     local res = getResourceFromName("pb_lang")
     if (res) and (getResourceState(res) == "running") then
@@ -108,6 +111,7 @@ local function handleGoBack()
         updateCategory()
         resetClothesPreview()
         handleSelectionChange()
+        resetClothesPreview()
     else
         fadeCamera(false)
         setTimer(function ()
@@ -138,6 +142,17 @@ local function handleItemSelect(index)
         return
     end
     if item.clothes then
+        local bPoints = localPlayer:getData("battlepoints") or 0
+        if not item.price or item.price > bPoints then
+            blinkPriceItem = item
+            if isTimer(blinkPriceTimer) then
+                killTimer(blinkPriceTimer)
+            end
+            blinkPriceTimer = setTimer(function ()
+                blinkPriceItem = nil
+            end, 2000, 1)
+            return
+        end
         buyClothes(item.clothes)
     end
 end
@@ -182,6 +197,8 @@ function drawGUI()
     local graidentHeight = panelWidth
     dxDrawImage(x, y + gradientWidth, gradientWidth, graidentHeight, "assets/gradient.png", 270, -gradientWidth / 2, -graidentHeight / 2, tocolor(0, 0, 0, 200))
     local isMouseOverItems = isMouseOver(x, y, panelWidth, itemHeight * visibleItemsCount)
+
+    local bPoints = localPlayer:getData("battlepoints") or 0
     for index = visibleItemsOffset, visibleItemsOffset + visibleItemsCount - 1 do
         local item = currentItemsList[index]
         if not item then
@@ -221,15 +238,29 @@ function drawGUI()
         if selected then
             dxDrawImage(x, y, panelWidth, itemHeight, "assets/gradient.png", 0, 0, 0, tocolor(0, 0, 0, 80))
         end
-        dxDrawText(item.name, x + 10, y, x + panelWidth, y + itemHeight, textColor, 1, "default-bold", "left", "center")
-        if item.price then
-            local priceText
-            if hasPlayerClothes(item.clothes) then
-                priceText = "ПРИОБРЕТЕНО"
-            else
-                priceText = tostring(item.price) .. " BP"
+        local nameText = item.name
+        local nameColor = textColor
+        if hasPlayerClothes(item.clothes) then
+            nameText = "✓ " .. nameText
+            if not selected then
+                nameColor = tocolor(255, 255, 255, 100)
             end
-            dxDrawText(priceText, x, y, x + panelWidth - 10, y + itemHeight, textColor, 1, "default-bold", "right", "center")
+        end
+        dxDrawText(nameText, x + 10, y, x + panelWidth, y + itemHeight, nameColor, 1, "default-bold", "left", "center")
+        if item.price then
+            local priceColor = textColor
+            local priceText = tostring(item.price) .. " BP"
+            -- if hasPlayerClothes(item.clothes) then
+            --     priceText = priceText
+            -- end
+            if bPoints < item.price then
+                if blinkPriceItem == item and math.floor(getTickCount() / 250) % 2 == 0 then
+                    priceColor = tocolor(0, 0, 0, 0)
+                else
+                    priceColor = tocolor(255, 0, 0, 150)
+                end
+            end
+            dxDrawText(priceText, x, y, x + panelWidth - 10, y + itemHeight, priceColor, 1, "default-bold", "right", "center")
         end
         y = y + itemHeight
     end
@@ -237,6 +268,11 @@ function drawGUI()
     y = y + 1
     dxDrawRectangle(x, y, panelWidth, itemHeight, tocolor(0, 0, 0, 200))
     dxDrawImage(x + panelWidth / 2 - arrowsSize / 2, y + itemHeight / 2 - arrowsSize / 2, arrowsSize, arrowsSize, "assets/arrows.png")
+    y = y + itemHeight + 10
+    dxDrawRectangle(x, y, panelWidth, 45, tocolor(0, 0, 0, 200))
+    y = y + 10
+    dxDrawImage(x + 10, y, 25, 25, ":pb_lobby/assets/bp.png")
+    dxDrawText(bPoints, x + 45, y, x + panelWidth, y + 25, tocolor(255, 255, 255), 1.5, "default-bold", "left", "center")
 end
 
 local function selectPrevItem()

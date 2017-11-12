@@ -2,6 +2,7 @@
     <oop>true</oop>
 
     <script type="shared" src="shared/clothes_table.lua"/>
+    <script type="shared" src="shared/clothes_prices.lua"/>
 
     <script type="client" src="client/main.lua"/>
 
