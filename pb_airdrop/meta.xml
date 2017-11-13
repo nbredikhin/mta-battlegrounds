@@ -1,0 +1,7 @@
+<meta>
+    <oop>true</oop>
+    <script type="client" src="client/main.lua"/>
+    <file src="assets/plane.png"/>
+    <file src="assets/plane_side.png"/>
+    <file src="assets/tail.png"/>
+</meta>
