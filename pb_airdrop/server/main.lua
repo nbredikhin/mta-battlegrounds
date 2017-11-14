@@ -35,15 +35,19 @@ function createAirDrop(players, x, y)
     triggerClientEvent(players, "createAirDrop", resourceRoot, sx, sy, planeZ, angle, velocityX, velocityY, dropTime, x, y)
 
     eventGroups[groupCounter] = players
-    for player in ipairs(players) do
+    for i, player in ipairs(players) do
         playerGroups[player] = groupCounter
+        iprint(player, groupCounter)
     end
     groupCounter = groupCounter + 1
 end
 
-addCommandHandler("testdrop", function ()
-    local p = getRandomPlayer()
-    createAirDrop(getElementsByType("player"), p.position.x, p.position.y)
+addCommandHandler("testdrop", function (player)
+    local id = math.random(1, #DropPoints)
+    local point = DropPoints[id]
+    iprint(id)
+    createBlip(point[1], point[2], 0, 10)
+    createAirDrop(getElementsByType("player"), point[1], point[2])
 end)
 
 addEvent("onPlayerCrateLanded", true)
@@ -62,6 +66,20 @@ addEventHandler("onPlayerCrateLanded", resourceRoot, function (x, y, z)
     for i, player in ipairs(eventGroups[group]) do
         if isElement(player) and player:getData("matchId") == matchId then
             triggerClientEvent(player, "onClientCrateLanded", resourceRoot, x, y, z)
+            playerGroups[player] = nil
         end
     end
+    iprint("Crate landed")
+    eventGroups[group] = nil
 end)
+
+-- local distnace = 0
+-- local points = {}
+-- iprint("START PLZ", getTickCount())
+-- local t = getTickCount()
+-- for i, point in ipairs(DropPoints) do
+--     if getDistanceBetweenPoints2D(0, 0, point[1], point[2]) < 100 then
+--         table.insert(points, point)
+--     end
+-- end
+-- iprint("END PLZ", getTickCount(), getTickCount() - t)

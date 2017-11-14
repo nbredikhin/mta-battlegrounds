@@ -41,6 +41,26 @@ addEventHandler("onClientRender", root, function ()
     dxDrawMaterialLine3D(pos1, pos2, spritesLOD.side, 15, crateLODColor)
 end)
 
+local function getGroundHeight(x, y)
+    local hit, x, y, z, element = processLineOfSight(
+        x, y, 200,
+        x, y, -50,
+        true,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        crate)
+    if hit then
+        return z
+    else
+        return false
+    end
+end
+
 addEventHandler("onClientPreRender", root, function (dt)
     if not isElement(crate) then
         return
@@ -49,6 +69,9 @@ addEventHandler("onClientPreRender", root, function (dt)
 
     if not crateStopped then
         crateZ = crateZ - crateSpeed * dt
+        if crateZ < -100 then
+            crateZ = -100
+        end
 
         local cx, cy, cz = getCameraMatrix()
         local x, y, z = getElementPosition(crate)
@@ -56,10 +79,9 @@ addEventHandler("onClientPreRender", root, function (dt)
             return
         end
 
-        local groundZ = getGroundPosition(crate.position.x, crate.position.y, 200)
-        if crateZ < groundZ then
+        local groundZ = getGroundHeight(x, y)
+        if groundZ and crateZ < groundZ then
             crateStopped = true
-            crate.model = 1860
             crateZ = groundZ
 
             triggerServerEvent("onPlayerCrateLanded", resourceRoot, x, y, groundZ)
@@ -70,11 +92,11 @@ end)
 
 addEvent("onClientCrateLanded", true)
 addEventHandler("onClientCrateLanded", resourceRoot, function (x, y, z)
-    if not isElement(crate) then
-        return
+    if isElement(crate) then
+        destroyElement(crate)
     end
+    createObject(1860, x, y, z)
     crateZ = z
-    setElementPosition(crate, x, y, z)
     crateStopped = true
 end)
 

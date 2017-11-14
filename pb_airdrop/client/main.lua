@@ -18,7 +18,7 @@ local dropY = 0
 local crateEjected = false
 
 local planeSound
-local maxSoundDistance = 1500
+local maxSoundDistance = 2000
 local middleSoundDistance = 1100
 local minSoundDistance = 300
 
@@ -49,7 +49,7 @@ addEventHandler("onClientPreRender", root, function ()
     local x, y, z = getElementPosition(plane)
     if not crateEjected and passedTime > dropTime then
         crateEjected = true
-        createCrate(x, y, z - 15)
+        createCrate(dropX, dropY, z - 20)
     end
     setElementPosition(plane, startX + velocityX * passedTime, startY + velocityY * passedTime, plane.position.z)
     setElementPosition(planeSound, x, y, z)

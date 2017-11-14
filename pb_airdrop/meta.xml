@@ -5,7 +5,9 @@
     <script type="client" src="client/main.lua"/>
     <script type="client" src="client/crate.lua"/>
 
+    <script type="server" src="server/points.lua"/>
     <script type="server" src="server/main.lua"/>
+
     <file src="assets/plane_bottom.png"/>
     <file src="assets/plane_side.png"/>
     <file src="assets/plane_tail.png"/>

@@ -47,4 +47,5 @@
     <file src="models/box.txd"/>
     <file src="models/box_parachute.dff"/>
     <file src="models/box_parachute.txd"/>
+    <file src="models/box_parachute.col"/>
 </meta>
