@@ -64,6 +64,9 @@ addNumberedClothes("medic", 3, "shirt/medic/", "shirt", "medic", true)
 addNumberedClothes("mjacket", 5, "shirt/mjacket/", "shirt", "mjacket", true)
 addNumberedClothes("nbc", 1, "shirt/nbc/", "shirt", "nbc", true)
 addNumberedClothes("pcu", 8, "shirt/pcu/", "shirt", "pcu", true)
+for i = 1, 11 do
+    renameClothes("pcu" .. i, "Sport Jacket " .. i)
+end
 addNumberedClothes("police", 2, "shirt/police/", "shirt", "police", true)
 addNumberedClothes("quilted", 8, "shirt/quilted/", "shirt", "quilted", true)
 addNumberedClothes("raincoat", 7, "shirt/raincoat/", "shirt", "raincoat", true)

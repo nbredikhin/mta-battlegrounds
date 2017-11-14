@@ -154,4 +154,31 @@ Languages.english = {
     clothes_shoes = "Shoes",
     clothes_hat = "Hats",
     clothes_all = "All clothes",
+
+    -- Shop
+    shop_back = "Bacl",
+    shop_exit = "Exit",
+    shop_categories = "Categories",
+    shop_category_hats = "Hats",
+    shop_category_torso = "Torso",
+    shop_category_pants = "Pants",
+    shop_category_shoes = "Shoes",
+
+    shop_subcategory_other = "Other",
+    shop_subcategory_sport = "Sport",
+
+    shop_subcategory_tshirt = "T-shirts",
+    shop_subcategory_shirt = "Shirts",
+    shop_subcategory_jacket = "Jackets",
+
+    shop_subcategory_hoodie = "Hoodies",
+    shop_subcategory_sweater = "Sweaters",
+    shop_subcategory_woolcoat = "Woolcoats",
+
+    shop_subcategory_cargopnts = "Working Pants",
+    shop_subcategory_hunterpnts = "Hunting Pants",
+    shop_subcategory_jeans = "Jeans",
+    shop_subcategory_slacks = "Slacks",
+
+    shop_subcategory_boots = "Boots",
 }

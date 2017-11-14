@@ -25,7 +25,7 @@ function setVisible(visible)
 end
 
 addEventHandler("onClientResourceStart", resourceRoot, function ()
-    -- setVisible(true)
+    setVisible(true)
 end)
 
 function buyClothes(name)

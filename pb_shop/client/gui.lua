@@ -10,16 +10,36 @@ local prevMouseState = false
 local mouseX = 0
 local mouseY = 0
 
-local categoriesList = {name = "Категории", subcategories = {
-    {name = "Шапки",           category = "hat"},
-    {name = "Верхняя одежда",  subcategories = {
-        {name = "Куртки",  category = "bomber"},
-        {name = "Пиджаки", category = "woolcoat"},
-        {name = "Назад", back = true }
+local categoriesList = {name = "shop_categories", subcategories = {
+    {name = "shop_category_hats",  category = "hat"},
+    {name = "shop_category_torso", subcategories = {
+        {name = "shop_subcategory_tshirt",       category = "tshirt"},
+        {name = "shop_subcategory_shirt",        category = "shirt"},
+        {name = "shop_subcategory_sweater",      category = "sweater"},
+        {name = "shop_subcategory_hoodie",       category = "hoodie"},
+        {name = "shop_subcategory_jacket",       category = "jacket"},
+        {name = "shop_subcategory_woolcoat",     category = "woolcoat"},
+        {name = "shop_subcategory_sport",        category = "sport_jacket"},
+        {name = "shop_subcategory_other",        category = "shirt_other"},
+        {name = "shop_back", back = true }
     }},
-    {name = "Футболки",        category = "tshirt"},
-    {name = "Обувь",           category = "shoes"},
-    {name = "Выход", back = true }
+
+    {name = "shop_category_pants", subcategories = {
+        {name = "shop_subcategory_jeans",      category = "jeans"},
+        {name = "shop_subcategory_slacks",     category = "slacks"},
+        {name = "shop_subcategory_sport",      category = "tracksuitpnts"},
+        {name = "shop_subcategory_cargopnts",  category = "cargopnts"},
+        {name = "shop_subcategory_hunterpnts", category = "hunterpnts"},
+        {name = "shop_subcategory_other",      category = "pants_other"},
+        {name = "shop_back", back = true }
+    }},
+    {name = "shop_category_shoes", subcategories = {
+        {name = "shop_subcategory_sport",      category = "sport_shoes"},
+        {name = "shop_subcategory_boots",      category = "boots"},
+        {name = "shop_subcategory_other",      category = "shoes_other"},
+        {name = "shop_back", back = true }
+    }},
+    {name = "shop_exit", back = true }
 }}
 
 local categoryPath = {}
@@ -238,7 +258,7 @@ function drawGUI()
         if selected then
             dxDrawImage(x, y, panelWidth, itemHeight, "assets/gradient.png", 0, 0, 0, tocolor(0, 0, 0, 80))
         end
-        local nameText = item.name
+        local nameText = localize(item.name)
         local nameColor = textColor
         if hasPlayerClothes(item.clothes) then
             nameText = "✓ " .. nameText

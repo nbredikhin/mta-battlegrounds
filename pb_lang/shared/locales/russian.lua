@@ -154,4 +154,31 @@ Languages.russian = {
     clothes_shoes = "Обувь",
     clothes_hat = "Шапки",
     clothes_all = "Вся одежда",
+
+    -- Shop
+    shop_back = "Назад",
+    shop_exit = "Выход",
+    shop_categories = "Категории",
+    shop_category_hats = "Шапки",
+    shop_category_torso = "Торс",
+    shop_category_pants = "Ноги",
+    shop_category_shoes = "Обувь",
+
+    shop_subcategory_other = "Прочее",
+    shop_subcategory_sport = "Спорт",
+
+    shop_subcategory_tshirt = "Футболки",
+    shop_subcategory_shirt = "Рубашки",
+    shop_subcategory_jacket = "Куртки",
+
+    shop_subcategory_hoodie = "Худи",
+    shop_subcategory_sweater = "Свитера",
+    shop_subcategory_woolcoat = "Пальто",
+
+    shop_subcategory_cargopnts = "Рабочие штаны",
+    shop_subcategory_hunterpnts = "Охотничьи штаны",
+    shop_subcategory_jeans = "Джинсы",
+    shop_subcategory_slacks = "Брюки",
+
+    shop_subcategory_boots = "Ботинки",
 }
