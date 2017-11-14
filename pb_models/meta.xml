@@ -41,4 +41,10 @@
     <file src="models/lobby.col"/>
     <file src="models/lobby.dff"/>
     <file src="models/lobby.txd"/>
+
+    <file src="models/box.col"/>
+    <file src="models/box.dff"/>
+    <file src="models/box.txd"/>
+    <file src="models/box_parachute.dff"/>
+    <file src="models/box_parachute.txd"/>
 </meta>

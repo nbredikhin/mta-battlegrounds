@@ -1,7 +1,17 @@
 <meta>
     <oop>true</oop>
+    <min_mta_version client="1.5.4" server="1.5.4" />
+
     <script type="client" src="client/main.lua"/>
-    <file src="assets/plane.png"/>
+    <script type="client" src="client/crate.lua"/>
+
+    <script type="server" src="server/main.lua"/>
+    <file src="assets/plane_bottom.png"/>
     <file src="assets/plane_side.png"/>
-    <file src="assets/tail.png"/>
+    <file src="assets/plane_tail.png"/>
+    <file src="assets/plane_sound.mp3"/>
+
+    <file src="assets/box_sprite.png"/>
+    <file src="assets/box_bottom.png"/>
+    <file src="assets/parachute_sprite.png"/>
 </meta>

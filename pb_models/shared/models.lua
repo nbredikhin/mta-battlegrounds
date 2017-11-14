@@ -18,6 +18,9 @@ ReplacedModels = {
     machete = 339,
 
     lobby = 2288,
+
+    box = 1860,
+    box_parachute = 1861,
 }
 
 function getItemModel(name)
