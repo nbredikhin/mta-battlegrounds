@@ -12,6 +12,7 @@ local loadAccountData = {
     "username",
     "battlepoints",
     "donatepoints",
+    "rating_main",
     "rating_wins",
     "rating_kills",
     "clothes_head",
@@ -23,6 +24,7 @@ local loadAccountData = {
 local saveAccountData = {
     "battlepoints",
     "donatepoints",
+    "rating_main",
     "rating_wins",
     "rating_kills",
     "clothes_head",
@@ -48,6 +50,7 @@ addEventHandler("onResourceStart", resourceRoot, function ()
             battlepoints  BIGINT        UNSIGNED NOT NULL DEFAULT 0,
             donatepoints  BIGINT        UNSIGNED NOT NULL DEFAULT 0,
 
+            rating_main   BIGINT        UNSIGNED NOT NULL DEFAULT 0,
             rating_wins   BIGINT        UNSIGNED NOT NULL DEFAULT 0,
             rating_kills  BIGINT        UNSIGNED NOT NULL DEFAULT 0,
 

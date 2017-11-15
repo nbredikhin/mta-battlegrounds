@@ -11,6 +11,7 @@
 
     <script type="client" src="client/tabs.lua"/>
     <script type="client" src="client/tab_character.lua"/>
+    <script type="client" src="client/tab_statistics.lua"/>
 
     <export type="client" function="setVisible"/>
     <export type="server" function="getPlayerLobbyPlayers"/>

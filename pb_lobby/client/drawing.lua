@@ -76,12 +76,16 @@ end
 
 function drawStartGameButton()
     local texture = "assets/corner0.png"
-    local w, h = 496, 250
+    local scale = 1
+    if screenSize.x < 1600 then
+        scale = 0.5 + math.max(0, 0.5 * (screenSize.x - 800) / 800)
+    end
+    local w, h = 496 * scale, 250 * scale
     local lobbyEnoughPlayers = true
     if getLobbyType() == "squad" and #getLobbyPlayers() <= 1 then
         lobbyEnoughPlayers = false
     end
-    if isMouseOver(0, 0, w, 50) then
+    if isMouseOver(0, 0, w * 0.7, h * 0.5) then
         if lobbyEnoughPlayers then
             texture = "assets/corner1.png"
         end
@@ -114,15 +118,15 @@ function drawStartGameButton()
     if not lobbyEnoughPlayers then
         color = tocolor(150, 150, 150)
     end
-    dxDrawText(text, 25 + 5, 15 + 5, 0, 0, tocolor(0, 0, 0, 150), 3.5, "default-bold", "left", "top")
-    dxDrawText(text, 25, 15, 0, 0, color, 3.5, "default-bold", "left", "top")
+    dxDrawText(text, (25 + 5) * scale, (15 + 5) * scale, 0, 0, tocolor(0, 0, 0, 150), 3.5 * scale, "default-bold", "left", "top")
+    dxDrawText(text, 25 * scale, 15 * scale, 0, 0, color, 3.5 * scale, "default-bold", "left", "top")
 
     local smallText = localize("lobby_type_"..tostring(getLobbyType()))
     if not lobbyEnoughPlayers then
         smallText = localize("lobby_not_enough_players")
     end
-    dxDrawText(smallText, 25 + 3, 70 + 3, 0, 0, tocolor(0, 0, 0, 150), 2, "default-bold", "left", "top")
-    dxDrawText(smallText, 25, 70, 0, 0, tocolor(255, 255, 255), 2, "default-bold", "left", "top")
+    dxDrawText(smallText, (25 + 3) * scale, (70 + 3) * scale, 0, 0, tocolor(0, 0, 0, 150), 2 * scale, "default-bold", "left", "top")
+    dxDrawText(smallText, 25 * scale, 70 * scale, 0, 0, tocolor(255, 255, 255), 2 * scale, "default-bold", "left", "top")
 end
 
 function drawBetaLogo()
@@ -131,7 +135,6 @@ function drawBetaLogo()
     local w = logoWidth * 0.3
     local h = logoHeight * 0.3
     dxDrawImage(screenSize.x - w - 10, screenSize.y - h - 40, w, h, "assets/logo.png", 0, 0, 0, tocolor(255, 255, 255, 200))
-    dxDrawText(localize("lobby_beta_label"), screenSize.x - w - 10, 0, screenSize.x - 10, screenSize.y - 30, tocolor(255, 150, 0, 200), 1.3, "default-bold", "center", "bottom")
 end
 
 function drawArrows()
@@ -164,7 +167,7 @@ function drawMessageBox()
     dxDrawText(currentMessageBoxText, 0, 0, screenSize.x, screenSize.y, tocolor(255, 255, 255), 2.5, "default-bold", "center", "center")
 end
 
-local function drawButton(text, x, y, width, height, bg, color, scale)
+function drawButton(text, x, y, width, height, bg, color, scale)
     if not bg then bg = tocolor(250, 250, 250) end
     if not color then color = tocolor(0, 0, 0, 200) end
     if not scale then scale = 1.5 end
@@ -265,6 +268,7 @@ addEventHandler("onClientRender", root, function ()
     end
     mouseX, mouseY = mx, my
 
+    drawTabs()
     drawStartGameButton()
     drawBetaLogo()
 
@@ -283,8 +287,6 @@ addEventHandler("onClientRender", root, function ()
             dxDrawText(text, 25, y, 0, 0, tocolor(255, 255, 255), 1, "default-bold", "left", "top")
         end
     end
-
-    drawTabs()
 
     drawMessageBox()
     drawWindow()

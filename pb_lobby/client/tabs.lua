@@ -41,10 +41,6 @@ Tabs.rewards = {
     title = localize("lobby_tab_rewards"),
 }
 
-Tabs.statistics = {
-    title = localize("lobby_tab_stats"),
-}
-
 local tabsOrder = {
     "home", "character", "shop", "rewards", "statistics"
 }
@@ -83,6 +79,10 @@ function resetTab()
 end
 
 function drawTabs()
+    if currentTab and currentTab.draw then
+        currentTab.draw()
+    end
+
     local x = screenSize.x - 0
     local y = tabsY
     dxDrawRectangle(tabsX - 20, tabsY, screenSize.x - tabsX + 20, tabsHeight, tocolor(0, 0, 0, 150))
@@ -111,8 +111,12 @@ function drawTabs()
         dxDrawText(str, x, y, x, y + tabsHeight, tocolor(255, 255, 255, alpha), tabsTextScale, "default-bold", "left", "center")
         tabsX = x
     end
-
-    if currentTab and currentTab.draw then
-        currentTab.draw()
-    end
 end
+
+setTimer(function ()
+    currentTab = Tabs.statistics
+    currentTabName = "statistics"
+    if currentTab.load then
+        currentTab.load()
+    end
+end, 50, 1)
