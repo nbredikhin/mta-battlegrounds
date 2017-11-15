@@ -110,9 +110,10 @@ addEventHandler("pickupLootItem", resourceRoot, function (element, weaponSlot, i
         destroyElement(element)
         animatePlayerPickup(client)
     elseif isItemEquipment(item) then
-        addPlayerEquipment(client, item)
-        destroyElement(element)
-        animatePlayerPickup(client)
+        if addPlayerEquipment(client, item) then
+            destroyElement(element)
+            animatePlayerPickup(client)
+        end
     else
         local backpackWeight = getPlayerBackpackTotalWeight(client)
         if not backpackWeight then

@@ -61,17 +61,20 @@ end
 
 function addPlayerEquipment(player, item)
     if not isElement(player) or not playerEquipments[player] or not isItem(item) then
-        return
+        return false
     end
     local itemClass = Items[item.name]
     local slot = itemClass.category
     if equipmentSlots[slot] then
         if slot == "backpack" and itemClass.capacity < getPlayerBackpackTotalWeight(player) then
-            return
+            return false
         end
-        dropPlayerEquipment(player, itemClass.category)
+        if playerEquipments[player][slot] then
+            spawnPlayerLootItem(player, playerEquipments[player][slot])
+        end
         playerEquipments[player][slot] = item
         updatePlayerEquipment(player)
+        return true
     end
 end
 

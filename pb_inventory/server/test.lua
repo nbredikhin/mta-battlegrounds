@@ -1,3 +1,10 @@
+function isPlayerAdmin(thePlayer)
+     local accName=getAccountName(getPlayerAccount(thePlayer))
+     if isObjectInACLGroup("user." ..accName, aclGetGroup("Admin")) then
+          return true
+     end
+end
+
 setTimer(function ()
     local player = getElementsByType("player")[1]
 
@@ -40,3 +47,10 @@ setTimer(function ()
     -- spawnPlayerLootBox(player)
     -- setTimer(spawnPlayerLootBox, 500, 1, player)
 end, 500, 1)
+
+addCommandHandler("give", function (player, cmd, name, count)
+    if not isPlayerAdmin then
+        return
+    end
+    spawnPlayerLootItem(player, createItem(name, tonumber(count) or 1))
+end)

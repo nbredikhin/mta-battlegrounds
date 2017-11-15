@@ -322,7 +322,7 @@ local function drawEquipmentSlot(slot, x, y, size)
     end
     local itemClass = Items[item.name]
     if itemClass and itemClass.vars and itemClass.vars.health and item.health < itemClass.vars.health then
-        local mul = item.health / itemClass.vars.health
+        local mul = (1 - item.health / itemClass.vars.health)
         local h = size * mul
         dxDrawRectangle(x, y + size - h, size, h, tocolor(255, 0, 0, 80))
     end
@@ -557,7 +557,7 @@ end)
 
 function showInventory(visible)
     isInventoryVisible = visible
-    showCursor(visible)
+    showCursor(visible ,false)
     if visible then
         triggerServerEvent("requireClientBackpack", resourceRoot)
     end

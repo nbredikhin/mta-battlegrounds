@@ -10,7 +10,7 @@
 
     "enableReadmeFiles": true,
 
-    "only": ["pb_airdrop", "pb_models"],
+    "only": ["pb_inventory"],
 
     "include": [
         "bone_attach",

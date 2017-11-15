@@ -320,9 +320,9 @@ Items = {
         icon              = "helmet1.png",
         readableName      = "item_helmet1",
         category          = "helmet",
-        penetration_ratio = 0.8,
+        penetration_ratio = 0.7,
         vars = {
-            health        = 5
+            health        = 9
         }
     },
 
@@ -333,9 +333,9 @@ Items = {
         icon              = "helmet2.png",
         readableName      = "item_helmet2",
         category          = "helmet",
-        penetration_ratio = 0.9,
+        penetration_ratio = 0.6,
         vars = {
-            health = 10
+            health = 16
         }
     },
 
@@ -346,9 +346,9 @@ Items = {
         icon              = "helmet3.png",
         readableName      = "item_helmet3",
         category          = "helmet",
-        penetration_ratio = 1,
+        penetration_ratio = 0.45,
         vars = {
-            health = 15
+            health = 25
         }
     },
 
@@ -359,9 +359,9 @@ Items = {
         icon              = "armor1.png",
         readableName      = "item_armor1",
         category          = "armor",
-        penetration_ratio = 0.8,
+        penetration_ratio = 0.7,
         vars = {
-            health        = 10
+            health        = 15
         }
     },
 
@@ -372,9 +372,9 @@ Items = {
         icon              = "armor2.png",
         readableName      = "item_armor2",
         category          = "armor",
-        penetration_ratio = 0.5,
+        penetration_ratio = 0.6,
         vars = {
-            health        = 15
+            health        = 25
         }
     },
 
@@ -385,9 +385,9 @@ Items = {
         icon              = "armor3.png",
         readableName      = "item_armor3",
         category          = "armor",
-        penetration_ratio = 0.2,
+        penetration_ratio = 0.45,
         vars = {
-            health        = 20
+            health        = 45
         }
     },
 

@@ -49,7 +49,7 @@ addEventHandler("onClientRender", root, function()
     if minDistance < MIN_SHOW_DISTANCE and minItem then
         drawPickupMessage(minItem)
     end
-end)
+end, true, "high")
 
 addEventHandler("onClientKey", root, function (button, down)
     if button == "f" and down then

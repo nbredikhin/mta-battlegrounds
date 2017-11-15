@@ -113,9 +113,9 @@ addEventHandler("createAirDrop", resourceRoot, function (x, y, z, angle, vx, vy,
     crateEjected = false
 end)
 
-addCommandHandler("adwrp", function ()
-    localPlayer.position = Vector3(dropX, dropY, 150)
-end)
+-- addCommandHandler("adwrp", function ()
+--     localPlayer.position = Vector3(dropX, dropY, 150)
+-- end)
 
 function destroyAirDrop()
     if isElement(plane) then

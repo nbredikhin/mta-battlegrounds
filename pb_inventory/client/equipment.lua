@@ -29,37 +29,36 @@ end)
 
 local localDamage = 0
 
-addEventHandler("onClientPlayerDamage", localPlayer, function (attacker, weaponId, bodypart, oldLoss)
+addEventHandler("onClientPlayerDamage", localPlayer, function (attacker, weaponId, bodypart, baseLoss)
     if not isElement(attacker) then
         return
     end
-
-    local loss = oldLoss
+    outputChatBox("Base loss: " .. tostring(baseLoss))
+    local loss = baseLoss
     local custom
+    -- Голова
     if bodypart == 9 then
-        loss = 50
+        loss = 100
         local item = getEquipmentSlot("helmet")
-        if isItem(item) then
-            item.health = math.max(0, item.health - loss)
-            if item.health > 0 then
-                loss = loss * (1 - Items[item.name].penetration_ratio)
-            end
+        if isItem(item) and item.health > 0 then
+            item.health = math.max(0, item.health - baseLoss)
+            loss = loss * Items[item.name].penetration_ratio
             triggerServerEvent("updateEquipmentHealth", resourceRoot, Items[item.name].category, item.health)
         end
+    -- Тело
     elseif bodypart == 3 then
         local item = getEquipmentSlot("armor")
-        if isItem(item) then
+        if isItem(item) and item.health > 0 then
             item.health = math.max(0, item.health - loss)
-            if item.health > 0 then
-                loss = loss * (1 - Items[item.name].penetration_ratio)
-            end
+            loss = loss * Items[item.name].penetration_ratio
             triggerServerEvent("updateEquipmentHealth", resourceRoot, Items[item.name].category, item.health)
         end
     end
     if loss > 0 then
         localDamage = localDamage + loss
     end
-    local newHealth = math.min(100, localPlayer.health + oldLoss - loss)
+    outputChatBox("Final loss: " .. tostring(loss))
+    local newHealth = math.min(100, localPlayer.health + baseLoss - loss)
     localPlayer.health = newHealth
 
     if newHealth > 0 then

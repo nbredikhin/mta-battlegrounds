@@ -14,6 +14,10 @@ addEventHandler("onClientPreRender", root, function ()
         isFireAllowed = false
     end
 
+    if isInventoryShowing() then
+        isFireAllowed = false
+    end
+
     toggleControl("next_weapon", false)
     toggleControl("previous_weapon", false)
     toggleControl("action", false)
@@ -25,7 +29,11 @@ addEventHandler("onClientPreRender", root, function ()
         setPedControlState(localPlayer, "vehicle_fire", false)
     end
 
-    toggleControl("aim_weapon", not isReloading)
+    if not isInventoryShowing() then
+        toggleControl("aim_weapon", not isReloading)
+    else
+        toggleControl("aim_weapon", false)
+    end
     if isReloading then
         setPedControlState(localPlayer, "aim_weapon", false)
     end
@@ -97,6 +105,9 @@ bindKey("r", "down", function ()
 end)
 
 bindKey("x", "down", function ()
+    if isInventoryShowing() then
+        return
+    end
     setActiveWeaponSlot()
 end)
 
@@ -115,6 +126,9 @@ addEventHandler("onClientSwitchWeaponSlot", resourceRoot, function ()
 end)
 
 function setActiveWeaponSlot(slotName)
+    if isInventoryShowing() then
+        return
+    end
     if localPlayer:getData("isReloadingWeapon") then
         return
     end
@@ -158,6 +172,9 @@ end)
 localPlayer:setData("isReloadingWeapon", false)
 
 bindKey("next_weapon", "down", function ()
+    if isInventoryShowing() then
+        return
+    end
     if getControlState("aim_weapon") then
         return
     end
@@ -169,6 +186,9 @@ bindKey("next_weapon", "down", function ()
 end)
 
 bindKey("previous_weapon", "down", function ()
+    if isInventoryShowing() then
+        return
+    end
     if getControlState("aim_weapon") then
         return
     end

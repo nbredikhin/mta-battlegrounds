@@ -95,7 +95,7 @@ function generateVehicles(dimension)
     local spawnedVehicles = {}
 
     for i, spawnpoint in ipairs(vehicleSpawnpoints) do
-        if randomChance(0.6) then
+        if randomChance(0.4) then
             local model = spawnpoint.model
             if vehicleModels[model] then
                 model = vehicleModels[model][math.random(1, #vehicleModels[model])]
