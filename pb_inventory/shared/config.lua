@@ -1,6 +1,6 @@
 Config = {}
 
 -- Носимый вес без рюкзака
-Config.defaultBackpackCapacity = 100
+Config.defaultBackpackCapacity = 70
 
 Config.minLootDistance = 2

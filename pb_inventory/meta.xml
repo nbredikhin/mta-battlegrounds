@@ -14,6 +14,7 @@
     <script type="client" src="client/wearing.lua"/>
     <script type="client" src="client/pickup.lua"/>
     <script type="client" src="client/usable_items.lua"/>
+    <script type="client" src="client/sounds.lua"/>
 
     <script type="server" src="server/parachute.lua"/>
     <script type="server" src="server/items.lua"/>
@@ -32,6 +33,7 @@
     <file src="assets/icons/medkit.png"/>
     <file src="assets/icons/energy_drink.png"/>
     <file src="assets/icons/painkiller.png"/>
+    <file src="assets/icons/adrenaline_syringe.png"/>
     <file src="assets/icons/m4.png"/>
     <file src="assets/icons/ak47.png"/>
     <file src="assets/icons/kar98k.png"/>
@@ -60,10 +62,12 @@
     <file src="assets/icons/armor3.png"/>
     <file src="assets/icons/jerrycan.png"/>
 
+    <file src="assets/sounds/painkiller.wav"/>
+
     <file src="assets/bar.png"/>
 
     <export type="shared" function="getItemClass"/>
-    <export type="shared" function="getItemClasses"/>
+    <export type="shared" function="getLootClasses"/>
     <export type="shared" function="getWeaponNameFromId"/>
 
     <export type="client" function="getClientWeapons"/>

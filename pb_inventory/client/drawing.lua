@@ -106,6 +106,7 @@ function tryPickupLootItem(item)
     if getBackpackTotalWeight() + getItemWeight(item) > getBackpackCapacity() then
         showWeightError()
     end
+    playItemSound(item)
     triggerServerEvent("pickupLootItem", resourceRoot, item.lootElement, nil, item.name)
 end
 

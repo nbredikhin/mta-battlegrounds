@@ -36,7 +36,7 @@ local function randomChance(chance)
 end
 
 local function spawnRandomItem(position, tag, level)
-    local classes = exports.pb_inventory:getItemClasses(tag, level)
+    local classes = exports.pb_inventory:getLootClasses(tag, level)
     local itemClass = classes[math.random(1, #classes)]
 
     local stacks = math.random(1, itemClass.spawnStacks or 1)

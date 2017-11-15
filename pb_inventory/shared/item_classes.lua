@@ -10,7 +10,7 @@ Items = {
         stackable    = true,
         use_time     = 6000,
         fuel_amount  = 250,
-        weight       = 25,
+        weight       = 20,
         category     = "vehicles",
     },
 
@@ -25,8 +25,8 @@ Items = {
         stackable    = true,
         heal         = 10,
         heal_max     = 75,
-        use_time     = 3000,
-        weight       = 5,
+        use_time     = 4000,
+        weight       = 2,
         category     = "medicine",
     },
 
@@ -54,7 +54,7 @@ Items = {
         stackable    = true,
         heal         = 75,
         heal_max     = 75,
-        use_time     = 5000,
+        use_time     = 6000,
         weight       = 10,
         category     = "medicine",
     },
@@ -69,7 +69,7 @@ Items = {
         readableName = "item_energy_drink",
         stackable    = true,
         boost        = 15,
-        use_time     = 3000,
+        use_time     = 4000,
         weight       = 4,
         category     = "boost",
     },
@@ -84,8 +84,24 @@ Items = {
         readableName = "item_painkiller",
         stackable    = true,
         boost        = 35,
-        use_time     = 4000,
+        use_time     = 6000,
         weight       = 10,
+        category     = "boost",
+
+        -- sound = "painkiller.wav",
+    },
+
+    adrenaline_syringe = {
+        level        = 3,
+        tag          = "medicine",
+        nospawn      = true,
+
+        icon         = "adrenaline_syringe.png",
+        readableName = "item_adrenaline",
+        stackable    = true,
+        boost        = 100,
+        use_time     = 8000,
+        weight       = 20,
         category     = "boost",
     },
 
@@ -290,7 +306,7 @@ Items = {
         icon         = "backpack_small.png",
         readableName = "item_backpack1",
         category     = "backpack",
-        capacity     = 150,
+        capacity     = 220,
     },
 
     backpack_medium = {
@@ -300,7 +316,7 @@ Items = {
         icon         = "backpack_medium.png",
         readableName = "item_backpack2",
         category     = "backpack",
-        capacity     = 200,
+        capacity     = 270,
     },
 
     backpack_large = {
@@ -310,7 +326,7 @@ Items = {
         icon         = "backpack_large.png",
         readableName = "item_backpack3",
         category     = "backpack",
-        capacity     = 250,
+        capacity     = 320,
     },
 
     helmet1 = {
@@ -440,7 +456,7 @@ Items = {
         readableName = "item_12gauge",
         category     = "ammo",
         stackable    = true,
-        weight       = 0.5,
+        weight       = 1.25,
     }
 }
 
@@ -455,12 +471,14 @@ function getItemClass(name)
     return Items[name]
 end
 
-function getItemClasses(tag, level)
+function getLootClasses(tag, level, all)
     local classes = {}
 
     for name, itemClass in pairs(Items) do
         if ((tag and itemClass.tag == tag) or (not tag)) or ((level and itemClass.level <= level) or (not level)) then
-            table.insert(classes, itemClass)
+            if not itemClass.nospawn then
+                table.insert(classes, itemClass)
+            end
         end
     end
 
