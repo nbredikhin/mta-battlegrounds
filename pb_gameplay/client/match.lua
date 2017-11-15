@@ -3,6 +3,7 @@ local isMatchRunning = false
 local spectatingTimer
 
 local function handleLeavingMatch()
+    exports.pb_airdrop:destroyAirDrop()
     stopSpectating()
     squadPlayers = {}
     exports.pb_zones:removeZones()
@@ -46,6 +47,7 @@ addEventHandler("onJoinedMatch", resourceRoot, function (settings, aliveCount, s
 
     exports.pb_lobby:setVisible(false)
     exports.pb_zones:hideZones()
+    exports.pb_airdrop:destroyAirDrop()
     exports.pb_hud:setCounter("alive", aliveCount)
 
     setTimer(fadeCamera, 50, 1, false, 0)

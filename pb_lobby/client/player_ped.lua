@@ -70,6 +70,7 @@ function startSkinSelect()
     localPlayer.position = pedPosition - Vector3(0, 0, 10)
 
     playerPed = createLobbyPed(pedPosition)
+    localPlayer:setData("skin", 235)
 
     resetCamera()
 end

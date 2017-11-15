@@ -30,7 +30,7 @@ function setPlayerActiveWeaponSlot(player, slotName)
         slotName = nil
     end
     if hasPlayerParachute(player) then
-        slotName = nil
+        return
     end
     player:setData("activeWeaponSlot", slotName)
     updatePlayerActiveWeapon(player)

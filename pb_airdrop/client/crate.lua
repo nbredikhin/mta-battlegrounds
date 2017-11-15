@@ -16,6 +16,8 @@ local crateZ = 0
 local crateSpeed = 5
 local crateStopped = false
 
+local spawnedCrates = {}
+
 addEventHandler("onClientRender", root, function ()
     if not isElement(crate) then
         return
@@ -95,7 +97,9 @@ addEventHandler("onClientCrateLanded", resourceRoot, function (x, y, z)
     if isElement(crate) then
         destroyElement(crate)
     end
-    createObject(1860, x, y, z)
+    local object = createObject(1860, x, y, z)
+    object.dimension = localPlayer.dimension
+    table.insert(spawnedCrates, object)
     crateZ = z
     crateStopped = true
 end)
@@ -106,9 +110,22 @@ function createCrate(x, y, z)
     end
     crate = createObject(1861, x, y, z)
     crate.doubleSided = true
+    crate.dimension = localPlayer.dimension
 
     startPosition = Vector3(x, y, z)
     crateZ = z
 
     crateStopped = false
+end
+
+function destroyCrates()
+    if isElement(crate) then
+        destroyElement(crate)
+    end
+    for i, element in ipairs(spawnedCrates) do
+        if isElement(element) then
+            destroyElement(element)
+        end
+    end
+    spawnedCrates = {}
 end

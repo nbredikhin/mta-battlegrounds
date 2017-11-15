@@ -25,6 +25,7 @@ Config.resourceList = {
     "pb_lang",
     "pb_mapping",
     "pb_models",
+    "pb_airdrop",
     "pb_zones",
     "pb_fuel",
     "pb_loot",

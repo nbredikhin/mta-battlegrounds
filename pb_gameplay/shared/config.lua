@@ -30,6 +30,20 @@ Config.redZoneTimeMin = 70
 Config.redZoneTimeMax = 120
 Config.redZoneMinPlayers = 10
 
+Config.airdropTimeMin = 180
+Config.airdropTimeMax = 300
+
+Config.airdropItems = {
+    medkit         = {0, 3},
+    helmet3        = {0, 1},
+    armor3         = {0, 1},
+    weapon_grenade = {0, 5},
+    backpack_large = {0, 1},
+    painkiller     = {0, 6},
+    energy_drink   = {0, 1},
+    weapon_m4      = {0, 1},
+}
+
 Config.planeSpeed = 100
 Config.planeZ = 650
 Config.planeDistance = 3500

@@ -113,6 +113,25 @@ function updateMatch(match)
             end
         end
 
+        -- Airdrops
+        if isResourceRunning("pb_airdrop") then
+            if not match.aidropTimestamp then
+                match.aidropTimestamp = currentTimestamp
+            end
+
+            if currentTimestamp - match.aidropTimestamp > match.airdropTime then
+                if match.currentZone > 0 then
+                    local players = getMatchPlayers(match)
+                    if #players > 0 then
+                        local zoneX, zoneY, zoneRadius = unpack(match.zones[match.currentZone])
+                        exports.pb_airdrop:createAirDropWithinZone(players, zoneX, zoneY, zoneRadius)
+                        match.aidropTimestamp = currentTimestamp
+                        match.airdropTime = math.random(Config.airdropTimeMin, Config.airdropTimeMax)
+                    end
+                end
+            end
+        end
+
         -- Синие и белые зоны
         if stateTimePassed < Config.zonesStartTime then
             return
@@ -239,6 +258,12 @@ local function setMatchRunning(match)
         match.shrinkTimestamp = getRealTime().timestamp
         match.zoneTimestamp = getRealTime().timestamp
         match.zoneState = "shrink"
+    end
+
+    if isResourceRunning("pb_airdrop") then
+        match.airdropTime = Config.zonesStartTime + math.random(20, 120)
+    else
+        match.airdropTime = 999999
     end
 
     triggerMatchEvent(match, "onMatchStarted", resourceRoot, match.totalPlayersCount)
@@ -438,4 +463,22 @@ addEventHandler("onMatchElementCreated", root, function (matchId)
         return
     end
     table.insert(match.elements, source)
+end)
+
+addEvent("onAirdropLanded", false)
+addEventHandler("onAirdropLanded", root, function (matchId, x, y, z)
+    if not isResourceRunning("pb_inventory") then
+        return
+    end
+    local match = getMatchById(matchId)
+    if not isMatch(match) then
+        return
+    end
+    for name, range in pairs(Config.airdropItems) do
+        local count = math.random(range[1], range[2])
+        if count > 0 then
+            local item = exports.pb_inventory:createItem(name, count)
+            exports.pb_inventory:spawnLootItem(item, Vector3(x, y, z), match.dimension)
+        end
+    end
 end)

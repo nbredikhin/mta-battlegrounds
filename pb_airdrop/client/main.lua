@@ -95,10 +95,10 @@ addEventHandler("createAirDrop", resourceRoot, function (x, y, z, angle, vx, vy,
     plane.dimension = localPlayer.dimension
 
     planeSound = playSound3D("assets/plane_sound.mp3", localPlayer.position, true)
+    planeSound.dimension = localPlayer.dimension
     setSoundMaxDistance(planeSound, maxSoundDistance)
     setSoundMinDistance(planeSound, minSoundDistance)
 
-    local blip = createBlipAttachedTo(plane)
     startTime = getTickCount()
 
     startX = x
@@ -111,6 +111,10 @@ addEventHandler("createAirDrop", resourceRoot, function (x, y, z, angle, vx, vy,
     dropY = dy
 
     crateEjected = false
+end)
+
+addCommandHandler("adwrp", function ()
+    localPlayer.position = Vector3(dropX, dropY, 150)
 end)
 
 function destroyAirDrop()
