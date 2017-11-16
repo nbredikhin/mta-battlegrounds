@@ -66,8 +66,8 @@ function startSkinSelect()
     isActive = true
 
     localPlayer.alpha = 0
-    localPlayer.frozen = true
-    localPlayer.position = pedPosition - Vector3(0, 0, 10)
+    -- localPlayer.frozen = true
+    -- localPlayer.position = pedPosition - Vector3(0, 0, 10)
 
     playerPed = createLobbyPed(pedPosition)
     localPlayer:setData("skin", 235)

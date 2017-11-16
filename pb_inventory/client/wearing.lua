@@ -13,8 +13,8 @@ local itemsAttach = {
         bone = 3,
         x = 0,
         y = 0.05,
-        z = 0.05,
-        rx = 0,
+        z = 0.06,
+        rx = -5,
         ry = 0,
         rz = 180
     },
@@ -22,8 +22,8 @@ local itemsAttach = {
     helmet = {
         bone = 1,
         x = 0,
-        y = 0.05,
-        z = 0.08,
+        y = 0.065,
+        z = 0.055,
         rx = 10,
         ry = 0,
         rz = 180
@@ -51,12 +51,85 @@ local itemsAttach = {
 
     secondary = {
         bone = 4,
-        x = 0.2,
+        x = 0.21,
         y = 0.1,
         z = 0.05,
         rx = 0,
         ry = 180,
         rz = 100
+    },
+
+    melee = {
+        bone = 4,
+        x = 0.1,
+        y = 0.15, --z
+        z = 0.15, --y
+        rx = 90,
+        ry = -60,
+        rz = 0
+    },
+
+    grenade = {
+        bone = 4,
+        x = 0.18,
+        y = -0.02,
+        z = 0.07,
+        rx = 90,
+        ry = 90,
+        rz = 80
+    }
+}
+
+local overrideOffsets = {
+    -- Helmet 1
+    [1854] = {
+        bone = 1,
+        x = 0,
+        y = 0.055,
+        z = 0.08,
+        rx = 10,
+        ry = 0,
+        rz = 180
+    },
+    -- Helmet 2
+    [1855] = {
+        bone = 1,
+        x = 0,
+        y = 0.055,
+        z = 0.08,
+        rx = 5,
+        ry = 0,
+        rz = 180
+    },
+    -- Armor 2
+    [1858] = {
+        bone = 3,
+        x = 0,
+        y = 0.055,
+        z = 0.06,
+        rx = 0,
+        ry = 0,
+        rz = 180
+    },
+    -- UZI
+    [352] = {
+        bone = 4,
+        x = -0.2,
+        y = 0.1,
+        z = 0.05,
+        rx = 0,
+        ry = 180,
+        rz = 80
+    },
+    --crowbar
+    [333] = {
+        bone = 4,
+        x = 0.05,
+        y = 0.15, --z
+        z = 0.12, --y
+        rx = 90,
+        ry = -75,
+        rz = -10
     }
 }
 
@@ -108,13 +181,23 @@ function updatePlayerWearingItems(player)
         if model then
             if not isElement(object) then
                 object = createObject(model, player.position)
+                if name == "helmet" then
+                    object.scale = 1.02
+                elseif name == "armor" then
+                    object.scale = 1.02
+                end
                 object:setCollisionsEnabled(false)
                 object.doubleSided = true
                 object.dimension = player.dimension
+                if overrideOffsets[model] then
+                    attach = overrideOffsets[model]
+                end
                 exports.bone_attach:attachElementToBone(object, player, attach.bone,
                     attach.x, attach.y, attach.z,
                     attach.rx, attach.ry, attach.rz)
                 attachedObjects[player][name] = object
+            else
+                object.model = model
             end
         else
             if isElement(object) then

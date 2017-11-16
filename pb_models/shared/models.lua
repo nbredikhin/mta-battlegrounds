@@ -21,6 +21,8 @@ ReplacedModels = {
 
     box = 1860,
     box_parachute = 1861,
+
+    playermodel = 235
 }
 
 function getItemModel(name)

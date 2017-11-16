@@ -5,6 +5,8 @@ local wearableSlots = {
     primary1 = true,
     primary2 = true,
     secondary = true,
+    melee = true,
+    grenade = true,
 }
 
 function initPlayerWeapons(player)

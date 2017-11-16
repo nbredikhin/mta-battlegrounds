@@ -8,7 +8,7 @@ local function addAFKTime()
     end
     afkSeconds = afkSeconds + 1
     if afkSeconds > afkMaxTime then
-        triggerServerEvent("afkKickSelf", resourceRoot)
+        triggerServerEvent("afkKickSelf", resourceRoot, "Being AFK for too long")
         afkSeconds = 0
     end
 end

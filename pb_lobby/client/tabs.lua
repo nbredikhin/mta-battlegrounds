@@ -39,6 +39,7 @@ Tabs.shop = {
 
 Tabs.rewards = {
     title = localize("lobby_tab_rewards"),
+    disabled = true
 }
 
 local tabsOrder = {
@@ -92,7 +93,7 @@ function drawTabs()
         local width = dxGetTextWidth(str, tabsTextScale, "default-bold")
         x = x - width - tabsSpace
         local alpha = 150
-        if isMouseOver(x, y, width, tabsHeight) then
+        if isMouseOver(x, y, width, tabsHeight) and not tab.disabled then
             alpha = 200
             if isMousePressed and currentTab ~= tab then
                 if currentTab and currentTab.unload then
@@ -107,6 +108,9 @@ function drawTabs()
         end
         if tab == currentTab then
             alpha = 255
+        end
+        if tab.disabled then
+            alpha = 50
         end
         dxDrawText(str, x, y, x, y + tabsHeight, tocolor(255, 255, 255, alpha), tabsTextScale, "default-bold", "left", "center")
         tabsX = x

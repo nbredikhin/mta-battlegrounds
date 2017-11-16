@@ -16,9 +16,6 @@
     <file src="assets/shaders/tex_matrix.fx"/>
     <file src="assets/shaders/replace.fx"/>
 
-    <file src="assets/models/playermodel.dff"/>
-    <file src="assets/models/playermodel.txd"/>
-
     <file src="assets/placeholder.png"/>
     <file src="assets/elbow.png"/>
     <file src="assets/wrist.png"/>

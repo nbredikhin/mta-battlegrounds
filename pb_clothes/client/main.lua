@@ -86,11 +86,6 @@ addEventHandler("onClientElementStreamOut", root, function ()
 end)
 
 addEventHandler("onClientResourceStart", resourceRoot, function ()
-    local txd = engineLoadTXD("assets/models/playermodel.txd")
-    engineImportTXD(txd, 235)
-    local dff = engineLoadDFF("assets/models/playermodel.dff")
-    engineReplaceModel(dff, 235)
-
     setElementDoubleSided(localPlayer, true)
 
     for i, player in ipairs(getElementsByType("player")) do

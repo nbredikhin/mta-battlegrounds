@@ -8,7 +8,7 @@ local function drawStatsBlock(x, y, width, height, title, value, label, fields)
     dxDrawText(title, x+4, y+4, x + width+4, y + 60 +4 , tocolor(0, 0, 0, 150), 3.5, "default-bold", "center", "center")
     dxDrawText(title, x, y, x + width, y + 60, tocolor(255, 255, 255), 3.5, "default-bold", "center", "center")
     y = y + 60
-    dxDrawText(value, x+5, y+5, x + width+5, y + 50 +5 , tocolor(0, 0, 0, 150), 4, "default-bold", "center", "center")
+    dxDrawText(value, x+4, y+4, x + width+4, y + 50 +4 , tocolor(0, 0, 0, 150), 4, "default-bold", "center", "center")
     dxDrawText(value, x, y, x + width, y + 50, tocolor(255, 255, 255), 4, "default-bold", "center", "center")
     y = y + 50
     dxDrawText(label, x+2, y+2, x + width+2, y + 35 +2 , tocolor(0, 0, 0, 150), 2, "default-bold", "center", "center")
@@ -45,6 +45,10 @@ local function drawStatsBlock(x, y, width, height, title, value, label, fields)
         dxDrawText(value, x, y, x + width - 10, y + 30, tocolor(200, 200, 200), 1, "default-bold", "right", "center")
         y = y + 30
     end
+end
+
+local function drawRankingsPanel(x, y)
+
 end
 
 local function drawStatisticsPanel(x, y)
@@ -87,6 +91,7 @@ local function draw()
         if drawButton("Моя статистика", x + panelWidth - 180, y - 50, 180, 40) then
             currentPanel = "statistics"
         end
+        drawRankingsPanel(x, y)
     end
 end
 
