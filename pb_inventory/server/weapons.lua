@@ -163,6 +163,7 @@ addEventHandler("switchPrimaryWeapons", resourceRoot, function ()
     playerWeapons[player]["primary1"] = playerWeapons[player]["primary2"]
     playerWeapons[player]["primary2"] = primary1
     updatePlayerWeapons(player)
+    updatePlayerActiveWeapon(player)
 end)
 
 function getPlayerWeaponSlot(player, slot)

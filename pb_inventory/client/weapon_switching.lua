@@ -13,18 +13,18 @@ addEventHandler("onClientPreRender", root, function ()
     if isReloading then
         isFireAllowed = false
     end
-
+    local enableFire = isFireAllowed
     if isInventoryShowing() then
-        isFireAllowed = false
+        enableFire = false
     end
 
     toggleControl("next_weapon", false)
     toggleControl("previous_weapon", false)
     toggleControl("action", false)
 
-    toggleControl("fire", isFireAllowed)
-    toggleControl("vehicle_fire", isFireAllowed)
-    if not isFireAllowed then
+    toggleControl("fire", enableFire)
+    toggleControl("vehicle_fire", enableFire)
+    if not enableFire then
         setPedControlState(localPlayer, "fire", false)
         setPedControlState(localPlayer, "vehicle_fire", false)
     end

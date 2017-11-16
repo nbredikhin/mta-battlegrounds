@@ -33,7 +33,6 @@ addEventHandler("onClientPlayerDamage", localPlayer, function (attacker, weaponI
     if not isElement(attacker) then
         return
     end
-    outputChatBox("Base loss: " .. tostring(baseLoss))
     local loss = baseLoss
     local custom
     -- Голова
@@ -57,7 +56,6 @@ addEventHandler("onClientPlayerDamage", localPlayer, function (attacker, weaponI
     if loss > 0 then
         localDamage = localDamage + loss
     end
-    outputChatBox("Final loss: " .. tostring(loss))
     local newHealth = math.min(100, localPlayer.health + baseLoss - loss)
     localPlayer.health = newHealth
 
