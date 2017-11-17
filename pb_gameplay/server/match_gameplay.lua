@@ -319,6 +319,12 @@ function handlePlayerLeaveMatch(match, player)
         handlePlayerMatchDeath(match, player, nil)
     end
 
+    if isResourceRunning("pb_accounts") then
+        exports.pb_accounts:addPlayerStatsField(player, "stats_hp_healed", player:getData("hp_healed"))
+        exports.pb_accounts:addPlayerStatsField(player, "stats_hp_damage", player:getData("damage_taken"))
+        exports.pb_accounts:addPlayerStatsField(player, "stats_kills", player:getData("kills"))
+    end
+
     player:removeData("match_waiting")
     player:removeData("kills")
     player:removeData("damage_taken")
@@ -346,9 +352,19 @@ local function showSquadFinishScreen(match, squad, rank)
         return false
     end
     local timePassed = getRealTime().timestamp - match.startTimestamp
+    local matchType = match.matchType or "solo"
+
     for i, player in ipairs(squad.players) do
         if isElement(player) and isPlayerInMatch(player, match) then
             triggerClientEvent(player, "onMatchFinished", resourceRoot, rank, match.totalSquadsCount, timePassed)
+            -- Статистика
+            exports.pb_accounts:addPlayerStatsField(player, "stats_plays_"..matchType, 1)
+            if rank <= 10 then
+                exports.pb_accounts:addPlayerStatsField(player, "stats_top10_"..matchType, 1)
+                if rank == 1 then
+                    exports.pb_accounts:addPlayerStatsField(player, "stats_wins_"..matchType, 1)
+                end
+            end
         end
     end
     return false

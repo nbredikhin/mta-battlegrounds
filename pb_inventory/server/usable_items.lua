@@ -17,6 +17,8 @@ addEventHandler("finishPlayerHeal", resourceRoot, function (itemName)
     local diffHealth = player.health - prevHealth
     local totalHealed = player:getData("hp_healed") or 0
     player:setData("hp_healed", math.floor(totalHealed + diffHealth))
+
+    exports.pb_accounts:addPlayerStatsField(player, "stats_items_used", 1)
 end)
 
 addEvent("finishPlayerFillFuel", true)
@@ -36,6 +38,8 @@ addEventHandler("finishPlayerFillFuel", resourceRoot, function (itemName)
     takePlayerBackpackItem(player, item.name, 1)
 
     exports.pb_fuel:fillVehicleFuel(player.vehicle, itemClass.fuel_amount)
+
+    exports.pb_accounts:addPlayerStatsField(player, "stats_items_used", 1)
 end)
 
 addEvent("finishPlayerBoost", true)
@@ -50,4 +54,6 @@ addEventHandler("finishPlayerBoost", resourceRoot, function (itemName)
 
     local boost = player:getData("boost") or 0
     player:setData("boost", math.min(100, boost + itemClass.boost))
+
+    exports.pb_accounts:addPlayerStatsField(player, "stats_items_used", 1)
 end)

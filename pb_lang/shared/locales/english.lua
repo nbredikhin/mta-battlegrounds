@@ -181,4 +181,25 @@ Languages.english = {
     shop_subcategory_slacks = "Slacks",
 
     shop_subcategory_boots = "Boots",
+
+    -- Stats
+    stats_rounds = "rounds",
+    stats_players = "players",
+    stats_plays = "PLAYS",
+    stats_wins = "WINS",
+    stats_kills = "KILLS",
+    stats_plays_solo = "SOLO plays",
+    stats_plays_squad = "SQUAD plays",
+    stats_playtime = "Total playtime",
+    stats_distance = "Total distance",
+    stats_distance_ped = "Distance on feet",
+    stats_distance_car = "Distance in cars",
+    stats_wins_solo = "SOLO wins",
+    stats_wins_squad = "SQUAD wins",
+    stats_top10 = "Top-10 games",
+    stats_top10_solo = "Top-10 in SOLO",
+    stats_top10_squad = "Top-10 in SQUAD",
+    stats_hp_damage = "Total damage",
+    stats_hp_healed = "HP healed",
+    stats_items_used = "Items used",
 }

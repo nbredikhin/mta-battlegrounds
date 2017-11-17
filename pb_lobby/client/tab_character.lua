@@ -29,10 +29,6 @@ local inventoryItems = {}
 
 local clothesIcons = {}
 
-local function scrollTEST()
-
-end
-
 local function draw()
     local x = itemsX + animOffset
     local y = itemsY

@@ -11,10 +11,13 @@
     <script type="server" src="server/inventory.lua"/>
     <script type="server" src="server/accounts.lua"/>
     <script type="server" src="server/clothes.lua"/>
+    <script type="server" src="server/stats.lua"/>
 
     <export type="shared" function="checkUsername"/>
     <export type="shared" function="getItemClass"/>
     <export type="shared" function="getDefaultClothes"/>
     <export type="shared" function="calculateClothesSellPrice"/>
+    <export type="server" function="addPlayerStatsField"/>
     <export type="client" function="getInventory"/>
+    <export type="client" function="addStatsField"/>
 </meta>

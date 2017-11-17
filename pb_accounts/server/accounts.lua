@@ -12,9 +12,6 @@ local loadAccountData = {
     "username",
     "battlepoints",
     "donatepoints",
-    "rating_main",
-    "rating_wins",
-    "rating_kills",
     "clothes_head",
     "clothes_shirt",
     "clothes_pants",
@@ -24,16 +21,52 @@ local loadAccountData = {
 local saveAccountData = {
     "battlepoints",
     "donatepoints",
-    "rating_main",
-    "rating_wins",
-    "rating_kills",
     "clothes_head",
     "clothes_shirt",
     "clothes_pants",
     "clothes_shoes"
 }
 
-local loggedPlayers = {}
+local statsFields = {
+    "stats_kills",
+    "stats_wins_solo",
+    "stats_wins_squad",
+    "stats_top10_solo",
+    "stats_top10_squad",
+    "stats_plays_solo",
+    "stats_plays_squad",
+    "stats_hp_healed",
+    "stats_hp_damage",
+    "stats_distance_ped",
+    "stats_distance_car",
+    "stats_items_used",
+    "stats_playtime",
+}
+
+local playerSessions = {}
+
+local function setupPlayerSession(player, account)
+    if not player or type(account) ~= "table" then
+        return false
+    end
+
+    playerSessions[player] = {
+        username       = account.username,
+        loginTimestamp = getRealTime().timestamp
+    }
+
+    for i, name in ipairs(statsFields) do
+        playerSessions[player][name] = account[name]
+    end
+end
+
+function getPlayerSession(player)
+    if not player then
+        return
+    end
+
+    return playerSessions[player]
+end
 
 addEventHandler("onResourceStart", resourceRoot, function ()
     if not isResourceRunning("mysql") then
@@ -50,11 +83,29 @@ addEventHandler("onResourceStart", resourceRoot, function ()
             battlepoints  BIGINT        UNSIGNED NOT NULL DEFAULT 0,
             donatepoints  BIGINT        UNSIGNED NOT NULL DEFAULT 0,
 
-            rating_main   BIGINT        UNSIGNED NOT NULL DEFAULT 0,
-            rating_wins   BIGINT        UNSIGNED NOT NULL DEFAULT 0,
-            rating_kills  BIGINT        UNSIGNED NOT NULL DEFAULT 0,
+            rating_solo_main   BIGINT   UNSIGNED NOT NULL DEFAULT 0,
+            rating_solo_wins   BIGINT   UNSIGNED NOT NULL DEFAULT 0,
+            rating_solo_kills  BIGINT   UNSIGNED NOT NULL DEFAULT 0,
 
-            online_server INTEGER       UNSIGNED NOT NULL DEFAULT 0,
+            rating_squad_main  BIGINT   UNSIGNED NOT NULL DEFAULT 0,
+            rating_squad_wins  BIGINT   UNSIGNED NOT NULL DEFAULT 0,
+            rating_squad_kills BIGINT   UNSIGNED NOT NULL DEFAULT 0,
+
+            stats_kills        INT    UNSIGNED NOT NULL DEFAULT 0,
+            stats_wins_solo    INT    UNSIGNED NOT NULL DEFAULT 0,
+            stats_wins_squad   INT    UNSIGNED NOT NULL DEFAULT 0,
+            stats_top10_solo   INT    UNSIGNED NOT NULL DEFAULT 0,
+            stats_top10_squad  INT    UNSIGNED NOT NULL DEFAULT 0,
+            stats_plays_solo   INT    UNSIGNED NOT NULL DEFAULT 0,
+            stats_plays_squad  INT    UNSIGNED NOT NULL DEFAULT 0,
+            stats_hp_healed    INT    UNSIGNED NOT NULL DEFAULT 0,
+            stats_hp_damage    INT    UNSIGNED NOT NULL DEFAULT 0,
+            stats_distance_ped INT    UNSIGNED NOT NULL DEFAULT 0,
+            stats_distance_car INT    UNSIGNED NOT NULL DEFAULT 0,
+            stats_items_used   INT    UNSIGNED NOT NULL DEFAULT 0,
+            stats_playtime     BIGINT UNSIGNED NOT NULL DEFAULT 0,
+
+            online_server INTEGER UNSIGNED NOT NULL DEFAULT 0,
 
             clothes_head  VARCHAR(255),
             clothes_shirt VARCHAR(255),
@@ -76,6 +127,11 @@ function savePlayerAccount(player, isLogout)
         return
     end
 
+    local session = getPlayerSession(player)
+    if not session then
+        return
+    end
+
     local saveQuery = {}
     local saveArgs = {}
 
@@ -91,6 +147,22 @@ function savePlayerAccount(player, isLogout)
     if isLogout then
         table.insert(saveQuery, "online_server = ?")
         table.insert(saveArgs, 0)
+
+        -- Обновить время игры на сервере
+        session.stats_playtime = tonumber(session.stats_playtime)
+        if not session.stats_playtime then
+            session.stats_playtime = 0
+        end
+        local timePassed = getRealTime().timestamp - session.loginTimestamp
+        session.stats_playtime = session.stats_playtime + timePassed
+    end
+
+    for i, name in ipairs(statsFields) do
+        local value = session[name]
+        if value then
+            table.insert(saveQuery, tostring(name) .. " = ?")
+            table.insert(saveArgs, value)
+        end
     end
 
     table.insert(saveArgs, player:getData("username"))
@@ -139,7 +211,7 @@ function dbLoginPlayer(result, params)
         end
         setupPlayerInventory(player, fromJSON(result.items))
         giveMissingPlayerClothes(player)
-        loggedPlayers[player] = true
+        setupPlayerSession(player, result)
 
         exports.mysql:dbExec(dbTableName, [[
             UPDATE ?? SET online_server = ? WHERE username = ?;
@@ -206,10 +278,10 @@ addEventHandler("onPlayerQuit", root, function ()
 end)
 
 setTimer(function ()
-    for player in pairs(loggedPlayers) do
+    for player in pairs(playerSessions) do
         if not isElement(player) then
             savePlayerAccount(player, true)
-            loggedPlayers[player] = nil
+            playerSessions[player] = nil
         end
     end
 end, 15000, 0)

@@ -181,4 +181,25 @@ Languages.russian = {
     shop_subcategory_slacks = "Брюки",
 
     shop_subcategory_boots = "Ботинки",
+
+    -- Stats
+    stats_rounds = "матчей",
+    stats_players = "игроков",
+    stats_plays = "СЫГРАНО",
+    stats_wins = "ВЫИГРАНО",
+    stats_kills = "УБИТО",
+    stats_plays_solo = "Игры в SOLO",
+    stats_plays_squad = "Игры в SQUAD",
+    stats_playtime = "Общее время игры",
+    stats_distance = "Общее расстояние",
+    stats_distance_ped = "Расстояние пешком",
+    stats_distance_car = "Расстояние в транспорте",
+    stats_wins_solo = "Победы в SOLO",
+    stats_wins_squad = "Победы в SQUAD",
+    stats_top10 = "Взято Топ-10",
+    stats_top10_solo = "Взято Топ-10 в SOLO",
+    stats_top10_squad = "Взято Топ-10 в SQUAD",
+    stats_hp_damage = "Нанесено урона",
+    stats_hp_healed = "Вылечено здоровья",
+    stats_items_used = "Использовано вещей",
 }
