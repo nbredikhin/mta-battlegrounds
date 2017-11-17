@@ -33,6 +33,9 @@ addEventHandler("onClientPlayerDamage", localPlayer, function (attacker, weaponI
     if not isElement(attacker) then
         return
     end
+    if localPlayer.vehicle == attacker then
+        return
+    end
     local loss = baseLoss
     local custom
     -- Голова

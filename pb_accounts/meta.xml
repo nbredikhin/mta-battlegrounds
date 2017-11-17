@@ -6,6 +6,7 @@
     <script type="shared" src="shared/clothes.lua"/>
 
     <script type="client" src="client/inventory.lua"/>
+    <script type="client" src="client/stats.lua"/>
 
     <script type="server" src="server/utils.lua"/>
     <script type="server" src="server/inventory.lua"/>

@@ -19,11 +19,12 @@ setTimer(function ()
     end
 
     local distance = (previousPosition - localPlayer.position).length
-    if distance > 10 then
+    previousPosition = localPlayer.position
+    if distance > 80 then
         return
     end
-    local mul = 1.8
-    if localPlayer.vehicle then
+    local mul = 1.25
+    if localPlayer.vehicle or localPlayer:getData("isInPlane") then
         distanceCar = distanceCar + distance * mul
     else
         distancePed = distancePed + distance * mul

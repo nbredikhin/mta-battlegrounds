@@ -137,7 +137,7 @@ local function drawStatisticsPanel(x, y)
         "stats_plays_solo",
         "stats_plays_squad",
         "stats_playtime",
-        "",
+        nil,
         "stats_distance",
         "stats_distance_ped",
         "stats_distance_car",
@@ -181,6 +181,25 @@ addEventHandler("onClientStatsUpdated", root, function (stats)
     localPlayerStats.stats_plays = (tonumber(localPlayerStats.stats_plays_squad) or 0) + (tonumber(localPlayerStats.stats_plays_solo) or 0)
     localPlayerStats.stats_wins = (tonumber(localPlayerStats.stats_wins_squad) or 0) + (tonumber(localPlayerStats.stats_wins_solo) or 0)
     localPlayerStats.stats_distance = (tonumber(localPlayerStats.stats_distance_ped) or 0) + (tonumber(localPlayerStats.stats_distance_car) or 0)
+
+    localPlayerStats.stats_distance = tostring(localPlayerStats.stats_distance) .. "km"
+    localPlayerStats.stats_distance_ped = tostring(localPlayerStats.stats_distance_ped) .. "km"
+    localPlayerStats.stats_distance_car = tostring(localPlayerStats.stats_distance_car) .. "km"
+
+    local seconds = tonumber(localPlayerStats.stats_playtime) or 0
+    if seconds < 60 then
+        localPlayerStats.stats_playtime = tostring(seconds) .. "s"
+    else
+        local minutes = math.floor(seconds / 60)
+        seconds = seconds - 60 * minutes
+        if minutes < 60 then
+            localPlayerStats.stats_playtime = tostring(minutes) .. "m " ..tostring(seconds) .. "s"
+        else
+            local hours = math.floor(minutes / 60)
+            minutes = minutes - hours * 60
+            localPlayerStats.stats_playtime = tostring(hours) .. "h " ..tostring(minutes) .. "m"
+        end
+    end
 end)
 
 Tabs.statistics = {
