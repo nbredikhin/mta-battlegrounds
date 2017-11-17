@@ -43,6 +43,15 @@ local statsFields = {
     "stats_playtime",
 }
 
+local ratingFields = {
+    "rating_solo_main",
+    "rating_solo_wins",
+    "rating_solo_kills",
+    "rating_squad_main",
+    "rating_squad_wins",
+    "rating_squad_kills",
+}
+
 local playerSessions = {}
 
 local function setupPlayerSession(player, account)
@@ -52,11 +61,18 @@ local function setupPlayerSession(player, account)
 
     playerSessions[player] = {
         username       = account.username,
-        loginTimestamp = getRealTime().timestamp
+        loginTimestamp = getRealTime().timestamp,
+        stats          = {},
+        rating         = {},
     }
-
+    -- Статистика
     for i, name in ipairs(statsFields) do
-        playerSessions[player][name] = account[name]
+        playerSessions[player].stats[name] = account[name]
+    end
+
+    -- Рейтинг
+    for i, name in ipairs(ratingFields) do
+        playerSessions[player].rating[name] = account[name]
     end
 end
 
@@ -158,7 +174,15 @@ function savePlayerAccount(player, isLogout)
     end
 
     for i, name in ipairs(statsFields) do
-        local value = session[name]
+        local value = session.stats[name]
+        if value then
+            table.insert(saveQuery, tostring(name) .. " = ?")
+            table.insert(saveArgs, value)
+        end
+    end
+
+    for i, name in ipairs(ratingFields) do
+        local value = session.rating[name]
         if value then
             table.insert(saveQuery, tostring(name) .. " = ?")
             table.insert(saveArgs, value)

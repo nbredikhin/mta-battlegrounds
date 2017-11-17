@@ -354,15 +354,22 @@ local function showSquadFinishScreen(match, squad, rank)
     local timePassed = getRealTime().timestamp - match.startTimestamp
     local matchType = match.matchType or "solo"
 
+    local ratingAvailable = isResourceRunning("pb_accounts")
+
     for i, player in ipairs(squad.players) do
         if isElement(player) and isPlayerInMatch(player, match) then
             triggerClientEvent(player, "onMatchFinished", resourceRoot, rank, match.totalSquadsCount, timePassed)
-            -- Статистика
-            exports.pb_accounts:addPlayerStatsField(player, "stats_plays_"..matchType, 1)
-            if rank <= 10 then
-                exports.pb_accounts:addPlayerStatsField(player, "stats_top10_"..matchType, 1)
-                if rank == 1 then
-                    exports.pb_accounts:addPlayerStatsField(player, "stats_wins_"..matchType, 1)
+
+            if ratingAvailable then
+                -- Рейтинг
+                exports.pb_accounts:updatePlayerRating(player, matchType, rank, player:getData("kills"), match.totalSquadsCount)
+                -- Статистика
+                exports.pb_accounts:addPlayerStatsField(player, "stats_plays_"..matchType, 1)
+                if rank <= 10 then
+                    exports.pb_accounts:addPlayerStatsField(player, "stats_top10_"..matchType, 1)
+                    if rank == 1 then
+                        exports.pb_accounts:addPlayerStatsField(player, "stats_wins_"..matchType, 1)
+                    end
                 end
             end
         end

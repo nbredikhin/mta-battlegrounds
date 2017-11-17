@@ -1,5 +1,5 @@
 -- function guiGetScreenSize()
---     return 1600, 900
+--     return 800, 600
 -- end
 
 local pedPositions = {
@@ -97,7 +97,7 @@ end, 500, 0)
 
 addEventHandler("onClientResourceStart", resourceRoot, function ()
     localPlayer:setData("lobbyReady", false)
-    -- setVisible(true)
+    setVisible(true)
 
     triggerServerEvent("updateLobby", resourceRoot)
 end)

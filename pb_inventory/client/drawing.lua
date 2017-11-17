@@ -534,7 +534,7 @@ addEventHandler("onClientResourceStart", resourceRoot, function ()
     if screenSize.x <= 1050 then
         local mul = (screenSize.x - 800) / (1050 - 800)
         local minScale = 0.6
-        local scale = minScale + mul * (1 - minScale)
+        local scale = minScale + mul * (1 - minScale) * 0.5
         slotSpace = slotSpace * scale
         listItemWidth = listItemWidth * scale
         listItemHeight = listItemHeight * scale

@@ -2,7 +2,7 @@ local screenSize = Vector2(guiGetScreenSize())
 
 local panelWidth, panelHeight = math.min(screenSize.x - 30, 1000), math.min(screenSize.y - 300, 600)
 
-local currentPanel = "statistics"
+local currentPanel = "rating"
 local currentRatingMode = "solo"
 
 local ratingTable = {
@@ -114,7 +114,12 @@ local function drawRankingsPanel(x, y)
 
     for i = 1, 10 do
         dxDrawRectangle(x, y, width, itemSize, tocolor(0, 0, 0, 150))
-        dxDrawLine(x, y, x + width - 1, y, tocolor(150, 150, 150, 50))
+        if i <= 3 then
+            dxDrawRectangle(x, y, width, itemSize, tocolor(254, 181, 0, 150 / i))
+            dxDrawLine(x, y, x + width - 1, y, tocolor(0, 0, 0, 100))
+        else
+            dxDrawLine(x, y, x + width - 1, y, tocolor(150, 150, 150, 50))
+        end
         cx = x
         local rowData = topPlayersRating[i]
         for _, column in ipairs(ratingTable) do

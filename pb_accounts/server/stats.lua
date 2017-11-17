@@ -12,14 +12,17 @@ function addPlayerStatsField(player, name, count)
         count = 1
     end
     local session = getPlayerSession(player)
-    if not session or not session[name] then
+    if not session or not session.stats[name] then
         return
     end
-    session[name] = (tonumber(session[name]) or 0) + count
+    session.stats[name] = (tonumber(session.stats[name]) or 0) + count
     return true
 end
 
 addEvent("onPlayerRequestStats", true)
 addEventHandler("onPlayerRequestStats", root, function ()
-    triggerClientEvent(client, "onClientStatsUpdated", resourceRoot, getPlayerSession(client))
+    local session = getPlayerSession(client)
+    if session then
+        triggerClientEvent(client, "onClientStatsUpdated", resourceRoot, session.stats)
+    end
 end)
