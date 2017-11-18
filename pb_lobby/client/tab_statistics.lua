@@ -14,6 +14,8 @@ local ratingTable = {
     { name = "rating_kills", size = 0.15 },
 }
 
+local requireLockTimer
+
 local localPlayerStats = {}
 local localPlayerRating = {}
 local topPlayersRating = {}
@@ -22,6 +24,17 @@ for i = 1, 10 do
         username = "test_user" .. tostring(i),
         rating = math.random(10000, 100000)
     })
+end
+
+local function requireRating()
+    if isTimer(requireLockTimer) then
+        return
+    end
+    topPlayersRating = {}
+    localPlayerRating = {}
+    triggerServerEvent("onPlayerRequireRating", resourceRoot, currentRatingMode)
+    triggerServerEvent("onPlayerRequireOwnRating", resourceRoot, currentRatingMode)
+    requireLockTimer = setTimer(function () end, 60000, 1)
 end
 
 local function playtimeToString(playtime)
@@ -96,10 +109,7 @@ local function drawRankingsPanel(x, y)
     end
     if drawButton("SOLO", x, y, 90, 40, bg) then
         currentRatingMode = "solo"
-        topPlayersRating = {}
-        localPlayerRating = {}
-        triggerServerEvent("onPlayerRequireRating", resourceRoot, currentRatingMode)
-        triggerServerEvent("onPlayerRequireOwnRating", resourceRoot, currentRatingMode)
+        requireRating()
     end
     bg = nil
     if currentRatingMode == "squad" then
@@ -107,10 +117,7 @@ local function drawRankingsPanel(x, y)
     end
     if drawButton("SQUAD", x, y + 50, 90, 40, bg) then
         currentRatingMode = "squad"
-        topPlayersRating = {}
-        localPlayerRating = {}
-        triggerServerEvent("onPlayerRequireRating", resourceRoot, currentRatingMode)
-        triggerServerEvent("onPlayerRequireOwnRating", resourceRoot, currentRatingMode)
+        requireRating()
     end
 
     local headerSize = 35
@@ -187,6 +194,8 @@ local function drawStatisticsPanel(x, y)
     })
 
     drawStatsBlock(x + 20 + width * 2, y, width, panelHeight, "stats_kills", "stats_players", { -- stats_kills
+        "stats_deaths",
+        "stats_kd_ratio",
         "stats_hp_damage",
         "stats_hp_healed",
         "stats_items_used",
@@ -222,6 +231,14 @@ addEventHandler("onClientStatsUpdated", root, function (stats)
     localPlayerStats.stats_distance_car = tostring(localPlayerStats.stats_distance_car) .. "km"
 
     localPlayerStats.stats_playtime = playtimeToString(localPlayerStats.stats_playtime)
+
+    local kills = tonumber(localPlayerStats.stats_kills) or 0
+    local deaths = tonumber(localPlayerStats.stats_deaths) or 0
+    if deaths == 0 then
+        localPlayerStats.stats_kd_ratio = "0.0"
+    else
+        localPlayerStats.stats_kd_ratio = math.floor(kills / deaths * 1000) / 1000
+    end
 end)
 
 local function getPlayerRatingTable(data, matchType)

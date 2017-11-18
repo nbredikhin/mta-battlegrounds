@@ -205,6 +205,8 @@ Languages.russian = {
     stats_hp_damage = "Нанесено урона",
     stats_hp_healed = "Вылечено здоровья",
     stats_items_used = "Использовано вещей",
+    stats_deaths = "Смертей",
+    stats_kd_ratio = "Соотношение У/С",
 
     -- Ranks
     ranktable_rank = "Ранг",

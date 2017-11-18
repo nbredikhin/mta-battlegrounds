@@ -1,7 +1,11 @@
+local ratingCache = {}
+local playerRatingCache = {}
+
 function dbRatingQueued(result, params)
     if not isElement(params.player) then
         return
     end
+    ratingCache[params.matchType] = result
     triggerClientEvent(params.player, "onClientRatingUpdated", resourceRoot, params.matchType, result)
 end
 
@@ -9,12 +13,21 @@ function dbPlayerRatingQueued(result, params)
     if not isElement(params.player) then
         return
     end
+    if not playerRatingCache[params.player] then
+        playerRatingCache[params.player] = {}
+    end
+    playerRatingCache[params.player][params.matchType] = result
     triggerClientEvent(params.player, "onClientOwnRatingUpdated", resourceRoot, params.matchType, result)
 end
 
 addEvent("onPlayerRequireRating", true)
 addEventHandler("onPlayerRequireRating", root, function (matchType)
     if not matchType or (matchType ~= "solo" and matchType ~= "squad") then
+        return
+    end
+
+    if ratingCache[matchType] then
+        triggerClientEvent(client, "onClientRatingUpdated", resourceRoot, matchType, ratingCache[matchType])
         return
     end
 
@@ -36,6 +49,10 @@ addEventHandler("onPlayerRequireOwnRating", root, function (matchType)
     if not matchType or (matchType ~= "solo" and matchType ~= "squad") then
         return
     end
+    if playerRatingCache[client] and playerRatingCache[client][matchType] then
+        triggerClientEvent(client, "onClientOwnRatingUpdated", resourceRoot, matchType, playerRatingCache[client][matchType])
+        return
+    end
     local username = client:getData("username")
 
     exports.mysql:dbQueryAsync("dbPlayerRatingQueued", { player = client, matchType = matchType }, "users", [[
@@ -52,6 +69,11 @@ addEventHandler("onPlayerRequireOwnRating", root, function (matchType)
         WHERE x.username = ?
     ]], username)
 end)
+
+setTimer(function ()
+    ratingCache = {}
+    playerRatingCache = {}
+end, 60000, 1)
 
 function updatePlayerRating(player, matchType, rank, kills, totalSquads)
     if not matchType or not rank or not kills or not totalSquads then

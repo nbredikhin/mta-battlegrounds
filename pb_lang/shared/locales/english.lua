@@ -205,6 +205,8 @@ Languages.english = {
     stats_hp_damage = "Total damage",
     stats_hp_healed = "HP healed",
     stats_items_used = "Items used",
+    stats_deaths = "Deaths",
+    stats_kd_ratio = "K/D ratio",
 
     -- Ranks
     ranktable_rank = "Rank",

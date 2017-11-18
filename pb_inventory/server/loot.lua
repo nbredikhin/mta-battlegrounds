@@ -11,18 +11,44 @@ function spawnLootItem(item, position, dimension)
     if not isItem(item) or not position then
         return
     end
-    local color = "white"
+    local model = lootColors.white
+    local rotation = Vector3(0, 0, math.random(360))
+    local offset = Vector3(0, 0, 0)
     if isItemWeapon(item) then
-        color = "red"
+        local itemClass = getItemClass(item.name)
+        if weaponModels[itemClass.weaponId] then
+            model = weaponModels[itemClass.weaponId]
+            rotation = Vector3(90, -5, math.random(360))
+        else
+            model = lootColors.red
+        end
     elseif Items[item.name].category == "medicine" then
-        color = "green"
+        model = lootColors.green
     elseif Items[item.name].category == "ammo" then
-        color = "blue"
-    elseif Items[item.name].category == "backpack" then
-        color = "orange"
+        if isResourceRunning("pb_models") then
+            model = exports.pb_models:getItemModel(item.name)
+        end
+        if not model then
+            model = lootColors.blue
+        end
+    elseif Items[item.name].category == "backpack" or Items[item.name].category == "armor" then
+        if isResourceRunning("pb_models") then
+            model = exports.pb_models:getItemModel("loot_"..item.name)
+        end
+        if not model then
+            model = lootColors.orange
+        end
+    elseif Items[item.name].category == "helmet" then
+        if isResourceRunning("pb_models") then
+            model = exports.pb_models:getItemModel(item.name)
+            offset = Vector3(0, 0, 0.1)
+        end
+        if not model then
+            model = lootColors.orange
+        end
     end
-    local object = createObject(lootColors[color], position)
-    object.rotation = Vector3(0, 0, math.random(360))
+    local object = createObject(model, position + offset)
+    object.rotation = rotation
     object:setCollisionsEnabled(false)
 
     item.lootElement = object

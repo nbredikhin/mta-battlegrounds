@@ -41,6 +41,7 @@ local statsFields = {
     "stats_distance_car",
     "stats_items_used",
     "stats_playtime",
+    "stats_deaths",
 }
 
 local ratingFields = {
@@ -119,6 +120,7 @@ addEventHandler("onResourceStart", resourceRoot, function ()
             stats_distance_ped INT    UNSIGNED NOT NULL DEFAULT 0,
             stats_distance_car INT    UNSIGNED NOT NULL DEFAULT 0,
             stats_items_used   INT    UNSIGNED NOT NULL DEFAULT 0,
+            stats_deaths       INT    UNSIGNED NOT NULL DEFAULT 0,
             stats_playtime     BIGINT UNSIGNED NOT NULL DEFAULT 0,
 
             online_server INTEGER UNSIGNED NOT NULL DEFAULT 0,

@@ -42,6 +42,8 @@ Config.airdropItems = {
     painkiller     = {0, 6},
     energy_drink   = {0, 1},
     weapon_m4      = {0, 1},
+    ammo_556mm     = {30, 90},
+    ammo_762mm     = {30, 90},
 }
 
 Config.planeSpeed = 100

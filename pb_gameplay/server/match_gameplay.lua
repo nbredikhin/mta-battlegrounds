@@ -329,6 +329,7 @@ function handlePlayerLeaveMatch(match, player)
     player:removeData("kills")
     player:removeData("damage_taken")
     player:removeData("hp_healed")
+    player:setData("isInPlane", false)
 
     player.dimension = 0
 
@@ -419,6 +420,11 @@ function handlePlayerMatchDeath(match, player, killer, weaponId)
                 local kills = killerPlayer:getData("kills") or 0
                 killerPlayer:setData("kills", kills + 1)
             end
+        end
+
+        -- Статистика
+        if isResourceRunning("pb_accounts") then
+            exports.pb_accounts:addPlayerStatsField(player, "stats_deaths", 1)
         end
 
         -- События
