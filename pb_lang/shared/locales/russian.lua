@@ -50,6 +50,9 @@ Languages.russian = {
     lobby_tab_rewards = "НАГРАДЫ",
     lobby_tab_character = "ПЕРСОНАЖ",
 
+    lobby_statistics = "Моя статистика",
+    lobby_rating = "Таблица лидеров",
+
     -- INVENTORY
     inventory_backpack_weight = "Носимый вес",
     inventory_no_space = "Недостаточно места!",
@@ -202,4 +205,12 @@ Languages.russian = {
     stats_hp_damage = "Нанесено урона",
     stats_hp_healed = "Вылечено здоровья",
     stats_items_used = "Использовано вещей",
+
+    -- Ranks
+    ranktable_rank = "Ранг",
+    ranktable_username = "Имя Пользователя",
+    ranktable_rating = "Рейтинг",
+    ranktable_playtime = "Время игры",
+    ranktable_rating_wins = "Рейтинг побед",
+    ranktable_rating_kills = "Рейтинг убийств",
 }

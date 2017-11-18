@@ -50,6 +50,9 @@ Languages.english = {
     lobby_tab_rewards = "REWARDS",
     lobby_tab_character = "CHARACTER",
 
+    lobby_statistics = "My stats",
+    lobby_rating = "Leaderboard",
+
     -- INVENTORY
     inventory_backpack_weight = "Total weight",
     inventory_no_space = "Not enough space!",
@@ -202,4 +205,12 @@ Languages.english = {
     stats_hp_damage = "Total damage",
     stats_hp_healed = "HP healed",
     stats_items_used = "Items used",
+
+    -- Ranks
+    ranktable_rank = "Rank",
+    ranktable_username = "User Name",
+    ranktable_rating = "Rating",
+    ranktable_playtime = "Total Playtime",
+    ranktable_rating_wins = "Win Rating",
+    ranktable_rating_kills = "Kill Rating",
 }

@@ -2,7 +2,7 @@ local screenSize = Vector2(guiGetScreenSize())
 
 local panelWidth, panelHeight = math.min(screenSize.x - 30, 1000), math.min(screenSize.y - 300, 600)
 
-local currentPanel = "rating"
+local currentPanel = "statistics"
 local currentRatingMode = "solo"
 
 local ratingTable = {
@@ -22,6 +22,28 @@ for i = 1, 10 do
         username = "test_user" .. tostring(i),
         rating = math.random(10000, 100000)
     })
+end
+
+local function playtimeToString(playtime)
+    if not playtime then
+        return
+    end
+
+    local seconds = tonumber(playtime) or 0
+    if seconds < 60 then
+        playtime = tostring(seconds) .. "s"
+    else
+        local minutes = math.floor(seconds / 60)
+        seconds = seconds - 60 * minutes
+        if minutes < 60 then
+            playtime = tostring(minutes) .. "m " ..tostring(seconds) .. "s"
+        else
+            local hours = math.floor(minutes / 60)
+            minutes = minutes - hours * 60
+            playtime = tostring(hours) .. "h " ..tostring(minutes) .. "m"
+        end
+    end
+    return playtime
 end
 
 local function drawStatsBlock(x, y, width, height, title, label, fields)
@@ -74,6 +96,10 @@ local function drawRankingsPanel(x, y)
     end
     if drawButton("SOLO", x, y, 90, 40, bg) then
         currentRatingMode = "solo"
+        topPlayersRating = {}
+        localPlayerRating = {}
+        triggerServerEvent("onPlayerRequireRating", resourceRoot, currentRatingMode)
+        triggerServerEvent("onPlayerRequireOwnRating", resourceRoot, currentRatingMode)
     end
     bg = nil
     if currentRatingMode == "squad" then
@@ -81,6 +107,10 @@ local function drawRankingsPanel(x, y)
     end
     if drawButton("SQUAD", x, y + 50, 90, 40, bg) then
         currentRatingMode = "squad"
+        topPlayersRating = {}
+        localPlayerRating = {}
+        triggerServerEvent("onPlayerRequireRating", resourceRoot, currentRatingMode)
+        triggerServerEvent("onPlayerRequireOwnRating", resourceRoot, currentRatingMode)
     end
 
     local headerSize = 35
@@ -94,7 +124,7 @@ local function drawRankingsPanel(x, y)
     dxDrawRectangle(x, y, width, headerSize, tocolor(0, 0, 0, 150))
     dxDrawLine(x, y, x + width - 1, y, tocolor(254, 181, 0))
     for i, column in ipairs(ratingTable) do
-        dxDrawText(column.name, cx, y, cx + width * column.size, y + headerSize, tocolor(255, 255, 255), 1, "default-bold", "center", "center")
+        dxDrawText(localize("ranktable_"..column.name), cx, y, cx + width * column.size, y + headerSize, tocolor(255, 255, 255), 1, "default-bold", "center", "center")
         cx = cx + width * column.size
     end
     y = y + headerSize
@@ -112,7 +142,7 @@ local function drawRankingsPanel(x, y)
     end
     y = y + playerRankSize
 
-    for i = 1, 10 do
+    for i = 1, math.min(#topPlayersRating, 10) do
         dxDrawRectangle(x, y, width, itemSize, tocolor(0, 0, 0, 150))
         if i <= 3 then
             dxDrawRectangle(x, y, width, itemSize, tocolor(254, 181, 0, 150 / i))
@@ -168,12 +198,12 @@ local function draw()
 
     local x, y = screenSize.x/2 - panelWidth/2, screenSize.y/2 - panelHeight/2
     if currentPanel == "statistics" then
-        if drawButton("Таблица лидеров", x + panelWidth - 180, y - 50, 180, 40) then
+        if drawButton(localize("lobby_rating"), x + panelWidth - 180, y - 50, 180, 40) then
             currentPanel = "rating"
         end
         drawStatisticsPanel(x, y)
     else
-        if drawButton("Моя статистика", x + panelWidth - 180, y - 50, 180, 40) then
+        if drawButton(localize("lobby_statistics"), x + panelWidth - 180, y - 50, 180, 40) then
             currentPanel = "statistics"
         end
         drawRankingsPanel(x, y)
@@ -191,20 +221,31 @@ addEventHandler("onClientStatsUpdated", root, function (stats)
     localPlayerStats.stats_distance_ped = tostring(localPlayerStats.stats_distance_ped) .. "km"
     localPlayerStats.stats_distance_car = tostring(localPlayerStats.stats_distance_car) .. "km"
 
-    local seconds = tonumber(localPlayerStats.stats_playtime) or 0
-    if seconds < 60 then
-        localPlayerStats.stats_playtime = tostring(seconds) .. "s"
-    else
-        local minutes = math.floor(seconds / 60)
-        seconds = seconds - 60 * minutes
-        if minutes < 60 then
-            localPlayerStats.stats_playtime = tostring(minutes) .. "m " ..tostring(seconds) .. "s"
-        else
-            local hours = math.floor(minutes / 60)
-            minutes = minutes - hours * 60
-            localPlayerStats.stats_playtime = tostring(hours) .. "h " ..tostring(minutes) .. "m"
-        end
+    localPlayerStats.stats_playtime = playtimeToString(localPlayerStats.stats_playtime)
+end)
+
+local function getPlayerRatingTable(data, matchType)
+    return {
+        rank = data.rank,
+        username = data.username,
+        playtime = playtimeToString(data.stats_playtime),
+        rating = data["rating_"..matchType.."_main"],
+        rating_kills = data["rating_"..matchType.."_kills"],
+        rating_wins = data["rating_"..matchType.."_wins"],
+    }
+end
+
+addEvent("onClientRatingUpdated", true)
+addEventHandler("onClientRatingUpdated", root, function (matchType, rating)
+    topPlayersRating = {}
+    for i, data in ipairs(rating) do
+        table.insert(topPlayersRating, getPlayerRatingTable(data, matchType))
     end
+end)
+
+addEvent("onClientOwnRatingUpdated", true)
+addEventHandler("onClientOwnRatingUpdated", root, function (matchType, data)
+    localPlayerRating = getPlayerRatingTable(data[1], matchType)
 end)
 
 Tabs.statistics = {
@@ -213,11 +254,11 @@ Tabs.statistics = {
     load = function ()
         triggerServerEvent("onPlayerRequestStats", resourceRoot)
 
-        localPlayerRating = {
-            username = localPlayer:getData("username"),
-            rank = 999,
-            rating = math.random(10000, 100000)
-        }
+        currentRatingMode = "solo"
+        triggerServerEvent("onPlayerRequireRating", resourceRoot, currentRatingMode)
+        triggerServerEvent("onPlayerRequireOwnRating", resourceRoot, currentRatingMode)
+
+        localPlayerRating = {}
     end,
 
     draw = draw

@@ -1,3 +1,58 @@
+function dbRatingQueued(result, params)
+    if not isElement(params.player) then
+        return
+    end
+    triggerClientEvent(params.player, "onClientRatingUpdated", resourceRoot, params.matchType, result)
+end
+
+function dbPlayerRatingQueued(result, params)
+    if not isElement(params.player) then
+        return
+    end
+    triggerClientEvent(params.player, "onClientOwnRatingUpdated", resourceRoot, params.matchType, result)
+end
+
+addEvent("onPlayerRequireRating", true)
+addEventHandler("onPlayerRequireRating", root, function (matchType)
+    if not matchType or (matchType ~= "solo" and matchType ~= "squad") then
+        return
+    end
+
+    exports.mysql:dbQueryAsync("dbRatingQueued", { player = client, matchType = matchType }, "users", [[
+        SELECT
+            username,
+            rating_]]..matchType..[[_main,
+            rating_]]..matchType..[[_wins,
+            rating_]]..matchType..[[_kills,
+            stats_playtime
+        FROM ??
+        ORDER BY rating_]]..matchType..[[_main DESC
+        LIMIT 10;
+    ]])
+end)
+
+addEvent("onPlayerRequireOwnRating", true)
+addEventHandler("onPlayerRequireOwnRating", root, function (matchType)
+    if not matchType or (matchType ~= "solo" and matchType ~= "squad") then
+        return
+    end
+    local username = client:getData("username")
+
+    exports.mysql:dbQueryAsync("dbPlayerRatingQueued", { player = client, matchType = matchType }, "users", [[
+        SELECT *
+        FROM (SELECT username,
+                     stats_playtime,
+                     rating_]]..matchType..[[_main,
+                     rating_]]..matchType..[[_wins,
+                     rating_]]..matchType..[[_kills,
+                     @rownum := @rownum + 1 AS rank
+                  FROM ??
+                  JOIN (SELECT @rownum := 0) r
+              ORDER BY rating_]]..matchType..[[_main) x
+        WHERE x.username = ?
+    ]], username)
+end)
+
 function updatePlayerRating(player, matchType, rank, kills, totalSquads)
     if not matchType or not rank or not kills or not totalSquads then
         return
