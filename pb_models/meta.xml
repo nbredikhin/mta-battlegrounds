@@ -2,72 +2,16 @@
     <oop>true</oop>
 
     <script type="shared" src="shared/models.lua"/>
+    <script type="server" src="server/pprint.lua"/>
+    <script type="server" src="server/encrypt.lua"/>
+    <script type="client" src="client/paths.lua"/>
+    <script type="client" src="client/loader.lua"/>
     <script type="client" src="client/main.lua"/>
 
     <export type="shared" function="getItemModel"/>
 
-    <file src="models/playermodel.dff"/>
-    <file src="models/playermodel.txd"/>
-
-    <file src="models/backpack_small.dff"/>
-    <file src="models/backpack_small.txd"/>
-    <file src="models/backpack_medium.dff"/>
-    <file src="models/backpack_medium.txd"/>
-    <file src="models/backpack_large.dff"/>
-    <file src="models/backpack_large.txd"/>
-
-    <file src="models/helmet1.dff"/>
-    <file src="models/helmet1.txd"/>
-    <file src="models/helmet2.dff"/>
-    <file src="models/helmet2.txd"/>
-    <file src="models/helmet3.dff"/>
-    <file src="models/helmet3.txd"/>
-
-    <file src="models/armor1.dff"/>
-    <file src="models/armor1.txd"/>
-    <file src="models/armor2.dff"/>
-    <file src="models/armor2.txd"/>
-    <file src="models/armor3.dff"/>
-    <file src="models/armor3.txd"/>
-
-    <file src="models/loot_armor1.dff"/>
-    <file src="models/loot_armor2.dff"/>
-    <file src="models/loot_armor3.dff"/>
-
-    <file src="models/loot_backpack_small.dff"/>
-    <file src="models/loot_backpack_medium.dff"/>
-    <file src="models/loot_backpack_large.dff"/>
-
-    <file src="models/m16a4.dff"/>
-    <file src="models/m16a4.txd"/>
-    <file src="models/awm.dff"/>
-    <file src="models/awm.txd"/>
-    <file src="models/pan.dff"/>
-    <file src="models/pan.txd"/>
-    <file src="models/crowbar.dff"/>
-    <file src="models/crowbar.txd"/>
-    <file src="models/machete.dff"/>
-    <file src="models/machete.txd"/>
-
-    <file src="models/lobby.col"/>
-    <file src="models/lobby.dff"/>
-    <file src="models/lobby.txd"/>
-
-    <file src="models/box.col"/>
-    <file src="models/box.dff"/>
-    <file src="models/box.txd"/>
-    <file src="models/box_parachute.dff"/>
-    <file src="models/box_parachute.txd"/>
-    <file src="models/box_parachute.col"/>
-
-    <file src="models/ammo_9mm.txd"/>
-    <file src="models/ammo_9mm.dff"/>
-    <file src="models/ammo_762mm.txd"/>
-    <file src="models/ammo_762mm.dff"/>
-    <file src="models/ammo_556mm.txd"/>
-    <file src="models/ammo_556mm.dff"/>
-    <file src="models/ammo_45.txd"/>
-    <file src="models/ammo_45.dff"/>
-    <file src="models/ammo_12gauge.txd"/>
-    <file src="models/ammo_12gauge.dff"/>
+    <file src="data/714f17.pb"/>
+    <file src="data/757b40.pb"/>
+    <file src="data/afbe4b.pb"/>
+    <file src="data/dc8d8b.pb"/>
 </meta>

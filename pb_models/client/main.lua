@@ -10,18 +10,18 @@ end
 addEventHandler("onClientResourceStart", resourceRoot, function ()
     for name, model in pairs(ReplacedModels) do
         local pathTXD = getPath(name, "txd")
-        if fileExists(pathTXD) then
-            local txd = engineLoadTXD(pathTXD)
+        if ModelPaths[pathTXD] then
+            local txd = engineLoadTXD(getFile(pathTXD))
             engineImportTXD(txd, model)
         end
         local pathDFF = getPath(name, "dff")
-        if fileExists(pathDFF) then
-            local dff = engineLoadDFF(pathDFF)
+        if ModelPaths[pathDFF] then
+            local dff = engineLoadDFF(getFile(pathDFF))
             engineReplaceModel(dff, model)
         end
         local pathCOL = getPath(name, "col")
-        if fileExists(pathCOL) then
-            local col = engineLoadCOL(pathCOL)
+        if ModelPaths[pathCOL] then
+            local col = engineLoadCOL(getFile(pathCOL))
             engineReplaceCOL(col, model)
         end
     end

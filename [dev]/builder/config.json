@@ -10,7 +10,7 @@
 
     "enableReadmeFiles": true,
 
-    "only": ["pb_inventory"],
+    "only": ["pb_models"],
 
     "include": [
         "bone_attach",
