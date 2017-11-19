@@ -10,13 +10,19 @@ local isFireAllowed = false
 
 addEventHandler("onClientPreRender", root, function ()
     local isReloading = localPlayer:getData("isReloadingWeapon")
+    local knockoutState = localPlayer:getData("knockout")
     if isReloading then
         isFireAllowed = false
     end
     local enableFire = isFireAllowed
-    if isInventoryShowing() then
+    if isInventoryShowing() or knockoutState then
         enableFire = false
     end
+
+    toggleControl("forwards", not knockoutState)
+    toggleControl("backwards", not knockoutState)
+    toggleControl("left", not knockoutState)
+    toggleControl("right", not knockoutState)
 
     toggleControl("next_weapon", false)
     toggleControl("previous_weapon", false)
@@ -37,10 +43,10 @@ addEventHandler("onClientPreRender", root, function ()
     if isReloading then
         setPedControlState(localPlayer, "aim_weapon", false)
     end
-    toggleControl("jump", not isReloading)
-    toggleControl("sprint", not isReloading)
-    toggleControl("enter_exit", not isReloading)
-    toggleControl("crouch", not isReloading)
+    toggleControl("jump", not isReloading and not knockoutState)
+    toggleControl("sprint", not isReloading and not knockoutState)
+    toggleControl("enter_exit", not isReloading and not knockoutState)
+    toggleControl("crouch", not isReloading and not knockoutState)
     if localPlayer.ducked then
         toggleControl("forwards", not isReloading)
         toggleControl("backwards", not isReloading)

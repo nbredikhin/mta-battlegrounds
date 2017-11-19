@@ -14,10 +14,7 @@ function initMatch(match)
         match.settings.weather = 2
     end
     -- Время суток
-    match.settings.hour = math.random(8, 16)
-    if math.random() > 0.8 then
-        match.settings.hour = math.random(0, 3)
-    end
+    match.settings.hour = 12
 
     changeMatchState(match, "waiting")
 end
@@ -481,7 +478,11 @@ addEventHandler("planeJump", resourceRoot, function ()
 end)
 
 addEventHandler("onPlayerWasted", root, function (ammo, killer, weaponId)
-    handlePlayerMatchDeath(getPlayerMatch(source), source, killer, weaponId)
+    local match = getPlayerMatch(source)
+    if not isMatch(match) then
+        return
+    end
+    handlePlayerMatchDeath(match, source, killer, weaponId)
 end)
 
 addEvent("onMatchElementCreated", false)
