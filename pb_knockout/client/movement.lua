@@ -1,5 +1,5 @@
-local rotationZ = 0
-local speed = 0
+local px, py, pz = 0, 0, 0
+local damageDelay = 0
 
 local function wrapAngle(value)
     if not value then
@@ -31,36 +31,21 @@ addEventHandler("onClientPreRender", root, function (deltaTime)
 
     local state = localPlayer:getData("knockout")
     if state then
-        local rx, ry, rz = getElementRotation(localPlayer)
-        local trz = -getCamera().rotation.z-90
-        if getKeyState("w") then
-            speed = speed + (1 - speed) * deltaTime * 5
-            localPlayer:setData("knockout_moving", true)
-        elseif getKeyState("s") then
-            speed = speed + (-1 - speed) * deltaTime * 5
-            localPlayer:setData("knockout_moving", true)
-            trz = -getCamera().rotation.z-90+180
-        else
-            speed = speed + (0 - speed) * deltaTime * 10
-            localPlayer:setData("knockout_moving", false)
+        damageDelay = damageDelay - deltaTime
+        if damageDelay < 0 then
+            damageDelay = 1
+            localPlayer.health = localPlayer.health - 2
         end
-
-        local angle = differenceBetweenAngles(wrapAngle(rotationZ), wrapAngle(trz)) * 0.1 * speed
-        rotationZ = rotationZ + math.clamp(angle, -1.3, 1.3)
-
-        local rotationRad = math.rad(-rotationZ)
-
         local x, y, z = getElementPosition(localPlayer)
-        local vx, vy = math.cos(rotationRad), math.sin(rotationRad)
-        if speed > 0 and not isLineOfSightClear(x, y, z - 0.6, x + vx * 0.3, y + vy * 0.3, z - 0.6) then
-            speed = 0
-        elseif speed < 0 and not isLineOfSightClear(x, y, z - 0.6, x - vx * 2, y - vy * 2, z - 0.6) then
-            speed = 0
+        if not getKeyState("w") and getDistanceBetweenPoints3D(x, y, z, px, py, pz) < 0.1 then
+            setElementVelocity(localPlayer, 0, 0, 0)
+            setElementPosition(localPlayer, px, py, z, false)
+            localPlayer:setData("knockout_moving", false)
+        else
+            localPlayer:setData("knockout_moving", true)
         end
-        -- dxDrawLine3D(x, y, z - 0.6, x + vx * 0.5, y + vy * 0.5, z - 0.6)
-        -- dxDrawLine3D(x, y, z - 0.6, x - vx * 2, y - vy * 2, z - 0.6)
-        setElementRotation(localPlayer, 0, 0, rotationZ)
-        setElementPosition(localPlayer, localPlayer.matrix:transformPosition(speed * deltaTime, 0, 0), false)
+        localPlayer:setControlState("left", getKeyState("w"))
+        px, py, pz = getElementPosition(localPlayer)
     end
 end)
 

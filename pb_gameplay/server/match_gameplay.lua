@@ -239,6 +239,10 @@ local function setMatchRunning(match)
         player:setData("hp_healed", 0)
         player:setData("boost", 0)
 
+        if isResourceRunning("pb_knockout") then
+            exports.pb_knockout:resetPlayerKnockout(player)
+        end
+
         if isResourceRunning("pb_inventory") then
             exports.pb_inventory:takeAllItems(player)
         end
@@ -327,6 +331,9 @@ function handlePlayerLeaveMatch(match, player)
     player:removeData("damage_taken")
     player:removeData("hp_healed")
     player:setData("isInPlane", false)
+    if isResourceRunning("pb_knockout") then
+        exports.pb_knockout:resetPlayerKnockout(player)
+    end
 
     player.dimension = 0
 
@@ -398,6 +405,15 @@ function handlePlayerMatchDeath(match, player, killer, weaponId)
         spawnMatchPlayer(match, player)
         return
     elseif match.state == "running" then
+        -- Нокаут
+        if isResourceRunning("pb_knockout") then
+            -- TODO: Только для squad-матчей
+            if not player:getData("knockout") then
+                spawnMatchPlayer(match, player, player.position)
+                exports.pb_knockout:knockoutPlayer(player)
+            end
+        end
+
         if isResourceRunning("pb_inventory") then
             exports.pb_inventory:spawnPlayerLootBox(player)
         end

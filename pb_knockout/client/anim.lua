@@ -22,6 +22,7 @@ function updatePedKnockoutState(ped)
         knockoutPeds[ped] = { progress = 0, direction = 1, update = 0 }
     else
         knockoutPeds[ped] = nil
+        ped.frozen = false
         resetPedAnimation(ped)
     end
 end
@@ -37,8 +38,9 @@ addEventHandler("onClientElementStreamOut", root, function ()
     if source.type ~= "player" and source.type ~= "ped" then
         return
     end
-    knockoutPedsPeds[source] = nil
-    resetPedAnimation(ped)
+    knockoutPeds[source] = nil
+    source.frozen = false
+    resetPedAnimation(source)
 end)
 
 addEventHandler("onClientElementDataChange", root, function (dataName)
@@ -57,9 +59,13 @@ end)
 addEventHandler("onClientPreRender", root, function (deltaTime)
     deltaTime = deltaTime / 1000
     for ped, anim in pairs(knockoutPeds) do
-        if not isElement(ped) then
+        if not isElement(ped) or ped.dead then
+            ped.frozen = false
             knockoutPeds[ped] = nil
             break
+        end
+        if ped ~= localPlayer then
+            ped.frozen = true
         end
         anim.update = anim.update - deltaTime
         if ped:getData("knockout_moving") then
@@ -73,7 +79,7 @@ addEventHandler("onClientPreRender", root, function (deltaTime)
             anim.direction = -anim.direction
         end
         if anim.update < 0 then
-            ped:setAnimation("ped", "car_crawloutrhs", 200, true, false, true, true)
+            ped:setAnimation("ped", "car_crawloutrhs", 200, true, true, true, true)
             anim.update = 0.5
         end
         ped:setAnimationProgress("car_crawloutrhs", anim.progress)

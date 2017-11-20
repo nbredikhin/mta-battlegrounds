@@ -2,6 +2,10 @@
     <oop>true</oop>
     <min_mta_version client="1.5.4" server="1.5.4" />
 
+    <script type="server" src="server/main.lua"/>
     <script type="client" src="client/anim.lua"/>
     <script type="client" src="client/movement.lua"/>
+
+    <export type="server" src="knockoutPlayer"/>
+    <export type="server" src="resetPlayerKnockout"/>
 </meta>

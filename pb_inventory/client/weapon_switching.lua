@@ -21,7 +21,7 @@ addEventHandler("onClientPreRender", root, function ()
 
     toggleControl("forwards", not knockoutState)
     toggleControl("backwards", not knockoutState)
-    toggleControl("left", not knockoutState)
+    -- toggleControl("left", not knockoutState)
     toggleControl("right", not knockoutState)
 
     toggleControl("next_weapon", false)
@@ -36,7 +36,7 @@ addEventHandler("onClientPreRender", root, function ()
     end
 
     if not isInventoryShowing() then
-        toggleControl("aim_weapon", not isReloading)
+        toggleControl("aim_weapon", not isReloading and not knockoutState)
     else
         toggleControl("aim_weapon", false)
     end
@@ -48,10 +48,10 @@ addEventHandler("onClientPreRender", root, function ()
     toggleControl("enter_exit", not isReloading and not knockoutState)
     toggleControl("crouch", not isReloading and not knockoutState)
     if localPlayer.ducked then
-        toggleControl("forwards", not isReloading)
-        toggleControl("backwards", not isReloading)
-        toggleControl("left", not isReloading)
-        toggleControl("right", not isReloading)
+        toggleControl("forwards", not isReloading and not knockoutState)
+        toggleControl("backwards", not isReloading and not knockoutState)
+        toggleControl("left", not isReloading and not knockoutState)
+        toggleControl("right", not isReloading and not knockoutState)
 
         if isReloading then
             setPedControlState(localPlayer, "forwards", false)
@@ -90,6 +90,9 @@ end)
 
 bindKey("r", "down", function ()
     if localPlayer:getData("isReloadingWeapon") then
+        return
+    end
+    if localPlayer:getData("knockout") then
         return
     end
     local slotName = localPlayer:getData("activeWeaponSlot")
@@ -136,6 +139,9 @@ function setActiveWeaponSlot(slotName)
         return
     end
     if localPlayer:getData("isReloadingWeapon") then
+        return
+    end
+    if localPlayer:getData("knockout") then
         return
     end
     if localPlayer.vehicle and localPlayer.vehicle.controller == localPlayer then
