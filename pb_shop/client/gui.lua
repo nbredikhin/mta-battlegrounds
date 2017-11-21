@@ -134,10 +134,11 @@ local function handleGoBack()
         resetClothesPreview()
     else
         fadeCamera(false)
+        localPlayer.position = Vector3(0, 3500, 200)
         setTimer(function ()
             setVisible(false)
             exports.pb_lobby:setVisible(true)
-        end, 1000, 1)
+        end, 1500, 1)
     end
 end
 

@@ -1,3 +1,5 @@
+local savePlayersQueue = {}
+
 addEvent("onPlayerSelectClothes", true)
 addEventHandler("onPlayerSelectClothes", root, function (itemName)
     if not itemName then
@@ -13,7 +15,15 @@ addEventHandler("onPlayerSelectClothes", root, function (itemName)
     end
     local itemClass = getItemClass(item)
     client:setData("clothes_" .. itemClass.layer, itemClass.clothes)
+
+    savePlayersQueue[client] = true
 end)
+
+setTimer(function ()
+    for player in pairs(savePlayersQueue) do
+        savePlayerAccountData(player)
+    end
+end, 3000, 0)
 
 addEvent("onPlayerSellClothes", true)
 addEventHandler("onPlayerSellClothes", root, function (itemName)

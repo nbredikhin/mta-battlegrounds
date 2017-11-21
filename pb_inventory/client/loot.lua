@@ -1,8 +1,11 @@
 local lootColshape
 local colshapeItems = {}
 
+local actionElement
+
 addEventHandler("onClientPreRender", root, function ()
     colshapeItems = {}
+    actionElement = nil
 
     lootColshape.position = localPlayer.position
     lootColshape.dimension = localPlayer.dimension
@@ -34,10 +37,22 @@ addEventHandler("onClientPreRender", root, function ()
             end
         end
     end
+
+    for i, element in ipairs(lootColshape:getElementsWithin("player")) do
+        if element.dimension == localPlayer.dimension then
+            if element:getData("knockout") and not element:getData("reviving") then
+                actionElement = element
+            end
+        end
+    end
 end)
 
 function getLootItems()
     return colshapeItems
+end
+
+function getActionElement()
+    return actionElement
 end
 
 addEventHandler("onClientResourceStart", resourceRoot, function ()

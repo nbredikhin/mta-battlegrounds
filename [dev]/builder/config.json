@@ -10,7 +10,7 @@
 
     "enableReadmeFiles": true,
 
-    "only": ["pb_accounts", "pb_lobby"],
+    "only": ["pb_accounts"],
 
     "include": [
         "bone_attach",

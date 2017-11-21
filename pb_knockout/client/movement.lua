@@ -34,7 +34,7 @@ addEventHandler("onClientPreRender", root, function (deltaTime)
         damageDelay = damageDelay - deltaTime
         if damageDelay < 0 then
             damageDelay = 1
-            localPlayer.health = localPlayer.health - 2
+            -- localPlayer.health = localPlayer.health - 2
         end
         local x, y, z = getElementPosition(localPlayer)
         if not getKeyState("w") and getDistanceBetweenPoints3D(x, y, z, px, py, pz) < 0.1 then

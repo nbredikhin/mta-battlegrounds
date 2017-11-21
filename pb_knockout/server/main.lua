@@ -8,6 +8,16 @@ function knockoutPlayer(player)
 end
 
 function resetPlayerKnockout(player)
+    if not isElement(player) then
+        return
+    end
     player:setData("knockout", false)
     player:setData("knockoutCount", 0)
+end
+
+function reviveKnockedPlayer(player)
+    if not isElement(player) then
+        return
+    end
+    player:setData("knockout", false)
 end

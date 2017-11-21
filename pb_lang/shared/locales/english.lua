@@ -143,6 +143,8 @@ Languages.english = {
     -- Actions
     action_open_parachute = "RELEASE parachute",
     action_jump_plane = "Eject",
+    action_revive_player = "Revive",
+    action_reviving = "Reviving",
 
     -- Kill messages
     kill_message_you_killed = "YOU killed",
@@ -159,7 +161,7 @@ Languages.english = {
     clothes_all = "All clothes",
 
     -- Shop
-    shop_back = "Bacl",
+    shop_back = "Back",
     shop_exit = "Exit",
     shop_categories = "Categories",
     shop_category_hats = "Hats",

@@ -1,4 +1,4 @@
-﻿local LOCAL = true
+﻿local LOCAL = false
 
 if LOCAL then
     unix_socket = false

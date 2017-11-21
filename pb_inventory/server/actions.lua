@@ -57,3 +57,41 @@ addEventHandler("finishPlayerBoost", resourceRoot, function (itemName)
 
     exports.pb_accounts:addPlayerStatsField(player, "stats_items_used", 1)
 end)
+
+addEvent("onPlayerStartReviving", true)
+addEventHandler("onPlayerStartReviving", resourceRoot, function (targetPlayer)
+    if not isElement(targetPlayer) then
+        return
+    end
+    if getDistanceBetweenPoints3D(client.position, targetPlayer.position) > 2 then
+        return
+    end
+    targetPlayer:setData("reviving", true)
+    setTimer(function ()
+        targetPlayer:setData("reviving", false)
+    end, Config.reviveTime, 1)
+
+    triggerClientEvent(targetPlayer, "onClientStartRevieving", resourceRoot)
+    triggerClientEvent(client, "onClientStartRevieving", resourceRoot, targetPlayer)
+
+    client:setAnimation("BOMBER", "BOM_Plant_Loop", -1, true, false, true)
+end)
+
+addEvent("onPlayerStopReviving", true)
+addEventHandler("onPlayerStopReviving", resourceRoot, function (targetPlayer, isSuccess)
+    if isElement(targetPlayer) then
+        client:setAnimation()
+        targetPlayer:setData("reviving", false)
+        triggerClientEvent(targetPlayer, "onClientStopReviving", resourceRoot)
+
+        if isSuccess then
+            exports.pb_knockout:reviveKnockedPlayer(targetPlayer)
+        end
+    end
+end)
+
+addEventHandler("onResourceStart", resourceRoot, function ()
+    for i, player in pairs(getElementsByType("player")) do
+        player:setData("reviving", false)
+    end
+end)

@@ -1,5 +1,6 @@
 local dbTableName = "users"
-local serverId = 0
+local serverId = 1337
+local autosaveInterval = 180
 
 local clothesData = {
     "clothes_head",
@@ -59,12 +60,13 @@ local function setupPlayerSession(player, account)
     if not player or type(account) ~= "table" then
         return false
     end
-
+    local currentTimestamp = getRealTime().timestamp
     playerSessions[player] = {
-        username       = account.username,
-        loginTimestamp = getRealTime().timestamp,
-        stats          = {},
-        rating         = {},
+        username          = account.username,
+        loginTimestamp    = currentTimestamp,
+        lastSaveTimestamp = currentTimestamp,
+        stats             = {},
+        rating            = {},
     }
     -- Статистика
     for i, name in ipairs(statsFields) do
@@ -78,60 +80,34 @@ local function setupPlayerSession(player, account)
 end
 
 function getPlayerSession(player)
-    if not player then
+    if not isElement(player) then
+        if playerSessions[player] then
+            playerSessions[player] = nil
+        end
         return
     end
 
     return playerSessions[player]
 end
 
-addEventHandler("onResourceStart", resourceRoot, function ()
-    if not isResourceRunning("mysql") then
-        return false
+function logoutPlayer(player)
+    if not isElement(player) then
+        return
     end
 
-    exports.mysql:dbExec(dbTableName, [[
-        CREATE TABLE IF NOT EXISTS ?? (
-            username      VARCHAR(64)  NOT NULL PRIMARY KEY,
-            password      VARCHAR(128)  NOT NULL,
+    savePlayerAccount(player)
 
-            items         LONGTEXT      NOT NULL,
+    local username = player:getData("username")
+    if username then
+        exports.mysql:dbExec(dbTableName, [[
+            UPDATE ?? SET online_server = 0 WHERE username = ?;
+        ]], username)
+    end
+    playerSessions[player] = nil
+    outputDebugString("[ACCOUNTS] Logout player " .. tostring(player.name) .. " (acc " .. tostring(username) .. ")")
 
-            battlepoints  BIGINT        UNSIGNED NOT NULL DEFAULT 0,
-            donatepoints  BIGINT        UNSIGNED NOT NULL DEFAULT 0,
-
-            rating_solo_main   BIGINT   UNSIGNED NOT NULL DEFAULT 0,
-            rating_solo_wins   BIGINT   UNSIGNED NOT NULL DEFAULT 0,
-            rating_solo_kills  BIGINT   UNSIGNED NOT NULL DEFAULT 0,
-
-            rating_squad_main  BIGINT   UNSIGNED NOT NULL DEFAULT 0,
-            rating_squad_wins  BIGINT   UNSIGNED NOT NULL DEFAULT 0,
-            rating_squad_kills BIGINT   UNSIGNED NOT NULL DEFAULT 0,
-
-            stats_kills        INT    UNSIGNED NOT NULL DEFAULT 0,
-            stats_wins_solo    INT    UNSIGNED NOT NULL DEFAULT 0,
-            stats_wins_squad   INT    UNSIGNED NOT NULL DEFAULT 0,
-            stats_top10_solo   INT    UNSIGNED NOT NULL DEFAULT 0,
-            stats_top10_squad  INT    UNSIGNED NOT NULL DEFAULT 0,
-            stats_plays_solo   INT    UNSIGNED NOT NULL DEFAULT 0,
-            stats_plays_squad  INT    UNSIGNED NOT NULL DEFAULT 0,
-            stats_hp_healed    INT    UNSIGNED NOT NULL DEFAULT 0,
-            stats_hp_damage    INT    UNSIGNED NOT NULL DEFAULT 0,
-            stats_distance_ped INT    UNSIGNED NOT NULL DEFAULT 0,
-            stats_distance_car INT    UNSIGNED NOT NULL DEFAULT 0,
-            stats_items_used   INT    UNSIGNED NOT NULL DEFAULT 0,
-            stats_deaths       INT    UNSIGNED NOT NULL DEFAULT 0,
-            stats_playtime     BIGINT UNSIGNED NOT NULL DEFAULT 0,
-
-            online_server INTEGER UNSIGNED NOT NULL DEFAULT 0,
-
-            clothes_head  VARCHAR(64),
-            clothes_shirt VARCHAR(64),
-            clothes_pants VARCHAR(64),
-            clothes_shoes VARCHAR(64)
-        );
-    ]])
-end)
+    return true
+end
 
 function isPlayerLoggedIn(player)
     if not isElement(player) then
@@ -140,10 +116,31 @@ function isPlayerLoggedIn(player)
     return not not player:getData("username")
 end
 
-function savePlayerAccount(player, isLogout)
-    if not isElement(player) then
+-- Сохраняет только поля из даты игрока
+function savePlayerAccountData(player)
+    if not getPlayerSession(player) then
         return
     end
+
+    local saveQuery = {}
+    local saveArgs = {}
+
+    for i, name in ipairs(saveAccountData) do
+        local value = player:getData(name)
+        table.insert(saveQuery, tostring(name) .. " = ?")
+        table.insert(saveArgs, value)
+    end
+
+    table.insert(saveArgs, player:getData("username"))
+
+    exports.mysql:dbExec(dbTableName, [[
+        UPDATE ?? SET ]]
+            .. table.concat(saveQuery, ",\n") ..
+        [[ WHERE username = ?;
+    ]], unpack(saveArgs))
+end
+
+function savePlayerAccount(player)
     local session = getPlayerSession(player)
     if not session then
         return
@@ -161,18 +158,14 @@ function savePlayerAccount(player, isLogout)
     table.insert(saveQuery, "items = ?")
     table.insert(saveArgs, toJSON(getPlayerInventory(player)))
 
-    if isLogout then
-        table.insert(saveQuery, "online_server = ?")
-        table.insert(saveArgs, 0)
-
-        -- Обновить время игры на сервере
-        session.stats_playtime = tonumber(session.stats_playtime)
-        if not session.stats_playtime then
-            session.stats_playtime = 0
-        end
-        local timePassed = getRealTime().timestamp - session.loginTimestamp
-        session.stats_playtime = session.stats_playtime + timePassed
+    -- Обновить время игры на сервере
+    session.stats["stats_playtime"] = tonumber(session.stats["stats_playtime"])
+    if not session.stats["stats_playtime"] then
+        session.stats["stats_playtime"] = 0
     end
+    local currentTimestamp = getRealTime().timestamp
+    session.stats["stats_playtime"] = session.stats["stats_playtime"] + (currentTimestamp - session.lastSaveTimestamp)
+    session.lastSaveTimestamp = currentTimestamp
 
     for i, name in ipairs(statsFields) do
         local value = session.stats[name]
@@ -194,7 +187,7 @@ function savePlayerAccount(player, isLogout)
 
     exports.mysql:dbExec(dbTableName, [[
         UPDATE ?? SET ]]
-            .. table.concat(saveQuery, ",") ..
+            .. table.concat(saveQuery, ",\n") ..
         [[ WHERE username = ?;
     ]], unpack(saveArgs))
 end
@@ -238,11 +231,14 @@ function dbLoginPlayer(result, params)
         giveMissingPlayerClothes(player)
         setupPlayerSession(player, result)
 
+        savePlayerAccount(player)
+
         exports.mysql:dbExec(dbTableName, [[
             UPDATE ?? SET online_server = ? WHERE username = ?;
         ]], serverId, result.username)
 
         triggerClientEvent(player, "onClientLoginSuccess", root)
+        outputDebugString("[ACCOUNTS] Login player " .. tostring(player.name) .. " (acc " .. tostring(player:getData("username")) .. ")")
     end)
 end
 
@@ -299,17 +295,8 @@ function registerPlayer(player, username, password)
 end
 
 addEventHandler("onPlayerQuit", root, function ()
-    savePlayerAccount(source, true)
+    logoutPlayer(source)
 end)
-
-setTimer(function ()
-    for player in pairs(playerSessions) do
-        if not isElement(player) then
-            savePlayerAccount(player, true)
-            playerSessions[player] = nil
-        end
-    end
-end, 15000, 0)
 
 addEventHandler("onResourceStart", resourceRoot, function ()
     --serverId =
@@ -324,13 +311,17 @@ addEventHandler("onResourceStop", resourceRoot, function ()
     for i, player in ipairs(getElementsByType("player")) do
         savePlayerAccount(player, true)
     end
+
+    exports.mysql:dbExec(dbTableName, [[
+        UPDATE ?? SET online_server = 0 WHERE online_server = ?;
+    ]], serverId)
 end)
 
 setTimer(function ()
     for i, player in ipairs(getElementsByType("player")) do
         savePlayerAccount(player, true)
     end
-end, 60000, 0)
+end, autosaveInterval * 1000, 0)
 
 addCommandHandler("pbreg", function (player, cmd, username, password)
     registerPlayer(player, username, password)
@@ -348,4 +339,56 @@ end)
 addEvent("onPlayerRequestRegister", true)
 addEventHandler("onPlayerRequestRegister", root, function (username, password)
     registerPlayer(client, username, password)
+end)
+
+addEventHandler("onResourceStart", resourceRoot, function ()
+    if not isResourceRunning("mysql") then
+        return false
+    end
+
+    exports.mysql:dbExec(dbTableName, [[
+        CREATE TABLE IF NOT EXISTS ?? (
+            username      VARCHAR(64)  NOT NULL PRIMARY KEY,
+            password      VARCHAR(128)  NOT NULL,
+
+            items         LONGTEXT      NOT NULL,
+
+            battlepoints  BIGINT        UNSIGNED NOT NULL DEFAULT 0,
+            donatepoints  BIGINT        UNSIGNED NOT NULL DEFAULT 0,
+
+            rating_solo_main   BIGINT   UNSIGNED NOT NULL DEFAULT 0,
+            rating_solo_wins   BIGINT   UNSIGNED NOT NULL DEFAULT 0,
+            rating_solo_kills  BIGINT   UNSIGNED NOT NULL DEFAULT 0,
+
+            rating_squad_main  BIGINT   UNSIGNED NOT NULL DEFAULT 0,
+            rating_squad_wins  BIGINT   UNSIGNED NOT NULL DEFAULT 0,
+            rating_squad_kills BIGINT   UNSIGNED NOT NULL DEFAULT 0,
+
+            stats_kills        INT    UNSIGNED NOT NULL DEFAULT 0,
+            stats_wins_solo    INT    UNSIGNED NOT NULL DEFAULT 0,
+            stats_wins_squad   INT    UNSIGNED NOT NULL DEFAULT 0,
+            stats_top10_solo   INT    UNSIGNED NOT NULL DEFAULT 0,
+            stats_top10_squad  INT    UNSIGNED NOT NULL DEFAULT 0,
+            stats_plays_solo   INT    UNSIGNED NOT NULL DEFAULT 0,
+            stats_plays_squad  INT    UNSIGNED NOT NULL DEFAULT 0,
+            stats_hp_healed    INT    UNSIGNED NOT NULL DEFAULT 0,
+            stats_hp_damage    INT    UNSIGNED NOT NULL DEFAULT 0,
+            stats_distance_ped INT    UNSIGNED NOT NULL DEFAULT 0,
+            stats_distance_car INT    UNSIGNED NOT NULL DEFAULT 0,
+            stats_items_used   INT    UNSIGNED NOT NULL DEFAULT 0,
+            stats_deaths       INT    UNSIGNED NOT NULL DEFAULT 0,
+            stats_playtime     BIGINT UNSIGNED NOT NULL DEFAULT 0,
+
+            online_server INTEGER UNSIGNED NOT NULL DEFAULT 0,
+
+            clothes_head  VARCHAR(64),
+            clothes_shirt VARCHAR(64),
+            clothes_pants VARCHAR(64),
+            clothes_shoes VARCHAR(64)
+        );
+    ]])
+
+    exports.mysql:dbExec(dbTableName, [[
+        UPDATE ?? SET online_server = 0 WHERE online_server = ?;
+    ]], serverId)
 end)

@@ -94,6 +94,11 @@ function useItem(item)
     end
 end
 
+function drawUsingText(str)
+    dxDrawText(str, 1, 1, screenSize.x + 1, screenSize.y * 0.6 + 1, tocolor(0, 0, 0, 150), 1.5, "default-bold", "center", "bottom")
+    dxDrawText(str, 0, 0, screenSize.x, screenSize.y * 0.6, tocolor(255, 255, 255), 1.5, "default-bold", "center", "bottom")
+end
+
 addEventHandler("onClientRender", root, function ()
     if usingPosition and usingItem then
         local time = tostring(math.floor(getTimerDetails(usageTimer) / 100 ) / 10)
@@ -101,8 +106,7 @@ addEventHandler("onClientRender", root, function ()
             time = time .. ".0"
         end
         str = localize("inventory_using") .. " " ..tostring(usingItemName) .. " - " .. time .. "\n" .. localize("inventory_using_cancel")
-        dxDrawText(str, 1, 1, screenSize.x + 1, screenSize.y * 0.6 + 1, tocolor(0, 0, 0, 150), 1.5, "default-bold", "center", "bottom")
-        dxDrawText(str, 0, 0, screenSize.x, screenSize.y * 0.6, tocolor(255, 255, 255), 1.5, "default-bold", "center", "bottom")
+        drawUsingText(str)
         if getDistanceBetweenPoints3D(localPlayer.position, usingPosition) > 1 then
             endUsing()
         end

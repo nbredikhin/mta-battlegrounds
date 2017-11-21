@@ -8,4 +8,5 @@
 
     <export type="server" function="knockoutPlayer"/>
     <export type="server" function="resetPlayerKnockout"/>
+    <export type="server" function="reviveKnockedPlayer"/>
 </meta>

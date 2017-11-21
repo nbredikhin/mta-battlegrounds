@@ -143,6 +143,8 @@ Languages.russian = {
     -- Actions
     action_open_parachute = "РАСКРЫТЬ парашют",
     action_jump_plane = "Катапультироваться",
+    action_revive_player = "Поднять",
+    action_reviving = "Оживление",
 
     -- Kill messages
     kill_message_you_killed = "Вы убили",

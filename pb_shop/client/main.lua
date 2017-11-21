@@ -10,7 +10,7 @@ function setVisible(visible)
     showCursor(visible)
     if visible then
         localPlayer.interior = 18
-        localPlayer.position = Vector3(0, 3500, 10)
+        localPlayer.position = Vector3(0, 3500, 200)
         localPlayer.frozen = true
         createPreviewPed()
         setTimer(function ()
