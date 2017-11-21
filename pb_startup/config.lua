@@ -22,6 +22,7 @@ Config.resourceList = {
     "pb_clothes",
     "pb_shop",
     "pb_accounts",
+    "pb_knockout",
     "pb_lang",
     "pb_mapping",
     "pb_models",

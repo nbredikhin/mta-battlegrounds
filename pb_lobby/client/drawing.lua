@@ -307,6 +307,8 @@ function setVisible(visible)
         setFarClipDistance(30)
         setFogDistance(0)
         localPlayer.interior = 0
+        localPlayer.position = Vector3(3500, 0, 100)
+        localPlayer.frozen = true
         if math.random() > 0.5 then
             setWeather(3)
             setTime(19, 40)
@@ -323,6 +325,7 @@ function setVisible(visible)
         fadeCamera(true)
         resetTab()
     else
+        localPlayer.frozen = false
         resetFarClipDistance()
         resetFogDistance()
         stopSkinSelect()

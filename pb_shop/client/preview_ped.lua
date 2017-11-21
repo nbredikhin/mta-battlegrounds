@@ -20,7 +20,7 @@ function createPreviewPed()
     if isElement(previewPed) then
         return
     end
-    previewPed = createPed(235, pedPosition, 150)
+    previewPed = createPed(235, pedPosition, 250)
     previewPed.frozen = true
     previewPed:setAnimation("CLOTHES", "CLO_Pose_Loop", -1, true, false)
     previewPed.dimension = localPlayer.dimension

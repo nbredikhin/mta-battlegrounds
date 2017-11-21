@@ -24,19 +24,19 @@ ReplacedModels = {
 
     playermodel = 235,
 
-    loot_backpack_small = 1862,
-    loot_backpack_medium = 1863,
-    loot_backpack_large = 1864,
+    -- loot_backpack_small = 1862,
+    -- loot_backpack_medium = 1863,
+    -- loot_backpack_large = 1864,
 
-    loot_armor1 = 1865,
-    loot_armor2 = 1866,
-    loot_armor3 = 1867,
+    -- loot_armor1 = 1865,
+    -- loot_armor2 = 1866,
+    -- loot_armor3 = 1867,
 
-    ammo_9mm = 1868,
-    ammo_762mm = 1869,
-    ammo_556mm = 1870,
-    ammo_12gauge = 1871,
-    ammo_45 = 1872,
+    -- ammo_9mm = 1868,
+    -- ammo_762mm = 1869,
+    -- ammo_556mm = 1870,
+    -- ammo_12gauge = 1871,
+    -- ammo_45 = 1872,
 }
 
 OverwriteFiles = {

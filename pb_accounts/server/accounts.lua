@@ -92,8 +92,8 @@ addEventHandler("onResourceStart", resourceRoot, function ()
 
     exports.mysql:dbExec(dbTableName, [[
         CREATE TABLE IF NOT EXISTS ?? (
-            username      VARCHAR(255)  NOT NULL PRIMARY KEY,
-            password      VARCHAR(255)  NOT NULL,
+            username      VARCHAR(64)  NOT NULL PRIMARY KEY,
+            password      VARCHAR(128)  NOT NULL,
 
             items         LONGTEXT      NOT NULL,
 
@@ -125,10 +125,10 @@ addEventHandler("onResourceStart", resourceRoot, function ()
 
             online_server INTEGER UNSIGNED NOT NULL DEFAULT 0,
 
-            clothes_head  VARCHAR(255),
-            clothes_shirt VARCHAR(255),
-            clothes_pants VARCHAR(255),
-            clothes_shoes VARCHAR(255)
+            clothes_head  VARCHAR(64),
+            clothes_shirt VARCHAR(64),
+            clothes_pants VARCHAR(64),
+            clothes_shoes VARCHAR(64)
         );
     ]])
 end)
@@ -141,10 +141,9 @@ function isPlayerLoggedIn(player)
 end
 
 function savePlayerAccount(player, isLogout)
-    if not isPlayerLoggedIn(player) then
+    if not isElement(player) then
         return
     end
-
     local session = getPlayerSession(player)
     if not session then
         return
@@ -233,7 +232,7 @@ function dbLoginPlayer(result, params)
 
         local head = player:getData("clothes_head")
         if not exports.pb_clothes:isValidClothesName(head) then
-            player:setData("clothes_head", "head1")
+            player:setData("clothes_head", "head"..math.random(1, 15))
         end
         setupPlayerInventory(player, fromJSON(result.items))
         giveMissingPlayerClothes(player)
@@ -243,7 +242,7 @@ function dbLoginPlayer(result, params)
             UPDATE ?? SET online_server = ? WHERE username = ?;
         ]], serverId, result.username)
 
-        triggerClientEvent("onClientLoginSuccess", root)
+        triggerClientEvent(player, "onClientLoginSuccess", root)
     end)
 end
 
@@ -326,6 +325,12 @@ addEventHandler("onResourceStop", resourceRoot, function ()
         savePlayerAccount(player, true)
     end
 end)
+
+setTimer(function ()
+    for i, player in ipairs(getElementsByType("player")) do
+        savePlayerAccount(player, true)
+    end
+end, 60000, 0)
 
 addCommandHandler("pbreg", function (player, cmd, username, password)
     registerPlayer(player, username, password)

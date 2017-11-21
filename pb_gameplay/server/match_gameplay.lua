@@ -411,6 +411,7 @@ function handlePlayerMatchDeath(match, player, killer, weaponId)
             if not player:getData("knockout") then
                 spawnMatchPlayer(match, player, player.position)
                 exports.pb_knockout:knockoutPlayer(player)
+                return
             end
         end
 

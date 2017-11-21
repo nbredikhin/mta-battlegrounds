@@ -144,7 +144,7 @@ function updatePlayerRating(player, matchType, rank, kills, totalSquads)
     local currentBattlepoints = tonumber(player:getData("battlepoints"))
     if currentBattlepoints then
         player:setData("battlepoints", currentBattlepoints + battlepoints)
-        triggerClientEvent("onClientRewardReceived", resourceRoot, battlepoints)
+        triggerClientEvent(player, "onClientRewardReceived", resourceRoot, battlepoints)
     end
 
     savePlayerAccount(player)

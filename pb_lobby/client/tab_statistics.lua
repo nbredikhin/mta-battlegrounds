@@ -14,27 +14,21 @@ local ratingTable = {
     { name = "rating_kills", size = 0.15 },
 }
 
-local requireLockTimer
+local updateFloodTimers = {}
 
 local localPlayerStats = {}
 local localPlayerRating = {}
 local topPlayersRating = {}
-for i = 1, 10 do
-    table.insert(topPlayersRating, {
-        username = "test_user" .. tostring(i),
-        rating = math.random(10000, 100000)
-    })
-end
 
 local function requireRating()
-    if isTimer(requireLockTimer) then
+    if isTimer(updateFloodTimers[currentRatingMode]) then
         return
     end
     topPlayersRating = {}
     localPlayerRating = {}
     triggerServerEvent("onPlayerRequireRating", resourceRoot, currentRatingMode)
     triggerServerEvent("onPlayerRequireOwnRating", resourceRoot, currentRatingMode)
-    requireLockTimer = setTimer(function () end, 60000, 1)
+    updateFloodTimers[currentRatingMode] = setTimer(function () end, 10000, 1)
 end
 
 local function playtimeToString(playtime)
@@ -271,11 +265,7 @@ Tabs.statistics = {
     load = function ()
         triggerServerEvent("onPlayerRequestStats", resourceRoot)
 
-        currentRatingMode = "solo"
-        triggerServerEvent("onPlayerRequireRating", resourceRoot, currentRatingMode)
-        triggerServerEvent("onPlayerRequireOwnRating", resourceRoot, currentRatingMode)
-
-        localPlayerRating = {}
+        requireRating()
     end,
 
     draw = draw

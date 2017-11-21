@@ -1,11 +1,11 @@
 ﻿
-local unix_socket, host = unix_socket, host
+local unix_socket, host, port = unix_socket, host, port
 local dbname, user, password = dbname, user, password
 local mainDB
 
 function connect()
 	local startTick = getTickCount()
-	mainDB = dbConnect("mysql", (unix_socket and "unix_socket="..unix_socket or "host="..host)..";dbname="..dbname, user, password)
+	mainDB = dbConnect("mysql", (unix_socket and "unix_socket="..unix_socket or "host="..host)..";dbname="..dbname .. (port and ";port="..port or ""), user, password)
 	if (mainDB) then
 		outputDebugString("[MYSQL] Connection: "..getTickCount()-startTick.." ms.")
 	else

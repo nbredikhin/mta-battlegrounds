@@ -72,6 +72,7 @@ function respawnPeds(playersList)
         ped.dimension = localPlayer.dimension
         lobbyPeds[player] = ped
         updatePlayerReadyState(player)
+        updatePedClothes(ped, player)
     end
 end
 

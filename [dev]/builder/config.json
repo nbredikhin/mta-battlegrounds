@@ -10,12 +10,13 @@
 
     "enableReadmeFiles": true,
 
-    "only": ["pb_models"],
+    "only": ["pb_accounts", "pb_lobby"],
 
     "include": [
         "bone_attach",
         "parachute",
         "nochat",
+        "mysql"
     ],
 
     "pathEncryptExclude": [
