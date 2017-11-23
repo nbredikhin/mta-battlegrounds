@@ -37,6 +37,11 @@ ReplacedModels = {
     -- ammo_556mm = 1870,
     -- ammo_12gauge = 1871,
     -- ammo_45 = 1872,
+
+    swburbhaus01_open = 3307,
+    swburbhaus02_open = 3306,
+    swburbhaus03_open = 3308,
+    swburbhaus04_open = 3309,
 }
 
 OverwriteFiles = {
@@ -46,6 +51,9 @@ OverwriteFiles = {
     loot_armor1 = { txd = "armor1" },
     loot_armor2 = { txd = "armor2" },
     loot_armor3 = { txd = "armor3" },
+    swburbhaus02_open = { txd = "swburbhaus01_open" },
+    swburbhaus03_open = { txd = "swburbhaus01_open" },
+    swburbhaus04_open = { txd = "swburbhaus01_open" },
 }
 
 function getItemModel(name)

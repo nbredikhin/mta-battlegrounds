@@ -81,7 +81,7 @@ end
 
 function getPlayerBackpackTotalWeight(player)
     if not isElement(player) or not playerBackpacks[player] then
-        return false
+        return 0
     end
     local amount = 0
     for name, item in pairs(playerBackpacks[player]) do

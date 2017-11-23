@@ -39,12 +39,6 @@ local function randomBytes(count, seed)
     return str
 end
 
-function encryptResource(resource)
-
-end
-
-encryptResource(getResourceFromName("pb_models"))
-
 addCommandHandler("encmod", function ()
     local paths = {}
     local filenum = 1

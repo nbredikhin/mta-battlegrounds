@@ -25,6 +25,16 @@ function reviveKnockedPlayer(player)
     player.health = 10
 end
 
-addCommandHandler("knockout", function (player)
-    knockoutPlayer(player)
+addEventHandler("onVehicleStartEnter", root, function (player)
+    if player:getData("knockout") then
+        cancelEvent()
+    end
 end)
+
+-- addCommandHandler("knockout", function (player)
+--     if player:getData("knockout") then
+--         reviveKnockedPlayer(player)
+--     else
+--         knockoutPlayer(player)
+--     end
+-- end)

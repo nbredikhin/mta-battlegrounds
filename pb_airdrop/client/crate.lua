@@ -85,7 +85,6 @@ addEventHandler("onClientPreRender", root, function (dt)
         if groundZ and crateZ < groundZ then
             crateStopped = true
             crateZ = groundZ
-
             triggerServerEvent("onPlayerCrateLanded", resourceRoot, x, y, groundZ)
         end
         setElementPosition(crate, startPosition.x, startPosition.y, crateZ)

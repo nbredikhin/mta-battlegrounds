@@ -50,6 +50,10 @@ local function draw()
     end
 end
 
+local function isSquadPlayer(player)
+    return player:getData("matchId") == localPlayer:getData("matchId") and player:getData("squadId") == localPlayer:getData("squadId")
+end
+
 function revivePlayer(player)
     if not isElement(player) then
         return
@@ -60,13 +64,22 @@ function revivePlayer(player)
     if getElementType(player) ~= "player" then
         return
     end
-    if not player:getData("knockout") then
+    if localPlayer:getData("knockout") or not player:getData("knockout") then
         return
     end
     if player == localPlayer then
         return
     end
     if player.vehicle or localPlayer.vehicle then
+        return
+    end
+    if not isSquadPlayer(player) then
+        return
+    end
+    if player.dead or localPlayer.dead then
+        return
+    end
+    if not isLineOfSightClear(localPlayer.position, player.position, true, true, false, true, false) then
         return
     end
     -- TODO: Проверить, находится ли игрок в скваде
@@ -132,6 +145,7 @@ addEventHandler("onClientKey", root, function (button, down)
         if isTimer(revivingTimer) then
             if revivingTarget then
                 cancelReviving()
+                cancelEvent()
             end
         end
     end

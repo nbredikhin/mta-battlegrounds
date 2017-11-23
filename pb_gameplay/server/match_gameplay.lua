@@ -389,7 +389,7 @@ local function hasSquadAlivePlayers(match, squad)
         return false
     end
     for i, player in ipairs(squad.players) do
-        if isElement(player) and isPlayerInMatch(player, match) and not player.dead then
+        if isElement(player) and isPlayerInMatch(player, match) and not player.dead and not player:getData("dead") then
             return true
         end
     end
@@ -407,6 +407,7 @@ function handlePlayerMatchDeath(match, player, killer, weaponId)
         spawnMatchPlayer(match, player)
         return
     elseif match.state == "running" then
+        iprint("Player killed", player)
         -- Нокаут
         if isResourceRunning("pb_knockout") then
             exports.pb_knockout:cancelPlayerReviving(player)
@@ -416,13 +417,29 @@ function handlePlayerMatchDeath(match, player, killer, weaponId)
                 local squad = getMatchSquad(match, player:getData("squadId"))
 
                 local squadKnockedOut = true
-                for i, player in ipairs(squad.players) do
-                    if not player:getData("knockout") then
+
+                iprint("knocking player", player)
+                for i, p in ipairs(squad.players) do
+                    if isElement(p) and not p:getData("dead") and p ~= player and not p:getData("knockout") then
                         squadKnockedOut = false
                         break
                     end
                 end
-                if not squadKnockedOut then
+                if squadKnockedOut then
+                    iprint("all squad knocked, killing", player)
+                    for i, p in ipairs(squad.players) do
+                        if isElement(p) and p ~= player then
+                            p:kill()
+                        end
+                    end
+                else
+                    iprint("not all squad knocked, killing", player)
+                    for i, p in ipairs(squad.players) do
+                        if isElement(p) and not p:getData("dead") and p ~= player and not p:getData("knockout") then
+                            iprint("not knocked", p)
+                            break
+                        end
+                    end
                     spawnMatchPlayer(match, player, player.position)
                     exports.pb_knockout:knockoutPlayer(player)
                     return

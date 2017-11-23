@@ -18,6 +18,10 @@ function drawPickupMessage(item)
     pickupItem = item
 end
 
+local function isSquadPlayer(player)
+    return player:getData("matchId") == localPlayer:getData("matchId") and player:getData("squadId") == localPlayer:getData("squadId")
+end
+
 addEventHandler("onClientRender", root, function()
     pickupItem = nil
     if isInventoryShowing() then
@@ -37,7 +41,14 @@ addEventHandler("onClientRender", root, function()
     local actionElement = getActionElement()
     if isElement(actionElement) then
         if actionElement.type == "player" then
-            if actionElement:getData("knockout") and not localPlayer:getData("knockout") and not getUsingItemName() and not localPlayer:getData("reviving") then
+            if actionElement:getData("knockout")
+                and not localPlayer:getData("knockout")
+                and not getUsingItemName()
+                and not localPlayer:getData("reviving")
+                and not localPlayer.dead
+                and not actionElement.dead
+                and isSquadPlayer(actionElement)
+            then
                 drawActionMessage(localize("action_revive_player"))
             end
         end
@@ -70,6 +81,7 @@ addEventHandler("onClientKey", root, function (button, down)
         if isElement(actionElement) then
             if getElementType(actionElement) == "player" then
                 exports.pb_knockout:revivePlayer(actionElement)
+                cancelEvent()
                 return
             end
         end
