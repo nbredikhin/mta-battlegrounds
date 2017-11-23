@@ -95,7 +95,3 @@ addEventHandler("onClientResourceStart", resourceRoot, function ()
         updatePedKnockoutState(ped)
     end
 end)
-
-addCommandHandler("knockout", function ()
-    localPlayer:setData("knockout", not localPlayer:getData("knockout"))
-end)

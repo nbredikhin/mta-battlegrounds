@@ -6,6 +6,9 @@ local usingPosition
 local usingItemName
 
 local function endUsing()
+    if not usingItem then
+        return
+    end
     if isTimer(usageTimer) then
         killTimer(usageTimer)
     end
@@ -51,6 +54,9 @@ function useItem(item)
         return
     end
     if isTimer(usageTimer) then
+        return
+    end
+    if localPlayer:getData("reviving") then
         return
     end
     local itemClass = Items[item.name]

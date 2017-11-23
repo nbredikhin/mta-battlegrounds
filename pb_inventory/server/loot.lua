@@ -115,6 +115,9 @@ addEventHandler("pickupLootItem", resourceRoot, function (element, weaponSlot, i
     if client.vehicle then
         return
     end
+    if client:getData("knockout") or client:getData("revivingTarget") then
+        return
+    end
     if getDistanceBetweenPoints3D(client.position, element.position) > Config.minLootDistance + 2 then
         return
     end

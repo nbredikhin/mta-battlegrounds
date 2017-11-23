@@ -31,7 +31,9 @@ addEventHandler("onClientPreRender", root, function (deltaTime)
 
     local state = localPlayer:getData("knockout")
     if state then
-        damageDelay = damageDelay - deltaTime
+        if not localPlayer:getData("reviving") then
+            damageDelay = damageDelay - deltaTime
+        end
         if damageDelay < 0 then
             damageDelay = 1
             -- localPlayer.health = localPlayer.health - 2

@@ -240,6 +240,7 @@ local function setMatchRunning(match)
         player:setData("boost", 0)
 
         if isResourceRunning("pb_knockout") then
+            exports.pb_knockout:cancelPlayerReviving(player)
             exports.pb_knockout:resetPlayerKnockout(player)
         end
 
@@ -332,6 +333,7 @@ function handlePlayerLeaveMatch(match, player)
     player:removeData("hp_healed")
     player:setData("isInPlane", false)
     if isResourceRunning("pb_knockout") then
+        exports.pb_knockout:cancelPlayerReviving(player)
         exports.pb_knockout:resetPlayerKnockout(player)
     end
 
@@ -407,11 +409,24 @@ function handlePlayerMatchDeath(match, player, killer, weaponId)
     elseif match.state == "running" then
         -- Нокаут
         if isResourceRunning("pb_knockout") then
+            exports.pb_knockout:cancelPlayerReviving(player)
+
             -- TODO: Только для squad-матчей
             if not player:getData("knockout") then
-                spawnMatchPlayer(match, player, player.position)
-                exports.pb_knockout:knockoutPlayer(player)
-                return
+                local squad = getMatchSquad(match, player:getData("squadId"))
+
+                local squadKnockedOut = true
+                for i, player in ipairs(squad.players) do
+                    if not player:getData("knockout") then
+                        squadKnockedOut = false
+                        break
+                    end
+                end
+                if not squadKnockedOut then
+                    spawnMatchPlayer(match, player, player.position)
+                    exports.pb_knockout:knockoutPlayer(player)
+                    return
+                end
             end
         end
 
