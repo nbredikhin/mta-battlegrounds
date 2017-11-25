@@ -8,6 +8,7 @@
     <script type="server" src="server/points.lua"/>
     <script type="server" src="server/main.lua"/>
 
+    <export type="client" function="getAirDropPosition"/>
     <export type="client" function="destroyAirDrop"/>
     <export type="server" function="createAirDrop"/>
     <export type="server" function="createAirDropWithinZone"/>

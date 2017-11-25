@@ -126,3 +126,9 @@ function destroyAirDrop()
     end
     plane = nil
 end
+
+function getAirDropPosition()
+    if crateEjected then
+        return dropX, dropY, getCrateHeight()
+    end
+end

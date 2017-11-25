@@ -8,6 +8,7 @@ local viewX, viewY = 0, 0
 
 local lineColor = tocolor(255, 255, 150, 150)
 local markerSize = 20
+local airdropSize = 35
 local markerAnim = 0
 
 local markerColors = {
@@ -122,6 +123,13 @@ addEventHandler("onClientRender", root, function ()
     end
     markerAnim = math.min(1, markerAnim + 0.1)
 
+    -- Airdrop
+    local airdropX, airdropY = exports.pb_airdrop:getAirDropPosition()
+    if airdropX then
+        local x, y = worldToMap(airdropX, airdropY)
+        dxDrawImage(x + viewX - airdropSize / 2, y + viewY - airdropSize, airdropSize, airdropSize, textures.airdrop)
+    end
+
     -- Сквад
     local squadPlayers = exports.pb_gameplay:getSquadPlayers()
     local squadColor = tocolor(49, 177, 178)
@@ -168,6 +176,7 @@ addEventHandler("onClientResourceStart", resourceRoot, function ()
     textures.circle = dxCreateTexture("assets/circle.png", "argb", true, "clamp")
     textures.p_location = dxCreateTexture("assets/p_location.png", "argb", true, "clamp")
     textures.marker = dxCreateTexture("assets/marker.png", "argb", true, "clamp")
+    textures.airdrop = dxCreateTexture("assets/airdrop.png", "argb", true, "clamp")
 end)
 
 addEventHandler("onClientKey", root, function (key, down)

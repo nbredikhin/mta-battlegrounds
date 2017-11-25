@@ -128,3 +128,7 @@ function destroyCrates()
     end
     spawnedCrates = {}
 end
+
+function getCrateHeight()
+    return crateZ
+end

@@ -21,6 +21,8 @@ local zoneProgressColor = tocolor(7, 95, 192, 255)
 
 local runnerIconSize = 42
 
+local airdropSize = 40
+
 local markerSize = 20
 local markerColors = {
     { 253, 218, 14  },
@@ -185,6 +187,15 @@ local function drawRadar()
         end
     end
 
+    -- Airdrop
+    local airdropX, airdropY = exports.pb_airdrop:getAirDropPosition()
+    if airdropX then
+        local x, y = worldToRadar(airdropX, airdropY)
+        x = -(localX - localWidth / 2) + x
+        y = -(localY - localHeight / 2) + y
+        dxDrawImage(x - airdropSize / 2, y - airdropSize / 2, airdropSize, airdropSize, textures.airdrop)
+    end
+
     -- Сквад
     local squadPlayers = exports.pb_gameplay:getSquadPlayers()
     local squadColor = tocolor(49, 177, 178)
@@ -293,6 +304,7 @@ addEventHandler("onClientResourceStart", resourceRoot, function ()
     textures.circle = dxCreateTexture(":pb_map/assets/circle.png", "argb", true, "clamp")
     textures.p_location = dxCreateTexture(":pb_map/assets/p_location.png", "argb", true, "clamp")
     textures.marker = dxCreateTexture(":pb_map/assets/marker.png", "argb", true, "clamp")
+    textures.airdrop = dxCreateTexture(":pb_map/assets/airdrop.png", "argb", true, "clamp")
 
     textures.runner = dxCreateTexture("assets/runner.png")
 
