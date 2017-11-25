@@ -20,8 +20,8 @@ function findMatch(players)
         end
     end
     -- Выбор типа матча
-    local matchType = "solo"
-    if #players > 1 then
+    local matchType = exports.pb_lobby:getServerLobbyType()
+    if not matchType then
         matchType = "squad"
     end
     -- Поиск подходящего матча

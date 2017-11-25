@@ -75,6 +75,10 @@ setTimer(function ()
     playerRatingCache = {}
 end, 60000, 1)
 
+addEventHandler("onPlayerQuit", root, function ()
+    playerRatingCache[source] = nil
+end)
+
 function updatePlayerRating(player, matchType, rank, kills, totalSquads)
     if not matchType or not rank or not kills or not totalSquads then
         return
@@ -84,10 +88,10 @@ function updatePlayerRating(player, matchType, rank, kills, totalSquads)
         return
     end
     -- Проверка количества игроков
-    if matchType == "squad" and totalSquads < 8 then
+    if matchType == "squad" and totalSquads < 3 then
         return
     end
-    if matchType == "solo" and totalSquads < 16 then
+    if matchType == "solo" and totalSquads < 3 then
         return
     end
 
@@ -102,7 +106,7 @@ function updatePlayerRating(player, matchType, rank, kills, totalSquads)
 
     if rank <= totalSquads * 0.3 then
         battlepoints = battlepoints + 100
-        winRating = winRating + (31 - rank) * 2 + totalSquads * 0.5
+        winRating = winRating + (totalSquads * 0.3 - rank + 1) * 2 + totalSquads * 0.5
 
         if rank <= totalSquads * 0.1 then
             if rank == 1 then
@@ -118,12 +122,15 @@ function updatePlayerRating(player, matchType, rank, kills, totalSquads)
             battlepoints = battlepoints + kills * 50
         end
     else
-        winRating = winRating - rank
-        if rank <= totalSquads * 0.5 then
+        if rank <= totalSquads * 0.6 then
+            winRating = winRating - rank / 2
             killRating = killRating + kills / 2
+            battlepoints = battlepoints + kills * 50
         else
+            winRating = winRating - rank
+            battlepoints = battlepoints + kills * 20
             if kills == 0 then
-                killRating = killRating - rank / 5
+                killRating = killRating - rank / 3
             end
         end
     end
@@ -133,13 +140,15 @@ function updatePlayerRating(player, matchType, rank, kills, totalSquads)
         battlepoints = battlepoints / 2
     end
 
-    winRating = math.floor(winRating)
-    killRating = math.floor(killRating)
+    winRating = math.max(0, math.floor(winRating))
+    killRating = math.max(0, math.floor(killRating))
     battlepoints = math.floor(battlepoints)
 
-    session["rating_"..matchType.."_wins"] = winRating
-    session["rating_"..matchType.."_kills"] = killRating
-    session["rating_"..matchType.."_main"] = math.floor(winRating + (killRating * 0.2))
+    session.rating["rating_"..matchType.."_wins"] = winRating
+    session.rating["rating_"..matchType.."_kills"] = killRating
+    session.rating["rating_"..matchType.."_main"] = math.floor(winRating + (killRating * 0.2))
+
+    iprint("rating", tostring(player.name), "("..tostring(rank).."/"..tostring(totalSquads)..")", matchType, "win="..tostring(winRating), "kill="..tostring(killRating), battlepoints)
 
     local currentBattlepoints = tonumber(player:getData("battlepoints"))
     if currentBattlepoints then

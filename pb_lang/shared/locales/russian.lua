@@ -116,6 +116,7 @@ Languages.russian = {
     -- KILLCHAT
     killchat_death = "Игрок %s умер",
     killchat_kill = "Игрок %s убил игрока %s",
+    killchat_kill_finished  = "%s наконец убивает игрока %s",
     killchat_weapon = ", используя %s",
     killchat_alive_count = "в живых",
     killchat_match_ended = "МАТЧ ЗАВЕРШЕН!",

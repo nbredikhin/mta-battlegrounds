@@ -125,6 +125,7 @@ function destroyAirDrop()
         destroyElement(planeSound)
     end
     plane = nil
+    crateEjected = false
 end
 
 function getAirDropPosition()

@@ -85,6 +85,9 @@ function drawStartGameButton()
     if getLobbyType() == "squad" and #getLobbyPlayers() <= 1 then
         lobbyEnoughPlayers = false
     end
+    if localPlayer:getData("isAdmin") then
+        lobbyEnoughPlayers = true
+    end
     if isMouseOver(0, 0, w * 0.7, h * 0.5) then
         if lobbyEnoughPlayers then
             texture = "assets/corner1.png"
@@ -98,7 +101,7 @@ function drawStartGameButton()
             end
         end
     end
-    dxDrawImage(0, 0, w, h, texture)
+    dxDrawImage(-1, 0, w, h, texture)
     local text = localize("lobby_start_game")
     if localPlayer:getData("lobbyReady") then
         text = localize("lobby_ready")

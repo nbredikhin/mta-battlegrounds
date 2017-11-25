@@ -49,7 +49,7 @@ setTimer(function ()
 end, 500, 1)
 
 addCommandHandler("give", function (player, cmd, name, count)
-    if not isPlayerAdmin then
+    if not isPlayerAdmin(player) then
         return
     end
     spawnPlayerLootItem(player, createItem(name, tonumber(count) or 1))

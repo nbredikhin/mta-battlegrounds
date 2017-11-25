@@ -36,16 +36,20 @@ function localize(name)
 end
 
 addEvent("onMatchPlayerWasted", true)
-addEventHandler("onMatchPlayerWasted", root, function (aliveCount, killerPlayer, weaponId)
+addEventHandler("onMatchPlayerWasted", root, function (aliveCount, killerPlayer, weaponId, knockedFinished)
     local wastedName = string.gsub(source.name, '#%x%x%x%x%x%x', '')
     local message = string.format(localize("killchat_death"), tostring(wastedName))
 
     if isElement(killerPlayer) then
-        local weaponName = exports.pb_inventory:getWeaponNameFromId(weaponId)
-        local killerName = string.gsub(killerPlayer.name, '#%x%x%x%x%x%x', '')
-        message = string.format(localize("killchat_kill"), tostring(killerName), tostring(wastedName))
-        if weaponName then
-            message = message .. string.format(localize("killchat_weapon"), localize(tostring(weaponName)))
+        if knockedFinished then
+            message = string.format(localize("killchat_kill_finished"), tostring(killerName), tostring(wastedName))
+        else
+            local weaponName = exports.pb_inventory:getWeaponNameFromId(weaponId)
+            local killerName = string.gsub(killerPlayer.name, '#%x%x%x%x%x%x', '')
+            message = string.format(localize("killchat_kill"), tostring(killerName), tostring(wastedName))
+            if weaponName then
+                message = message .. string.format(localize("killchat_weapon"), localize(tostring(weaponName)))
+            end
         end
     end
 

@@ -317,7 +317,13 @@ addEventHandler("onPlayerQuit", root, function ()
 end)
 
 addEventHandler("onResourceStart", resourceRoot, function ()
-    --serverId =
+    local name = getServerName()
+    local pos = string.find(name, "#", 1, true)
+    if pos then
+        serverId = tonumber(name:sub(pos+1, pos+1)) or 1337
+    else
+        serverId = 1337
+    end
     for i, player in ipairs(getElementsByType("player")) do
         for i, name in ipairs(loadAccountData) do
             player:removeData(name)

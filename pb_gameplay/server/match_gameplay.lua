@@ -407,6 +407,16 @@ function handlePlayerMatchDeath(match, player, killer, weaponId)
         spawnMatchPlayer(match, player)
         return
     elseif match.state == "running" then
+        -- Убийца
+        local killerPlayer
+        if isElement(killer) then
+            if killer.type == "player" then
+                killerPlayer = killer
+            elseif killer.type == "vehicle" then
+                killerPlayer = killer.controller
+            end
+        end
+
         -- Нокаут
         if isResourceRunning("pb_knockout") then
             exports.pb_knockout:cancelPlayerReviving(player)
@@ -418,7 +428,7 @@ function handlePlayerMatchDeath(match, player, killer, weaponId)
                 local squadKnockedOut = true
 
                 for i, p in ipairs(squad.players) do
-                    if isElement(p) and not p:getData("dead") and p ~= player and not p:getData("knockout") then
+                    if isElement(p) and not p.dead and p ~= player and not p:getData("knockout") then
                         squadKnockedOut = false
                         break
                     end
@@ -436,10 +446,13 @@ function handlePlayerMatchDeath(match, player, killer, weaponId)
                         end
                     end
                     spawnMatchPlayer(match, player, player.position)
-                    exports.pb_knockout:knockoutPlayer(player)
+                    exports.pb_knockout:knockoutPlayer(player, killer)
                     return
                 end
             end
+
+            exports.pb_knockout:cancelPlayerReviving(player)
+            exports.pb_knockout:resetPlayerKnockout(player)
         end
 
         if isResourceRunning("pb_inventory") then
@@ -449,19 +462,18 @@ function handlePlayerMatchDeath(match, player, killer, weaponId)
         player:setData("dead", true)
 
         -- Обновление счётчика у убийцы
-        local killerPlayer
-        if isElement(killer) then
-            if killer.type == "player" then
-                killerPlayer = killer
-            elseif killer.type == "vehicle" then
-                killerPlayer = killer.controller
-            end
-
-            if isElement(killerPlayer) then
-                local kills = killerPlayer:getData("kills") or 0
-                killerPlayer:setData("kills", kills + 1)
-            end
+        local knockedBy = player:getData("knockedBy")
+        if isElement(knockedBy) then
+            -- Засчитать убийство тому, кто уронил игрока
+            local kills = knockedBy:getData("kills") or 0
+            knockedBy:setData("kills", kills + 1)
+            killerPlayer = knockedBy
+        elseif isElement(killerPlayer) then
+            -- Засчитывать килл убийце
+            local kills = killerPlayer:getData("kills") or 0
+            killerPlayer:setData("kills", kills + 1)
         end
+
 
         -- Статистика
         if isResourceRunning("pb_accounts") then
@@ -470,7 +482,7 @@ function handlePlayerMatchDeath(match, player, killer, weaponId)
 
         -- События
         local alivePlayers = getMatchAlivePlayers(match)
-        triggerMatchEvent(match, "onMatchPlayerWasted", player, #alivePlayers, killerPlayer, weaponId)
+        triggerMatchEvent(match, "onMatchPlayerWasted", player, #alivePlayers, killerPlayer, weaponId, not not knockedBy)
         triggerClientEvent(player, "onMatchWasted", resourceRoot)
 
         -- Проверка оставшихся отрядов

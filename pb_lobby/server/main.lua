@@ -217,3 +217,7 @@ addEventHandler("onLobbyStartSearch", resourceRoot, function ()
     end
     exports.pb_gameplay:findMatch(players)
 end)
+
+function getServerLobbyType()
+    return serverLobbyType
+end

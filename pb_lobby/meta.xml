@@ -15,6 +15,7 @@
 
     <export type="client" function="setVisible"/>
     <export type="server" function="getPlayerLobbyPlayers"/>
+    <export type="server" function="getServerLobbyType"/>
 
     <file src="assets/corner0.png"/>
     <file src="assets/corner1.png"/>

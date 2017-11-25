@@ -36,7 +36,11 @@ addEventHandler("onClientPreRender", root, function (deltaTime)
         end
         if damageDelay < 0 then
             damageDelay = 1
-            -- localPlayer.health = localPlayer.health - 2
+            local mul = localPlayer:getData("knockoutCount") or 1
+            if mul < 1 then
+                mul = 1
+            end
+            localPlayer.health = localPlayer.health - 2 * mul
         end
         local x, y, z = getElementPosition(localPlayer)
         if not getKeyState("w") and getDistanceBetweenPoints3D(x, y, z, px, py, pz) < 0.1 then
