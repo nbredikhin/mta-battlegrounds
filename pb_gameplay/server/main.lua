@@ -1,4 +1,22 @@
+local skills = {
+    "std",
+    "pro",
+    "poor"
+}
+
+function setupWeaponProps()
+    for name, props in pairs(Config.overrideWeaponProperties) do
+        for k, v in pairs(props) do
+            for i, skill in ipairs(skills) do
+                setWeaponProperty(name, skill, k, v)
+            end
+        end
+    end
+end
+
 addEventHandler("onResourceStart", resourceRoot, function ()
+    setupWeaponProps()
+
     for i, player in ipairs(getElementsByType("player")) do
         player:removeData("matchId")
         player.dimension = 0

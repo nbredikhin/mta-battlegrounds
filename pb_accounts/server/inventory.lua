@@ -6,7 +6,7 @@ function createItem(name)
     end
     local itemClass = ItemClasses[name]
     if not itemClass then
-        iprint("Invalid item class", name)
+        outputDebugString("[ACCOUNTS] Failed to create item '" .. tostring(name) .. "'")
         return
     end
     local instance = {

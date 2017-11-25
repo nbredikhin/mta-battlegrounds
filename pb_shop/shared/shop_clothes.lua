@@ -53,7 +53,6 @@ if not clothesTable then
 end
 local function addClothesToShop(name, category)
     if not ShopClothes[category] then
-        iprint("No category", category)
         return
     end
     if clothesTable[name] then

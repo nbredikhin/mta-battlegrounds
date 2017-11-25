@@ -10,7 +10,9 @@ function resetPedAnimation(ped)
     end
     ped:setAnimation("ped", "idle_stance")
     setTimer(function ()
-        ped:setAnimation()
+        if isElement(ped) then
+            ped:setAnimation()
+        end
     end, 50, 1)
 end
 

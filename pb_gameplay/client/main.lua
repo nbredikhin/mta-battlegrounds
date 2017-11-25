@@ -13,8 +13,6 @@ addEventHandler("onClientResourceStart", resourceRoot, function ()
     exports.pb_login:setVisible(true)
     fadeCamera(true, 1)
 
-    showChat(false)
-
     localPlayer:setData("spectatingPlayer", false, false)
 end)
 

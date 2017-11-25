@@ -23,6 +23,7 @@ setTimer(function ()
     for player in pairs(savePlayersQueue) do
         savePlayerAccountData(player)
     end
+    savePlayersQueue = {}
 end, 3000, 0)
 
 addEvent("onPlayerSellClothes", true)

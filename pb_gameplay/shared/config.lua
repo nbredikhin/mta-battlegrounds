@@ -58,3 +58,17 @@ Config.weathers = {
     { name = "sunny",  id = 1 },
     { name = "fog",    id = 9 },
 }
+
+Config.overrideWeaponProperties = {
+    ["uzi"] = {
+        damage = 11,
+        weapon_range = 25
+    },
+    ["mp5"] = {
+        damage = 16,
+        weapon_range = 38
+    },
+    ["ak47"] = {
+        damage = 32,
+    },
+}

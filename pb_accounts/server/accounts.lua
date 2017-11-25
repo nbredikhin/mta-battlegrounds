@@ -118,7 +118,14 @@ end
 
 -- Сохраняет только поля из даты игрока
 function savePlayerAccountData(player)
+    if not isElement(player) then
+        return
+    end
     if not getPlayerSession(player) then
+        return
+    end
+    local username = player:getData("username")
+    if type(username) ~= "string" then
         return
     end
 
@@ -131,7 +138,7 @@ function savePlayerAccountData(player)
         table.insert(saveArgs, value)
     end
 
-    table.insert(saveArgs, player:getData("username"))
+    table.insert(saveArgs, username)
 
     exports.mysql:dbExec(dbTableName, [[
         UPDATE ?? SET ]]
@@ -146,6 +153,15 @@ function savePlayerAccount(player)
         return
     end
 
+    if not isElement(player) then
+        outputDebugString("[ACCOUNTS] Failed to save player account '" .. tostring(player) .. "'")
+        return
+    end
+    local username = player:getData("username")
+    if type(username) ~= "string" then
+        return
+    end
+
     local saveQuery = {}
     local saveArgs = {}
 
@@ -155,9 +171,11 @@ function savePlayerAccount(player)
         table.insert(saveArgs, value)
     end
 
-    table.insert(saveQuery, "items = ?")
-    table.insert(saveArgs, toJSON(getPlayerInventory(player)))
-
+    local inventoryString = toJSON(getPlayerInventory(player))
+    if inventoryString then
+        table.insert(saveQuery, "items = ?")
+        table.insert(saveArgs, inventoryString)
+    end
     -- Обновить время игры на сервере
     session.stats["stats_playtime"] = tonumber(session.stats["stats_playtime"])
     if not session.stats["stats_playtime"] then
@@ -183,7 +201,7 @@ function savePlayerAccount(player)
         end
     end
 
-    table.insert(saveArgs, player:getData("username"))
+    table.insert(saveArgs, username)
 
     exports.mysql:dbExec(dbTableName, [[
         UPDATE ?? SET ]]

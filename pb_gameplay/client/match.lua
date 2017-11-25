@@ -9,7 +9,6 @@ local function handleLeavingMatch()
     exports.pb_zones:removeZones()
     showGameHUD(false)
     fadeCamera(false, 0)
-    showChat(false)
     setWeather(0)
     setTime(12, 0)
 
@@ -42,7 +41,6 @@ end)
 
 addEvent("onJoinedMatch", true)
 addEventHandler("onJoinedMatch", resourceRoot, function (settings, aliveCount, squadPlayersList)
-    showChat(false)
     resetMatchStats()
 
     exports.pb_lobby:setVisible(false)
@@ -98,7 +96,6 @@ addEventHandler("onMatchStarted", resourceRoot, function (aliveCount)
     isMatchRunning = true
 
     resetMatchStats()
-    showChat(false)
     fadeCamera(true)
     exports.pb_hud:setCounter("alive", aliveCount)
 

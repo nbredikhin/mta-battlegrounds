@@ -407,7 +407,6 @@ function handlePlayerMatchDeath(match, player, killer, weaponId)
         spawnMatchPlayer(match, player)
         return
     elseif match.state == "running" then
-        iprint("Player killed", player)
         -- Нокаут
         if isResourceRunning("pb_knockout") then
             exports.pb_knockout:cancelPlayerReviving(player)
@@ -418,7 +417,6 @@ function handlePlayerMatchDeath(match, player, killer, weaponId)
 
                 local squadKnockedOut = true
 
-                iprint("knocking player", player)
                 for i, p in ipairs(squad.players) do
                     if isElement(p) and not p:getData("dead") and p ~= player and not p:getData("knockout") then
                         squadKnockedOut = false
@@ -426,17 +424,14 @@ function handlePlayerMatchDeath(match, player, killer, weaponId)
                     end
                 end
                 if squadKnockedOut then
-                    iprint("all squad knocked, killing", player)
                     for i, p in ipairs(squad.players) do
                         if isElement(p) and p ~= player then
                             p:kill()
                         end
                     end
                 else
-                    iprint("not all squad knocked, killing", player)
                     for i, p in ipairs(squad.players) do
                         if isElement(p) and not p:getData("dead") and p ~= player and not p:getData("knockout") then
-                            iprint("not knocked", p)
                             break
                         end
                     end
