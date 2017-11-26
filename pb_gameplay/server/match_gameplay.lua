@@ -121,7 +121,7 @@ function updateMatch(match)
                     local players = getMatchPlayers(match)
                     if #players > 0 then
                         local zoneX, zoneY, zoneRadius = unpack(match.zones[match.currentZone])
-                        exports.pb_airdrop:createAirDropWithinZone(players, zoneX, zoneY, zoneRadius)
+                        exports.pb_airdrop:createAirDropWithinZone(match.id, zoneX, zoneY, zoneRadius)
                         match.aidropTimestamp = currentTimestamp
                         match.airdropTime = math.random(Config.airdropTimeMin, Config.airdropTimeMax)
                     end
@@ -389,7 +389,7 @@ local function hasSquadAlivePlayers(match, squad)
         return false
     end
     for i, player in ipairs(squad.players) do
-        if isElement(player) and isPlayerInMatch(player, match) and not player.dead and not player:getData("dead") then
+        if isElement(player) and isPlayerInMatch(player, match) and not player:getData("dead") then
             return true
         end
     end

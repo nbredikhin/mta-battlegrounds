@@ -24,7 +24,6 @@ local function requireRating()
     if isTimer(updateFloodTimers[currentRatingMode]) then
         return
     end
-    topPlayersRating = {}
     localPlayerRating = {}
     triggerServerEvent("onPlayerRequireRating", resourceRoot, currentRatingMode)
     triggerServerEvent("onPlayerRequireOwnRating", resourceRoot, currentRatingMode)
@@ -143,7 +142,8 @@ local function drawRankingsPanel(x, y)
     end
     y = y + playerRankSize
 
-    for i = 1, math.min(#topPlayersRating, 10) do
+    local ratingList = topPlayersRating[currentRatingMode]
+    for i = 1, math.min(#ratingList, 10) do
         dxDrawRectangle(x, y, width, itemSize, tocolor(0, 0, 0, 150))
         if i <= 3 then
             dxDrawRectangle(x, y, width, itemSize, tocolor(254, 181, 0, 150 / i))
@@ -152,7 +152,7 @@ local function drawRankingsPanel(x, y)
             dxDrawLine(x, y, x + width - 1, y, tocolor(150, 150, 150, 50))
         end
         cx = x
-        local rowData = topPlayersRating[i]
+        local rowData = ratingList[i]
         for _, column in ipairs(ratingTable) do
             local text = "..."
             if column.name == "rank" then
@@ -248,9 +248,9 @@ end
 
 addEvent("onClientRatingUpdated", true)
 addEventHandler("onClientRatingUpdated", root, function (matchType, rating)
-    topPlayersRating = {}
+    topPlayersRating[matchType] = {}
     for i, data in ipairs(rating) do
-        table.insert(topPlayersRating, getPlayerRatingTable(data, matchType))
+        table.insert(topPlayersRating[matchType], getPlayerRatingTable(data, matchType))
     end
 end)
 
@@ -264,7 +264,10 @@ Tabs.statistics = {
 
     load = function ()
         triggerServerEvent("onPlayerRequestStats", resourceRoot)
-
+        topPlayersRating = {
+            solo = {},
+            squad = {}
+        }
         requireRating()
     end,
 

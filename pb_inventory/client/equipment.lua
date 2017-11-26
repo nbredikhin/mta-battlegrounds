@@ -36,7 +36,9 @@ addEventHandler("onClientPlayerDamage", localPlayer, function (attacker, weaponI
     if localPlayer.vehicle == attacker then
         return
     end
-    iprint("bodypart", bodypart)
+    if attacker == localPlayer then
+        return
+    end
     local loss = baseLoss
     local custom
     -- Голова

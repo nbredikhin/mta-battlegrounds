@@ -59,6 +59,9 @@ function useItem(item)
     if localPlayer:getData("reviving") then
         return
     end
+    if localPlayer:getData("knockout") then
+        return
+    end
     local itemClass = Items[item.name]
     if itemClass.category == "medicine" then
         if not itemClass.use_time then
@@ -72,7 +75,7 @@ function useItem(item)
         usageTimer = setTimer(healSelf, usingTime, 1, item)
         usingPosition = localPlayer.position
 
-        usingItemName = itemClass.readableName
+        usingItemName = localize(itemClass.readableName)
         localPlayer:setAnimation("FOOD", "EAT_Pizza", -1, true, false, true, true)
     elseif itemClass.category == "vehicles" then
         if not itemClass.use_time then
@@ -86,7 +89,7 @@ function useItem(item)
         usageTimer = setTimer(fillFuel, usingTime, 1, item)
         usingPosition = localPlayer.position
 
-        usingItemName = itemClass.readableName
+        usingItemName = localize(itemClass.readableName)
     elseif itemClass.category == "boost" then
         if not itemClass.use_time then
             return

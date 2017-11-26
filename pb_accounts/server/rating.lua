@@ -65,7 +65,7 @@ addEventHandler("onPlayerRequireOwnRating", root, function (matchType)
                      @rownum := @rownum + 1 AS rank
                   FROM ??
                   JOIN (SELECT @rownum := 0) r
-              ORDER BY rating_]]..matchType..[[_main) x
+              ORDER BY rating_]]..matchType..[[_main DESC) x
         WHERE x.username = ?
     ]], username)
 end)

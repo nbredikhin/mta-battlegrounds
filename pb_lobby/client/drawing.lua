@@ -305,7 +305,7 @@ function setVisible(visible)
     isLobbyVisible = not not visible
 
     showCursor(isLobbyVisible)
-
+    localPlayer:setData("lobbyReady", false)
     if isLobbyVisible then
         setFarClipDistance(30)
         setFogDistance(0)

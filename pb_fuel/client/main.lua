@@ -1,3 +1,5 @@
+local isNitroEnabled = false
+
 setTimer(function ()
     local vehicle = localPlayer.vehicle
     if not vehicle or vehicle.controller ~= localPlayer then
@@ -35,6 +37,9 @@ setTimer(function ()
     if getVehicleType(vehicle) ~= "Boat" and not vehicle.onGround then
         consumedFuel = math.min(consumedFuel, 0.5)
     end
+    if isNitroEnabled then
+        consumedFuel = consumedFuel * 1.4
+    end
 
     fuelAmount = fuelAmount - consumedFuel
     if fuelAmount < 0 then
@@ -50,5 +55,22 @@ addEventHandler("onClientPlayerVehicleEnter", localPlayer, function (vehicle)
     local fuelAmount = vehicle:getData("fuel")
     if not fuelAmount or fuelAmount == 0 then
         vehicle.engineState = false
+    end
+end)
+
+addEventHandler("onClientKey", root, function (key, down)
+    if key ~= "lshift" then
+        return
+    end
+    local vehicle = localPlayer.vehicle
+    if vehicle and vehicle.controller == localPlayer then
+        if not down then
+            removeVehicleUpgrade(vehicle, 1010)
+            localPlayer:setControlState("vehicle_fire", false)
+        else
+            addVehicleUpgrade(vehicle, 1010)
+            localPlayer:setControlState("vehicle_fire", true)
+        end
+        isNitroEnabled = down
     end
 end)

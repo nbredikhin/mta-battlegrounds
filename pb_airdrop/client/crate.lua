@@ -1,9 +1,8 @@
--- local object = createObject(1861, localPlayer.position + Vector3(0, 245, 200))
--- local pos = localPlayer.position + Vector3(0, 15, 7)
--- local pos = localPlayer.position + Vector3(0, 245, 200)
 local crate
+
 engineSetModelLODDistance(1860, 300)
 engineSetModelLODDistance(1861, 300)
+
 local spritesLOD = {
     side = dxCreateTexture("assets/box_sprite.png", "argb", false),
     bottom   = dxCreateTexture("assets/parachute_sprite.png"),
@@ -15,6 +14,8 @@ local startPosition = Vector3()
 local crateZ = 0
 local crateSpeed = 5
 local crateStopped = false
+
+local crateMatchId
 
 local spawnedCrates = {}
 
@@ -85,7 +86,9 @@ addEventHandler("onClientPreRender", root, function (dt)
         if groundZ and crateZ < groundZ then
             crateStopped = true
             crateZ = groundZ
-            triggerServerEvent("onPlayerCrateLanded", resourceRoot, x, y, groundZ)
+            if crateMatchId and crateMatchId == localPlayer:getData("matchId") then
+                triggerServerEvent("onPlayerCrateLanded", resourceRoot, x, y, groundZ)
+            end
         end
         setElementPosition(crate, startPosition.x, startPosition.y, crateZ)
     end
@@ -103,10 +106,12 @@ addEventHandler("onClientCrateLanded", resourceRoot, function (x, y, z)
     crateStopped = true
 end)
 
-function createCrate(x, y, z)
+function createCrate(matchId, x, y, z)
     if isElement(crate) then
         destroyElement(crate)
     end
+    crateMatchId = matchId
+
     crate = createObject(1861, x, y, z)
     crate.doubleSided = true
     crate.dimension = localPlayer.dimension
@@ -126,6 +131,7 @@ function destroyCrates()
             destroyElement(element)
         end
     end
+    crateMatchId = nil
     spawnedCrates = {}
 end
 

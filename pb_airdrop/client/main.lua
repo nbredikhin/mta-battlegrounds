@@ -11,6 +11,8 @@ local velocityY = 0
 local startX = 0
 local startY = 0
 
+local airdropMatchId
+
 local dropTime = 0
 local dropX = 0
 local dropY = 0
@@ -49,7 +51,7 @@ addEventHandler("onClientPreRender", root, function ()
     local x, y, z = getElementPosition(plane)
     if not crateEjected and passedTime > dropTime then
         crateEjected = true
-        createCrate(dropX, dropY, z - 20)
+        createCrate(airdropMatchId, dropX, dropY, z - 20)
     end
     setElementPosition(plane, startX + velocityX * passedTime, startY + velocityY * passedTime, plane.position.z)
     setElementPosition(planeSound, x, y, z)
@@ -84,10 +86,12 @@ addEventHandler("onClientRender", root, function ()
 end)
 
 addEvent("createAirDrop", true)
-addEventHandler("createAirDrop", resourceRoot, function (x, y, z, angle, vx, vy, dtime, dx, dy)
+addEventHandler("createAirDrop", resourceRoot, function (matchId, x, y, z, angle, vx, vy, dtime, dx, dy)
     if isElement(plane) then
         destroyElement(plane)
     end
+
+    airdropMatchId = matchId
 
     plane = createVehicle(592, x, y, z, 0, 0, angle)
     plane.frozen = true
@@ -113,10 +117,6 @@ addEventHandler("createAirDrop", resourceRoot, function (x, y, z, angle, vx, vy,
     crateEjected = false
 end)
 
--- addCommandHandler("adwrp", function ()
---     localPlayer.position = Vector3(dropX, dropY, 150)
--- end)
-
 function destroyAirDrop()
     if isElement(plane) then
         destroyElement(plane)
@@ -126,6 +126,7 @@ function destroyAirDrop()
     end
     plane = nil
     crateEjected = false
+    airdropMatchId = nil
 end
 
 function getAirDropPosition()

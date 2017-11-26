@@ -60,7 +60,7 @@ function createMatch(matchType)
 
     table.insert(matchesList, match)
     initMatch(match)
-    outputDebugString("[Matchmaking] Created new "..tostring(match.matchType).." match (" .. tostring(match.id) .. ")")
+    outputDebugString("[MATCH] Created new "..tostring(match.matchType).." match (" .. tostring(match.id) .. ")")
     return match
 end
 
@@ -202,7 +202,7 @@ function destroyMatch(match)
             break
         end
     end
-    outputDebugString("[Matchmaking] Match " .. tostring(match.id) .. " destroyed")
+    outputDebugString("[MATCH] Match " .. tostring(match.id) .. " destroyed")
     return true
 end
 
@@ -245,9 +245,3 @@ end)
 addEventHandler("onPlayerQuit", root, function ()
     removePlayerFromMatch(source)
 end)
-
--- setTimer(function ()
---     findMatch({getElementsByType("player")[1]})
---     findMatch({getElementsByType("player")[2]})
---     matchesList[1].forceStart = true
--- end, 100, 1)

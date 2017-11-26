@@ -2,12 +2,15 @@ local planeDistance = 3200
 local planeZ = 200
 local planeSpeed = 85
 
-local groupCounter = 1
 local playerGroups = {}
 local eventGroups = {}
 
-function createAirDrop(players, x, y)
-    if not players or not x or not y then
+function createAirDrop(matchId, x, y)
+    if not matchId or not x or not y then
+        return
+    end
+    local players = exports.pb_gameplay:getAllMatchPlayers(matchId)
+    if type(players) ~= "table" or #players == 0 then
         return
     end
     -- Запуск самолёта
@@ -32,17 +35,12 @@ function createAirDrop(players, x, y)
     local dropTime = vectorX / velocityX
 
     local angle = math.deg(math.atan2(vectorY, vectorX)) - 90
-    triggerClientEvent(players, "createAirDrop", resourceRoot, sx, sy, planeZ, angle, velocityX, velocityY, dropTime, x, y)
-
-    eventGroups[groupCounter] = players
-    for i, player in ipairs(players) do
-        playerGroups[player] = groupCounter
-    end
-    groupCounter = groupCounter + 1
+    outputDebugString("[AIRDROP] Airdrop created in match " .. tostring(matchId) .. " (" .. tostring(#players) .. " players)")
+    triggerClientEvent(players, "createAirDrop", resourceRoot, matchId, sx, sy, planeZ, angle, velocityX, velocityY, dropTime, x, y)
 end
 
-function createAirDropWithinZone(players, zoneX, zoneY, zoneRadius)
-    if not players or not zoneX or not zoneY or not zoneRadius then
+function createAirDropWithinZone(matchId, zoneX, zoneY, zoneRadius)
+    if not zoneX or not zoneY or not zoneRadius then
         return
     end
     local zonePoints = {}
@@ -60,7 +58,7 @@ function createAirDropWithinZone(players, zoneX, zoneY, zoneRadius)
     else
         point = zonePoints[1]
     end
-    return createAirDrop(players, point[1], point[2])
+    return createAirDrop(matchId, point[1], point[2])
 end
 
 addEvent("onPlayerCrateLanded", true)
@@ -69,19 +67,15 @@ addEventHandler("onPlayerCrateLanded", resourceRoot, function (x, y, z)
     if not matchId then
         return
     end
-    if not playerGroups[client] then
+    local players = exports.pb_gameplay:getAllMatchPlayers(matchId)
+    if type(players) ~= "table" or #players == 0 then
         return
     end
-    local group = playerGroups[client]
-    if not eventGroups[group] then
-        return
-    end
-    for i, player in ipairs(eventGroups[group]) do
+    for i, player in ipairs(players) do
         if isElement(player) and player:getData("matchId") == matchId then
             triggerClientEvent(player, "onClientCrateLanded", resourceRoot, x, y, z)
-            playerGroups[player] = nil
         end
     end
-    eventGroups[group] = nil
+    outputDebugString("[AIRDROP] Airdrop landed in match " .. tostring(matchId) .. " (" .. tostring(#players) .. " players)")
     triggerEvent("onAirdropLanded", resourceRoot, matchId, x, y, z)
 end)

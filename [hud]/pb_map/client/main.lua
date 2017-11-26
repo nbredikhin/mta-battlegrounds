@@ -200,13 +200,17 @@ addEventHandler("onClientKey", root, function (key, down)
         if marker and (Vector2(unpack(marker)) - Vector2(x, y)).length < 50 then
             localPlayer:setData("map_marker", false, true)
         else
-            localPlayer:setData("map_marker", {x, y}, true)
-            markerAnim = 0
+            setPlayerMarker(x, y)
         end
 
         cancelEvent()
     end
 end)
+
+function setPlayerMarker(x, y)
+    localPlayer:setData("map_marker", {x, y}, true)
+    markerAnim = 0
+end
 
 function setVisible(visible)
     isMapVisible = not not visible
@@ -220,3 +224,16 @@ function isVisible(visible)
 end
 
 toggleControl("radar", false)
+
+bindKey("insert", "down", function ()
+    local marker = localPlayer:getData("map_marker")
+    if marker then
+        local pos1 = Vector2(unpack(marker))
+        local pos2 = Vector2(localPlayer.position)
+        if (pos1 - pos2).length < 1 then
+            localPlayer:setData("map_marker", false, true)
+            return
+        end
+    end
+    setPlayerMarker(localPlayer.position.x, localPlayer.position.y)
+end)

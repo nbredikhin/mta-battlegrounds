@@ -46,6 +46,9 @@ function spawnLootItem(item, position, dimension)
         if not model then
             model = lootColors.orange
         end
+    elseif item.name == "jerrycan" then
+        model = 1650
+        offset = Vector3(0, 0, 0.32)
     end
     local object = createObject(model, position + offset)
     object.rotation = rotation
@@ -183,18 +186,11 @@ function animatePlayerPickup(player)
         return
     end
     player:setData("pickup_animation", true)
-
-    player:setAnimation("BOMBER", "BOM_Plant")
-    setTimer(function ()
-        if isElement(player) then
-            player:setAnimation("BOMBER", "BOM_Plant_2Idle", -1, false, false, true, true)
-        end
-    end, 500, 1)
-
+    player:setAnimation("BOMBER", "BOM_Plant_2Idle", -1, false, false, true, true)
     setTimer(function ()
         if isElement(player) then
             player:setAnimation()
             player:removeData("pickup_animation")
         end
-    end, 1500, 1)
+    end, 1000, 1)
 end

@@ -21,10 +21,13 @@
     <script type="server" src="server/match.lua"/>
     <script type="server" src="server/match_gameplay.lua"/>
     <script type="server" src="server/admin.lua"/>
+    <script type="server" src="server/exports.lua"/>
 
     <export type="client" function="getSquadPlayers"/>
     <export type="client" function="addElementNametag"/>
     <export type="client" function="canJumpFromPlane"/>
     <export type="server" function="findMatch"/>
     <export type="server" function="getPlayerSquad"/>
+    <export type="server" function="getAliveMatchPlayers"/>
+    <export type="server" function="getAllMatchPlayers"/>
 </meta>
