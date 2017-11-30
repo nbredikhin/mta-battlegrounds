@@ -214,7 +214,7 @@ Languages.english = {
 
     -- Ranks
     ranktable_rank = "Rank",
-    ranktable_username = "User Name",
+    ranktable_name = "Name",
     ranktable_rating = "Rating",
     ranktable_playtime = "Total Playtime",
     ranktable_rating_wins = "Win Rating",

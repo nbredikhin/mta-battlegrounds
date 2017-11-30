@@ -214,7 +214,7 @@ Languages.russian = {
 
     -- Ranks
     ranktable_rank = "Ранг",
-    ranktable_username = "Имя Пользователя",
+    ranktable_name = "Никнейм",
     ranktable_rating = "Рейтинг",
     ranktable_playtime = "Время игры",
     ranktable_rating_wins = "Рейтинг побед",

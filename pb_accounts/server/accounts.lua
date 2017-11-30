@@ -252,8 +252,8 @@ function dbLoginPlayer(result, params)
         savePlayerAccount(player)
 
         exports.mysql:dbExec(dbTableName, [[
-            UPDATE ?? SET online_server = ? WHERE username = ?;
-        ]], serverId, result.username)
+            UPDATE ?? SET online_server = ?, nickname = ? WHERE username = ?;
+        ]], serverId, player.name, result.username)
 
         triggerClientEvent(player, "onClientLoginSuccess", root)
         outputDebugString("[ACCOUNTS] Login player " .. tostring(player.name) .. " (acc " .. tostring(player:getData("username")) .. ")")
@@ -375,6 +375,7 @@ addEventHandler("onResourceStart", resourceRoot, function ()
             username      VARCHAR(64)  NOT NULL PRIMARY KEY,
             password      VARCHAR(128)  NOT NULL,
 
+            nickname      VARCHAR(64),
             items         LONGTEXT      NOT NULL,
 
             battlepoints  BIGINT        UNSIGNED NOT NULL DEFAULT 0,

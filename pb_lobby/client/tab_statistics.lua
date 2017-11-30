@@ -7,7 +7,7 @@ local currentRatingMode = "solo"
 
 local ratingTable = {
     { name = "rank",         size = 0.1  },
-    { name = "username",     size = 0.25 },
+    { name = "name",         size = 0.25 },
     { name = "rating",       size = 0.15 },
     { name = "playtime",     size = 0.2  },
     { name = "rating_wins",  size = 0.15 },
@@ -137,7 +137,7 @@ local function drawRankingsPanel(x, y)
         if localPlayerRating[column.name] then
             text = localPlayerRating[column.name]
         end
-        dxDrawText(text, cx, y, cx + width * column.size, y + playerRankSize, tocolor(255, 255, 255), 1.5, "default-bold", "center", "center")
+        dxDrawText(text, cx, y, cx + width * column.size, y + playerRankSize, tocolor(255, 255, 255), 1.5, "default-bold", "center", "center", true, false, false, false)
         cx = cx + width * column.size
     end
     y = y + playerRankSize
@@ -160,7 +160,7 @@ local function drawRankingsPanel(x, y)
             elseif rowData[column.name] then
                 text = rowData[column.name]
             end
-            dxDrawText(text, cx, y, cx + width * column.size, y + itemSize, tocolor(255, 255, 255), 1, "default-bold", "center", "center")
+            dxDrawText(text, cx, y, cx + width * column.size, y + itemSize, tocolor(255, 255, 255), 1, "default-bold", "center", "center", true, false, false, false)
             cx = cx + width * column.size
         end
         y = y + itemSize
@@ -236,9 +236,15 @@ addEventHandler("onClientStatsUpdated", root, function (stats)
 end)
 
 local function getPlayerRatingTable(data, matchType)
+    local name
+    if type(data.nickname) == "string" then
+        name = string.gsub(data.nickname, '#%x%x%x%x%x%x', '')
+    else
+        name = tostring(data.username)
+    end
     return {
         rank = data.rank,
-        username = data.username,
+        name = name,
         playtime = playtimeToString(data.stats_playtime),
         rating = data["rating_"..matchType.."_main"],
         rating_kills = data["rating_"..matchType.."_kills"],

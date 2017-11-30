@@ -13,10 +13,26 @@ function dbPlayerRatingQueued(result, params)
     if not isElement(params.player) then
         return
     end
+    local session = getPlayerSession(params.player)
+    if not session then
+        return
+    end
+    if not result or #result == 0 then
+        return
+    end
+
+    result[1].username = params.player:getData("username")
+    result[1].nickname = params.player.name
+    result[1].stats_playtime = session.stats.stats_playtime
+    result[1]["rating_"..params.matchType.."_main"] = session.rating["rating_"..params.matchType.."_main"]
+    result[1]["rating_"..params.matchType.."_kills"] = session.rating["rating_"..params.matchType.."_kills"]
+    result[1]["rating_"..params.matchType.."_wins"] = session.rating["rating_"..params.matchType.."_wins"]
+
     if not playerRatingCache[params.player] then
         playerRatingCache[params.player] = {}
     end
     playerRatingCache[params.player][params.matchType] = result
+
     triggerClientEvent(params.player, "onClientOwnRatingUpdated", resourceRoot, params.matchType, result)
 end
 
@@ -26,18 +42,15 @@ addEventHandler("onPlayerRequireRating", root, function (matchType)
         return
     end
 
-    if not username then
+    if ratingCache[matchType] then
+        triggerClientEvent(client, "onClientRatingUpdated", resourceRoot, matchType, ratingCache[matchType])
         return
     end
-
-    -- if ratingCache[matchType] then
-    --     triggerClientEvent(client, "onClientRatingUpdated", resourceRoot, matchType, ratingCache[matchType])
-    --     return
-    -- end
 
     exports.mysql:dbQueryAsync("dbRatingQueued", { player = client, matchType = matchType }, "users", [[
         SELECT
             username,
+            nickname,
             rating_]]..matchType..[[_main,
             rating_]]..matchType..[[_wins,
             rating_]]..matchType..[[_kills,
@@ -53,27 +66,20 @@ addEventHandler("onPlayerRequireOwnRating", root, function (matchType)
     if not matchType or (matchType ~= "solo" and matchType ~= "squad") then
         return
     end
-    -- if playerRatingCache[client] and playerRatingCache[client][matchType] then
-    --     triggerClientEvent(client, "onClientOwnRatingUpdated", resourceRoot, matchType, playerRatingCache[client][matchType])
-    --     return
-    -- end
+    if playerRatingCache[client] and playerRatingCache[client][matchType] then
+        triggerClientEvent(client, "onClientOwnRatingUpdated", resourceRoot, matchType, playerRatingCache[client][matchType])
+        return
+    end
+
     local username = client:getData("username")
     if not username then
         return
     end
 
     exports.mysql:dbQueryAsync("dbPlayerRatingQueued", { player = client, matchType = matchType }, "users", [[
-        SELECT *
-        FROM (SELECT username,
-                     stats_playtime,
-                     rating_]]..matchType..[[_main,
-                     rating_]]..matchType..[[_wins,
-                     rating_]]..matchType..[[_kills,
-                     @rownum := @rownum + 1 AS rank
-                  FROM ??
-                  JOIN (SELECT @rownum := 0) r
-              ORDER BY rating_]]..matchType..[[_main DESC) x
-        WHERE x.username = ?
+        SELECT COUNT(*) as rank
+        FROM ??
+        WHERE rating_]]..matchType..[[_main >= (SELECT rating_]]..matchType..[[_main FROM pb_accounts_users WHERE username = ?)
     ]], username)
 end)
 

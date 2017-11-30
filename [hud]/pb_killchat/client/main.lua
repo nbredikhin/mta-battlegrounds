@@ -84,8 +84,6 @@ addEventHandler("onMatchPlayerKnocked", root, function (killerPlayer, weaponId)
     outputMessage(message, "", false, isSquadPlayer(killerPlayer))
 end)
 
-triggerEvent("onMatchPlayerKnocked", localPlayer, localPlayer, 30)
-
 addEventHandler("onClientRender", root, function ()
     if not isKillChatVisible then
         return
