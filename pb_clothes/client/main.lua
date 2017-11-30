@@ -45,6 +45,9 @@ function loadPedClothes(ped)
     if not ped then
         return
     end
+    if ped.dimension ~= localPlayer.dimension then
+        return
+    end
     unloadPedClothes(ped)
     loadedClothes[ped] = {}
     local hideElbow = false
@@ -104,7 +107,3 @@ function getClothesIcon(name)
     local path = ClothesTable[name].path or layer.."/"..ClothesTable[name].material.."/"..name..".png"
     return getTexture("assets/icons/" .. path)
 end
-
-addCommandHandler("testcl", function (cmd, name)
-    addPedClothes(localPlayer, name, false)
-end)

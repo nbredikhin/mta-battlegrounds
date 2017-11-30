@@ -44,6 +44,7 @@ addEventHandler("onJoinedMatch", resourceRoot, function (settings, aliveCount, s
     resetMatchStats()
 
     exports.pb_lobby:setVisible(false)
+    exports.pb_shop:setVisible(false)
     exports.pb_zones:hideZones()
     exports.pb_airdrop:destroyAirDrop()
     exports.pb_hud:setCounter("alive", aliveCount)
@@ -93,6 +94,9 @@ end)
 
 addEvent("onMatchStarted", true)
 addEventHandler("onMatchStarted", resourceRoot, function (aliveCount)
+    exports.pb_lobby:setVisible(false)
+    exports.pb_shop:setVisible(false)
+
     isMatchRunning = true
 
     resetMatchStats()
@@ -103,7 +107,7 @@ addEventHandler("onMatchStarted", resourceRoot, function (aliveCount)
 end)
 
 addEvent("onMatchFinished", true)
-addEventHandler("onMatchFinished", resourceRoot, function (rank, totalPlayers, timeAlive)
+addEventHandler("onMatchFinished", resourceRoot, function (rank, totalPlayers, timeAlive, reward)
     if isTimer(spectatingTimer) then
         killTimer(spectatingTimer)
         fadeCamera(true)
@@ -124,7 +128,7 @@ addEventHandler("onMatchFinished", resourceRoot, function (rank, totalPlayers, t
         players_total = totalPlayers,
         time_alive    = math.floor(timeAlive / 60),
 
-        reward = 0,
+        reward        = reward,
         accuracy      = accuracy,
         kills         = localPlayer:getData("kills")        or 0,
         damage_taken  = localPlayer:getData("damage_taken") or 0,

@@ -201,13 +201,6 @@ function setScreenData(data)
     if type(data) ~= "table" then
         return
     end
-    local reward = screenData.reward
     currentWinText = winTexts[math.random(1, #winTexts)]
     screenData = data
-    screenData.reward = reward
 end
-
-addEvent("onClientRewardReceived", true)
-addEventHandler("onClientRewardReceived", resourceRoot, function (reward)
-    screenData.reward = tonumber(reward) or 0
-end)

@@ -10,13 +10,12 @@
 
     "enableReadmeFiles": true,
 
-    "only": ["pb_airdrop"],
+    "only": [],
 
     "include": [
         "bone_attach",
         "parachute",
         "nochat",
-        "mysql"
     ],
 
     "pathEncryptExclude": [

@@ -36,10 +36,10 @@ addEventHandler("onVehicleStartEnter", root, function (player)
     end
 end)
 
--- addCommandHandler("knockout", function (player)
---     if player:getData("knockout") then
---         reviveKnockedPlayer(player)
---     else
---         knockoutPlayer(player)
---     end
--- end)
+addCommandHandler("knockout", function (player)
+    if player:getData("knockout") then
+        reviveKnockedPlayer(player)
+    else
+        knockoutPlayer(player)
+    end
+end)

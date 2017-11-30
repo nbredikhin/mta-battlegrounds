@@ -365,11 +365,10 @@ local function showSquadFinishScreen(match, squad, rank)
 
     for i, player in ipairs(squad.players) do
         if isElement(player) and isPlayerInMatch(player, match) then
-            triggerClientEvent(player, "onMatchFinished", resourceRoot, rank, match.totalSquadsCount, timePassed)
-
+            local reward = 0
             if ratingAvailable then
                 -- Рейтинг
-                exports.pb_accounts:updatePlayerRating(player, matchType, rank, player:getData("kills"), match.totalSquadsCount)
+                reward = exports.pb_accounts:updatePlayerRating(player, matchType, rank, player:getData("kills"), match.totalSquadsCount)
                 -- Статистика
                 exports.pb_accounts:addPlayerStatsField(player, "stats_plays_"..matchType, 1)
                 if rank <= 10 then
@@ -379,6 +378,8 @@ local function showSquadFinishScreen(match, squad, rank)
                     end
                 end
             end
+
+            triggerClientEvent(player, "onMatchFinished", resourceRoot, rank, match.totalSquadsCount, timePassed, reward)
         end
     end
     return false
@@ -447,6 +448,7 @@ function handlePlayerMatchDeath(match, player, killer, weaponId)
                     end
                     spawnMatchPlayer(match, player, player.position)
                     exports.pb_knockout:knockoutPlayer(player, killer)
+                    triggerMatchEvent(match, "onMatchPlayerKnocked", player, killerPlayer, weaponId)
                     return
                 end
             end

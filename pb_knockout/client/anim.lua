@@ -21,7 +21,8 @@ function updatePedKnockoutState(ped)
         return
     end
     if ped:getData("knockout") then
-        knockoutPeds[ped] = { progress = 0, direction = 1, update = 0 }
+        knockoutPeds[ped] = { progress = 0, direction = 1, update = 0.3 }
+        ped:setAnimation("ped", "car_crawloutrhs", 200, true, true, true, true, 300)
     else
         knockoutPeds[ped] = nil
         ped.frozen = false
@@ -80,8 +81,8 @@ addEventHandler("onClientPreRender", root, function (deltaTime)
             anim.progress = progressMin
             anim.direction = -anim.direction
         end
-        if anim.update < 0 then
-            ped:setAnimation("ped", "car_crawloutrhs", 200, true, true, true, true)
+        if anim.update <= 0 then
+            ped:setAnimation("ped", "car_crawloutrhs", 200, true, true, true, true, 60)
             anim.update = 0.5
         end
         ped:setAnimationProgress("car_crawloutrhs", anim.progress)
@@ -89,11 +90,19 @@ addEventHandler("onClientPreRender", root, function (deltaTime)
 end)
 
 addEventHandler("onClientResourceStart", resourceRoot, function ()
+    local ped = createPed(0, localPlayer.position + Vector3(0, 2, 0))
+    ped:setData("knockout", true)
     for i, player in ipairs(getElementsByType("player", root, true)) do
         updatePedKnockoutState(player)
     end
 
     for i, ped in ipairs(getElementsByType("ped", root, true)) do
         updatePedKnockoutState(ped)
+    end
+end)
+
+addEventHandler("onClientPedDamage", root, function (attacker)
+    if knockoutPeds[source] then
+        knockoutPeds[source].update = 0
     end
 end)

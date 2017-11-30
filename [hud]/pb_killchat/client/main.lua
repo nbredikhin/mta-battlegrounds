@@ -17,12 +17,13 @@ local skipCharacter = false
 
 local messageTimer
 
-function outputMessage(text, info, isHighlight)
+function outputMessage(text, info, isHighlight, isSquad)
     table.insert(messagesList, 1, {
         text = text,
         info = info,
         time = messageLifetime,
-        isHighlight = isHighlight
+        isHighlight = isHighlight,
+        isSquad = isSquad
     })
 end
 
@@ -35,17 +36,24 @@ function localize(name)
     end
 end
 
+function isSquadPlayer(player)
+    if not isElement(player) then
+        return false
+    end
+    return player:getData("matchId") == localPlayer:getData("matchId") and player:getData("squadId") == localPlayer:getData("squadId")
+end
+
 addEvent("onMatchPlayerWasted", true)
-addEventHandler("onMatchPlayerWasted", root, function (aliveCount, killerPlayer, weaponId, knockedFinished)
+addEventHandler("onMatchPlayerWasted", root, function (aliveCount, killerPlayer, weaponId, isKnockout)
     local wastedName = string.gsub(source.name, '#%x%x%x%x%x%x', '')
     local message = string.format(localize("killchat_death"), tostring(wastedName))
 
     if isElement(killerPlayer) then
-        if knockedFinished then
-            message = string.format(localize("killchat_kill_finished"), tostring(killerName), tostring(wastedName))
+        local killerName = string.gsub(killerPlayer.name, '#%x%x%x%x%x%x', '')
+        if isKnockout then
+            message = string.format(localize("killchat_finished"), tostring(killerName), tostring(wastedName))
         else
             local weaponName = exports.pb_inventory:getWeaponNameFromId(weaponId)
-            local killerName = string.gsub(killerPlayer.name, '#%x%x%x%x%x%x', '')
             message = string.format(localize("killchat_kill"), tostring(killerName), tostring(wastedName))
             if weaponName then
                 message = message .. string.format(localize("killchat_weapon"), localize(tostring(weaponName)))
@@ -57,8 +65,26 @@ addEventHandler("onMatchPlayerWasted", root, function (aliveCount, killerPlayer,
     if aliveCount == 1 then
         aliveText = " - " .. localize("killchat_match_ended")
     end
-    outputMessage(message, aliveText, aliveCount <= 10)
+    outputMessage(message, aliveText, aliveCount <= 10, isSquadPlayer(killerPlayer))
 end)
+
+addEvent("onMatchPlayerKnocked", true)
+addEventHandler("onMatchPlayerKnocked", root, function (killerPlayer, weaponId)
+    local wastedName = string.gsub(source.name, '#%x%x%x%x%x%x', '')
+    local message = string.format(localize("killchat_death"), tostring(wastedName))
+
+    if isElement(killerPlayer) then
+        local weaponName = exports.pb_inventory:getWeaponNameFromId(weaponId)
+        local killerName = string.gsub(killerPlayer.name, '#%x%x%x%x%x%x', '')
+        message = string.format(localize("killchat_knocked"), tostring(killerName), tostring(wastedName))
+        if weaponName then
+            message = message .. string.format(localize("killchat_weapon"), localize(tostring(weaponName)))
+        end
+    end
+    outputMessage(message, "", false, isSquadPlayer(killerPlayer))
+end)
+
+triggerEvent("onMatchPlayerKnocked", localPlayer, localPlayer, 30)
 
 addEventHandler("onClientRender", root, function ()
     if not isKillChatVisible then
@@ -98,7 +124,11 @@ addEventHandler("onClientRender", root, function ()
                 alpha = message.time / messageFadeTime
             end
             dxDrawRectangle(x - 3, y, w + 6, h, tocolor(0, 0, 0, 80 * alpha))
-            dxDrawText(str1, x, y, x, y, tocolor(180, 180, 180, 255 * alpha), messageScale)
+            local msgColor = tocolor(180, 180, 180, 255 * alpha)
+            if message.isSquad then
+                msgColor = tocolor(153, 217, 234, 255 * alpha)
+            end
+            dxDrawText(str1, x, y, x, y, msgColor, messageScale)
             if str2 then
                 if alpha == 1 then
                     dxDrawText(str2, x+1+w1, y+1, x+1+w1, y+1, tocolor(0, 0, 0, 200), messageScale, "default-bold")

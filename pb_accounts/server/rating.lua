@@ -26,10 +26,14 @@ addEventHandler("onPlayerRequireRating", root, function (matchType)
         return
     end
 
-    if ratingCache[matchType] then
-        triggerClientEvent(client, "onClientRatingUpdated", resourceRoot, matchType, ratingCache[matchType])
+    if not username then
         return
     end
+
+    -- if ratingCache[matchType] then
+    --     triggerClientEvent(client, "onClientRatingUpdated", resourceRoot, matchType, ratingCache[matchType])
+    --     return
+    -- end
 
     exports.mysql:dbQueryAsync("dbRatingQueued", { player = client, matchType = matchType }, "users", [[
         SELECT
@@ -49,11 +53,14 @@ addEventHandler("onPlayerRequireOwnRating", root, function (matchType)
     if not matchType or (matchType ~= "solo" and matchType ~= "squad") then
         return
     end
-    if playerRatingCache[client] and playerRatingCache[client][matchType] then
-        triggerClientEvent(client, "onClientOwnRatingUpdated", resourceRoot, matchType, playerRatingCache[client][matchType])
+    -- if playerRatingCache[client] and playerRatingCache[client][matchType] then
+    --     triggerClientEvent(client, "onClientOwnRatingUpdated", resourceRoot, matchType, playerRatingCache[client][matchType])
+    --     return
+    -- end
+    local username = client:getData("username")
+    if not username then
         return
     end
-    local username = client:getData("username")
 
     exports.mysql:dbQueryAsync("dbPlayerRatingQueued", { player = client, matchType = matchType }, "users", [[
         SELECT *
@@ -153,8 +160,9 @@ function updatePlayerRating(player, matchType, rank, kills, totalSquads)
     local currentBattlepoints = tonumber(player:getData("battlepoints"))
     if currentBattlepoints then
         player:setData("battlepoints", currentBattlepoints + battlepoints)
-        triggerClientEvent(player, "onClientRewardReceived", resourceRoot, battlepoints)
     end
 
     savePlayerAccount(player)
+
+    return battlepoints
 end

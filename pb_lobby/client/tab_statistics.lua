@@ -27,7 +27,7 @@ local function requireRating()
     localPlayerRating = {}
     triggerServerEvent("onPlayerRequireRating", resourceRoot, currentRatingMode)
     triggerServerEvent("onPlayerRequireOwnRating", resourceRoot, currentRatingMode)
-    updateFloodTimers[currentRatingMode] = setTimer(function () end, 10000, 1)
+    -- updateFloodTimers[currentRatingMode] = setTimer(function () end, 10000, 1)
 end
 
 local function playtimeToString(playtime)

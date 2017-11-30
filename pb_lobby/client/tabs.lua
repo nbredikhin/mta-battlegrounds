@@ -31,6 +31,7 @@ Tabs.shop = {
     title = localize("lobby_tab_shop"),
 
     load = function ()
+        localPlayer:setData("lobbyReady", false)
         fadeCamera(false, 0)
         setVisible(false)
         exports.pb_shop:setVisible(true)

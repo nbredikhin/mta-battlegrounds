@@ -116,7 +116,8 @@ Languages.english = {
     -- KILLCHAT
     killchat_death = "Player %s died",
     killchat_kill  = "%s killed %s",
-    killchat_kill_finished  = "%s finally killed %s",
+    killchat_knocked = "%s knocked out %s",
+    killchat_finished = "%s finally killed %s",
     killchat_weapon = " with %s",
     killchat_alive_count = "left",
     killchat_match_ended = "MATCH FINISHED!",
