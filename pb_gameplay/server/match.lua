@@ -20,13 +20,13 @@ function findMatch(players)
         end
     end
     -- Выбор типа матча
-    local matchType = exports.pb_lobby:getServerLobbyType()
-    if not matchType then
+    local matchType = "solo"
+    if #players > 1 then
         matchType = "squad"
     end
     -- Поиск подходящего матча
     for i, match in ipairs(matchesList) do
-        if match.state == "waiting" and #getMatchAlivePlayers(match) + #players <= match.maxPlayers then
+        if match.state == "waiting" and match.matchType == matchType and #getMatchAlivePlayers(match) + #players <= match.maxPlayers then
             return addMatchSquad(match, players)
         end
     end

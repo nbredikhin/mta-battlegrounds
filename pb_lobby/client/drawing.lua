@@ -82,12 +82,6 @@ function drawStartGameButton()
     end
     local w, h = 496 * scale, 250 * scale
     local lobbyEnoughPlayers = true
-    if getLobbyType() == "squad" and #getLobbyPlayers() <= 1 then
-        lobbyEnoughPlayers = false
-    end
-    if localPlayer:getData("isAdmin") then
-        lobbyEnoughPlayers = true
-    end
     if isMouseOver(0, 0, w * 0.7, h * 0.5) then
         if lobbyEnoughPlayers then
             texture = "assets/corner1.png"
@@ -124,7 +118,11 @@ function drawStartGameButton()
     dxDrawText(text, (25 + 5) * scale, (15 + 5) * scale, 0, 0, tocolor(0, 0, 0, 150), 3.5 * scale, "default-bold", "left", "top")
     dxDrawText(text, 25 * scale, 15 * scale, 0, 0, color, 3.5 * scale, "default-bold", "left", "top")
 
-    local smallText = localize("lobby_type_"..tostring(getLobbyType()))
+    local lobbyType = "solo"
+    if #getLobbyPlayers() > 1 then
+        lobbyType = "squad"
+    end
+    local smallText = localize("lobby_type_"..lobbyType)
     if not lobbyEnoughPlayers then
         smallText = localize("lobby_not_enough_players")
     end
@@ -293,9 +291,7 @@ addEventHandler("onClientRender", root, function ()
 
     drawMessageBox()
     drawWindow()
-    if getLobbyType() == "squad" then
-        drawInvitePanel()
-    end
+    drawInvitePanel()
 end)
 
 function setVisible(visible)

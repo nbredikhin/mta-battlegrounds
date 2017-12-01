@@ -13,12 +13,6 @@ local lobbyPeds = {}
 local currentLobbyOwner = localPlayer
 local lobbyPlayersList = {}
 
-local currentLobbyType = "solo"
-
-function getLobbyType()
-    return currentLobbyType
-end
-
 function isOwnLobby()
     return currentLobbyOwner == localPlayer
 end
@@ -110,7 +104,6 @@ end)
 
 addEvent("onLobbyUpdated", true)
 addEventHandler("onLobbyUpdated", resourceRoot, function (lobbyOwner, playersList, lobbyType)
-    currentLobbyType = lobbyType
     if not isVisible() then
         return
     end

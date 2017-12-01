@@ -1,6 +1,4 @@
 local playerLobbies = {}
-local serverLobbyType = "squad"
--- local FORCE_LOBBY_TYPE = "squad"
 
 function createLobby(owner)
     if not isElement(owner) then
@@ -103,7 +101,7 @@ function updateLobby(owner)
     -- iprint("updateLobby", owner)
     for player in pairs(playerLobbies[owner].players) do
         if isElement(player) then
-            triggerClientEvent(player, "onLobbyUpdated", resourceRoot, owner, getLobbyPlayers(owner), serverLobbyType)
+            triggerClientEvent(player, "onLobbyUpdated", resourceRoot, owner, getLobbyPlayers(owner))
         end
     end
 end
@@ -118,13 +116,6 @@ addEventHandler("onPlayerQuit", root, function ()
 end)
 
 addEventHandler("onResourceStart", resourceRoot, function ()
-    serverLobbyType = "solo"
-    if string.find(string.lower(getServerName()), "squad") or string.find(string.lower(getServerName()), "test") then
-        serverLobbyType = "squad"
-    end
-    if FORCE_LOBBY_TYPE then
-        serverLobbyType = FORCE_LOBBY_TYPE
-    end
     for i, player in ipairs(getElementsByType("player")) do
         player:removeData("lobbyOwner")
         createLobby(player)
@@ -181,7 +172,7 @@ addEvent("updateLobby", true)
 addEventHandler("updateLobby", resourceRoot, function ()
     local lobby = getPlayerLobby(client)
     if lobby then
-        triggerClientEvent(client, "onLobbyUpdated", resourceRoot, lobby.owner, getLobbyPlayers(lobby.owner), serverLobbyType)
+        triggerClientEvent(client, "onLobbyUpdated", resourceRoot, lobby.owner, getLobbyPlayers(lobby.owner))
     end
 end)
 
@@ -216,7 +207,3 @@ addEventHandler("onLobbyStartSearch", resourceRoot, function ()
     end
     exports.pb_gameplay:findMatch(players)
 end)
-
-function getServerLobbyType()
-    return serverLobbyType
-end
