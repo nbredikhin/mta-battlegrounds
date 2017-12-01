@@ -36,7 +36,6 @@ function addLobbyPlayer(owner, player)
     if not isElement(owner) or not isElement(player) or not playerLobbies[owner] then
         return false
     end
-    -- iprint("addLobbyPlayer", owner, player)
     removeLobbyPlayer(player, true)
     playerLobbies[owner].players[player] = true
     player:setData("lobbyOwner", owner)

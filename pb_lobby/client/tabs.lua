@@ -117,11 +117,3 @@ function drawTabs()
         tabsX = x
     end
 end
-
-setTimer(function ()
-    currentTab = Tabs.statistics
-    currentTabName = "statistics"
-    if currentTab.load then
-        currentTab.load()
-    end
-end, 50, 1)

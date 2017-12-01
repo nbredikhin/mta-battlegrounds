@@ -24,10 +24,9 @@ local function requireRating()
     if isTimer(updateFloodTimers[currentRatingMode]) then
         return
     end
-    localPlayerRating = {}
     triggerServerEvent("onPlayerRequireRating", resourceRoot, currentRatingMode)
     triggerServerEvent("onPlayerRequireOwnRating", resourceRoot, currentRatingMode)
-    -- updateFloodTimers[currentRatingMode] = setTimer(function () end, 10000, 1)
+    updateFloodTimers[currentRatingMode] = setTimer(function () end, 10000, 1)
 end
 
 local function playtimeToString(playtime)
@@ -134,8 +133,8 @@ local function drawRankingsPanel(x, y)
     cx = x
     for i, column in ipairs(ratingTable) do
         local text = "..."
-        if localPlayerRating[column.name] then
-            text = localPlayerRating[column.name]
+        if localPlayerRating[currentRatingMode][column.name] then
+            text = localPlayerRating[currentRatingMode][column.name]
         end
         dxDrawText(text, cx, y, cx + width * column.size, y + playerRankSize, tocolor(255, 255, 255), 1.5, "default-bold", "center", "center", true, false, false, false)
         cx = cx + width * column.size
@@ -169,7 +168,7 @@ end
 
 local function drawStatisticsPanel(x, y)
     local width = (panelWidth - 20) / 3
-    drawStatsBlock(x, y, width, panelHeight, "stats_plays", "stats_rounds", { -- stats_plays
+    drawStatsBlock(x, y, width, panelHeight, "stats_plays", "stats_rounds", {
         "stats_plays_solo",
         "stats_plays_squad",
         "stats_playtime",
@@ -179,7 +178,7 @@ local function drawStatisticsPanel(x, y)
         "stats_distance_car",
     })
 
-    drawStatsBlock(x + 10 + width, y, width, panelHeight, "stats_wins", "stats_rounds", { -- stats_wins_solo + stats_wins_squad
+    drawStatsBlock(x + 10 + width, y, width, panelHeight, "stats_wins", "stats_rounds", {
         "stats_wins_solo",
         "stats_wins_squad",
         "stats_top10",
@@ -187,7 +186,7 @@ local function drawStatisticsPanel(x, y)
         "stats_top10_squad",
     })
 
-    drawStatsBlock(x + 20 + width * 2, y, width, panelHeight, "stats_kills", "stats_players", { -- stats_kills
+    drawStatsBlock(x + 20 + width * 2, y, width, panelHeight, "stats_kills", "stats_players", {
         "stats_deaths",
         "stats_kd_ratio",
         "stats_hp_damage",
@@ -262,7 +261,7 @@ end)
 
 addEvent("onClientOwnRatingUpdated", true)
 addEventHandler("onClientOwnRatingUpdated", root, function (matchType, data)
-    localPlayerRating = getPlayerRatingTable(data[1], matchType)
+    localPlayerRating[matchType] = getPlayerRatingTable(data[1], matchType)
 end)
 
 Tabs.statistics = {
@@ -270,10 +269,15 @@ Tabs.statistics = {
 
     load = function ()
         triggerServerEvent("onPlayerRequestStats", resourceRoot)
+        localPlayerRating = {
+            solo = {},
+            squad = {}
+        }
         topPlayersRating = {
             solo = {},
             squad = {}
         }
+        currentRatingMode = "solo"
         requireRating()
     end,
 

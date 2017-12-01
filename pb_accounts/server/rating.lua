@@ -92,83 +92,150 @@ addEventHandler("onPlayerQuit", root, function ()
     playerRatingCache[source] = nil
 end)
 
-function updatePlayerRating(player, matchType, rank, kills, totalSquads)
-    if not matchType or not rank or not kills or not totalSquads then
+local function getTopPlayersCount(squads, matchType)
+    if matchType == "solo" then
+        if squads >= 64 then
+            return 10
+        elseif squads >= 32 then
+            return 6
+        elseif squads >= 20 then
+            return 5
+        elseif squads >= 16 then
+            return 3
+        else
+            return 1
+        end
+    elseif matchType == "squad" then
+        if squads >= 20 then
+            return 10
+        elseif squads >= 10 then
+            return 4
+        elseif squads >= 6 then
+            return 2
+        else
+            return 1
+        end
+    else
+        return math.floor(squads * 0.1)
+    end
+end
+
+function updatePlayerRating(player, matchType, rank, totalSquads)
+    if not matchType or not rank or not totalSquads then
+        return
+    end
+    local session = getPlayerSession(player)
+    if not session then
         return
     end
     -- Неверный тип матча
     if matchType ~= "solo" and matchType ~= "squad" then
         return
     end
+    local playerCountMultiplier = 1
     -- Проверка количества игроков
-    if matchType == "squad" and totalSquads < 3 then
-        return
+    if matchType == "squad" and totalSquads < 6 then
+        playerCountMultiplier = 0.05
     end
-    if matchType == "solo" and totalSquads < 3 then
-        return
+    if matchType == "solo" and totalSquads < 16 then
+        playerCountMultiplier = 0.1
+    end
+    if totalSquads <= 3 then
+        return 0
     end
 
-    local session = getPlayerSession(player)
-    if not session then
-        return
-    end
-    local winRating = tonumber(session["rating_"..matchType.."_wins"]) or 0
-    local killRating = tonumber(session["rating_"..matchType.."_kills"]) or 0
+    local kills = tonumber(player:getData("kills")) or 0
+    local damageTaken = tonumber(player:getData("damage_taken")) or 0
 
+    local ratingWins = 0
+    local ratingKills = 0
     local battlepoints = 0
 
-    if rank <= totalSquads * 0.3 then
-        battlepoints = battlepoints + 100
-        winRating = winRating + (totalSquads * 0.3 - rank + 1) * 2 + totalSquads * 0.5
+    local maxTopRank = getTopPlayersCount(totalSquads, matchType)
+    local maxGoodRank = math.max(math.floor(totalSquads * 0.5), maxTopRank + 1)
+    local maxRank = totalSquads
+    local rankMultiplier = 1
 
-        if rank <= totalSquads * 0.1 then
-            if rank == 1 then
-                winRating = winRating + 100 + totalSquads * 2
-                killRating = killRating + kills * 3 + totalSquads * 2
-                battlepoints = battlepoints + 500 + kills * 70 + totalSquads * 2
-            else
-                killRating = killRating + kills * 2 + totalSquads
-                battlepoints = battlepoints + 1000 + kills * 100 + totalSquads * 1.5
+    local damageTakenMultiplier = math.min(damageTaken, 300) / 300
+
+    if rank == 1 then
+        rankMultiplier = 2
+        -- Win rating
+        ratingWins = 100 + math.min(kills * math.min(kills, 3), 125)
+        ratingWins = ratingWins + 75 * damageTakenMultiplier
+        -- Kill rating
+        if kills > 0 then
+            ratingKills = kills * 10
+            if kills > 5 then
+                ratingKills = ratingKills + math.min(100, kills * 5)
             end
-        else
-            killRating = killRating + kills + totalSquads * 0.5
-            battlepoints = battlepoints + kills * 50
+
+            ratingKills = ratingKills * 0.8 + ratingKills * damageTakenMultiplier * 0.2
         end
+        -- Battlepoints
+        battlepoints = 125 + kills * 5 + damageTakenMultiplier * 75
+    elseif rank <= maxTopRank then
+        rankMultiplier = 1.5 - 0.5 * (1 - (rank - 1)/maxTopRank)
+        -- Win rating
+        ratingWins = 50 + math.min(kills * 2, 100)
+        ratingWins = ratingWins + 50 * damageTakenMultiplier
+        -- Kill rating
+        if kills > 0 then
+            ratingKills = kills * 5
+        else
+            ratingKills = -20 + 10 * rankMultiplier
+        end
+        ratingKills = ratingKills * 0.6 + ratingKills * damageTakenMultiplier * 0.4
+        -- Battlepoints
+        battlepoints = 75 + kills * 2.5 + damageTakenMultiplier * 45
+    elseif rank <= maxGoodRank then
+        -- Win rating
+        ratingWins = kills + 25 * damageTakenMultiplier
+        -- Kill rating
+        if kills > 0 then
+            ratingKills = kills * 2
+        else
+            ratingKills = -50
+        end
+        ratingKills = ratingKills * 0.5 + ratingKills * damageTakenMultiplier * 0.5
+        -- Battlepoints
+        battlepoints = 15 + kills * 1 + damageTakenMultiplier * 30
     else
-        if rank <= totalSquads * 0.6 then
-            winRating = winRating - rank / 2
-            killRating = killRating + kills / 2
-            battlepoints = battlepoints + kills * 50
-        else
-            winRating = winRating - rank
-            battlepoints = battlepoints + kills * 20
-            if kills == 0 then
-                killRating = killRating - rank / 3
-            end
-        end
+        -- Win rating
+        ratingWins = -(rank - maxGoodRank) / (maxRank - maxGoodRank) * 125
+        ratingWins = ratingWins + kills * math.min(kills, 8)
+        ratingWins = ratingWins + 15 * damageTakenMultiplier
+        -- Kill rating
+        ratingKills = math.max(0, -150 + kills * 5 + 50 * damageTakenMultiplier)
+        -- Battlepoints
+        battlepoints = 5 + kills * 1 + damageTakenMultiplier * 20
     end
 
-    if kills == 0 then
-        winRating = winRating / 2
-        battlepoints = battlepoints / 2
-    end
+    ratingWins = ratingWins * rankMultiplier * playerCountMultiplier
+    ratingKills = ratingKills * rankMultiplier * playerCountMultiplier
+    battlepoints = battlepoints * rankMultiplier * playerCountMultiplier
 
-    winRating = math.max(0, math.floor(winRating))
-    killRating = math.max(0, math.floor(killRating))
+    ratingWins = math.floor(ratingWins)
+    ratingKills = math.floor(ratingKills)
     battlepoints = math.floor(battlepoints)
 
-    session.rating["rating_"..matchType.."_wins"] = winRating
-    session.rating["rating_"..matchType.."_kills"] = killRating
-    session.rating["rating_"..matchType.."_main"] = math.floor(winRating + (killRating * 0.2))
+    session.rating["rating_"..matchType.."_wins"] = ratingWins
+    session.rating["rating_"..matchType.."_kills"] = ratingKills
+    local ratingMain = math.floor(ratingWins + (ratingKills * 0.2))
+    session.rating["rating_"..matchType.."_main"] = ratingMain
 
-    iprint("rating", tostring(player.name), "("..tostring(rank).."/"..tostring(totalSquads)..")", matchType, "win="..tostring(winRating), "kill="..tostring(killRating), battlepoints)
+    outputDebugString("[RATING] "
+        ..tostring(player.name) .. " "
+        ..matchType .. " rank: "..tostring(rank).."/"..tostring(totalSquads)
+        ..", wr="..tostring(ratingWins)
+        ..", kr="..tostring(ratingKills)
+        ..", mr="..tostring(ratingMain)
+        ..", bp="..tostring(battlepoints))
 
     local currentBattlepoints = tonumber(player:getData("battlepoints"))
     if currentBattlepoints then
         player:setData("battlepoints", currentBattlepoints + battlepoints)
     end
-
     savePlayerAccount(player)
-
     return battlepoints
 end

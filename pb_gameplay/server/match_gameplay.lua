@@ -368,7 +368,7 @@ local function showSquadFinishScreen(match, squad, rank)
             local reward = 0
             if ratingAvailable then
                 -- Рейтинг
-                reward = exports.pb_accounts:updatePlayerRating(player, matchType, rank, player:getData("kills"), match.totalSquadsCount)
+                reward = exports.pb_accounts:updatePlayerRating(player, matchType, rank, match.totalSquadsCount)
                 -- Статистика
                 exports.pb_accounts:addPlayerStatsField(player, "stats_plays_"..matchType, 1)
                 if rank <= 10 then

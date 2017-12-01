@@ -61,12 +61,6 @@ addEventHandler("onClientPlayerDamage", localPlayer, function (attacker, weaponI
         end
     elseif bodypart == 4 then
         loss = loss * 2
-        -- local item = getEquipmentSlot("armor")
-        -- if isItem(item) and item.health > 0 then
-        --     item.health = math.max(0, item.health - loss)
-        --     loss = loss * Items[item.name].penetration_ratio
-        --     triggerServerEvent("updateEquipmentHealth", resourceRoot, Items[item.name].category, item.health)
-        -- end
     end
     if loss > 0 then
         localDamage = localDamage + loss
