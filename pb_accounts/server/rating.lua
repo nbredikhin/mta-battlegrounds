@@ -43,10 +43,11 @@ addEventHandler("onPlayerRequireRating", root, function (matchType)
     end
 
     if ratingCache[matchType] then
+        iprint("Send cached rating table")
         triggerClientEvent(client, "onClientRatingUpdated", resourceRoot, matchType, ratingCache[matchType])
         return
     end
-
+    iprint("Get rating table")
     exports.mysql:dbQueryAsync("dbRatingQueued", { player = client, matchType = matchType }, "users", [[
         SELECT
             username,
@@ -199,7 +200,7 @@ function updatePlayerRating(player, matchType, rank, totalSquads)
         end
         ratingKills = ratingKills * 0.5 + ratingKills * damageTakenMultiplier * 0.5
         -- Battlepoints
-        battlepoints = 15 + kills * 1 + damageTakenMultiplier * 30
+        battlepoints = 10 + math.random(1, 6) + kills * 1 + damageTakenMultiplier * 30
     else
         -- Win rating
         ratingWins = -(rank - maxGoodRank) / (maxRank - maxGoodRank) * 125
@@ -208,7 +209,7 @@ function updatePlayerRating(player, matchType, rank, totalSquads)
         -- Kill rating
         ratingKills = math.max(0, -150 + kills * 5 + 50 * damageTakenMultiplier)
         -- Battlepoints
-        battlepoints = 5 + kills * 1 + damageTakenMultiplier * 20
+        battlepoints = math.random(3, 6) + kills * 1 + damageTakenMultiplier * 20
     end
 
     ratingWins = ratingWins * rankMultiplier * playerCountMultiplier
@@ -219,8 +220,14 @@ function updatePlayerRating(player, matchType, rank, totalSquads)
     ratingKills = math.floor(ratingKills)
     battlepoints = math.floor(battlepoints)
 
-    session.rating["rating_"..matchType.."_wins"] = ratingWins
-    session.rating["rating_"..matchType.."_kills"] = ratingKills
+    local currentRatingWins = tonumber(session.rating["rating_"..matchType.."_wins"]) or 0
+    local currentRatingKills = tonumber(session.rating["rating_"..matchType.."_kills"]) or 0
+
+    currentRatingWins = math.max(0, currentRatingWins + ratingWins)
+    currentRatingKills = math.max(0, currentRatingKills + ratingKills)
+
+    session.rating["rating_"..matchType.."_wins"] = currentRatingWins
+    session.rating["rating_"..matchType.."_kills"] = currentRatingKills
     local ratingMain = math.floor(ratingWins + (ratingKills * 0.2))
     session.rating["rating_"..matchType.."_main"] = ratingMain
 

@@ -74,7 +74,7 @@ function updateMatch(match)
             changeMatchState(match, "running")
             return
         end
-        local needPlayersCount = math.min(math.max(1, math.floor(#getElementsByType("player") * 0.25)), Config.minMatchPlayers)
+        local needPlayersCount = math.min(math.max(1, math.floor(#getElementsByType("player") * 0.12)), Config.minMatchPlayers)
         local alivePlayers = getMatchAlivePlayers(match)
         local waitingTimePassed = currentTimestamp - match.waitingTimestamp
         -- Если зашло слишком мало игроков

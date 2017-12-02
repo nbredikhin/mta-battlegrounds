@@ -10,7 +10,7 @@
 
     "enableReadmeFiles": true,
 
-    "only": [],
+    "only": ["pb_gameplay"],
 
     "include": [
         "bone_attach",

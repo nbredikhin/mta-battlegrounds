@@ -54,6 +54,10 @@ OverwriteFiles = {
     swburbhaus02_open = { txd = "swburbhaus01_open" },
     swburbhaus03_open = { txd = "swburbhaus01_open" },
     swburbhaus04_open = { txd = "swburbhaus01_open" },
+    ammo_762mm = { txd = "ammo_9mm" },
+    ammo_556mm = { txd = "ammo_9mm" },
+    ammo_12gauge = { txd = "ammo_9mm" },
+    ammo_45 = { txd = "ammo_9mm" },
 }
 
 function getItemModel(name)

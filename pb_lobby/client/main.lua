@@ -17,6 +17,14 @@ function isOwnLobby()
     return currentLobbyOwner == localPlayer
 end
 
+function getLobbyType()
+    if #lobbyPlayersList > 1 then
+        return "squad"
+    else
+        return "solo"
+    end
+end
+
 addEventHandler("onClientClick", root, function (button, state, _, _, _, _, _, element)
     if button ~= "left" or state ~= "down" or isLobbyWindowVisible() then
         return
