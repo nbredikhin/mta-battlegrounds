@@ -163,6 +163,9 @@ Languages.english = {
     clothes_all = "All clothes",
 
     -- Shop
+    shop_confirm_text = "Do you want to buy\n%s for %s?",
+    shop_confirm_yes = "Buy",
+    shop_confirm_no = "Cancel",
     shop_back = "Back",
     shop_exit = "Exit",
     shop_categories = "Categories",

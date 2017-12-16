@@ -82,7 +82,6 @@ function revivePlayer(player)
     if not isLineOfSightClear(localPlayer.position, player.position, true, true, false, true, false) then
         return
     end
-    -- TODO: Проверить, находится ли игрок в скваде
     triggerServerEvent("onPlayerStartReviving", resourceRoot, player)
 end
 

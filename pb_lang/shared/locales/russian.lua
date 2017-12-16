@@ -163,6 +163,9 @@ Languages.russian = {
     clothes_all = "Вся одежда",
 
     -- Shop
+    shop_confirm_text = "Вы уверены, что хотите купить\n%s за %s?",
+    shop_confirm_yes = "Купить",
+    shop_confirm_no = "Отмена",
     shop_back = "Назад",
     shop_exit = "Выход",
     shop_categories = "Категории",

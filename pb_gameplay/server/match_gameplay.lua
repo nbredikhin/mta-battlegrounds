@@ -422,7 +422,6 @@ function handlePlayerMatchDeath(match, player, killer, weaponId)
         if isResourceRunning("pb_knockout") then
             exports.pb_knockout:cancelPlayerReviving(player)
 
-            -- TODO: Только для squad-матчей
             if not player:getData("knockout") then
                 local squad = getMatchSquad(match, player:getData("squadId"))
 
@@ -441,13 +440,8 @@ function handlePlayerMatchDeath(match, player, killer, weaponId)
                         end
                     end
                 else
-                    for i, p in ipairs(squad.players) do
-                        if isElement(p) and not p:getData("dead") and p ~= player and not p:getData("knockout") then
-                            break
-                        end
-                    end
                     spawnMatchPlayer(match, player, player.position)
-                    exports.pb_knockout:knockoutPlayer(player, killer)
+                    exports.pb_knockout:knockoutPlayer(player, killerPlayer)
                     triggerMatchEvent(match, "onMatchPlayerKnocked", player, killerPlayer, weaponId)
                     return
                 end
@@ -475,7 +469,6 @@ function handlePlayerMatchDeath(match, player, killer, weaponId)
             local kills = killerPlayer:getData("kills") or 0
             killerPlayer:setData("kills", kills + 1)
         end
-
 
         -- Статистика
         if isResourceRunning("pb_accounts") then

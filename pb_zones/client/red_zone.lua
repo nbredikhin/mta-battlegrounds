@@ -26,6 +26,26 @@ function getRedZone()
     return zoneX, zoneY, zoneRadius
 end
 
+local function getGroundHeight(x, y)
+    local hit, x, y, z, element = processLineOfSight(
+        x, y, 300,
+        x, y, -50,
+        true,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        crate)
+    if hit then
+        return z
+    else
+        return false
+    end
+end
+
 local function createNextExplosion()
     explosionId = explosionId + 1
     math.randomseed(zoneSeed + explosionId)
@@ -39,9 +59,9 @@ local function createNextExplosion()
             x = x + zoneX
             y = y + zoneY
             if not disableDamage then
-                createExplosion(x, y, getGroundPosition(x, y, 30), 10)
+                createExplosion(x, y, getGroundHeight(x, y), 10)
             else
-                createExplosion(x, y, getGroundPosition(x, y, 30), 10, true, 0, false)
+                createExplosion(x, y, getGroundHeight(x, y), 10, true, 0, false)
             end
         end
     end

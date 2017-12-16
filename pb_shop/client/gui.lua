@@ -10,6 +10,8 @@ local prevMouseState = false
 local mouseX = 0
 local mouseY = 0
 
+local currentWindow = nil
+
 local categoriesList = {name = "shop_categories", subcategories = {
     {name = "shop_category_hats",  category = "hat"},
     {name = "shop_category_torso", subcategories = {
@@ -174,7 +176,9 @@ local function handleItemSelect(index)
             end, 2000, 1)
             return
         end
-        buyClothes(item.clothes)
+        if not currentWindow then
+            showConfirmWindow(item)
+        end
     end
 end
 
@@ -183,6 +187,74 @@ function isMouseOver(x, y, w, h)
            mouseX <= x + w and
            mouseY >= y     and
            mouseY <= y + h
+end
+
+function drawButton(text, x, y, width, height, bg, color, scale)
+    if not bg then bg = tocolor(250, 250, 250) end
+    if not color then color = tocolor(0, 0, 0, 200) end
+    if not scale then scale = 1.5 end
+    dxDrawRectangle(x, y, width, height, bg)
+    dxDrawRectangle(x, y + height - 5, width, 5, tocolor(0, 0, 0, 10))
+    dxDrawText(text, x, y, x + width, y + height, color, scale, "default-bold", "center", "center")
+
+    if isMouseOver(x, y, width, height) then
+        dxDrawRectangle(x, y, width, height, tocolor(0, 0, 0, 100))
+        if isMousePressed then
+            return true
+        end
+    end
+    return false
+end
+
+function showConfirmWindow(item)
+    if currentWindow then
+        return
+    end
+
+    currentWindow = {
+        text = string.format(
+            localize("shop_confirm_text"),
+            tostring(localize(item.name)),
+            tostring(item.price) .. "BP"),
+        accept_text = localize("shop_confirm_yes"),
+        cancel_text = localize("shop_confirm_no"),
+        width = 450,
+        height = 200,
+        acceptCallback = function ()
+            buyClothes(item.clothes)
+        end,
+    }
+end
+
+function drawWindow()
+    if not currentWindow then
+        return
+    end
+    dxDrawRectangle(0, 0, screenSize.x, screenSize.y, tocolor(0, 0, 0, 150))
+
+    local x = screenSize.x / 2 - currentWindow.width / 2
+    local y = screenSize.y / 2 - currentWindow.height / 2
+
+    dxDrawRectangle(x-1, y-1, currentWindow.width+2, currentWindow.height+2, tocolor(255, 255, 255))
+    dxDrawRectangle(x, y, currentWindow.width, currentWindow.height, tocolor(0, 0, 0))
+    dxDrawText(currentWindow.text, x + 15, y, x + currentWindow.width - 30, y + currentWindow.height / 2 + 15, tocolor(255, 255, 255), 2, "default-bold", "center", "center", true, true)
+
+    local bw = 140
+    local bh = 45
+    if drawButton(currentWindow.cancel_text, x + currentWindow.width / 2 - bw - 10, y + currentWindow.height - bh - 15, bw, bh) then
+        if type(currentWindow.declineCallback) == "function" then
+            currentWindow.declineCallback()
+        end
+        currentWindow = nil
+        return
+    end
+    if drawButton(currentWindow.accept_text, x + currentWindow.width / 2 + 10, y + currentWindow.height - bh - 15, bw, bh) then
+        if type(currentWindow.acceptCallback) == "function" then
+            currentWindow.acceptCallback()
+        end
+        currentWindow = nil
+        return
+    end
 end
 
 function drawGUI()
@@ -227,7 +299,7 @@ function drawGUI()
         end
 
         local mouseOver = isMouseOver(x, y, panelWidth, itemHeight)
-        if isMouseOverItems then
+        if isMouseOverItems and not currentWindow then
             if mouseOver and selectedItemIndex ~= index then
                 selectedItemIndex = index
                 handleSelectionChange()
@@ -252,7 +324,7 @@ function drawGUI()
             textColor = tocolor(200, 200, 200)
         end
 
-        if mouseOver and isMousePressed then
+        if mouseOver and isMousePressed and not currentWindow then
             handleItemSelect(index)
         end
         dxDrawRectangle(x, y, panelWidth, itemHeight, backgroundColor)
@@ -294,6 +366,8 @@ function drawGUI()
     y = y + 10
     dxDrawImage(x + 10, y, 25, 25, ":pb_lobby/assets/bp.png")
     dxDrawText(bPoints, x + 45, y, x + panelWidth, y + 25, tocolor(255, 255, 255), 1.5, "default-bold", "left", "center")
+
+    drawWindow()
 end
 
 local function selectPrevItem()
