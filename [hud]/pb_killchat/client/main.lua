@@ -16,6 +16,8 @@ local inputText = ""
 local skipCharacter = false
 
 local messageTimer
+local backspaceTimer
+local repeatTimer
 
 function outputMessage(text, info, isHighlight, isSquad)
     table.insert(messagesList, 1, {
@@ -176,6 +178,20 @@ addEventHandler("onClientCharacter", root, function (character)
     end
 end)
 
+local function repeatBackspace()
+    if not getKeyState("backspace") then
+        killTimer(repeatTimer)
+    else
+        inputText = utf8.sub(inputText, 1, -2)
+    end
+end
+
+local function checkLongBackspacePress()
+    if getKeyState("backspace") then
+        repeatTimer = setTimer(repeatBackspace, 50, 0)
+    end
+end
+
 addEventHandler("onClientKey", root, function (key, down)
     if not down then
         return
@@ -192,7 +208,11 @@ addEventHandler("onClientKey", root, function (key, down)
             messageTimer = setTimer(function () end, 500, 1)
         end
     elseif key == "backspace" then
+        if isTimer(backspaceTimer) then
+            killTimer(backspaceTimer)
+        end
         inputText = utf8.sub(inputText, 1, -2)
+        backspaceTimer = setTimer(checkLongBackspacePress, 350, 1)
     elseif key == "t" then
         if isTextInputActive or guiGetInputEnabled() then
             return

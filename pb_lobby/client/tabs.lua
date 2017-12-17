@@ -38,11 +38,6 @@ Tabs.shop = {
     end
 }
 
-Tabs.rewards = {
-    title = localize("lobby_tab_rewards"),
-    disabled = true
-}
-
 local tabsOrder = {
     "home", "character", "shop", "rewards", "statistics"
 }

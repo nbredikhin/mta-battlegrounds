@@ -12,6 +12,7 @@
     <script type="client" src="client/tabs.lua"/>
     <script type="client" src="client/tab_character.lua"/>
     <script type="client" src="client/tab_statistics.lua"/>
+    <script type="client" src="client/tab_rewards.lua"/>
 
     <export type="client" function="setVisible"/>
     <export type="server" function="getPlayerLobbyPlayers"/>
@@ -28,5 +29,5 @@
     <file src="assets/icons/tags/pants.png"/>
     <file src="assets/icons/tags/shirt.png"/>
     <file src="assets/icons/tags/shoes.png"/>
-    <file src="assets/icons/jacket1.png"/>
+    <file src="assets/icons/crates/crate.png"/>
 </meta>

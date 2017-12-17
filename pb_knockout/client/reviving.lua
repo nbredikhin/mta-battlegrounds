@@ -140,6 +140,9 @@ function stopReviving()
 end
 
 addEventHandler("onClientKey", root, function (button, down)
+    if isMTAWindowActive() or guiGetInputEnabled() then
+        return
+    end
     if cancelButtons[button] and down then
         if isTimer(revivingTimer) then
             if revivingTarget then

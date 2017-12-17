@@ -116,6 +116,9 @@ addEventHandler("onClientRender", root, function ()
         end
         str = localize("inventory_using") .. " " ..tostring(usingItemName) .. " - " .. time .. "\n" .. localize("inventory_using_cancel")
         drawUsingText(str)
+        if localPlayer.vehicle then
+            usingPosition = localPlayer.position
+        end
         if getDistanceBetweenPoints3D(localPlayer.position, usingPosition) > 1 then
             endUsing()
         end

@@ -14,6 +14,14 @@ if clothesTable then
     end
 end
 
+ItemClasses["crate_weekly1"] = {
+    price = 700,
+    items = {
+
+    },
+    readableName = "Random Weekly Crate #1"
+}
+
 function isItem(item)
     if type(item) == "table" and item.name and ItemClasses[item.name] then
         return true
