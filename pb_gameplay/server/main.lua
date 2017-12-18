@@ -48,10 +48,15 @@ function initPlayerSkillStats(player)
     if not isElement(player) then
         return
     end
+    -- Владение оружием
     for i = 69, 79 do
         local stat = overrideStat[i] or 1000
         player:setStat(i, stat)
     end
+    -- Навыки вождения
+    player:setStat(160, 1000)
+    player:setStat(229, 1000)
+    player:setStat(230, 1000)
 end
 
 addCommandHandler("kill", function (player)

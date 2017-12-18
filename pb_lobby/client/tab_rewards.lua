@@ -1,7 +1,7 @@
 local screenSize = Vector2(guiGetScreenSize())
 
 local panelWidth, panelHeight = math.min(screenSize.x - 100, 1000), math.min(screenSize.y - 300, 600)
-local currentSection = "get_reward"
+local currentSection = "open_crate"
 
 local function drawGetReward(x, y, width, height)
     local hasEnoughPoints = true--(localPlayer:getData("battlepoints") or 0) >= 700
@@ -63,10 +63,73 @@ local function drawMyCrates(x, y, width, height)
                 dxDrawText("Random Weekly Crate #1", ix + 10, iy + 10, ix + isize - 20, iy + isize - 20, tocolor(255, 255, 255), 2, "default-bold", "left", "top", true, true, false, false)
                 border = isize * 0.05
 
-                if drawButton("Open crate", ix, iy + isize - 40, isize, 40, mainColor) then
+                drawButton("Open crate", ix, iy + isize - 40, isize, 40)
+                if isMousePressed then
+                    currentSection = "show_crate"
                 end
             end
         end
+    end
+end
+
+local function drawCrate(x, y, width, height)
+    local iconSize = height / 3
+    local titleScale = 1.8
+    if height < 400 then
+        iconSize = height / 2
+        titleScale = 1
+    end
+    dxDrawRectangle(x, y, iconSize, height - 10, tocolor(0, 0, 0, 150))
+    dxDrawImage(x + 10, y + 10, iconSize - 20, iconSize - 20, "assets/icons/crates/crate.png")
+    dxDrawText("Random Weekly Crate #1", x + 10, y + iconSize, x + iconSize - 10, y + iconSize + 10, tocolor(255, 255, 255), titleScale, "default-bold", "left", "top", false, true, false, false)
+    if drawButton("Open crate", x, y + height - 10 - 40 * 2, iconSize, 40, tocolor(254, 181, 0)) then
+        currentSection = "my_rewards"
+    end
+    if drawButton("Cancel", x, y + height - 10 - 40, iconSize, 40) then
+        currentSection = "my_rewards"
+    end
+
+    x = x + iconSize + 10
+    width = width - iconSize - 10
+    local rows
+    if height < 400 then
+        rows = 4
+    else
+        rows = 6
+    end
+    local itemSize = height / rows
+    local columns = math.floor(width / itemSize)
+    for i = 1, rows do
+        for j = 1, columns do
+            local ix = x + itemSize * (j - 1)
+            local iy = y + itemSize * (i - 1)
+            local isize = itemSize - 10
+            local border = isize * 0.1
+            local mouseOver = isMouseOver(ix, iy, itemSize, itemSize)
+            dxDrawRectangle(ix, iy, isize, isize, tocolor(0, 0, 0, 150))
+            if mouseOver then
+                border = isize * 0.05
+            end
+            dxDrawImage(ix + border, iy + border, isize - border * 2, isize - border * 2, ":pb_clothes/assets/icons/pants/jeans/jeans"..(i%5+1)..".png")
+            if mouseOver then
+                dxDrawRectangle(ix, iy, isize, isize, tocolor(0, 0, 0, 150))
+                dxDrawText("ШМОТКА ЕПТУ", ix + 10, iy + 10, ix + isize - 20, iy + isize, tocolor(255, 255, 255), 1, "default-bold", "left", "top", true, true, false, false)
+                border = isize * 0.05
+            end
+        end
+    end
+end
+
+local function drawOpenCrate(x, y, width, height)
+    dxDrawRectangle(x, y, width, height, tocolor(0, 0, 0, 150))
+
+    local iconSize = width / 8
+
+    for i = 1, 8 do
+        local path = ":pb_clothes/assets/icons/pants/jeans/jeans"..(i%5+1)..".png"
+        local ix = x + (i - 1) * iconSize + iconSize / 2
+        local distance = 1 - math.abs((ix - x - width/2) / (width/2))
+        dxDrawImage(x + (i - 1) * iconSize, y + height / 2 - iconSize / 2, iconSize, iconSize , path, 0, 0, 0, tocolor(255, 255, 255, 255 * distance))
     end
 end
 
@@ -93,8 +156,12 @@ local function draw()
     x = x + 160
     if currentSection == "get_reward" then
         drawGetReward(x, y, math.min(panelHeight, panelWidth - 160), panelHeight)
-    else
+    elseif currentSection == "my_rewards" then
         drawMyCrates(x, y, panelWidth - 160, panelHeight)
+    elseif currentSection == "show_crate" then
+        drawCrate(x, y, panelWidth - 160, panelHeight)
+    elseif currentSection == "open_crate" then
+        drawOpenCrate(x, y, panelWidth, panelHeight)
     end
 end
 
