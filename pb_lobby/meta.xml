@@ -29,5 +29,6 @@
     <file src="assets/icons/tags/pants.png"/>
     <file src="assets/icons/tags/shirt.png"/>
     <file src="assets/icons/tags/shoes.png"/>
-    <file src="assets/icons/crates/crate.png"/>
+
+    <file src="assets/icons/crates/crate_weekly1.png"/>
 </meta>

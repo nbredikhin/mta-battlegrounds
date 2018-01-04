@@ -16,8 +16,15 @@ end
 
 ItemClasses["crate_weekly1"] = {
     price = 700,
-    items = {
-
+    crateItems = {
+        "clothes_jeans1",
+        "clothes_jeans2",
+        "clothes_jeans3",
+        "clothes_jeans4",
+    },
+    crateChances = {
+        {0.99, 1, 3},
+        {0.01, 4, 4},
     },
     readableName = "Random Weekly Crate #1"
 }

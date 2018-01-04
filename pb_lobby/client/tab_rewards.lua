@@ -2,6 +2,14 @@ local screenSize = Vector2(guiGetScreenSize())
 
 local panelWidth, panelHeight = math.min(screenSize.x - 100, 1000), math.min(screenSize.y - 300, 600)
 local currentSection = "open_crate"
+local currentCrateIndex = 1
+local currentCrateItems = {}
+
+local inventoryCrates = {}
+local clothesIcons = {}
+
+local openCrateItem
+local openCrateAnim = 0
 
 local function drawGetReward(x, y, width, height)
     local hasEnoughPoints = true--(localPlayer:getData("battlepoints") or 0) >= 700
@@ -38,6 +46,9 @@ local function drawGetReward(x, y, width, height)
 end
 
 local function drawMyCrates(x, y, width, height)
+    if not inventoryCrates then
+        return
+    end
     local rows
     if height < 400 then
         rows = 2
@@ -46,6 +57,7 @@ local function drawMyCrates(x, y, width, height)
     end
     local itemSize = height / rows
     local columns = math.floor(width / itemSize)
+    local itemIndex = 1
     for i = 1, rows do
         for j = 1, columns do
             local ix = x + itemSize * (j - 1)
@@ -54,20 +66,34 @@ local function drawMyCrates(x, y, width, height)
             local border = isize * 0.1
             local mouseOver = isMouseOver(ix, iy, itemSize, itemSize)
             dxDrawRectangle(ix, iy, isize, isize, tocolor(0, 0, 0, 150))
-            if mouseOver then
-                border = isize * 0.05
-            end
-            dxDrawImage(ix + border, iy + border, isize - border * 2, isize - border * 2, "assets/icons/crates/crate.png")
-            if mouseOver then
-                dxDrawRectangle(ix, iy, isize, isize, tocolor(0, 0, 0, 150))
-                dxDrawText("Random Weekly Crate #1", ix + 10, iy + 10, ix + isize - 20, iy + isize - 20, tocolor(255, 255, 255), 2, "default-bold", "left", "top", true, true, false, false)
-                border = isize * 0.05
+            local item = inventoryCrates[itemIndex]
+            if item then
+                local itemClass = item.itemClass
+                if mouseOver then
+                    border = isize * 0.05
+                end
+                dxDrawImage(ix + border, iy + border, isize - border * 2, isize - border * 2, "assets/icons/crates/"..item.name..".png")
+                if mouseOver then
+                    dxDrawRectangle(ix, iy, isize, isize, tocolor(0, 0, 0, 150))
+                    dxDrawText(itemClass.readableName .. " (x"..item.count..")", ix + 10, iy + 10, ix + isize - 20, iy + isize - 20, tocolor(255, 255, 255), 2, "default-bold", "left", "top", true, true, false, false)
+                    border = isize * 0.05
 
-                drawButton("Open crate", ix, iy + isize - 40, isize, 40)
-                if isMousePressed then
-                    currentSection = "show_crate"
+                    drawButton("Open crate", ix, iy + isize - 40, isize, 40)
+                    if isMousePressed then
+                        currentSection = "show_crate"
+                        currentCrateIndex = itemIndex
+                        currentCrateItems = {}
+                        for i, name in ipairs(itemClass.crateItems) do
+                            local itemClass = exports.pb_accounts:getItemClass(name)
+                            itemClass.name = name
+                            table.insert(currentCrateItems, itemClass)
+                        end
+                    end
+                else
+                    dxDrawText("x"..item.count, ix + 10, iy + 10, ix + isize - 20, iy + isize - 20, tocolor(255, 255, 255), 2, "default-bold", "right", "bottom", true, true, false, false)
                 end
             end
+            itemIndex = itemIndex + 1
         end
     end
 end
@@ -79,11 +105,16 @@ local function drawCrate(x, y, width, height)
         iconSize = height / 2
         titleScale = 1
     end
-    dxDrawRectangle(x, y, iconSize, height - 10, tocolor(0, 0, 0, 150))
-    dxDrawImage(x + 10, y + 10, iconSize - 20, iconSize - 20, "assets/icons/crates/crate.png")
-    dxDrawText("Random Weekly Crate #1", x + 10, y + iconSize, x + iconSize - 10, y + iconSize + 10, tocolor(255, 255, 255), titleScale, "default-bold", "left", "top", false, true, false, false)
-    if drawButton("Open crate", x, y + height - 10 - 40 * 2, iconSize, 40, tocolor(254, 181, 0)) then
+    local crateItem = inventoryCrates[currentCrateIndex]
+    if not crateItem then
         currentSection = "my_rewards"
+        return
+    end
+    dxDrawRectangle(x, y, iconSize, height - 10, tocolor(0, 0, 0, 150))
+    dxDrawImage(x + 10, y + 10, iconSize - 20, iconSize - 20, "assets/icons/crates/crate_weekly1.png")
+    dxDrawText(crateItem.itemClass.readableName, x + 10, y + iconSize, x + iconSize - 10, y + iconSize + 10, tocolor(255, 255, 255), titleScale, "default-bold", "left", "top", false, true, false, false)
+    if drawButton("Open crate", x, y + height - 10 - 40 * 2, iconSize, 40, tocolor(254, 181, 0)) then
+        currentSection = "open_crate"
     end
     if drawButton("Cancel", x, y + height - 10 - 40, iconSize, 40) then
         currentSection = "my_rewards"
@@ -99,6 +130,7 @@ local function drawCrate(x, y, width, height)
     end
     local itemSize = height / rows
     local columns = math.floor(width / itemSize)
+    local itemIndex = 1
     for i = 1, rows do
         for j = 1, columns do
             local ix = x + itemSize * (j - 1)
@@ -107,21 +139,31 @@ local function drawCrate(x, y, width, height)
             local border = isize * 0.1
             local mouseOver = isMouseOver(ix, iy, itemSize, itemSize)
             dxDrawRectangle(ix, iy, isize, isize, tocolor(0, 0, 0, 150))
-            if mouseOver then
-                border = isize * 0.05
+            local itemClass = currentCrateItems[itemIndex]
+            if itemClass then
+                if mouseOver then
+                    border = isize * 0.05
+                end
+                if not clothesIcons[itemClass.name] then
+                    clothesIcons[itemClass.name] = exports.pb_clothes:getClothesIcon(itemClass.clothes)
+                end
+                dxDrawImage(ix + border, iy + border, isize - border * 2, isize - border * 2, clothesIcons[itemClass.name])
+                if mouseOver then
+                    dxDrawRectangle(ix, iy, isize, isize, tocolor(0, 0, 0, 150))
+                    dxDrawText(itemClass.readableName, ix + 10, iy + 10, ix + isize - 20, iy + isize, tocolor(255, 255, 255), 1, "default-bold", "left", "top", true, true, false, false)
+                    border = isize * 0.05
+                end
             end
-            dxDrawImage(ix + border, iy + border, isize - border * 2, isize - border * 2, ":pb_clothes/assets/icons/pants/jeans/jeans"..(i%5+1)..".png")
-            if mouseOver then
-                dxDrawRectangle(ix, iy, isize, isize, tocolor(0, 0, 0, 150))
-                dxDrawText("ШМОТКА ЕПТУ", ix + 10, iy + 10, ix + isize - 20, iy + isize, tocolor(255, 255, 255), 1, "default-bold", "left", "top", true, true, false, false)
-                border = isize * 0.05
-            end
+            itemIndex = itemIndex + 1
         end
     end
 end
 
 local function drawOpenCrate(x, y, width, height)
     dxDrawRectangle(x, y, width, height, tocolor(0, 0, 0, 150))
+    if not openCrateItem then
+        return
+    end
 
     local iconSize = width / 8
 
@@ -165,8 +207,33 @@ local function draw()
     end
 end
 
+local function handleInventoryChange()
+    local localInventory = exports.pb_accounts:getInventory()
+    inventoryCrates = {}
+    for name, item in pairs(localInventory) do
+        local itemClass = exports.pb_accounts:getItemClass(item.name)
+        if itemClass.crateItems then
+            item.itemClass = itemClass
+            table.insert(inventoryCrates, item)
+        end
+    end
+    table.sort(inventoryCrates, function (a, b)
+        return a.itemClass.price < b.itemClass.price
+    end)
+end
+
+addEvent("onClientInventoryUpdated", true)
+addEventHandler("onClientInventoryUpdated", root, function ()
+    if not isVisible() then
+        return
+    end
+    handleInventoryChange()
+end)
+
 Tabs.rewards = {
     title = localize("lobby_tab_rewards"),
-
+    load = function ()
+        handleInventoryChange()
+    end,
     draw = draw
 }
