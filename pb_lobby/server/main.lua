@@ -4,7 +4,6 @@ function createLobby(owner)
     if not isElement(owner) then
         return
     end
-    -- iprint("createLobby", owner)
     removeLobbyPlayer(owner, true)
     local lobby = {
         players = { [owner] = true },

@@ -43,11 +43,9 @@ addEventHandler("onPlayerRequireRating", root, function (matchType)
     end
 
     if ratingCache[matchType] then
-        iprint("Send cached rating table")
         triggerClientEvent(client, "onClientRatingUpdated", resourceRoot, matchType, ratingCache[matchType])
         return
     end
-    iprint("Get rating table")
     exports.mysql:dbQueryAsync("dbRatingQueued", { player = client, matchType = matchType }, "users", [[
         SELECT
             username,
