@@ -165,14 +165,16 @@ function updateInventory()
     inventoryItems = {}
     for name, item in pairs(localInventory) do
         local itemClass = exports.pb_accounts:getItemClass(item.name)
-        item.itemClass = itemClass
-        item.sellPrice = exports.pb_accounts:calculateClothesSellPrice(itemClass.price)
-        if currentTag then
-            if itemClass.layer == currentTag then
+        if itemClass.clothes then
+            item.itemClass = itemClass
+            item.sellPrice = exports.pb_accounts:calculateClothesSellPrice(itemClass.price)
+            if currentTag then
+                if itemClass.layer == currentTag then
+                    table.insert(inventoryItems, item)
+                end
+            else
                 table.insert(inventoryItems, item)
             end
-        else
-            table.insert(inventoryItems, item)
         end
     end
     table.sort(inventoryItems, function (a, b)

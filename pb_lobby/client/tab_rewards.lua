@@ -11,9 +11,14 @@ local clothesIcons = {}
 local openCrateItem
 local openCrateAnim = 0
 
-local function drawGetReward(x, y, width, height)
-    local hasEnoughPoints = true--(localPlayer:getData("battlepoints") or 0) >= 700
+local crateWaitingTimer
 
+local function drawGetReward(x, y, width, height)
+    local price = exports.pb_accounts:getRewardPrice(localPlayer:getData("crate_level"))
+    local hasEnoughPoints = price and (localPlayer:getData("battlepoints") or 0) >= price
+    if not price then
+        price = "..."
+    end
     local mainColor
     local crateAlpha
     if hasEnoughPoints then
@@ -36,12 +41,21 @@ local function drawGetReward(x, y, width, height)
     dxDrawImage(cx + iconOffset, cy + iconOffset, iconSize - iconOffset * 2, iconSize - iconOffset * 2, "assets/icons/crates/crate_weekly1.png", 0, 0, 0, tocolor(255, 255, 255, 255 * crateAlpha))
 
     local cmiddle = y + (cy - y) / 2
-    dxDrawText("Random Weekly Crate #1", x, y, x + width, cmiddle, tocolor(255, 255, 255), 2, "default-bold", "center", "bottom", true, false, false, false)
-    dxDrawText("700 BP", x, cmiddle, x + width, cy, mainColor, 2, "default-bold", "center", "top", true, false, false, false)
+
+    local itemName = exports.pb_accounts:getRewardCrateName()
+    local itemClass = exports.pb_accounts:getItemClass(itemName)
+    if not itemClass then
+        currentSection = "my_rewards"
+        return
+    end
+    dxDrawText(itemClass.readableName, x, y, x + width, cmiddle, tocolor(255, 255, 255), 2, "default-bold", "center", "bottom", true, false, false, false)
+
+    dxDrawText(price.." BP", x, cmiddle, x + width, cy, mainColor, 2, "default-bold", "center", "top", true, false, false, false)
 
     local buttonWidth = width * 0.5
-    if drawButton("GET REWARD", x + width / 2 - buttonWidth / 2, y + height - ((y + height) - (cy + iconSize)) / 2 - 25, buttonWidth, 50, mainColor) then
-
+    if drawButton("GET REWARD", x + width / 2 - buttonWidth / 2, y + height - ((y + height) - (cy + iconSize)) / 2 - 25, buttonWidth, 50, mainColor) and hasEnoughPoints then
+        currentSection = "my_rewards"
+        triggerServerEvent("onPlayerBuyNextCrate", resourceRoot)
     end
 end
 
@@ -111,12 +125,13 @@ local function drawCrate(x, y, width, height)
         return
     end
     dxDrawRectangle(x, y, iconSize, height - 10, tocolor(0, 0, 0, 150))
-    dxDrawImage(x + 10, y + 10, iconSize - 20, iconSize - 20, "assets/icons/crates/crate_weekly1.png")
+    dxDrawImage(x + 10, y + 10, iconSize - 20, iconSize - 20, "assets/icons/crates/"..crateItem.name..".png")
     dxDrawText(crateItem.itemClass.readableName, x + 10, y + iconSize, x + iconSize - 10, y + iconSize + 10, tocolor(255, 255, 255), titleScale, "default-bold", "left", "top", false, true, false, false)
     if drawButton("Open crate", x, y + height - 10 - 40 * 2, iconSize, 40, tocolor(254, 181, 0)) then
         triggerServerEvent("onPlayerOpenCrate", resourceRoot, crateItem.name)
         openCrateItem = nil
         currentSection = "open_crate"
+        crateWaitingTimer = setTimer(function () end, 2500, 1)
     end
     if drawButton("Cancel", x, y + height - 10 - 40, iconSize, 40) then
         currentSection = "my_rewards"
@@ -163,7 +178,7 @@ end
 
 local function drawOpenCrate(x, y, width, height)
     dxDrawRectangle(x, y, width, height, tocolor(0, 0, 0, 150))
-    if not openCrateItem then
+    if not openCrateItem or isTimer(crateWaitingTimer) then
         dxDrawText("Сундук открывается...", x, y, x + width, y + height, tocolor(255, 255, 255, 200 + 55 * math.sin(getTickCount() * 0.004)), 2, "default-bold", "center", "center", true, false, false, false)
         return
     end
@@ -182,15 +197,15 @@ local function drawOpenCrate(x, y, width, height)
         clothesIcons[openCrateItem.name] = exports.pb_clothes:getClothesIcon(openCrateItem.clothes)
     end
 
-    local iconSize = height * 0.6
+    local iconSize = math.min(150, height * 0.6)
     local cx = x + width / 2 - iconSize / 2
     local cy = y
     cy = cy + height / 2 - iconSize / 2
-    dxDrawText("ВЫ ПОЛУЧИЛИ "..openCrateItem.capitalizedName.."!", x, y, x + width, cy, tocolor(254, 181, 0, logoAlpha), 2, "default-bold", "center", "center", true, false, false, false)
+    dxDrawText("ВЫ ПОЛУЧИЛИ ВЕЩЬ\n"..openCrateItem.capitalizedName.."!", x, y, x + width, cy, tocolor(254, 181, 0, logoAlpha), 2, "default-bold", "center", "center", true, false, false, false)
 
     dxDrawImage(x + width / 2 - iconSize * iconScale / 2, y + height / 2 - iconSize * iconScale / 2, iconSize * iconScale, iconSize * iconScale, clothesIcons[openCrateItem.name], math.sin(getTickCount() * 0.005) * 5, 0, 0, tocolor(255, 255, 255, iconAlpha))
     local buttonHeight = math.min(50, height / 10)
-    cy = y + height - (height - iconSize) / 2 + buttonHeight / 2
+    cy = y + height - (height - iconSize) / 2 + (height - iconSize) / 4 - buttonHeight / 2
     local buttonWidth = math.min(200, width * 0.8)
 
     if openCrateAnim > 0.6 then

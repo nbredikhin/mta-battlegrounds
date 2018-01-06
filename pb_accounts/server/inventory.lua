@@ -129,14 +129,21 @@ function sendPlayerInventory(player)
     end
 end
 
+function isPlayerAdmin(player)
+    return hasObjectPermissionTo(player, "command.srun", false)
+end
+
 addCommandHandler("accgive", function (player, cmd, name)
+    if not isPlayerAdmin(player) then
+        return
+    end
     local item = createItem(name)
     if not isItem(item) then
-        iprint("Item does not exist", name)
+        outputDebugString("Item does not exist", name)
     end
     if addPlayerInventoryItem(player, item) then
-        iprint("Added item", name)
+        outputDebugString("[ACCOUNTS] Admin " .. tostring(player.name) .. "(acc "..tostring(player:getData("username"))..") gave item " .. tostring(item.name))
     else
-        iprint("Failed to add", name)
+        outputDebugString("Failed to add", name)
     end
 end)

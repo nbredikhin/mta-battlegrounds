@@ -23,10 +23,12 @@ ItemClasses["crate_weekly1"] = {
         "clothes_jeans4",
     },
     crateChances = {
-        {0.99, 1, 3},
-        {0.01, 4, 4},
+        {0.4, 1, 1},
+        {0.3, 2, 2},
+        {0.2, 3, 3},
+        {0.1, 4, 4},
     },
-    readableName = "Random Weekly Crate #1"
+    readableName = "Survivor Crate Season #1"
 }
 
 function isItem(item)

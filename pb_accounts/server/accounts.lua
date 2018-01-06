@@ -17,6 +17,7 @@ local loadAccountData = {
     "clothes_shirt",
     "clothes_pants",
     "clothes_shoes",
+    "crate_level"
 }
 
 local saveAccountData = {
@@ -25,7 +26,14 @@ local saveAccountData = {
     "clothes_head",
     "clothes_shirt",
     "clothes_pants",
-    "clothes_shoes"
+    "clothes_shoes",
+    "crate_level"
+}
+
+local protectData = {
+    ["crate_level"] = true,
+    ["battlepoints"] = true,
+    ["donatepoints"] = true,
 }
 
 local statsFields = {
@@ -185,6 +193,7 @@ function savePlayerAccount(player)
     session.stats["stats_playtime"] = session.stats["stats_playtime"] + (currentTimestamp - session.lastSaveTimestamp)
     session.lastSaveTimestamp = currentTimestamp
 
+    -- Поля статистики
     for i, name in ipairs(statsFields) do
         local value = session.stats[name]
         if value then
@@ -193,6 +202,7 @@ function savePlayerAccount(player)
         end
     end
 
+    -- Поля рейтинга
     for i, name in ipairs(ratingFields) do
         local value = session.rating[name]
         if value then
@@ -201,6 +211,15 @@ function savePlayerAccount(player)
         end
     end
 
+    -- Время последнего входа
+    table.insert(saveQuery, "last_seen = ?")
+    table.insert(saveArgs, currentTimestamp)
+
+    -- Серийник
+    table.insert(saveQuery, "serial = ?")
+    table.insert(saveArgs, player.serial)
+
+    -- Юзернейм
     table.insert(saveArgs, username)
 
     exports.mysql:dbExec(dbTableName, [[
@@ -245,6 +264,19 @@ function dbLoginPlayer(result, params)
         if not exports.pb_clothes:isValidClothesName(head) then
             player:setData("clothes_head", "head"..math.random(1, 15))
         end
+
+        if not result.last_seen then
+            result.last_seen = nil
+        end
+
+        -- Сброс уровня сундука раз в неделю
+        local lastSeenTime = getRealTime(result.last_seen)
+        local lastSeenWeek = math.floor((lastSeenTime.yearday + 1) / 7)
+        local currentWeek = math.floor((getRealTime().yearday + 1) / 7)
+        if lastSeenWeek ~= currentWeek then
+            player:setData("crate_level", 1)
+        end
+
         setupPlayerInventory(player, fromJSON(result.items))
         giveMissingPlayerClothes(player)
         setupPlayerSession(player, result)
@@ -374,12 +406,15 @@ addEventHandler("onResourceStart", resourceRoot, function ()
         CREATE TABLE IF NOT EXISTS ?? (
             username      VARCHAR(64)  NOT NULL PRIMARY KEY,
             password      VARCHAR(128)  NOT NULL,
+            serial        VARCHAR(128),
+            last_seen     INT           UNSIGNED,
 
             nickname      VARCHAR(64),
             items         LONGTEXT      NOT NULL,
 
             battlepoints  BIGINT        UNSIGNED NOT NULL DEFAULT 0,
             donatepoints  BIGINT        UNSIGNED NOT NULL DEFAULT 0,
+            crate_level   INT           UNSIGNED NOT NULL DEFAULT 1,
 
             rating_solo_main   BIGINT   UNSIGNED NOT NULL DEFAULT 0,
             rating_solo_wins   BIGINT   UNSIGNED NOT NULL DEFAULT 0,
@@ -416,4 +451,12 @@ addEventHandler("onResourceStart", resourceRoot, function ()
     exports.mysql:dbExec(dbTableName, [[
         UPDATE ?? SET online_server = 0 WHERE online_server = ?;
     ]], serverId)
+end)
+
+addEventHandler("onElementDataChange", root, function(dataName, oldValue)
+    if client then
+        if protectData[dataName] then
+            source:setData(dataName, oldValue)
+        end
+    end
 end)
