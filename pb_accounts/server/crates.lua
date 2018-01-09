@@ -53,14 +53,14 @@ addEventHandler("onPlayerBuyNextCrate", root, function ()
     if bPoints < price then
         return
     end
-    local item = createItem(Config.rewardCrate)
+    local item = createItem(Config.rewardCrates[math.random(1, #Config.rewardCrates)])
     if not isItem(item) then
         return
     end
     bPoints = bPoints - price
     client:setData("battlepoints", bPoints)
     addPlayerInventoryItem(client, item, true)
-    -- triggerClientEvent("onClientCrateReceived", resourceRoot, item.name)
+    triggerClientEvent("onClientCrateReceived", resourceRoot, item.name)
     client:setData("crate_level", math.min(#Config.rewardPrices, crateLevel + 1))
     savePlayerAccount(client)
     outputDebugString("[ACCOUNTS] Player " .. tostring(client.name) .. "(acc "..tostring(client:getData("username"))..",money "..tostring(bPoints)..") buy crate " .. tostring(item.name) .. " for " .. tostring(price))

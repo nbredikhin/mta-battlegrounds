@@ -53,6 +53,17 @@ Languages.russian = {
     lobby_statistics = "Моя статистика",
     lobby_rating = "Таблица лидеров",
 
+    lobby_get_reward = "ПОЛУЧИТЬ НАГРАДУ",
+    lobby_random_crate = "Случайный сундук",
+    lobby_open_crate = "Открыть",
+    lobby_crate_new = "НОВЫЙ",
+    lobby_crate_cancel = "Отмена",
+    lobby_crate_opening = "Сундук открывается...",
+    lobby_crate_received = "ВЫ ПОЛУЧИЛИ",
+    lobby_crate_take_item = "ЗАБРАТЬ ВЕЩЬ",
+    lobby_button_get_crates = "КУПИТЬ ЯЩИК",
+    lobby_button_my_crates  = "МОИ ЯЩИКИ",
+
     -- INVENTORY
     inventory_backpack_weight = "Носимый вес",
     inventory_no_space = "Недостаточно места!",

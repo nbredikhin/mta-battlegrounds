@@ -11,6 +11,8 @@ local clothesIcons = {}
 local openCrateItem
 local openCrateAnim = 0
 
+local newCrateName
+
 local crateWaitingTimer
 
 local function drawGetReward(x, y, width, height)
@@ -38,22 +40,16 @@ local function drawGetReward(x, y, width, height)
     if hasEnoughPoints then
         iconOffset = iconOffset + math.sin(getTickCount() * 0.008) * 5
     end
-    dxDrawImage(cx + iconOffset, cy + iconOffset, iconSize - iconOffset * 2, iconSize - iconOffset * 2, "assets/icons/crates/crate_weekly1.png", 0, 0, 0, tocolor(255, 255, 255, 255 * crateAlpha))
+    dxDrawImage(cx + iconOffset, cy + iconOffset, iconSize - iconOffset * 2, iconSize - iconOffset * 2, "assets/icons/crates/crate_random.png", 0, 0, 0, tocolor(255, 255, 255, 255 * crateAlpha))
 
     local cmiddle = y + (cy - y) / 2
 
-    local itemName = exports.pb_accounts:getRewardCrateName()
-    local itemClass = exports.pb_accounts:getItemClass(itemName)
-    if not itemClass then
-        currentSection = "my_rewards"
-        return
-    end
-    dxDrawText(itemClass.readableName, x, y, x + width, cmiddle, tocolor(255, 255, 255), 2, "default-bold", "center", "bottom", true, false, false, false)
+    dxDrawText(localize("lobby_random_crate"), x, y, x + width, cmiddle, tocolor(255, 255, 255), 2, "default-bold", "center", "bottom", true, false, false, false)
 
     dxDrawText(price.." BP", x, cmiddle, x + width, cy, mainColor, 2, "default-bold", "center", "top", true, false, false, false)
 
     local buttonWidth = width * 0.5
-    if drawButton("GET REWARD", x + width / 2 - buttonWidth / 2, y + height - ((y + height) - (cy + iconSize)) / 2 - 25, buttonWidth, 50, mainColor) and hasEnoughPoints then
+    if drawButton(localize("lobby_get_reward"), x + width / 2 - buttonWidth / 2, y + height - ((y + height) - (cy + iconSize)) / 2 - 25, buttonWidth, 50, mainColor) and hasEnoughPoints then
         currentSection = "my_rewards"
         triggerServerEvent("onPlayerBuyNextCrate", resourceRoot)
     end
@@ -92,9 +88,10 @@ local function drawMyCrates(x, y, width, height)
                     dxDrawText(itemClass.readableName .. " (x"..item.count..")", ix + 10, iy + 10, ix + isize - 20, iy + isize - 20, tocolor(255, 255, 255), 2, "default-bold", "left", "top", true, true, false, false)
                     border = isize * 0.05
 
-                    drawButton("Open crate", ix, iy + isize - 40, isize, 40)
+                    drawButton(localize("lobby_open_crate"), ix, iy + isize - 40, isize, 40)
                     if isMousePressed then
                         currentSection = "show_crate"
+                        newCrateName = nil
                         currentCrateIndex = itemIndex
                         currentCrateItems = {}
                         for i, name in ipairs(itemClass.crateItems) do
@@ -104,6 +101,9 @@ local function drawMyCrates(x, y, width, height)
                         end
                     end
                 else
+                    if newCrateName == item.name then
+                        dxDrawText(localize("lobby_crate_new"), ix + 10, iy + 10, ix + isize - 20, iy + isize - 20, tocolor(254, 181, 0), 2, "default-bold", "left", "top", true, true, false, false)
+                    end
                     dxDrawText("x"..item.count, ix + 10, iy + 10, ix + isize - 20, iy + isize - 20, tocolor(255, 255, 255), 2, "default-bold", "right", "bottom", true, true, false, false)
                 end
             end
@@ -127,13 +127,13 @@ local function drawCrate(x, y, width, height)
     dxDrawRectangle(x, y, iconSize, height - 10, tocolor(0, 0, 0, 150))
     dxDrawImage(x + 10, y + 10, iconSize - 20, iconSize - 20, "assets/icons/crates/"..crateItem.name..".png")
     dxDrawText(crateItem.itemClass.readableName, x + 10, y + iconSize, x + iconSize - 10, y + iconSize + 10, tocolor(255, 255, 255), titleScale, "default-bold", "left", "top", false, true, false, false)
-    if drawButton("Open crate", x, y + height - 10 - 40 * 2, iconSize, 40, tocolor(254, 181, 0)) then
+    if drawButton(localize("lobby_open_crate"), x, y + height - 10 - 40 * 2, iconSize, 40, tocolor(254, 181, 0)) then
         triggerServerEvent("onPlayerOpenCrate", resourceRoot, crateItem.name)
         openCrateItem = nil
         currentSection = "open_crate"
         crateWaitingTimer = setTimer(function () end, 2500, 1)
     end
-    if drawButton("Cancel", x, y + height - 10 - 40, iconSize, 40) then
+    if drawButton(localize("lobby_crate_cancel"), x, y + height - 10 - 40, iconSize, 40) then
         currentSection = "my_rewards"
     end
 
@@ -179,7 +179,7 @@ end
 local function drawOpenCrate(x, y, width, height)
     dxDrawRectangle(x, y, width, height, tocolor(0, 0, 0, 150))
     if not openCrateItem or isTimer(crateWaitingTimer) then
-        dxDrawText("Сундук открывается...", x, y, x + width, y + height, tocolor(255, 255, 255, 200 + 55 * math.sin(getTickCount() * 0.004)), 2, "default-bold", "center", "center", true, false, false, false)
+        dxDrawText(localize("lobby_crate_opening"), x, y, x + width, y + height, tocolor(255, 255, 255, 200 + 55 * math.sin(getTickCount() * 0.004)), 2, "default-bold", "center", "center", true, false, false, false)
         return
     end
 
@@ -201,7 +201,7 @@ local function drawOpenCrate(x, y, width, height)
     local cx = x + width / 2 - iconSize / 2
     local cy = y
     cy = cy + height / 2 - iconSize / 2
-    dxDrawText("ВЫ ПОЛУЧИЛИ ВЕЩЬ\n"..openCrateItem.capitalizedName.."!", x, y, x + width, cy, tocolor(254, 181, 0, logoAlpha), 2, "default-bold", "center", "center", true, false, false, false)
+    dxDrawText(localize("lobby_crate_received").."\n"..openCrateItem.capitalizedName.."!", x, y, x + width, cy, tocolor(254, 181, 0, logoAlpha), 2, "default-bold", "center", "center", true, false, false, false)
 
     dxDrawImage(x + width / 2 - iconSize * iconScale / 2, y + height / 2 - iconSize * iconScale / 2, iconSize * iconScale, iconSize * iconScale, clothesIcons[openCrateItem.name], math.sin(getTickCount() * 0.005) * 5, 0, 0, tocolor(255, 255, 255, iconAlpha))
     local buttonHeight = math.min(50, height / 10)
@@ -209,7 +209,7 @@ local function drawOpenCrate(x, y, width, height)
     local buttonWidth = math.min(200, width * 0.8)
 
     if openCrateAnim > 0.6 then
-        if drawButton("ЗАБРАТЬ ВЕЩЬ", x + width / 2 - buttonWidth / 2, cy, buttonWidth, buttonHeight, mainColor) then
+        if drawButton(localize("lobby_crate_take_item"), x + width / 2 - buttonWidth / 2, cy, buttonWidth, buttonHeight, mainColor) then
             openCrateItem = nil
             currentSection = "my_rewards"
         end
@@ -225,14 +225,14 @@ local function draw()
     if currentSection == "get_reward" then
         bg = bgColor
     end
-    if drawButton("GET CRATES", x, y, 150, 40, bg) then
+    if drawButton(localize("lobby_button_get_crates"), x, y, 150, 40, bg) then
         currentSection = "get_reward"
     end
     bg = nil
     if currentSection == "my_rewards" then
         bg = bgColor
     end
-    if drawButton("MY CRATES", x, y + 50, 150, 40, bg) then
+    if drawButton(localize("lobby_button_my_crates"), x, y + 50, 150, 40, bg) then
         currentSection = "my_rewards"
     end
 
@@ -259,7 +259,7 @@ local function handleInventoryChange()
         end
     end
     table.sort(inventoryCrates, function (a, b)
-        return a.itemClass.price < b.itemClass.price
+        return a.itemClass.readableName < b.itemClass.readableName
     end)
 end
 
@@ -269,6 +269,11 @@ addEventHandler("onClientInventoryUpdated", root, function ()
         return
     end
     handleInventoryChange()
+end)
+
+addEvent("onClientCrateReceived", true)
+addEventHandler("onClientCrateReceived", root, function (itemName)
+    newCrateName = itemName
 end)
 
 addEvent("onClientCrateOpened", true)
@@ -290,6 +295,7 @@ Tabs.rewards = {
         currentSection = "my_rewards"
         openCrateItem = nil
         handleInventoryChange()
+        newCrateName = nil
     end,
     draw = draw
 }

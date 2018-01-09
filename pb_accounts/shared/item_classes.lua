@@ -15,7 +15,6 @@ if clothesTable then
 end
 
 ItemClasses["crate_weekly1"] = {
-    price = 700,
     crateItems = {
         "clothes_jeans1",
         "clothes_jeans2",
@@ -28,7 +27,23 @@ ItemClasses["crate_weekly1"] = {
         {0.2, 3, 3},
         {0.1, 4, 4},
     },
-    readableName = "Survivor Crate Season #1"
+    readableName = "Wanderer Crate"
+}
+
+ItemClasses["crate_weekly2"] = {
+    crateItems = {
+        "clothes_tshirt1",
+        "clothes_tshirt2",
+        "clothes_tshirt3",
+        "clothes_tshirt4",
+    },
+    crateChances = {
+        {0.4, 1, 1},
+        {0.3, 2, 2},
+        {0.2, 3, 3},
+        {0.1, 4, 4},
+    },
+    readableName = "Survivor Crate"
 }
 
 function isItem(item)

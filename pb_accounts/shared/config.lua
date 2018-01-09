@@ -1,6 +1,10 @@
 Config = {}
 
-Config.rewardCrate = "crate_weekly1"
+Config.rewardCrates = {
+    "crate_weekly1",
+    "crate_weekly2",
+}
+
 Config.rewardPrices = {
     100,
     200,
@@ -8,10 +12,6 @@ Config.rewardPrices = {
     400,
     500
 }
-
-function getRewardCrateName()
-    return Config.rewardCrate
-end
 
 function getRewardPrice(level)
     if type(level) ~= "number" then

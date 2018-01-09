@@ -22,7 +22,6 @@
     <export type="shared" function="getDefaultClothes"/>
     <export type="shared" function="calculateClothesSellPrice"/>
     <export type="shared" function="getRewardPrice"/>
-    <export type="shared" function="getRewardCrateName"/>
     <export type="server" function="addPlayerStatsField"/>
     <export type="server" function="updatePlayerRating"/>
     <export type="client" function="getInventory"/>

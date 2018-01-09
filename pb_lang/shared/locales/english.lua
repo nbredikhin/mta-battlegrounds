@@ -53,6 +53,17 @@ Languages.english = {
     lobby_statistics = "My stats",
     lobby_rating = "Leaderboard",
 
+    lobby_get_reward = "GET REWARD",
+    lobby_random_crate = "Random Weekly Crate",
+    lobby_open_crate = "Open crate",
+    lobby_crate_new = "NEW",
+    lobby_crate_cancel = "Cancel",
+    lobby_crate_opening = "Opening crate...",
+    lobby_crate_received = "YOU RECEIVED",
+    lobby_crate_take_item = "TAKE ITEM",
+    lobby_button_get_crates = "GET CRATES",
+    lobby_button_my_crates = "MY CRATES",
+
     -- INVENTORY
     inventory_backpack_weight = "Total weight",
     inventory_no_space = "Not enough space!",
