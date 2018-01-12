@@ -1,6 +1,6 @@
 local isActive = false
 
-local pedPosition = Vector3(5157.4, -944, 37.5)
+local pedPosition = Vector3(132.785, 27.811, 1.289)
 
 local playerPed
 
@@ -10,7 +10,7 @@ local cameraLookAt = Vector3()
 local targetLookAt = Vector3()
 
 local function createLobbyPed(position)
-    local ped = createPed(235, position, 150)
+    local ped = createPed(235, position, -40)
     ped.frozen = true
     ped.dimension = localPlayer.dimension
     setPedAnimation(ped, "ped", "IDLE_HBHB", -1, true, false)
@@ -27,24 +27,18 @@ function updatePedClothes(ped, player)
     end
 end
 
-setTimer(function ()
-    if isElement(playerPed) then
-        setPedLookAt(playerPed, playerPed.matrix:transformPosition(-2, 4, 1), -1, 1000)
-    end
-end, 1000, 0)
-
 addEventHandler("onClientPreRender", root, function (dt)
     if not isVisible() then
         return
     end
-    setCameraMatrix(Vector3(5155.76, -945.65, 38.2), cameraLookAt, 0, 90)
+    setCameraMatrix(playerPed.matrix:transformPosition(0.5, 3.7, 0.2), cameraLookAt, 0, 70)
 
     cameraLookAt = cameraLookAt + (targetLookAt - cameraLookAt) * dt * 0.0035
 end)
 
 function resetCamera()
-    cameraLookAt = playerPed.position + Vector3(0, 0, 0.3)
-    targetLookAt = playerPed.position + Vector3(0, 0, 0.3)
+    cameraLookAt = playerPed.position + Vector3(0, 0, 0.2)
+    targetLookAt = playerPed.position + Vector3(0, 0, 0.2)
 end
 
 function getLocalPlayerPed()

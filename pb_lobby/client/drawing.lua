@@ -75,30 +75,14 @@ function showKickWindow(player)
 end
 
 function drawStartGameButton()
-    local texture = "assets/corner0.png"
-    local scale = 1
-    if screenSize.x < 1600 then
-        scale = 0.5 + math.max(0, 0.5 * (screenSize.x - 800) / 800)
-    end
-    local w, h = 496 * scale, 250 * scale
-    local lobbyEnoughPlayers = true
-    if isMouseOver(0, 0, w * 0.7, h * 0.5) then
-        if lobbyEnoughPlayers then
-            texture = "assets/corner1.png"
-        end
+    local width = 200
+    local height = 50
+    local x = 20
+    local y = screenSize.y - height - 20
 
-        if isMousePressed then
-            if lobbyEnoughPlayers then
-                localPlayer:setData("lobbyReady", not localPlayer:getData("lobbyReady"))
-            else
-                localPlayer:setData("lobbyReady", false)
-            end
-        end
-    end
-    dxDrawImage(-1, 0, w, h, texture)
-    local text = localize("lobby_start_game")
+    local buttonText = localize("lobby_start_game")
     if localPlayer:getData("lobbyReady") then
-        text = localize("lobby_ready")
+        buttonText = localize("lobby_ready")
 
         local allReady = true
         for i, player in ipairs(getLobbyPlayers()) do
@@ -108,49 +92,45 @@ function drawStartGameButton()
             end
         end
         if allReady then
-            text = localize("lobby_searching")
+            buttonText = localize("lobby_searching")
         end
     end
-    local color = tocolor(255, 255, 255)
-    if not lobbyEnoughPlayers then
-        color = tocolor(150, 150, 150)
-    end
-    dxDrawText(text, (25 + 5) * scale, (15 + 5) * scale, 0, 0, tocolor(0, 0, 0, 150), 3.5 * scale, "default-bold", "left", "top")
-    dxDrawText(text, 25 * scale, 15 * scale, 0, 0, color, 3.5 * scale, "default-bold", "left", "top")
+    drawButton(buttonText, x, y, width, height, tocolor(254, 181, 0), tocolor(255, 255, 255), 3)
+    -- local texture = "assets/corner0.png"
+    -- local scale = 1
+    -- if screenSize.x < 1600 then
+    --     scale = 0.5 + math.max(0, 0.5 * (screenSize.x - 800) / 800)
+    -- end
+    -- local w, h = 496 * scale, 250 * scale
+    -- local lobbyEnoughPlayers = true
+    -- if isMouseOver(0, 0, w * 0.7, h * 0.5) then
+    --     if lobbyEnoughPlayers then
+    --         texture = "assets/corner1.png"
+    --     end
 
-    local smallText = localize("lobby_type_"..getLobbyType())
-    if not lobbyEnoughPlayers then
-        smallText = localize("lobby_not_enough_players")
-    end
-    dxDrawText(smallText, (25 + 3) * scale, (70 + 3) * scale, 0, 0, tocolor(0, 0, 0, 150), 2 * scale, "default-bold", "left", "top")
-    dxDrawText(smallText, 25 * scale, 70 * scale, 0, 0, tocolor(255, 255, 255), 2 * scale, "default-bold", "left", "top")
-end
+    --     if isMousePressed then
+    --         if lobbyEnoughPlayers then
+    --             localPlayer:setData("lobbyReady", not localPlayer:getData("lobbyReady"))
+    --         else
+    --             localPlayer:setData("lobbyReady", false)
+    --         end
+    --     end
+    -- end
+    -- dxDrawImage(-1, 0, w, h, texture)
 
-function drawBetaLogo()
-    local logoWidth = 750
-    local logoHeight = 292
-    local w = logoWidth * 0.3
-    local h = logoHeight * 0.3
-    dxDrawImage(screenSize.x - w - 10, screenSize.y - h - 40, w, h, "assets/logo.png", 0, 0, 0, tocolor(255, 255, 255, 200))
-end
+    -- local color = tocolor(255, 255, 255)
+    -- if not lobbyEnoughPlayers then
+    --     color = tocolor(150, 150, 150)
+    -- end
+    -- dxDrawText(text, (25 + 5) * scale, (15 + 5) * scale, 0, 0, tocolor(0, 0, 0, 150), 3.5 * scale, "default-bold", "left", "top")
+    -- dxDrawText(text, 25 * scale, 15 * scale, 0, 0, color, 3.5 * scale, "default-bold", "left", "top")
 
-function drawArrows()
-    -- Стрелки рядом с персонажем
-    local arrowSize = 80
-    local offset = math.sin(getTickCount() * 0.008) * arrowSize * 0.1
-
-    local x = screenSize.x * 0.4 - arrowSize / 2 + offset
-    local y = screenSize.y * 0.8
-    local w, h = arrowSize, arrowSize
-    dxDrawImage(x, y, w, h, "assets/arrow.png", 180)
-    if isMousePressed and isMouseOver(x-20, y-20, w+40, h+40) then
-        changeSkin(-1)
-    end
-    x, y = screenSize.x * 0.6 - arrowSize / 2 - offset, screenSize.y * 0.8
-    dxDrawImage(x, y, w, h, "assets/arrow.png")
-    if isMousePressed and isMouseOver(x-20, y-20, w+40, h+40) then
-        changeSkin(1)
-    end
+    -- local smallText = localize("lobby_type_"..getLobbyType())
+    -- if not lobbyEnoughPlayers then
+    --     smallText = localize("lobby_not_enough_players")
+    -- end
+    -- dxDrawText(smallText, (25 + 3) * scale, (70 + 3) * scale, 0, 0, tocolor(0, 0, 0, 150), 2 * scale, "default-bold", "left", "top")
+    -- dxDrawText(smallText, 25 * scale, 70 * scale, 0, 0, tocolor(255, 255, 255), 2 * scale, "default-bold", "left", "top")
 end
 
 function drawMessageBox()
@@ -215,8 +195,8 @@ end
 function drawInvitePanel()
     local w = 440
     local h = 45
-    local x = 10
-    local y = screenSize.y - h
+    local x = screenSize.x - w - 10
+    local y = screenSize.y - h - 10
     dxDrawRectangle(x, y, w, h, tocolor(0, 0, 0, 200))
     local iconSize = 32
     x = x + 10
@@ -227,15 +207,16 @@ function drawInvitePanel()
     x = x + 150
     local bh = 30
     if isOwnLobby() then
+        local bw = w - x + (screenSize.x - w - 20)
         if playersCount >= 4 then
-            drawButton(localize("lobby_button_full"), x, y + h/2-bh/2,w-x,bh)
+            drawButton(localize("lobby_button_full"), x, y + h/2-bh/2,bw,bh)
         else
-            if drawButton(localize("lobby_button_invite"), x, y + h/2-bh/2,w-x,bh) then
+            if drawButton(localize("lobby_button_invite"), x, y + h/2-bh/2,bw,bh) then
                 showInviteSendWindow()
             end
         end
     else
-        if drawButton(localize("lobby_button_leave"), x, y + h/2-bh/2,w-x,bh) then
+        if drawButton(localize("lobby_button_leave"), x, y + h/2-bh/2,bw,bh) then
             triggerServerEvent("onPlayerLeaveLobby", resourceRoot)
         end
     end
@@ -267,7 +248,6 @@ addEventHandler("onClientRender", root, function ()
 
     drawTabs()
     drawStartGameButton()
-    drawBetaLogo()
 
     if getLobbyType() == "solo" then
         local y = screenSize.y - 65
@@ -299,8 +279,8 @@ function setVisible(visible)
     showCursor(isLobbyVisible)
     localPlayer:setData("lobbyReady", false)
     if isLobbyVisible then
-        setFarClipDistance(30)
-        setFogDistance(0)
+        resetFarClipDistance()
+        resetFogDistance()
         localPlayer.interior = 0
         localPlayer.position = Vector3(3500, 0, 100)
         localPlayer.frozen = true

@@ -44,7 +44,7 @@ Languages.russian = {
     lobby_invite_declined = "Игрок не принял приглашение",
     lobby_search_failed = "Не удалось найти матч\nодин из игроков уже в игре",
 
-    lobby_tab_home = "ГЛАВНАЯ",
+    lobby_tab_home = "ИГРАТЬ",
     lobby_tab_shop = "МАГАЗИН",
     lobby_tab_stats = "СТАТИСТИКА",
     lobby_tab_rewards = "НАГРАДЫ",

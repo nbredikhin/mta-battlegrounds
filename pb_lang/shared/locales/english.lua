@@ -44,7 +44,7 @@ Languages.english = {
     lobby_invite_declined = "Player has declined your invite",
     lobby_search_failed = "Failed to find game.\nOne or more players are in a match.",
 
-    lobby_tab_home = "HOME",
+    lobby_tab_home = "PLAY",
     lobby_tab_shop = "SHOP",
     lobby_tab_stats = "STATISTICS",
     lobby_tab_rewards = "REWARDS",
