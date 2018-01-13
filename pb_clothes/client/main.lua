@@ -1,14 +1,26 @@
 local skinId = 235
 local layerNames = {
     "head",
-    "shirt",
-    "pants",
-    "shoes"
+    "body",
+    "jacket",
+    "legs",
+    "feet",
+    "gloves"
+}
+
+local bodyParts = {
+    "body1",
+    "body2",
+    "wrist",
+    "elbow",
+    "forearm",
+    "legsbody1",
+    "legsbody2",
+    "legsbody3",
 }
 
 local loadedClothes = {}
 local loadedTextures = {}
-local placeholderTexture = dxCreateTexture("assets/placeholder.png")
 
 local function unloadPedClothes(ped)
     if not ped or not loadedClothes[ped] then
@@ -35,6 +47,9 @@ local function getTexture(path)
 end
 
 local function createClothesShader(ped, material, texture)
+    if not isElement(texture) then
+        outputDebugString("Failed to load " .. material)
+    end
     local shader = dxCreateShader("assets/shaders/replace.fx", 0, 0, false, "ped")
     shader:setValue("gTexture", texture)
     engineApplyShaderToWorldTexture(shader, material, ped)
@@ -42,7 +57,7 @@ local function createClothesShader(ped, material, texture)
 end
 
 function loadPedClothes(ped)
-    if not ped then
+    if not isElement(ped) then
         return
     end
     if ped.dimension ~= localPlayer.dimension then
@@ -50,21 +65,80 @@ function loadPedClothes(ped)
     end
     unloadPedClothes(ped)
     loadedClothes[ped] = {}
-    local hideElbow = false
+    -- Наличие слоев одежды
+    local hasJacket = not not ped:getData("clothes_jacket")
+    local hasShirt  = not not ped:getData("clothes_body")
+    local hasPants  = not not ped:getData("clothes_legs")
+    local hasShoes  = not not ped:getData("clothes_feet")
+    -- Части тела, которые должны быть скрыты
+    local hideParts = {}
+    -- Части тела, для которых игнорируется скрытие
+    local showParts = {}
+    -- Цвет кожи, определяется головой
+    local bodyTextureName = "whitebody"
+    local head = ped:getData("clothes_head")
+    if head and ClothesTable[head].body then
+        bodyTextureName = ClothesTable[head].body
+    end
+    -- Текстура тела
+    local bodyTexture = getTexture("assets/textures/skin/"..bodyTextureName..".png")
+
     for i, layer in ipairs(layerNames) do
         local name = ped:getData("clothes_" .. tostring(layer))
-        if name and ClothesTable[name] and ClothesTable[name].layer == layer then
-            if ClothesTable[name].hideElbow then
-                hideElbow = true
+        if name and ClothesTable[name] then
+            local texture = getTexture("assets/textures/" .. ClothesTable[name].texture)
+            if layer == "body" then
+                for i = 1, 3 do
+                    local useTexture = texture
+                    if i == 1 then
+                        useTexture = bodyTexture
+                    end
+                    if not (i == 2 and hasJacket) then
+                        local shader = createClothesShader(ped, ClothesTable[name].material .. "p"..i, useTexture)
+                        table.insert(loadedClothes[ped], shader)
+                    end
+                end
+            else
+                local shader = createClothesShader(ped, ClothesTable[name].material, texture)
+                table.insert(loadedClothes[ped], shader)
             end
-            local path = ClothesTable[name].path or layer.."/"..ClothesTable[name].material.."/"..name..".png"
-            local texture = getTexture("assets/clothes/" .. path)
-            local shader = createClothesShader(ped, ClothesTable[name].material or name, texture)
-            table.insert(loadedClothes[ped], shader)
+
+            if ClothesTable[name].hide then
+                for name in pairs(ClothesTable[name].hide) do
+                    hideParts[name] = true
+                end
+            end
+
+            if ClothesTable[name].show then
+                for name in pairs(ClothesTable[name].show) do
+                    showParts[name] = true
+                end
+            end
         end
     end
-    if not hideElbow then
-        table.insert(loadedClothes[ped], createClothesShader(ped, "elbow", getTexture("assets/elbow.png")))
+    if hasShirt then
+        hideParts.body2 = true
+    end
+    if hasShirt or hasJacket then
+        hideParts.body1 = true
+        hideParts.forearm = true
+    end
+    if hasPants then
+        hideParts.legsbody1 = true
+        hideParts.legsbody2 = true
+    end
+    if hasShoes then
+        hideParts.legsbody3 = true
+    end
+
+    for name in pairs(showParts) do
+        hideParts[name] = nil
+    end
+
+    for i, name in ipairs(bodyParts) do
+        if not hideParts[name] then
+            table.insert(loadedClothes[ped], createClothesShader(ped, name, bodyTexture))
+        end
     end
 end
 
@@ -100,10 +174,7 @@ addEventHandler("onClientResourceStart", resourceRoot, function ()
     end
 end)
 
-function getClothesIcon(name)
-    if not name or not ClothesTable[name] then
-        return
-    end
-    local path = ClothesTable[name].path or layer.."/"..ClothesTable[name].material.."/"..name..".png"
-    return getTexture("assets/icons/" .. path)
-end
+addCommandHandler("cl", function (cmd, name)
+    outputChatBox("Clothes " .. name)
+    addPedClothes(localPlayer, name, true)
+end)
