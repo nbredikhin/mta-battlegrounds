@@ -1,12 +1,24 @@
 <meta>
     <oop>true</oop>
 
+    <script type="shared" src="shared/config.lua"/>
     <script type="shared" src="shared/clothes_table.lua"/>
+    <script type="shared" src="shared/clothes_price.lua"/>
     <script type="shared" src="shared/exports.lua"/>
 
     <script type="client" src="client/main.lua"/>
+    <script type="client" src="client/exports.lua"/>
 
-    <script type="server" src="server/meta_gen.lua"/>
+    <!-- <script type="server" src="server/meta_gen.lua"/> -->
+
+    <!-- Экспорты -->
+    <export type="shared" function="addPedClothes"/>
+    <export type="shared" function="getClothesTable"/>
+    <export type="shared" function="isValidClothesName"/>
+
+    <export type="client" function="getClothesIcon"/>
+
+    <!-- Файлы -->
 
     <file src="assets/shaders/mta-helper.fx"/>
     <file src="assets/shaders/tex_matrix.fx"/>
@@ -95,7 +107,7 @@
     <file src="assets/textures/jacket/mjacketbr02/2.png"/>
     <file src="assets/textures/icons/icon_equipment_Jacket_BR02_01.png"/>
     <file src="assets/textures/feet/mfeetpu/3.png"/>
-    <file src="assets/textures/icons/icon_equipment_Feet_E_02.png"/>
+    <file src="assets/textures/icons/icon_equipment_Feet_E_03.png"/>
     <file src="assets/textures/legs/mlegsc/1.png"/>
     <file src="assets/textures/icons/icon_equipment_Legs_C_05.png"/>
     <file src="assets/textures/feet/mfeete/1.png"/>
@@ -198,5 +210,4 @@
     <file src="assets/textures/icons/icon_equipment_Ghillie_01.png"/>
     <file src="assets/textures/body/mbodyf/1.png"/>
     <file src="assets/textures/icons/icon_equipment_Body_F_06.png"/>
-
 </meta>

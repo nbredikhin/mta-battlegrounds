@@ -75,6 +75,7 @@ addCommandHandler("encmod", function ()
     file:close()
 
     saveFile("client/paths.lua", "ModelPaths = "..pprint.pformat(paths))
+    outputDebugString("Encrypt done")
 end)
 
 

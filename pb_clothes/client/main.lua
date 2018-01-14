@@ -40,7 +40,7 @@ local function getTexture(path)
     end
     local texture = loadedTextures[path]
     if not texture then
-        texture = dxCreateTexture(path)
+        texture = dxCreateTexture(path, "dxt5", false)
         loadedTextures[path] = texture
     end
     return texture
@@ -58,9 +58,6 @@ end
 
 function loadPedClothes(ped)
     if not isElement(ped) then
-        return
-    end
-    if ped.dimension ~= localPlayer.dimension then
         return
     end
     unloadPedClothes(ped)
@@ -121,7 +118,6 @@ function loadPedClothes(ped)
     end
     if hasShirt or hasJacket then
         hideParts.body1 = true
-        hideParts.forearm = true
     end
     if hasPants then
         hideParts.legsbody1 = true

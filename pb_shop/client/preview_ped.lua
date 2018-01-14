@@ -4,9 +4,10 @@ local previewPed
 local playerClothes = {}
 local clothesLayers = {
     "clothes_head",
-    "clothes_shirt",
-    "clothes_pants",
-    "clothes_shoes",
+    "clothes_body",
+    "clothes_jacket",
+    "clothes_legs",
+    "clothes_feet",
 }
 
 local playerInventory = {}

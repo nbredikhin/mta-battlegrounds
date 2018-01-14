@@ -14,33 +14,10 @@ local currentWindow = nil
 
 local categoriesList = {name = "shop_categories", subcategories = {
     {name = "shop_category_hats",  category = "hat"},
-    {name = "shop_category_torso", subcategories = {
-        {name = "shop_subcategory_tshirt",       category = "tshirt"},
-        {name = "shop_subcategory_shirt",        category = "shirt"},
-        {name = "shop_subcategory_sweater",      category = "sweater"},
-        {name = "shop_subcategory_hoodie",       category = "hoodie"},
-        {name = "shop_subcategory_jacket",       category = "jacket"},
-        {name = "shop_subcategory_woolcoat",     category = "woolcoat"},
-        {name = "shop_subcategory_sport",        category = "sport_jacket"},
-        {name = "shop_subcategory_other",        category = "shirt_other"},
-        {name = "shop_back", back = true }
-    }},
-
-    {name = "shop_category_pants", subcategories = {
-        {name = "shop_subcategory_jeans",      category = "jeans"},
-        {name = "shop_subcategory_slacks",     category = "slacks"},
-        {name = "shop_subcategory_sport",      category = "tracksuitpnts"},
-        {name = "shop_subcategory_cargopnts",  category = "cargopnts"},
-        {name = "shop_subcategory_hunterpnts", category = "hunterpnts"},
-        {name = "shop_subcategory_other",      category = "pants_other"},
-        {name = "shop_back", back = true }
-    }},
-    {name = "shop_category_shoes", subcategories = {
-        {name = "shop_subcategory_sport",      category = "sport_shoes"},
-        {name = "shop_subcategory_boots",      category = "boots"},
-        {name = "shop_subcategory_other",      category = "shoes_other"},
-        {name = "shop_back", back = true }
-    }},
+    {name = "shop_category_torso", category = "body"},
+    {name = "shop_subcategory_jacket", category = "jacket"},
+    {name = "shop_category_pants", category = "legs"},
+    {name = "shop_category_shoes", category = "feet"},
     {name = "shop_exit", back = true }
 }}
 

@@ -4,31 +4,28 @@ local autosaveInterval = 180
 
 local clothesData = {
     "clothes_head",
-    "clothes_shirt",
-    "clothes_pants",
-    "clothes_shoes"
+    "clothes_body",
+    "clothes_feet",
+    "clothes_jacket",
 }
 
 local loadAccountData = {
     "username",
     "battlepoints",
     "donatepoints",
-    "clothes_head",
-    "clothes_shirt",
-    "clothes_pants",
-    "clothes_shoes",
     "crate_level"
 }
 
 local saveAccountData = {
     "battlepoints",
     "donatepoints",
-    "clothes_head",
-    "clothes_shirt",
-    "clothes_pants",
-    "clothes_shoes",
     "crate_level"
 }
+
+for i, name in ipairs(clothesData) do
+    table.insert(loadAccountData, name)
+    table.insert(saveAccountData, name)
+end
 
 local protectData = {
     ["crate_level"] = true,
@@ -262,7 +259,7 @@ function dbLoginPlayer(result, params)
 
         local head = player:getData("clothes_head")
         if not exports.pb_clothes:isValidClothesName(head) then
-            player:setData("clothes_head", "head"..math.random(1, 15))
+            player:setData("clothes_head", "head"..math.random(1, 2))
         end
 
         if not result.last_seen then

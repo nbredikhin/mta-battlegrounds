@@ -1,12 +1,12 @@
 ClothesTable = {}
 
-ClothesTable.head_white1 = {
+ClothesTable.head1 = {
     layer    = "head",
     material = "head1",
     texture  = "head/head1/1.png",
 }
 
-ClothesTable.head_black1 = {
+ClothesTable.head2 = {
     layer    = "head",
     material = "head2",
     texture  = "head/head2/1.png",
@@ -25,6 +25,7 @@ ClothesTable.shirt_floral = {
     material = "mbodyd",
     texture  = "body/mbodyd/1.png",
     icon     = "icon_equipment_Body_D_04.png",
+    rarity   = 4,
 }
 
 ClothesTable.shirt_dirty_green = {
@@ -33,6 +34,7 @@ ClothesTable.shirt_dirty_green = {
     material = "mbodyd",
     texture  = "body/mbodyd/2.png",
     icon     = "icon_equipment_Body_D_03.png",
+    rarity   = 6,
 }
 
 ClothesTable.shirt_white_tie = {
@@ -41,6 +43,7 @@ ClothesTable.shirt_white_tie = {
     material = "mbodyd",
     texture  = "body/mbodyd/3.png",
     icon     = "icon_equipment_Body_D_01.png",
+    rarity   = 5,
 }
 
 -- mbodybr03
@@ -51,6 +54,7 @@ ClothesTable.tshirt_camo = {
     material = "mbodybr03",
     texture  = "body/mbodybr03/1.png",
     icon     = "icon_equipment_Body_XB_01.png",
+    rarity   = 6,
 }
 
 ClothesTable.tshirt_raglan1 = {
@@ -59,6 +63,7 @@ ClothesTable.tshirt_raglan1 = {
     material = "mbodybr03",
     texture  = "body/mbodybr03/2.png",
     icon     = "icon_equipment_Body_Raglan_01.png",
+    rarity   = 7,
 }
 
 ClothesTable.tshirt_dmm1 = {
@@ -67,6 +72,7 @@ ClothesTable.tshirt_dmm1 = {
     material = "mbodybr03",
     texture  = "body/mbodybr03/3.png",
     icon     = "icon_equipment_Body_DMM_01.png",
+    rarity   = 6,
 }
 
 ClothesTable.tshirt_dmm2 = {
@@ -75,6 +81,7 @@ ClothesTable.tshirt_dmm2 = {
     material = "mbodybr03",
     texture  = "body/mbodybr03/4.png",
     icon     = "icon_equipment_Body_DMM_02.png",
+    rarity   = 6,
 }
 
 ClothesTable.tshirt_kakao1 = {
@@ -83,6 +90,7 @@ ClothesTable.tshirt_kakao1 = {
     material = "mbodybr03",
     texture  = "body/mbodybr03/5.png",
     icon     = "icon_equipment_Body_KaKao_01.png",
+    rarity   = 7,
 }
 
 ClothesTable.tshirt_kakao2 = {
@@ -91,6 +99,7 @@ ClothesTable.tshirt_kakao2 = {
     material = "mbodybr03",
     texture  = "body/mbodybr03/6.png",
     icon     = "icon_equipment_Body_Kakao_02.png",
+    rarity   = 7,
 }
 
 ClothesTable.tshirt_panda1 = {
@@ -99,6 +108,7 @@ ClothesTable.tshirt_panda1 = {
     material = "mbodybr03",
     texture  = "body/mbodybr03/7.png",
     icon     = "icon_equipment_Body_Panda_01.png",
+    rarity   = 7,
 }
 
 ClothesTable.tshirt_panda2 = {
@@ -107,6 +117,7 @@ ClothesTable.tshirt_panda2 = {
     material = "mbodybr03",
     texture  = "body/mbodybr03/8.png",
     icon     = "icon_equipment_Body_Panda_02.png",
+    rarity   = 7,
 }
 
 ClothesTable.tshirt_pioneer = {
@@ -115,6 +126,8 @@ ClothesTable.tshirt_pioneer = {
     material = "mbodybr03",
     texture  = "body/mbodybr03/9.png",
     icon     = "icon_equipment_Body_EA_01.png",
+    rarity   = 6,
+    price    = "default",
 }
 
 ClothesTable.tshirt_raglan2 = {
@@ -123,6 +136,7 @@ ClothesTable.tshirt_raglan2 = {
     material = "mbodybr03",
     texture  = "body/mbodybr03/10.png",
     icon     = "icon_equipment_Body_Raglan_02.png",
+    rarity   = 7,
 }
 
 -- mbodybr06
@@ -133,6 +147,7 @@ ClothesTable.shirt_school = {
     material = "mbodybr06",
     texture  = "body/mbodybr06/1.png",
     icon     = "icon_equipment_Body_BR06_01.png",
+    rarity   = 3,
 }
 
 -- mbodyc
@@ -143,6 +158,7 @@ ClothesTable.shirt_top_white = {
     material = "mbodyc",
     texture  = "body/mbodyc/1.png",
     icon     = "icon_equipment_Body_C_01.png",
+    rarity   = 7,
 }
 
 ClothesTable.shirt_top_grey = {
@@ -151,6 +167,7 @@ ClothesTable.shirt_top_grey = {
     material = "mbodyc",
     texture  = "body/mbodyc/2.png",
     icon     = "icon_equipment_Body_C_02.png",
+    rarity   = 6,
 }
 
 ClothesTable.shirt_tank_top = {
@@ -159,6 +176,7 @@ ClothesTable.shirt_tank_top = {
     material = "mbodyc",
     texture  = "body/mbodyc/3.png",
     icon     = "icon_equipment_Body_C_04.png",
+    rarity   = 7,
 }
 
 ClothesTable.shirt_top_pricess = {
@@ -167,6 +185,7 @@ ClothesTable.shirt_top_pricess = {
     material = "mbodyc",
     texture  = "body/mbodyc/4.png",
     icon     = "icon_equipment_Body_C_05.png",
+    rarity   = 4,
 }
 
 ClothesTable.shirt_top_stipped = {
@@ -175,6 +194,7 @@ ClothesTable.shirt_top_stipped = {
     material = "mbodyc",
     texture  = "body/mbodyc/5.png",
     icon     = "icon_equipment_Body_C_06.png",
+    rarity   = 5,
 }
 
 -- mbodyf
@@ -185,6 +205,7 @@ ClothesTable.shirt_polka_dot = {
     material = "mbodyf",
     texture  = "body/mbodyf/1.png",
     icon     = "icon_equipment_Body_F_06.png",
+    rarity   = 6,
 }
 
 ClothesTable.shirt_pink_stipped = {
@@ -193,6 +214,7 @@ ClothesTable.shirt_pink_stipped = {
     material = "mbodyf",
     texture  = "body/mbodyf/2.png",
     icon     = "icon_equipment_Body_F_05.png",
+    rarity   = 7,
 }
 
 ClothesTable.shirt_white = {
@@ -201,6 +223,7 @@ ClothesTable.shirt_white = {
     material = "mbodyf",
     texture  = "body/mbodyf/3.png",
     icon     = "icon_equipment_Body_F_04.png",
+    rarity   = 7,
 }
 
 -- mbodyg
@@ -211,6 +234,7 @@ ClothesTable.tshirt_ls_dirty = {
     material = "mbodyg",
     texture  = "body/mbodyg/1.png",
     icon     = "icon_equipment_Body_G_04.png",
+    rarity   = 7,
 }
 
 ClothesTable.tshirt_ls_grey = {
@@ -219,6 +243,7 @@ ClothesTable.tshirt_ls_grey = {
     material = "mbodyg",
     texture  = "body/mbodyg/2.png",
     icon     = "icon_equipment_Body_G_01.png",
+    rarity   = 7,
 }
 
 ClothesTable.tshirt_ls_red = {
@@ -227,6 +252,7 @@ ClothesTable.tshirt_ls_red = {
     material = "mbodyg",
     texture  = "body/mbodyg/3.png",
     icon     = "icon_equipment_Body_G_05.png",
+    rarity   = 7,
 }
 
 ClothesTable.tshirt_ls_telnyashka1 = {
@@ -235,6 +261,7 @@ ClothesTable.tshirt_ls_telnyashka1 = {
     material = "mbodyg",
     texture  = "body/mbodyg/4.png",
     icon     = "icon_equipment_Body_Mailru_01.png",
+    rarity   = 4,
 }
 
 ClothesTable.tshirt_ls_telnyashka2 = {
@@ -243,6 +270,7 @@ ClothesTable.tshirt_ls_telnyashka2 = {
     material = "mbodyg",
     texture  = "body/mbodyg/5.png",
     icon     = "icon_equipment_Body_Mailru_02.png",
+    rarity   = 4,
 }
 
 -- mbodypu
@@ -253,6 +281,7 @@ ClothesTable.shirt_checked_red = {
     material = "mbodypu",
     texture  = "body/mbodypu/1.png",
     icon     = "icon_equipment_Body_PU_02.png",
+    rarity   = 4,
 }
 
 ClothesTable.shirt_checked_white = {
@@ -261,6 +290,7 @@ ClothesTable.shirt_checked_white = {
     material = "mbodypu",
     texture  = "body/mbodypu/2.png",
     icon     = "icon_equipment_Body_PU_03.png",
+    rarity   = 4,
 }
 
 ClothesTable.shirt_checked_choral = {
@@ -269,6 +299,7 @@ ClothesTable.shirt_checked_choral = {
     material = "mbodypu",
     texture  = "body/mbodypu/3.png",
     icon     = "icon_equipment_Body_PU_07.png",
+    rarity   = 4,
 }
 
 ClothesTable.shirt_floral_black = {
@@ -277,6 +308,7 @@ ClothesTable.shirt_floral_black = {
     material = "mbodypu",
     texture  = "body/mbodypu/4.png",
     icon     = "icon_equipment_Body_PU_06.png",
+    rarity   = 3,
 }
 
 ClothesTable.shirt_floral_white = {
@@ -285,6 +317,7 @@ ClothesTable.shirt_floral_white = {
     material = "mbodypu",
     texture  = "body/mbodypu/5.png",
     icon     = "icon_equipment_Body_PU_05.png",
+    rarity   = 4,
 }
 
 ClothesTable.shirt_grey_blood = {
@@ -293,6 +326,7 @@ ClothesTable.shirt_grey_blood = {
     material = "mbodypu",
     texture  = "body/mbodypu/6.png",
     icon     = "icon_equipment_Body_PU_01.png",
+    rarity   = 7,
 }
 
 ClothesTable.shirt_grey_matched = {
@@ -301,6 +335,7 @@ ClothesTable.shirt_grey_matched = {
     material = "mbodypu",
     texture  = "body/mbodypu/7.png",
     icon     = "icon_equipment_Body_PU_04.png",
+    rarity   = 5,
 }
 
 ClothesTable.shirt_grey_stripped = {
@@ -309,6 +344,7 @@ ClothesTable.shirt_grey_stripped = {
     material = "mbodypu",
     texture  = "body/mbodypu/8.png",
     icon     = "icon_equipment_Body_PU_08.png",
+    rarity   = 5,
 }
 
 
@@ -342,6 +378,8 @@ ClothesTable.tracksuit_top1 = {
     material = "mjacketbr01",
     texture  = "jacket/mjacketbr01/1.png",
     icon     = "icon_equipment_Jacket_BR01_01.png",
+    hide     = { elbow = true },
+    rarity   = 3,
 }
 
 -- mjacketbr02
@@ -352,6 +390,8 @@ ClothesTable.checkered_jacket = {
     material = "mjacketbr02",
     texture  = "jacket/mjacketbr02/1.png",
     icon     = "icon_equipment_Jacket_BR02_03.png",
+    hide     = { elbow = true },
+    rarity   = 3,
 }
 
 ClothesTable.school_jacket = {
@@ -360,6 +400,8 @@ ClothesTable.school_jacket = {
     material = "mjacketbr02",
     texture  = "jacket/mjacketbr02/2.png",
     icon     = "icon_equipment_Jacket_BR02_01.png",
+    hide     = { elbow = true },
+    rarity   = 3,
 }
 
 -- mjacketbr04
@@ -370,7 +412,8 @@ ClothesTable.purple_jacket = {
     material = "mjacketbr04",
     texture  = "jacket/mjacketbr04/1.png",
     icon     = "icon_equipment_Jacket_BR04_01.png",
-    hide     = { elbow = true }
+    hide     = { elbow = true },
+    rarity   = 3,
 }
 
 -- mjacketbr05
@@ -381,6 +424,7 @@ ClothesTable.tracksuit_top2 = {
     material = "mjacketbr05",
     texture  = "jacket/mjacketbr05/1.png",
     icon     = "icon_equipment_Jacket_XB_01.png",
+    rarity   = 4,
 }
 
 ClothesTable.tracksuit_top3 = {
@@ -389,6 +433,8 @@ ClothesTable.tracksuit_top3 = {
     material = "mjacketbr05",
     texture  = "jacket/mjacketbr05/2.png",
     icon     = "icon_equipment_Jacket_BR05_01.png",
+    rarity   = 4,
+    price    = "default",
 }
 
 -- mjacketbr06
@@ -399,6 +445,7 @@ ClothesTable.mandarin_jacket1 = {
     material = "mjacketbr06",
     texture  = "jacket/mjacketbr06/1.png",
     icon     = "icon_equipment_Jacket_BR07_01.png",
+    rarity   = 4,
 }
 
 ClothesTable.mandarin_jacket2 = {
@@ -407,6 +454,7 @@ ClothesTable.mandarin_jacket2 = {
     material = "mjacketbr06",
     texture  = "jacket/mjacketbr06/2.png",
     icon     = "icon_equipment_Jacket_BR06_01.png",
+    rarity   = 4,
 }
 
 -- mjacketpu
@@ -428,6 +476,7 @@ ClothesTable.coat = {
     material = "mjacketd",
     texture  = "jacket/mjacketd/4.png",
     icon     = "icon_equipment_Jacket_D_01.png",
+    rarity   = 2,
 }
 
 ClothesTable.coat_camel = {
@@ -436,6 +485,7 @@ ClothesTable.coat_camel = {
     material = "mjacketd",
     texture  = "jacket/mjacketd/1.png",
     icon     = "icon_equipment_Jacket_D_03.png",
+    rarity   = 3,
 }
 
 ClothesTable.coat_gray = {
@@ -444,6 +494,7 @@ ClothesTable.coat_gray = {
     material = "mjacketd",
     texture  = "jacket/mjacketd/2.png",
     icon     = "icon_equipment_Jacket_D_02.png",
+    rarity   = 3,
 }
 
 ClothesTable.coat_red = {
@@ -452,6 +503,7 @@ ClothesTable.coat_red = {
     material = "mjacketd",
     texture  = "jacket/mjacketd/3.png",
     icon     = "icon_equipment_Jacket_D_04.png",
+    rarity   = 2,
 }
 
 ------------------------------
@@ -466,6 +518,7 @@ ClothesTable.pants_sport_white = {
     material = "mlegsbr01",
     texture  = "legs/mlegsbr01/1.png",
     icon     = "icon_equipment_Legs_BR01_01.png",
+    rarity   = 5,
 }
 
 ClothesTable.pants_sport_blue = {
@@ -474,6 +527,7 @@ ClothesTable.pants_sport_blue = {
     material = "mlegsbr01",
     texture  = "legs/mlegsbr01/2.png",
     icon     = "icon_equipment_Legs_BR01_02.png",
+    rarity   = 4,
 }
 
 -- mlegsbr03
@@ -484,6 +538,7 @@ ClothesTable.shorts_jeans = {
     material = "mlegsbr03",
     texture  = "legs/mlegsbr03/1.png",
     icon     = "icon_equipment_Legs_BR03_02.png",
+    rarity   = 2,
 }
 
 ClothesTable.shorts_camo = {
@@ -492,6 +547,7 @@ ClothesTable.shorts_camo = {
     material = "mlegsbr03",
     texture  = "legs/mlegsbr03/2.png",
     icon     = "icon_equipment_Legs_BR03_01.png",
+    rarity   = 2,
 }
 
 -- mlegsbr0201
@@ -502,6 +558,7 @@ ClothesTable.pants_slacks1 = {
     material = "mlegsbr0201",
     texture  = "legs/mlegsbr0201/1.png",
     icon     = "icon_equipment_Legs_BR04_01.png",
+    rarity   = 4,
 }
 
 ClothesTable.pants_slacks2 = {
@@ -510,6 +567,7 @@ ClothesTable.pants_slacks2 = {
     material = "mlegsbr0201",
     texture  = "legs/mlegsbr0201/2.png",
     icon     = "icon_equipment_Legs_BR02_03.png",
+    rarity   = 5,
 }
 
 ClothesTable.pants_slacks3 = {
@@ -518,6 +576,7 @@ ClothesTable.pants_slacks3 = {
     material = "mlegsbr0201",
     texture  = "legs/mlegsbr0201/3.png",
     icon     = "icon_equipment_Legs_BR02_01.png",
+    rarity   = 5,
 }
 
 ClothesTable.pants_slacks4 = {
@@ -526,6 +585,7 @@ ClothesTable.pants_slacks4 = {
     material = "mlegsbr0201",
     texture  = "legs/mlegsbr0201/4.png",
     icon     = "icon_equipment_Legs_BR07_01.png",
+    rarity   = 5,
 }
 
 -- mlegsbr0202
@@ -539,7 +599,8 @@ ClothesTable.skirt1 = {
     show     = {
         legsbody1 = true,
         legsbody2 = true,
-    }
+    },
+    rarity   = 1,
 }
 
 -- mlegsbr0402
@@ -553,7 +614,8 @@ ClothesTable.skirt2 = {
     show     = {
         legsbody1 = true,
         legsbody2 = true,
-    }
+    },
+    rarity   = 1,
 }
 
 -- mlegsbr0602
@@ -567,7 +629,8 @@ ClothesTable.skirt3 = {
     show     = {
         legsbody1 = true,
         legsbody2 = true,
-    }
+    },
+    rarity   = 1,
 }
 
 -- mlegsbr0501
@@ -580,7 +643,8 @@ ClothesTable.shorts_tracksuit1 = {
     icon     = "icon_equipment_Legs_XB_02.png",
     show     = {
         legsbody2 = true,
-    }
+    },
+    rarity   = 4,
 }
 
 ClothesTable.shorts_tracksuit2 = {
@@ -591,7 +655,8 @@ ClothesTable.shorts_tracksuit2 = {
     icon     = "icon_equipment_Legs_BR05_01.png",
     show     = {
         legsbody2 = true,
-    }
+    },
+    rarity   = 4,
 }
 
 -- mlegsc
@@ -601,7 +666,9 @@ ClothesTable.pants_combat1 = {
     layer    = "legs",
     material = "mlegsc",
     texture  = "legs/mlegsc/1.png",
-    icon     = "icon_equipment_Legs_C_05.png"
+    icon     = "icon_equipment_Legs_C_05.png",
+    rarity   = 6,
+    price    = "default",
 }
 
 ClothesTable.pants_combat2 = {
@@ -609,7 +676,8 @@ ClothesTable.pants_combat2 = {
     layer    = "legs",
     material = "mlegsc",
     texture  = "legs/mlegsc/2.png",
-    icon     = "icon_equipment_Legs_C_06.png"
+    icon     = "icon_equipment_Legs_C_06.png",
+    rarity   = 6,
 }
 
 ClothesTable.pants_combat3 = {
@@ -617,7 +685,8 @@ ClothesTable.pants_combat3 = {
     layer    = "legs",
     material = "mlegsc",
     texture  = "legs/mlegsc/3.png",
-    icon     = "icon_equipment_Legs_C_01.png"
+    icon     = "icon_equipment_Legs_C_01.png",
+    rarity   = 6,
 }
 
 ClothesTable.pants_combat4 = {
@@ -625,7 +694,8 @@ ClothesTable.pants_combat4 = {
     layer    = "legs",
     material = "mlegsc",
     texture  = "legs/mlegsc/4.png",
-    icon     = "icon_equipment_Legs_C_04.png"
+    icon     = "icon_equipment_Legs_C_04.png",
+    rarity   = 6,
 }
 
 ClothesTable.pants_combat5 = {
@@ -633,7 +703,8 @@ ClothesTable.pants_combat5 = {
     layer    = "legs",
     material = "mlegsc",
     texture  = "legs/mlegsc/5.png",
-    icon     = "icon_equipment_Legs_C_07.png"
+    icon     = "icon_equipment_Legs_C_07.png",
+    rarity   = 7,
 }
 
 -- mlegsd
@@ -643,7 +714,8 @@ ClothesTable.pants_combat_black = {
     layer    = "legs",
     material = "mlegsd",
     texture  = "legs/mlegsd/1.png",
-    icon     = "icon_equipment_Legs_D_01.png"
+    icon     = "icon_equipment_Legs_D_01.png",
+    rarity   = 7,
 }
 
 -- mlegsk
@@ -653,7 +725,8 @@ ClothesTable.pants_biker_black = {
     layer    = "legs",
     material = "mlegsk",
     texture  = "legs/mlegsk/1.png",
-    icon     = "icon_equipment_Legs_H_01.png"
+    icon     = "icon_equipment_Legs_H_01.png",
+    rarity   = 5,
 }
 
 ClothesTable.pants_biker_gray = {
@@ -661,7 +734,8 @@ ClothesTable.pants_biker_gray = {
     layer    = "legs",
     material = "mlegsk",
     texture  = "legs/mlegsk/2.png",
-    icon     = "icon_equipment_Legs_H_02.png"
+    icon     = "icon_equipment_Legs_H_02.png",
+    rarity   = 5,
 }
 
 ClothesTable.pants_cargo1 = {
@@ -669,7 +743,8 @@ ClothesTable.pants_cargo1 = {
     layer    = "legs",
     material = "mlegsk",
     texture  = "legs/mlegsk/3.png",
-    icon     = "icon_equipment_Legs_K_01.png"
+    icon     = "icon_equipment_Legs_K_01.png",
+    rarity   = 7,
 }
 
 ClothesTable.pants_cargo2 = {
@@ -677,7 +752,8 @@ ClothesTable.pants_cargo2 = {
     layer    = "legs",
     material = "mlegsk",
     texture  = "legs/mlegsk/4.png",
-    icon     = "icon_equipment_Legs_K_02.png"
+    icon     = "icon_equipment_Legs_K_02.png",
+    rarity   = 6,
 }
 
 ClothesTable.pants_cargo3 = {
@@ -685,7 +761,8 @@ ClothesTable.pants_cargo3 = {
     layer    = "legs",
     material = "mlegsk",
     texture  = "legs/mlegsk/5.png",
-    icon     = "icon_equipment_Legs_K_03.png"
+    icon     = "icon_equipment_Legs_K_03.png",
+    rarity   = 6,
 }
 
 ClothesTable.pants_twitch = {
@@ -693,7 +770,8 @@ ClothesTable.pants_twitch = {
     layer    = "legs",
     material = "mlegsk",
     texture  = "legs/mlegsk/6.png",
-    icon     = "icon_equipment_Legs_TW_01.png"
+    icon     = "icon_equipment_Legs_TW_01.png",
+    rarity   = 5,
 }
 
 ------------------------------
@@ -707,7 +785,8 @@ ClothesTable.boots_leather1 = {
     layer    = "feet",
     material = "mfeeta",
     texture  = "feet/mfeeta/1.png",
-    icon     = "icon_equipment_Feet_A_02.png"
+    icon     = "icon_equipment_Feet_A_02.png",
+    rarity   = 4,
 }
 
 ClothesTable.boots_leather2 = {
@@ -715,7 +794,8 @@ ClothesTable.boots_leather2 = {
     layer    = "feet",
     material = "mfeeta",
     texture  = "feet/mfeeta/2.png",
-    icon     = "icon_equipment_Feet_A_01.png"
+    icon     = "icon_equipment_Feet_A_01.png",
+    rarity   = 5,
 }
 
 -- mfeetbr01
@@ -725,7 +805,9 @@ ClothesTable.shoes_trainers1 = {
     layer    = "feet",
     material = "mfeetbr01",
     texture  = "feet/mfeetbr01/1.png",
-    icon     = "icon_equipment_Feet_BR07_01.png"
+    icon     = "icon_equipment_Feet_BR07_01.png",
+    show     = { legsbody3 = true },
+    rarity   = 5,
 }
 
 ClothesTable.shoes_trainers2 = {
@@ -733,7 +815,9 @@ ClothesTable.shoes_trainers2 = {
     layer    = "feet",
     material = "mfeetbr01",
     texture  = "feet/mfeetbr01/2.png",
-    icon     = "icon_equipment_Feet_BR01_01.png"
+    icon     = "icon_equipment_Feet_BR01_01.png",
+    show     = { legsbody3 = true },
+    rarity   = 5,
 }
 
 -- mfeetbr02
@@ -743,7 +827,8 @@ ClothesTable.sneakers1 = {
     layer    = "feet",
     material = "mfeetbr02",
     texture  = "feet/mfeetbr02/1.png",
-    icon     = "icon_equipment_Feet_BR02_02.png"
+    icon     = "icon_equipment_Feet_BR02_02.png",
+    rarity   = 4,
 }
 
 ClothesTable.sneakers2 = {
@@ -751,7 +836,8 @@ ClothesTable.sneakers2 = {
     layer    = "feet",
     material = "mfeetbr02",
     texture  = "feet/mfeetbr02/2.png",
-    icon     = "icon_equipment_Feet_BR02_01.png"
+    icon     = "icon_equipment_Feet_BR02_01.png",
+    rarity   = 3,
 }
 
 -- mfeetbr06
@@ -761,7 +847,8 @@ ClothesTable.shoes_school = {
     layer    = "feet",
     material = "mfeetbr06",
     texture  = "feet/mfeetbr06/1.png",
-    icon     = "icon_equipment_Feet_BR06_01.png"
+    icon     = "icon_equipment_Feet_BR06_01.png",
+    rarity   = 4,
 }
 
 -- mfeetd
@@ -771,7 +858,9 @@ ClothesTable.boots_working1 = {
     layer    = "feet",
     material = "mfeetd",
     texture  = "feet/mfeetd/1.png",
-    icon     = "icon_equipment_Feet_D_01.png"
+    icon     = "icon_equipment_Feet_D_01.png",
+    rarity   = 7,
+    price    = "default",
 }
 
 ClothesTable.boots_working2 = {
@@ -779,7 +868,9 @@ ClothesTable.boots_working2 = {
     layer    = "feet",
     material = "mfeetd",
     texture  = "feet/mfeetd/2.png",
-    icon     = "icon_equipment_Feet_D_02.png"
+    icon     = "icon_equipment_Feet_D_02.png",
+    rarity   = 7,
+    price    = "default",
 }
 
 ClothesTable.boots_working3 = {
@@ -787,7 +878,8 @@ ClothesTable.boots_working3 = {
     layer    = "feet",
     material = "mfeetd",
     texture  = "feet/mfeetd/3.png",
-    icon     = "boots_working3.png"
+    icon     = "boots_working3.png",
+    rarity   = 4,
 }
 
 -- mfeete
@@ -797,7 +889,8 @@ ClothesTable.trainers_hitop1 = {
     layer    = "feet",
     material = "mfeete",
     texture  = "feet/mfeete/1.png",
-    icon     = "icon_equipment_Feet_E_01.png"
+    icon     = "icon_equipment_Feet_E_01.png",
+    rarity   = 7,
 }
 
 -- mfeetpu
@@ -807,7 +900,8 @@ ClothesTable.trainers_hitop2 = {
     layer    = "feet",
     material = "mfeetpu",
     texture  = "feet/mfeetpu/1.png",
-    icon     = "icon_equipment_Feet_PU_01.png"
+    icon     = "icon_equipment_Feet_PU_01.png",
+    rarity   = 2,
 }
 
 ClothesTable.trainers_hitop3 = {
@@ -815,7 +909,8 @@ ClothesTable.trainers_hitop3 = {
     layer    = "feet",
     material = "mfeetpu",
     texture  = "feet/mfeetpu/2.png",
-    icon     = "icon_equipment_Feet_E_02.png"
+    icon     = "icon_equipment_Feet_E_02.png",
+    rarity   = 5,
 }
 
 ClothesTable.trainers_hitop4 = {
@@ -823,7 +918,8 @@ ClothesTable.trainers_hitop4 = {
     layer    = "feet",
     material = "mfeetpu",
     texture  = "feet/mfeetpu/3.png",
-    icon     = "icon_equipment_Feet_E_02.png"
+    icon     = "icon_equipment_Feet_E_03.png",
+    rarity   = 7,
 }
 
 ClothesTable.trainers_hitop5 = {
@@ -831,8 +927,6 @@ ClothesTable.trainers_hitop5 = {
     layer    = "feet",
     material = "mfeetpu",
     texture  = "feet/mfeetpu/4.png",
-    icon     = "icon_equipment_Feet_XB_01.png"
+    icon     = "icon_equipment_Feet_XB_01.png",
+    rarity   = 3,
 }
-
-
-

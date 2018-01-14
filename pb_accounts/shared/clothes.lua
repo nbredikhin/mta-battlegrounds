@@ -1,8 +1,8 @@
 DefaultClothes = {}
 
-DefaultClothes.shirt = "tshirt1"
-DefaultClothes.pants = "jeans1"
-DefaultClothes.shoes = "sneakers1"
+DefaultClothes.body = "tshirt_ls_dirty"
+DefaultClothes.pants = "pants_combat5"
+DefaultClothes.feet = "trainers_hitop1"
 
 function getDefaultClothes(name)
     if name then
