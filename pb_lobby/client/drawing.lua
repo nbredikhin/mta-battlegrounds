@@ -75,10 +75,10 @@ function showKickWindow(player)
 end
 
 function drawStartGameButton()
-    local width = 200
-    local height = 50
-    local x = 20
-    local y = screenSize.y - height - 20
+    local width = 300
+    local height = 70
+    local x = 30
+    local y = screenSize.y - height - 10
 
     local buttonText = localize("lobby_start_game")
     if localPlayer:getData("lobbyReady") then
@@ -95,42 +95,18 @@ function drawStartGameButton()
             buttonText = localize("lobby_searching")
         end
     end
-    drawButton(buttonText, x, y, width, height, tocolor(254, 181, 0), tocolor(255, 255, 255), 3)
-    -- local texture = "assets/corner0.png"
-    -- local scale = 1
-    -- if screenSize.x < 1600 then
-    --     scale = 0.5 + math.max(0, 0.5 * (screenSize.x - 800) / 800)
-    -- end
-    -- local w, h = 496 * scale, 250 * scale
-    -- local lobbyEnoughPlayers = true
-    -- if isMouseOver(0, 0, w * 0.7, h * 0.5) then
-    --     if lobbyEnoughPlayers then
-    --         texture = "assets/corner1.png"
-    --     end
+    dxDrawImage(x, y, width, height, "assets/button.png")
+    local textScale = 3
+    if isMouseOver(x, y, width, height) then
+        dxDrawRectangle(x, y, width, height, tocolor(254, 181, 0, 100))
+        textScale = 3.1
 
-    --     if isMousePressed then
-    --         if lobbyEnoughPlayers then
-    --             localPlayer:setData("lobbyReady", not localPlayer:getData("lobbyReady"))
-    --         else
-    --             localPlayer:setData("lobbyReady", false)
-    --         end
-    --     end
-    -- end
-    -- dxDrawImage(-1, 0, w, h, texture)
-
-    -- local color = tocolor(255, 255, 255)
-    -- if not lobbyEnoughPlayers then
-    --     color = tocolor(150, 150, 150)
-    -- end
-    -- dxDrawText(text, (25 + 5) * scale, (15 + 5) * scale, 0, 0, tocolor(0, 0, 0, 150), 3.5 * scale, "default-bold", "left", "top")
-    -- dxDrawText(text, 25 * scale, 15 * scale, 0, 0, color, 3.5 * scale, "default-bold", "left", "top")
-
-    -- local smallText = localize("lobby_type_"..getLobbyType())
-    -- if not lobbyEnoughPlayers then
-    --     smallText = localize("lobby_not_enough_players")
-    -- end
-    -- dxDrawText(smallText, (25 + 3) * scale, (70 + 3) * scale, 0, 0, tocolor(0, 0, 0, 150), 2 * scale, "default-bold", "left", "top")
-    -- dxDrawText(smallText, 25 * scale, 70 * scale, 0, 0, tocolor(255, 255, 255), 2 * scale, "default-bold", "left", "top")
+        if isMousePressed then
+            localPlayer:setData("lobbyReady", not localPlayer:getData("lobbyReady"))
+        end
+    end
+    dxDrawText(buttonText, x+2, y+2, x + width+2, y + height+2, tocolor(0, 0, 0, 150), textScale, "default-bold", "center", "center")
+    dxDrawText(buttonText, x, y, x + width, y + height, tocolor(255, 255, 255), textScale, "default-bold", "center", "center")
 end
 
 function drawMessageBox()

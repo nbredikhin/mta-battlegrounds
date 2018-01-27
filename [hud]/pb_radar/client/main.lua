@@ -1,8 +1,14 @@
 local isRadarVisible = false
 
 local screenSize = Vector2(guiGetScreenSize())
-local viewportWidth  = 256
-local viewportHeight = 256
+
+local globalScale = 1
+if screenSize.x < 1600 then
+    globalScale = 1 * (screenSize.x - 800) / 800 * 0.3 + 0.7
+end
+
+local viewportWidth  = 256 * globalScale
+local viewportHeight = 256 * globalScale
 local viewportX = screenSize.x - viewportWidth - 37
 local viewportY = screenSize.y - viewportHeight - 30
 local viewport

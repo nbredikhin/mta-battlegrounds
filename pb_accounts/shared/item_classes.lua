@@ -8,7 +8,7 @@ if clothesTable then
                 clothes      = name,
                 price        = data.price or 0,
                 layer        = data.layer,
-                readableName = data.readableName
+                readableName = data.name
             }
         end
     end

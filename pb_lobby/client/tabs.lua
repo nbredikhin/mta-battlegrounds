@@ -7,7 +7,7 @@ local tabsOrder = {
 local currentTabName = "home"
 local currentTab = Tabs.home
 
-local tabsY = 20
+local tabsY = 30
 local tabsHeight = 45
 local tabsX = 100
 local tabsHorizontalOffset = 10
@@ -33,23 +33,18 @@ Tabs.home = {
 
     draw = function ()
         local username = localPlayer:getData("username")
-        local y = 20
+        local y = tabsY
         if username then
-            dxDrawText(string.upper(username), 2, y + 2, screenSize.x - 200 + 2, y + 2, tocolor(0, 0, 0), 2, "default-bold", "right", "top")
-            dxDrawText(string.upper(username), 0, y, screenSize.x - 200, y, tocolor(255, 255, 255), 2, "default-bold", "right", "top")
+            dxDrawText(string.upper(username), 0, y, screenSize.x - 200, y, tocolor(255, 255, 255, 150), 2, "default-bold", "right", "top")
 
-            dxDrawImage(screenSize.x - 180 + 2, y - 0 + 2, 30, 30, "assets/bp.png", 0, 0, 0, tocolor(0, 0, 0))
             dxDrawImage(screenSize.x - 180, y - 0, 30, 30, "assets/bp.png")
             local bPoints = tostring(localPlayer:getData("battlepoints"))
-            dxDrawText(bPoints, screenSize.x - 145 + 2, y + 2, screenSize.x + 2, y + 2, tocolor(0, 0, 0), 2, "default-bold", "left", "top")
             dxDrawText(bPoints, screenSize.x - 145, y, screenSize.x, y, tocolor(255, 255, 255), 2, "default-bold", "left", "top")
 
-            y = y + 40
-            dxDrawImage(screenSize.x - 180 + 2, y - 0 + 2, 30, 30, "assets/dp.png", 0, 0, 0, tocolor(0, 0, 0))
-            dxDrawImage(screenSize.x - 180, y - 0, 30, 30, "assets/dp.png", 0, 0, 0, tocolor(255, 255, 255))
-            local dPoints = tostring(localPlayer:getData("donatepoints"))
-            dxDrawText(dPoints, screenSize.x - 145 + 2, y + 2, screenSize.x + 2, y + 2, tocolor(0, 0, 0), 2, "default-bold", "left", "top")
-            dxDrawText(dPoints, screenSize.x - 145, y, screenSize.x, y, tocolor(51, 151, 198), 2, "default-bold", "left", "top")
+            -- y = y + 40
+            -- dxDrawImage(screenSize.x - 180, y - 0, 30, 30, "assets/dp.png", 0, 0, 0, tocolor(255, 255, 255))
+            -- local dPoints = tostring(localPlayer:getData("donatepoints"))
+            -- dxDrawText(dPoints, screenSize.x - 145, y, screenSize.x, y, tocolor(255, 255, 255), 2, "default-bold", "left", "top")
         end
     end
 }
@@ -103,12 +98,12 @@ function drawTabs()
         end
         if tab == currentTab then
             color = tocolor(254, 181, 0)
-            dxDrawRectangle(x, y + 22 * tabsTextScale + 2, width, 1.5 * tabsTextScale, tocolor(254, 181, 0))
+            dxDrawRectangle(x, y + 15 * tabsTextScale + 2, width, 1.5 * tabsTextScale, tocolor(254, 181, 0))
         end
         if tab.disabled then
             color = tocolor(150, 150, 150)
         end
-        dxDrawText(str, x, y, x, y + tabsHeight, color, tabsTextScale, "default-bold", "left", "center")
+        dxDrawText(str, x, y, x, y + tabsHeight, color, tabsTextScale, "default-bold", "left", "top")
         x = x + width + tabsSpace
     end
 end

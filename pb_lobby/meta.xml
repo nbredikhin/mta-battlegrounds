@@ -17,8 +17,7 @@
     <export type="client" function="setVisible"/>
     <export type="server" function="getPlayerLobbyPlayers"/>
 
-    <file src="assets/corner0.png"/>
-    <file src="assets/corner1.png"/>
+    <file src="assets/button.png"/>
     <file src="assets/logo.png"/>
     <file src="assets/arrow.png"/>
     <file src="assets/invite.png"/>
@@ -27,9 +26,9 @@
     <file src="assets/gradient.png"/>
 
     <file src="assets/icons/tags/hat.png"/>
-    <file src="assets/icons/tags/pants.png"/>
-    <file src="assets/icons/tags/shirt.png"/>
-    <file src="assets/icons/tags/shoes.png"/>
+    <file src="assets/icons/tags/legs.png"/>
+    <file src="assets/icons/tags/body.png"/>
+    <file src="assets/icons/tags/feet.png"/>
 
     <file src="assets/icons/crates/crate_weekly1.png"/>
     <file src="assets/icons/crates/crate_weekly2.png"/>

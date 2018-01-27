@@ -3,6 +3,7 @@ local serverId = 1337
 local autosaveInterval = 180
 
 local clothesData = {
+    "clothes_hat",
     "clothes_head",
     "clothes_body",
     "clothes_feet",
@@ -172,6 +173,9 @@ function savePlayerAccount(player)
 
     for i, name in ipairs(saveAccountData) do
         local value = player:getData(name)
+        if not value then
+            value = nil
+        end
         table.insert(saveQuery, tostring(name) .. " = ?")
         table.insert(saveArgs, value)
     end
@@ -438,10 +442,11 @@ addEventHandler("onResourceStart", resourceRoot, function ()
 
             online_server INTEGER UNSIGNED NOT NULL DEFAULT 0,
 
-            clothes_head  VARCHAR(64),
-            clothes_shirt VARCHAR(64),
-            clothes_pants VARCHAR(64),
-            clothes_shoes VARCHAR(64)
+            clothes_hat  VARCHAR(64),
+            clothes_head VARCHAR(64),
+            clothes_body VARCHAR(64),
+            clothes_legs VARCHAR(64),
+            clothes_feet VARCHAR(64)
         );
     ]])
 

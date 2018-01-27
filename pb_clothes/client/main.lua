@@ -74,7 +74,7 @@ function loadPedClothes(ped)
     -- Цвет кожи, определяется головой
     local bodyTextureName = "whitebody"
     local head = ped:getData("clothes_head")
-    if head and ClothesTable[head].body then
+    if head and ClothesTable[head] and ClothesTable[head].body then
         bodyTextureName = ClothesTable[head].body
     end
     -- Текстура тела

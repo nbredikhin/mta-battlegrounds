@@ -9,6 +9,15 @@ local localPlayerClothes = {}
 local cameraLookAt = Vector3()
 local targetLookAt = Vector3()
 
+local layerNames = {
+    "head",
+    "body",
+    "jacket",
+    "legs",
+    "feet",
+    "gloves"
+}
+
 local function createLobbyPed(position)
     local ped = createPed(235, position, -40)
     ped.frozen = true
@@ -20,10 +29,9 @@ end
 
 function updatePedClothes(ped, player)
     if isElement(ped) and isElement(player) then
-        ped:setData("clothes_head", player:getData("clothes_head"))
-        ped:setData("clothes_shirt", player:getData("clothes_shirt"))
-        ped:setData("clothes_pants", player:getData("clothes_pants"))
-        ped:setData("clothes_shoes", player:getData("clothes_shoes"))
+        for i, name in ipairs(layerNames) do
+            ped:setData("clothes_"..name, player:getData("clothes_"..name))
+        end
     end
 end
 
@@ -49,7 +57,7 @@ function setClothesCamera(active)
     if not active then
         targetLookAt = playerPed.position + Vector3(0, 0, 0.3)
     else
-        targetLookAt = playerPed.position + Vector3(2, 0, 0)
+        targetLookAt = playerPed.position + Vector3(-2, 0, 0)
     end
 end
 

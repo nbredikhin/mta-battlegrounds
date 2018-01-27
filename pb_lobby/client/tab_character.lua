@@ -19,9 +19,9 @@ local itemsY = screenSize.y / 2 - itemsHeight / 2
 
 local tagNames = {
     "hat",
-    "shirt",
-    "pants",
-    "shoes"
+    "body",
+    "legs",
+    "feet"
 }
 
 local currentTag = nil
@@ -73,15 +73,19 @@ local function draw()
                 local alpha1 = 100
                 if isMouseOver(bx, y, bw, itemHeight) then
                     alpha1 = 200
-                    if isMousePressed and not isClothesOnPlayer then
-                        triggerServerEvent("onPlayerSelectClothes", resourceRoot, item.name)
+                    if isMousePressed then
+                        if isClothesOnPlayer then
+                            triggerServerEvent("onPlayerUnequipClothes", resourceRoot, item.itemClass.layer)
+                        else
+                            triggerServerEvent("onPlayerSelectClothes", resourceRoot, item.name)
+                        end
                     end
                 end
                 dxDrawRectangle(bx, y, bw, itemHeight, tocolor(255, 255, 255, alpha1))
                 if not isClothesOnPlayer then
                     dxDrawText("Надеть", bx, y, bx + bw, y + itemHeight, tocolor(0, 0, 0, alpha1), 1.4, "default-bold", "center", "center")
                 else
-                    dxDrawText("Надето", bx, y, bx + bw, y + itemHeight, tocolor(0, 0, 0, 50), 1.4, "default-bold", "center", "center")
+                    dxDrawText("Снять", bx, y, bx + bw, y + itemHeight, tocolor(0, 0, 0, alpha1), 1.4, "default-bold", "center", "center")
                 end
 
                 if not isSellDisabled then
@@ -165,7 +169,7 @@ function updateInventory()
     inventoryItems = {}
     for name, item in pairs(localInventory) do
         local itemClass = exports.pb_accounts:getItemClass(item.name)
-        if itemClass.clothes then
+        if itemClass and itemClass.clothes then
             item.itemClass = itemClass
             item.sellPrice = exports.pb_accounts:calculateClothesSellPrice(itemClass.price)
             if currentTag then
@@ -177,9 +181,9 @@ function updateInventory()
             end
         end
     end
-    table.sort(inventoryItems, function (a, b)
-        return a.itemClass.readableName < b.itemClass.readableName
-    end)
+    -- table.sort(inventoryItems, function (a, b)
+    --     return a.itemClass.readableName < b.itemClass.readableName
+    -- end)
 
     maxVisibleItemsCount = #inventoryItems - visibleItemsCount + 1
 

@@ -19,6 +19,14 @@ addEventHandler("onPlayerSelectClothes", root, function (itemName)
     savePlayersQueue[client] = true
 end)
 
+addEvent("onPlayerUnequipClothes", true)
+addEventHandler("onPlayerUnequipClothes", root, function (layer)
+    if not layer then
+        return
+    end
+    client:removeData("clothes_"..layer)
+end)
+
 setTimer(function ()
     for player in pairs(savePlayersQueue) do
         savePlayerAccountData(player)
