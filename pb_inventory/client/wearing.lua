@@ -19,15 +19,15 @@ local itemsAttach = {
         rz = 180
     },
 
-    helmet = {
-        bone = 1,
-        x = 0,
-        y = 0.065,
-        z = 0.055,
-        rx = 10,
-        ry = 0,
-        rz = 180
-    },
+    -- helmet = {
+    --     bone = 1,
+    --     x = 0,
+    --     y = 0.065,
+    --     z = 0.055,
+    --     rx = 10,
+    --     ry = 0,
+    --     rz = 180
+    -- },
 
     primary1 = {
         bone = 3,

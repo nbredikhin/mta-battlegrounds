@@ -28,7 +28,7 @@
     <file src="assets/textures/skin/whitebody.png"/>
 
     <!-- Сгенерированная одежда -->
-    <file src="assets/textures/legs/mlegsk/6.png"/>
+    <!-- <file src="assets/textures/legs/mlegsk/6.png"/>
     <file src="assets/textures/icons/icon_equipment_Legs_TW_01.png"/>
     <file src="assets/textures/feet/mfeetbr02/2.png"/>
     <file src="assets/textures/icons/icon_equipment_Feet_BR02_01.png"/>
@@ -209,5 +209,5 @@
     <file src="assets/textures/jacket/mghilie/1.png"/>
     <file src="assets/textures/icons/icon_equipment_Ghillie_01.png"/>
     <file src="assets/textures/body/mbodyf/1.png"/>
-    <file src="assets/textures/icons/icon_equipment_Body_F_06.png"/>
+    <file src="assets/textures/icons/icon_equipment_Body_F_06.png"/> -->
 </meta>

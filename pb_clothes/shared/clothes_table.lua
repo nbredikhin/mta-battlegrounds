@@ -148,6 +148,7 @@ ClothesTable.shirt_school = {
     texture  = "body/mbodybr06/1.png",
     icon     = "icon_equipment_Body_BR06_01.png",
     rarity   = 3,
+    hide     = { forearm = true },
 }
 
 -- mbodyc
@@ -929,4 +930,59 @@ ClothesTable.trainers_hitop5 = {
     texture  = "feet/mfeetpu/4.png",
     icon     = "icon_equipment_Feet_XB_01.png",
     rarity   = 3,
+}
+
+-----------------------------
+------------ HAT ------------
+-----------------------------
+
+ClothesTable.helmet1 = {
+    name     = "Helmet Lvl1",
+    layer    = "hat",
+    model    = 1854,
+    icon     = nil,
+    attach   = {
+        bone = 1,
+        x = 0,
+        y = 0.02,
+        z = 0.099,
+        rx = 5,
+        ry = 0,
+        rz = 180,
+        scale = 1.05,
+    }
+}
+
+ClothesTable.helmet2 = {
+    name     = "Helmet Lvl2",
+    layer    = "hat",
+    model    = 1855,
+    icon     = nil,
+    attach   = {
+        bone = 1,
+        x = 0,
+        y = 0.035,
+        z = 0.099,
+        rx = 0,
+        ry = 0,
+        rz = 180,
+        scale = 1.02,
+    }
+}
+
+ClothesTable.helmet3 = {
+    name     = "Helmet Lvl3",
+    layer    = "hat",
+    model    = 1856,
+    icon     = nil,
+    attach   = {
+        bone = 1,
+        x = 0,
+        y = 0.045,
+        z = 0.09,
+        rx = 5,
+        ry = 0,
+        rz = 180,
+        scale = 1.1,
+    }
 }

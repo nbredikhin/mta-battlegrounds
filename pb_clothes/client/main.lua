@@ -5,7 +5,21 @@ local layerNames = {
     "jacket",
     "legs",
     "feet",
-    "gloves"
+    "gloves",
+    "hat"
+}
+
+local attachOffsets = {
+    hat = {
+        bone = 1,
+        x = 0,
+        y = 0.02,
+        z = 0.099,
+        rx = 5,
+        ry = 0,
+        rz = 180,
+        scale = 1.05,
+    }
 }
 
 local bodyParts = {
@@ -83,21 +97,40 @@ function loadPedClothes(ped)
     for i, layer in ipairs(layerNames) do
         local name = ped:getData("clothes_" .. tostring(layer))
         if name and ClothesTable[name] then
-            local texture = getTexture("assets/textures/" .. ClothesTable[name].texture)
-            if layer == "body" then
-                for i = 1, 3 do
-                    local useTexture = texture
-                    if i == 1 then
-                        useTexture = bodyTexture
+            local texture
+            if ClothesTable[name].texture then
+                texture = getTexture("assets/textures/" .. ClothesTable[name].texture)
+            end
+            if ClothesTable[name].material then
+                if layer == "body" then
+                    for i = 1, 3 do
+                        local useTexture = texture
+                        if i == 1 then
+                            useTexture = bodyTexture
+                        end
+                        if not (i == 2 and hasJacket) then
+                            iprint(1, name)
+                            local shader = createClothesShader(ped, ClothesTable[name].material .. "p"..i, useTexture)
+                            table.insert(loadedClothes[ped], shader)
+                        end
                     end
-                    if not (i == 2 and hasJacket) then
-                        local shader = createClothesShader(ped, ClothesTable[name].material .. "p"..i, useTexture)
-                        table.insert(loadedClothes[ped], shader)
-                    end
+                else
+                    local shader = createClothesShader(ped, ClothesTable[name].material, texture)
+                    table.insert(loadedClothes[ped], shader)
                 end
-            else
-                local shader = createClothesShader(ped, ClothesTable[name].material, texture)
-                table.insert(loadedClothes[ped], shader)
+            elseif ClothesTable[name].model then
+                local object = createObject(ClothesTable[name].model, ped.position)
+                object:setCollisionsEnabled(false)
+                object.doubleSided = true
+                object.dimension = ped.dimension
+                local attach = ClothesTable[name].attach or attachOffsets[layer]
+                if attach.scale then
+                    object.scale = attach.scale
+                end
+                exports.bone_attach:attachElementToBone(object, ped, attach.bone,
+                    attach.x, attach.y, attach.z,
+                    attach.rx, attach.ry, attach.rz)
+                table.insert(loadedClothes[ped], object)
             end
 
             if ClothesTable[name].hide then
