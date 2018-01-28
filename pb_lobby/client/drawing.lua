@@ -198,6 +198,23 @@ function drawInvitePanel()
     end
 end
 
+function drawBattlepoints()
+    local x, y = getTabsPosition()
+    local username = localPlayer:getData("username")
+    if username then
+        dxDrawText(string.upper(username), 0, y, screenSize.x - 200, y, tocolor(255, 255, 255, 150), 2, "default-bold", "right", "top")
+
+        dxDrawImage(screenSize.x - 180, y - 0, 30, 30, "assets/bp.png")
+        local bPoints = tostring(localPlayer:getData("battlepoints"))
+        dxDrawText(bPoints, screenSize.x - 145, y, screenSize.x, y, tocolor(255, 255, 255), 2, "default-bold", "left", "top")
+
+        -- y = y + 40
+        -- dxDrawImage(screenSize.x - 180, y - 0, 30, 30, "assets/dp.png", 0, 0, 0, tocolor(255, 255, 255))
+        -- local dPoints = tostring(localPlayer:getData("donatepoints"))
+        -- dxDrawText(dPoints, screenSize.x - 145, y, screenSize.x, y, tocolor(255, 255, 255), 2, "default-bold", "left", "top")
+    end
+end
+
 addEventHandler("onClientRender", root, function ()
     if not isLobbyVisible then
         return
@@ -245,49 +262,6 @@ addEventHandler("onClientRender", root, function ()
     drawWindow()
     drawInvitePanel()
 end)
-
-function setVisible(visible)
-    if isLobbyVisible == not not visible then
-        return
-    end
-    isLobbyVisible = not not visible
-
-    showCursor(isLobbyVisible)
-    localPlayer:setData("lobbyReady", false)
-    if isLobbyVisible then
-        resetFarClipDistance()
-        resetFogDistance()
-        localPlayer.interior = 0
-        localPlayer.position = Vector3(3500, 0, 100)
-        localPlayer.frozen = true
-        if math.random() > 0.5 then
-            setWeather(3)
-            setTime(19, 40)
-        else
-            setWeather(2)
-            setTime(12, 0)
-        end
-        for i, element in ipairs(getResourceFromName("pb_mapping").rootElement:getChildren()) do
-            element.dimension = localPlayer.dimension
-        end
-        setMinuteDuration(600000)
-        startSkinSelect()
-        triggerServerEvent("updateLobby", resourceRoot)
-        fadeCamera(true)
-        resetTab()
-    else
-        localPlayer.frozen = false
-        resetFarClipDistance()
-        resetFogDistance()
-        stopSkinSelect()
-        clearPeds()
-        hideInviteSendWindow()
-    end
-end
-
-function isVisible()
-    return isLobbyVisible
-end
 
 addEvent("updateLobbyPlayersCount", true)
 addEventHandler("updateLobbyPlayersCount", root, function (count, matches)

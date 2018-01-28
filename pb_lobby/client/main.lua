@@ -12,6 +12,7 @@ local pedPositions = {
 local lobbyPeds = {}
 local currentLobbyOwner = localPlayer
 local lobbyPlayersList = {}
+local backgroundVehicle
 
 function isOwnLobby()
     return currentLobbyOwner == localPlayer
@@ -100,7 +101,7 @@ end, 500, 0)
 
 addEventHandler("onClientResourceStart", resourceRoot, function ()
     localPlayer:setData("lobbyReady", false)
-    setVisible(true)
+    -- setVisible(true)
 
     triggerServerEvent("updateLobby", resourceRoot)
 end)
@@ -176,3 +177,53 @@ setTimer(function ()
 
     triggerServerEvent("onLobbyStartSearch", resourceRoot)
 end, 3000, 0)
+
+function setVisible(visible)
+    if isLobbyVisible == not not visible then
+        return
+    end
+    isLobbyVisible = not not visible
+
+    showCursor(isLobbyVisible)
+    localPlayer:setData("lobbyReady", false)
+    if isLobbyVisible then
+        resetFarClipDistance()
+        resetFogDistance()
+        localPlayer.interior = 0
+        localPlayer.position = Vector3(3500, 0, 100)
+        localPlayer.frozen = true
+        if math.random() > 0.5 then
+            setWeather(3)
+            setTime(19, 40)
+        else
+            setWeather(2)
+            setTime(12, 0)
+        end
+        for i, element in ipairs(getResourceFromName("pb_mapping").rootElement:getChildren()) do
+            element.dimension = localPlayer.dimension
+        end
+        setMinuteDuration(600000)
+        startSkinSelect()
+        triggerServerEvent("updateLobby", resourceRoot)
+        fadeCamera(true)
+        resetTab()
+        backgroundVehicle = createVehicle(542, 128.783, 7.837, 0.575, 357.318, 1.733, 29.949)
+        backgroundVehicle.frozen = true
+        backgroundVehicle:setCollisionsEnabled(false)
+        backgroundVehicle.dimension = localPlayer.dimension
+    else
+        localPlayer.frozen = false
+        resetFarClipDistance()
+        resetFogDistance()
+        stopSkinSelect()
+        clearPeds()
+        hideInviteSendWindow()
+        if isElement(backgroundVehicle) then
+            destroyElement(backgroundVehicle)
+        end
+    end
+end
+
+function isVisible()
+    return isLobbyVisible
+end

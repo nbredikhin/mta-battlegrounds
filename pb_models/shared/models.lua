@@ -50,6 +50,7 @@ ReplacedModels = {
     mheadd01  = 1876,
     mheadd02  = 1877,
     mheadh    = 1878,
+    uganda    = 1879,
 }
 
 OverwriteFiles = {

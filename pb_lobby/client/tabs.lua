@@ -34,22 +34,13 @@ Tabs.home = {
     title = localize("lobby_tab_home"),
 
     draw = function ()
-        local username = localPlayer:getData("username")
-        local y = tabsY
-        if username then
-            dxDrawText(string.upper(username), 0, y, screenSize.x - 200, y, tocolor(255, 255, 255, 150), 2, "default-bold", "right", "top")
-
-            dxDrawImage(screenSize.x - 180, y - 0, 30, 30, "assets/bp.png")
-            local bPoints = tostring(localPlayer:getData("battlepoints"))
-            dxDrawText(bPoints, screenSize.x - 145, y, screenSize.x, y, tocolor(255, 255, 255), 2, "default-bold", "left", "top")
-
-            -- y = y + 40
-            -- dxDrawImage(screenSize.x - 180, y - 0, 30, 30, "assets/dp.png", 0, 0, 0, tocolor(255, 255, 255))
-            -- local dPoints = tostring(localPlayer:getData("donatepoints"))
-            -- dxDrawText(dPoints, screenSize.x - 145, y, screenSize.x, y, tocolor(255, 255, 255), 2, "default-bold", "left", "top")
-        end
+        drawBattlepoints()
     end
 }
+
+function getTabsPosition()
+    return tabsX, tabsY
+end
 
 Tabs.shop = {
     title = localize("lobby_tab_shop"),

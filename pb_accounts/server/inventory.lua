@@ -114,8 +114,7 @@ function setupPlayerInventory(player, playerInventory)
     for layer, name in pairs(DefaultClothes) do
         local itemName = "clothes_"..tostring(name)
         if not isItem(playerInventory[itemName]) then
-            local item = createItem(itemName)
-            playerInventory[item.name] = item
+            playerInventory[itemName] = createItem(itemName)
         end
     end
     playerInventories[player] = playerInventory

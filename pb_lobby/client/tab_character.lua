@@ -31,6 +31,8 @@ local inventoryItems = {}
 local clothesIcons = {}
 
 local function draw()
+    drawBattlepoints()
+
     local x = itemsX + animOffset
     local y = itemsY
     local tagName = localize("clothes_all")

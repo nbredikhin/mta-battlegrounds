@@ -140,6 +140,9 @@ function savePlayerAccountData(player)
 
     for i, name in ipairs(saveAccountData) do
         local value = player:getData(name)
+        if not value then
+            value = nil
+        end
         table.insert(saveQuery, tostring(name) .. " = ?")
         table.insert(saveArgs, value)
     end
@@ -279,7 +282,6 @@ function dbLoginPlayer(result, params)
         end
 
         setupPlayerInventory(player, fromJSON(result.items))
-        giveMissingPlayerClothes(player)
         setupPlayerSession(player, result)
 
         savePlayerAccount(player)

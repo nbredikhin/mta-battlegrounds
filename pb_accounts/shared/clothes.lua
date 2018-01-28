@@ -1,7 +1,7 @@
 DefaultClothes = {}
 
 DefaultClothes.body = "tshirt_ls_dirty"
-DefaultClothes.pants = "pants_combat5"
+DefaultClothes.legs = "pants_combat5"
 DefaultClothes.feet = "trainers_hitop1"
 
 function getDefaultClothes(name)

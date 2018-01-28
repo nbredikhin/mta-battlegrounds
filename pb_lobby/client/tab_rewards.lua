@@ -246,6 +246,8 @@ local function draw()
     elseif currentSection == "open_crate" then
         drawOpenCrate(x, y, math.min(panelHeight, panelWidth - 160), panelHeight)
     end
+
+    drawBattlepoints()
 end
 
 local function handleInventoryChange()

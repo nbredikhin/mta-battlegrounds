@@ -68,10 +68,14 @@ function loadPedClothes(ped)
     unloadPedClothes(ped)
     loadedClothes[ped] = {}
     -- Наличие слоев одежды
-    local hasJacket = not not ped:getData("clothes_jacket")
-    local hasShirt  = not not ped:getData("clothes_body")
-    local hasPants  = not not ped:getData("clothes_legs")
-    local hasShoes  = not not ped:getData("clothes_feet")
+    local hasJacket = ped:getData("clothes_jacket")
+    hasJacket = not not ClothesTable[hasJacket]
+    local hasShirt  = ped:getData("clothes_body")
+    hasShirt = not not ClothesTable[hasShirt]
+    local hasPants  = ped:getData("clothes_legs")
+    hasPants = not not ClothesTable[hasPants]
+    local hasShoes  = ped:getData("clothes_feet")
+    hasShoes = not not ClothesTable[hasShoes]
     -- Части тела, которые должны быть скрыты
     local hideParts = {}
     -- Части тела, для которых игнорируется скрытие
