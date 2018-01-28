@@ -50,6 +50,10 @@ Languages.russian = {
     lobby_tab_rewards = "НАГРАДЫ",
     lobby_tab_character = "ПЕРСОНАЖ",
 
+    lobby_clothes_takeon = "Надеть",
+    lobby_clothes_takeoff = "Снять",
+    lobby_clothes_sell = "Продать",
+
     lobby_statistics = "Моя статистика",
     lobby_rating = "Таблица лидеров",
 
@@ -167,9 +171,10 @@ Languages.russian = {
 
     -- Clothes
     clothes_head = "Лицо",
-    clothes_shirt = "Верх",
-    clothes_pants = "Штаны",
-    clothes_shoes = "Обувь",
+    clothes_body = "Верх",
+    clothes_legs = "Штаны",
+    clothes_feet = "Обувь",
+    clothes_jacket = "Куртки",
     clothes_hat = "Шапки",
     clothes_all = "Вся одежда",
 

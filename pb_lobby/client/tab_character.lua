@@ -20,8 +20,9 @@ local itemsY = screenSize.y / 2 - itemsHeight / 2
 local tagNames = {
     "hat",
     "body",
+    "jacket",
     "legs",
-    "feet"
+    "feet",
 }
 
 local currentTag = nil
@@ -83,9 +84,9 @@ local function draw()
                 end
                 dxDrawRectangle(bx, y, bw, itemHeight, tocolor(255, 255, 255, alpha1))
                 if not isClothesOnPlayer then
-                    dxDrawText("Надеть", bx, y, bx + bw, y + itemHeight, tocolor(0, 0, 0, alpha1), 1.4, "default-bold", "center", "center")
+                    dxDrawText(localize("lobby_clothes_takeon"), bx, y, bx + bw, y + itemHeight, tocolor(0, 0, 0, alpha1), 1.4, "default-bold", "center", "center")
                 else
-                    dxDrawText("Снять", bx, y, bx + bw, y + itemHeight, tocolor(0, 0, 0, alpha1), 1.4, "default-bold", "center", "center")
+                    dxDrawText(localize("lobby_clothes_takeoff"), bx, y, bx + bw, y + itemHeight, tocolor(0, 0, 0, alpha1), 1.4, "default-bold", "center", "center")
                 end
 
                 if not isSellDisabled then
@@ -99,7 +100,7 @@ local function draw()
                         end
                     end
                     dxDrawRectangle(bx, y, bw, itemHeight, tocolor(255, 0, 0, alpha2))
-                    dxDrawText("Продать\n("..tostring(item.sellPrice).." BP)", bx, y, bx + bw, y + itemHeight, tocolor(255, 255, 255, alpha2), 1, "default", "center", "center")
+                    dxDrawText(localize("lobby_clothes_sell").."\n("..tostring(item.sellPrice).." BP)", bx, y, bx + bw, y + itemHeight, tocolor(255, 255, 255, alpha2), 1, "default", "center", "center")
                 end
             end
             y = y + itemHeight + itemSpace
@@ -111,20 +112,24 @@ local function draw()
     y = itemsY
     for i = 1, #tagNames do
         dxDrawRectangle(x, y, itemHeight, itemHeight, tocolor(0, 0, 0, 200))
-        local alpha = 100
+        local color = tocolor(255, 255, 255, 100)
         if isMouseOver(x, y, itemHeight, itemHeight) then
-            alpha = 200
+            color = tocolor(255, 255, 255, 255)
 
             if isMousePressed then
-                currentTag = tagNames[i]
+                if currentTag ~= tagNames[i] then
+                    currentTag = tagNames[i]
+                else
+                    currentTag = nil
+                end
                 updateInventory()
                 visibleItemsOffset = 1
             end
         end
         if currentTag and tagNames[i] == currentTag then
-            alpha = 255
+            color = tocolor(254, 181, 0)
         end
-        dxDrawImage(x + 10, y + 10, itemHeight - 20, itemHeight - 20, tagIcons[tagNames[i]], 0, 0, 0, tocolor(255, 255, 255, alpha))
+        dxDrawImage(x + 10, y + 10, itemHeight - 20, itemHeight - 20, tagIcons[tagNames[i]], 0, 0, 0, color)
         y = y + itemHeight + itemSpace
     end
 

@@ -28,6 +28,8 @@ if screenSize.x < 1024 then
     tabsY = 10
 end
 
+local selectAnim = 0
+
 Tabs.home = {
     title = localize("lobby_tab_home"),
 
@@ -77,7 +79,7 @@ function drawTabs()
     if currentTab and currentTab.draw then
         currentTab.draw()
     end
-
+    selectAnim = selectAnim + (1 - selectAnim) * 0.2
     for i = 1, #tabsOrder do
         local tab = Tabs[tabsOrder[i]]
         local str = localize(tab.title)
@@ -89,6 +91,7 @@ function drawTabs()
                 if currentTab and currentTab.unload then
                     currentTab.unload()
                 end
+                selectAnim = 0
                 currentTab = tab
                 currentTabName = tabsOrder[i]
                 if currentTab.load then
@@ -97,8 +100,8 @@ function drawTabs()
             end
         end
         if tab == currentTab then
-            color = tocolor(254, 181, 0)
-            dxDrawRectangle(x, y + 15 * tabsTextScale + 2, width, 1.5 * tabsTextScale, tocolor(254, 181, 0))
+            color = tocolor(150 + (254 - 150) * selectAnim, 150 + (181 - 150) * selectAnim, 150 - 150 * selectAnim, 150 + (255 - 150) * selectAnim)
+            dxDrawRectangle(x, y + 15 * tabsTextScale + 2, width*selectAnim, 1.5 * tabsTextScale, tocolor(254, 181, 0))
         end
         if tab.disabled then
             color = tocolor(150, 150, 150)

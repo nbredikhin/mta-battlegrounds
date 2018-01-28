@@ -50,6 +50,10 @@ Languages.english = {
     lobby_tab_rewards = "REWARDS",
     lobby_tab_character = "CHARACTER",
 
+    lobby_clothes_takeon = "Wear",
+    lobby_clothes_takeoff = "Take off",
+    lobby_clothes_sell = "Sell",
+
     lobby_statistics = "My stats",
     lobby_rating = "Leaderboard",
 
@@ -167,9 +171,10 @@ Languages.english = {
 
     -- Clothes
     clothes_head = "Head",
-    clothes_shirt = "Torso",
-    clothes_pants = "Legs",
-    clothes_shoes = "Shoes",
+    clothes_body = "Torso",
+    clothes_legs = "Legs",
+    clothes_feet = "Shoes",
+    clothes_jacket = "Shoes",
     clothes_hat = "Hats",
     clothes_all = "All clothes",
 

@@ -3,9 +3,9 @@
 -- end
 
 local pedPositions = {
-    { pos = Vector3 { x = 5157.101, y = -942.891, z = 37.566 }, rot = 130 },
-    { pos = Vector3 { x = 5158.386, y = -944.354, z = 37.566 }, rot = 145 },
-    { pos = Vector3 { x = 5159.381, y = -944.628, z = 37.566 }, rot = 155 },
+    { pos = Vector3(131.7, 28.5, 1.289), rot = -30 },
+    { pos = Vector3(133, 26.5, 1.289), rot = -50 },
+    { pos = Vector3(133.3, 25.2, 1.289), rot = -60 },
 }
 
 -- [player] = ped

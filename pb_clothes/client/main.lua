@@ -82,7 +82,7 @@ function loadPedClothes(ped)
     if head and ClothesTable[head] and ClothesTable[head].body then
         bodyTextureName = ClothesTable[head].body
     end
-    ped.doubleSided = true
+    ped.doubleSided = false
     -- Текстура тела
     local bodyTexture = getTexture("assets/textures/skin/"..bodyTextureName..".png")
 
@@ -123,7 +123,6 @@ function loadPedClothes(ped)
                             useTexture = bodyTexture
                         end
                         if not (i == 2 and hasJacket) then
-                            iprint(1, name)
                             local shader = createClothesShader(ped, ClothesTable[name].material .. "p"..i, useTexture)
                             table.insert(loadedClothes[ped], shader)
                         end

@@ -8,6 +8,8 @@ local localPlayerClothes = {}
 
 local cameraLookAt = Vector3()
 local targetLookAt = Vector3()
+local cameraFOV = 70
+local targetFOV = 70
 
 local layerNames = {
     "head",
@@ -15,7 +17,8 @@ local layerNames = {
     "jacket",
     "legs",
     "feet",
-    "gloves"
+    "gloves",
+    "hat"
 }
 
 local function createLobbyPed(position)
@@ -39,14 +42,17 @@ addEventHandler("onClientPreRender", root, function (dt)
     if not isVisible() then
         return
     end
-    setCameraMatrix(playerPed.matrix:transformPosition(0.5, 3.7, 0.2), cameraLookAt, 0, 70)
+    setCameraMatrix(playerPed.matrix:transformPosition(0.5, 3.7, 0.2), cameraLookAt, 0, cameraFOV)
 
     cameraLookAt = cameraLookAt + (targetLookAt - cameraLookAt) * dt * 0.0035
+    cameraFOV = cameraFOV + (targetFOV - cameraFOV) * dt * 0.003
 end)
 
 function resetCamera()
     cameraLookAt = playerPed.position + Vector3(0, 0, 0.2)
     targetLookAt = playerPed.position + Vector3(0, 0, 0.2)
+    cameraFOV = 70
+    targetFOV = 70
 end
 
 function getLocalPlayerPed()
@@ -56,8 +62,10 @@ end
 function setClothesCamera(active)
     if not active then
         targetLookAt = playerPed.position + Vector3(0, 0, 0.3)
+        targetFOV = 70
     else
-        targetLookAt = playerPed.position + Vector3(-2, 0, 0)
+        targetLookAt = playerPed.matrix:transformPosition(-1, -2, -0.05)
+        targetFOV = 58
     end
 end
 

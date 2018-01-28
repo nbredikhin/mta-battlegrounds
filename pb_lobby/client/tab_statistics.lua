@@ -20,6 +20,8 @@ local localPlayerStats = {}
 local localPlayerRating = {}
 local topPlayersRating = {}
 
+local showAnim = 0
+
 local function requireRating()
     if isTimer(updateFloodTimers[currentRatingMode]) then
         return
@@ -51,27 +53,27 @@ local function playtimeToString(playtime)
     return playtime
 end
 
-local function drawStatsBlock(x, y, width, height, title, label, fields)
+local function drawStatsBlock(x, y, width, height, anim, title, label, fields)
     local localizedTitle = localize(title)
     local localizedLabel = localize(label)
-    dxDrawText(localizedTitle, x+4, y+4, x + width+4, y + 60 +4 , tocolor(0, 0, 0, 150), 3.5, "default-bold", "center", "center")
-    dxDrawText(localizedTitle, x, y, x + width, y + 60, tocolor(255, 255, 255), 3.5, "default-bold", "center", "center")
-    y = y + 60
-    local value = localPlayerStats[title] or 0
-    dxDrawText(value, x+4, y+4, x + width+4, y + 50 +4 , tocolor(0, 0, 0, 150), 4, "default-bold", "center", "center")
-    dxDrawText(value, x, y, x + width, y + 50, tocolor(255, 255, 255), 4, "default-bold", "center", "center")
-    y = y + 50
-    dxDrawText(localizedLabel, x+2, y+2, x + width+2, y + 35 +2 , tocolor(0, 0, 0, 150), 2, "default-bold", "center", "center")
-    dxDrawText(localizedLabel, x, y, x + width, y + 35, tocolor(255, 255, 255), 2, "default-bold", "center", "center")
+    dxDrawText(localizedTitle, x+4, y+4, x + width+4, y + 60 +4 , tocolor(0, 0, 0, 150 * anim), 3.5, "default-bold", "center", "center")
+    dxDrawText(localizedTitle, x, y, x + width, y + 60, tocolor(255, 255, 255, 255 * anim), 3.5, "default-bold", "center", "center")
+    y = y + 30 + 30 * anim
+    local value = math.ceil((localPlayerStats[title] or 0) * anim)
+    dxDrawText(value, x+4, y+4, x + width+4, y + 50 +4 , tocolor(0, 0, 0, 150 * anim), 4, "default-bold", "center", "center")
+    dxDrawText(value, x, y, x + width, y + 50, tocolor(255, 255, 255, 255 * anim), 4, "default-bold", "center", "center")
+    y = y + 30 + 20 * anim
+    dxDrawText(localizedLabel, x+2, y+2, x + width+2, y + 35 +2 , tocolor(0, 0, 0, 150 * anim), 2, "default-bold", "center", "center")
+    dxDrawText(localizedLabel, x, y, x + width, y + 35, tocolor(255, 255, 255, 255 * anim), 2, "default-bold", "center", "center")
     if not fields or #fields == 0 then
         return
     end
-    y = y + 50
+    y = y + 40 + 10 * anim
     local count = math.min(#fields, 2)
     local h = 30 * count + 20
-    dxDrawRectangle(x, y, width, h, tocolor(0, 0, 0, 200))
-    dxDrawLine(x, y, x + width - 1, y, tocolor(255, 255, 255, 150))
-    dxDrawLine(x, y + h, x + width - 1, y + h, tocolor(255, 255, 255, 150))
+    dxDrawRectangle(x, y, width, h, tocolor(0, 0, 0, 200 * anim))
+    dxDrawLine(x, y, x + width - 1, y, tocolor(255, 255, 255, 150 * anim))
+    dxDrawLine(x, y + h, x + width - 1, y + h, tocolor(255, 255, 255, 150 * anim))
     y = y + 10
     for i = 1, count do
         local name = fields[i]
@@ -86,10 +88,11 @@ local function drawStatsBlock(x, y, width, height, title, label, fields)
     for i = 3, #fields do
         local name = fields[i]
         if name then
-            dxDrawText(localize(name), x + 10, y, x + width, y + 30, tocolor(200, 200, 200), 1, "default-bold", "left", "center")
-            dxDrawText(localPlayerStats[name] or 0, x, y, x + width - 10, y + 30, tocolor(200, 200, 200), 1, "default-bold", "right", "center")
+            -- local alpha = 255 * anim * i / #fields
+            dxDrawText(localize(name), x + 10, y, x + width, y + 30, tocolor(200, 200, 200, alpha), 1, "default-bold", "left", "center")
+            dxDrawText(localPlayerStats[name] or 0, x, y, x + width - 10, y + 30, tocolor(200, 200, 200, alpha), 1, "default-bold", "right", "center")
         end
-        y = y + 30
+        y = y + 15 + 15 * anim
     end
 end
 
@@ -168,34 +171,46 @@ end
 
 local function drawStatisticsPanel(x, y)
     local width = (panelWidth - 20) / 3
-    drawStatsBlock(x, y, width, panelHeight, "stats_plays", "stats_rounds", {
-        "stats_plays_solo",
-        "stats_plays_squad",
-        "stats_playtime",
-        nil,
-        "stats_distance",
-        "stats_distance_ped",
-        "stats_distance_car",
-    })
 
-    drawStatsBlock(x + 10 + width, y, width, panelHeight, "stats_wins", "stats_rounds", {
-        "stats_wins_solo",
-        "stats_wins_squad",
-        "stats_top10",
-        "stats_top10_solo",
-        "stats_top10_squad",
-    })
+    local oy = 50
+    if showAnim > 0 then
+        local progress = getEasingValue(math.min(showAnim, 0.33) / 0.33, "OutQuad")
+        drawStatsBlock(x, y - oy + oy * progress, width, panelHeight, progress, "stats_plays", "stats_rounds", {
+            "stats_plays_solo",
+            "stats_plays_squad",
+            "stats_playtime",
+            nil,
+            "stats_distance",
+            "stats_distance_ped",
+            "stats_distance_car",
+        })
+    end
 
-    drawStatsBlock(x + 20 + width * 2, y, width, panelHeight, "stats_kills", "stats_players", {
-        "stats_deaths",
-        "stats_kd_ratio",
-        "stats_hp_damage",
-        "stats_hp_healed",
-        "stats_items_used",
-    })
+    if showAnim > 0.33 then
+        local progress = getEasingValue((math.min(showAnim, 0.66) - 0.33) / 0.33, "OutQuad")
+        drawStatsBlock(x + 10 + width, y - oy + oy * progress, width, panelHeight, progress, "stats_wins", "stats_rounds", {
+            "stats_wins_solo",
+            "stats_wins_squad",
+            "stats_top10",
+            "stats_top10_solo",
+            "stats_top10_squad",
+        })
+    end
+
+    if showAnim > 0.66 then
+        local progress = getEasingValue((math.min(showAnim, 1) - 0.66) / 0.33, "OutQuad")
+        drawStatsBlock(x + 20 + width * 2, y - oy + oy * progress, width, panelHeight, progress, "stats_kills", "stats_players", {
+            "stats_deaths",
+            "stats_kd_ratio",
+            "stats_hp_damage",
+            "stats_hp_healed",
+            "stats_items_used",
+        })
+    end
 end
 
 local function draw()
+    showAnim = math.min(1, showAnim + 0.005)
     dxDrawRectangle(0, 0, screenSize.x, screenSize.y, tocolor(0, 0, 0, 150))
 
     local x, y = screenSize.x/2 - panelWidth/2, screenSize.y/2 - panelHeight/2
@@ -268,6 +283,7 @@ Tabs.statistics = {
     title = localize("lobby_tab_stats"),
 
     load = function ()
+        showAnim = 0
         triggerServerEvent("onPlayerRequestStats", resourceRoot)
         localPlayerRating = {
             solo = {},
