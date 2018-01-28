@@ -42,6 +42,14 @@ ReplacedModels = {
     swburbhaus02_open = 3306,
     swburbhaus03_open = 3308,
     swburbhaus04_open = 3309,
+
+    -- Шапки
+    mheadbr01 = 1873,
+    mheadbr02 = 1874,
+    mheadc    = 1875,
+    mheadd01  = 1876,
+    mheadd02  = 1877,
+    mheadh    = 1878,
 }
 
 OverwriteFiles = {
@@ -60,7 +68,7 @@ OverwriteFiles = {
     ammo_45 = { txd = "ammo_9mm" },
 }
 
-function getItemModel(name)
+function getReplacedModel(name)
     if not name then
         return
     end

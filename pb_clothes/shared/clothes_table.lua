@@ -379,7 +379,7 @@ ClothesTable.tracksuit_top1 = {
     material = "mjacketbr01",
     texture  = "jacket/mjacketbr01/1.png",
     icon     = "icon_equipment_Jacket_BR01_01.png",
-    hide     = { elbow = true },
+    hide     = { elbow = true, forearm = true },
     rarity   = 3,
 }
 
@@ -391,7 +391,7 @@ ClothesTable.checkered_jacket = {
     material = "mjacketbr02",
     texture  = "jacket/mjacketbr02/1.png",
     icon     = "icon_equipment_Jacket_BR02_03.png",
-    hide     = { elbow = true },
+    hide     = { elbow = true, forearm = true },
     rarity   = 3,
 }
 
@@ -401,7 +401,7 @@ ClothesTable.school_jacket = {
     material = "mjacketbr02",
     texture  = "jacket/mjacketbr02/2.png",
     icon     = "icon_equipment_Jacket_BR02_01.png",
-    hide     = { elbow = true },
+    hide     = { elbow = true, forearm = true },
     rarity   = 3,
 }
 
@@ -413,7 +413,7 @@ ClothesTable.purple_jacket = {
     material = "mjacketbr04",
     texture  = "jacket/mjacketbr04/1.png",
     icon     = "icon_equipment_Jacket_BR04_01.png",
-    hide     = { elbow = true },
+    hide     = { elbow = true, forearm = true },
     rarity   = 3,
 }
 
@@ -627,6 +627,19 @@ ClothesTable.skirt3 = {
     material = "mlegsbr0602",
     texture  = "legs/mlegsbr0602/1.png",
     icon     = "icon_equipment_Legs_BR06_02.png",
+    show     = {
+        legsbody1 = true,
+        legsbody2 = true,
+    },
+    rarity   = 1,
+}
+
+ClothesTable.skirt4 = {
+    name     = "Black Skirt",
+    layer    = "legs",
+    material = "mlegsbr0602",
+    texture  = "legs/mlegsbr0602/2.png",
+    icon     = "icon_equipment_Legs_BR07_02.png",
     show     = {
         legsbody1 = true,
         legsbody2 = true,
@@ -939,7 +952,7 @@ ClothesTable.trainers_hitop5 = {
 ClothesTable.helmet1 = {
     name     = "Helmet Lvl1",
     layer    = "hat",
-    model    = 1854,
+    model    = "helmet1",
     icon     = nil,
     attach   = {
         bone = 1,
@@ -956,7 +969,7 @@ ClothesTable.helmet1 = {
 ClothesTable.helmet2 = {
     name     = "Helmet Lvl2",
     layer    = "hat",
-    model    = 1855,
+    model    = "helmet2",
     icon     = nil,
     attach   = {
         bone = 1,
@@ -973,7 +986,7 @@ ClothesTable.helmet2 = {
 ClothesTable.helmet3 = {
     name     = "Helmet Lvl3",
     layer    = "hat",
-    model    = 1856,
+    model    = "helmet3",
     icon     = nil,
     attach   = {
         bone = 1,
@@ -986,3 +999,124 @@ ClothesTable.helmet3 = {
         scale = 1.1,
     }
 }
+
+ClothesTable.hat_camo_cap = {
+    name     = "Camo Cap",
+    layer    = "hat",
+    model    = "mheadbr01",
+    icon     = "icon_equipment_Head_BR03_01.png",
+    rarity   = 2,
+}
+
+ClothesTable.hat_xbox_cap = {
+    name     = "Green Pattern Cap",
+    layer    = "hat",
+    model    = "mheadbr02",
+    icon     = "icon_equipment_Head_XB_01.png",
+    rarity   = 2,
+}
+
+ClothesTable.hat_baseball1 = {
+    name     = "Baseball Hat",
+    layer    = "hat",
+    model    = "mheadc",
+    icon     = "icon_equipment_Head_C_01.png",
+    rarity   = 6,
+}
+
+ClothesTable.hat_baseball2 = {
+    name     = "Vintage Baseball Hat (White)",
+    layer    = "hat",
+    model    = "mheadc",
+    icon     = "icon_equipment_Head_C_02.png",
+    material = "mheadc",
+    texture  = "hat/mheadc/2.png",
+    rarity   = 6,
+}
+
+ClothesTable.hat_baseball3 = {
+    name     = "Vintage Baseball Hat (Black)",
+    layer    = "hat",
+    model    = "mheadc",
+    icon     = "icon_equipment_Head_C_03.png",
+    material = "mheadc",
+    texture  = "hat/mheadc/3.png",
+    rarity   = 6,
+}
+
+ClothesTable.hat_beanie1 = {
+    name     = "Beanie",
+    layer    = "hat",
+    model    = "mheadd01",
+    icon     = "icon_equipment_Head_D_01.png",
+    attach   = {
+        bone = 1,
+        x = 0,
+        y = 0.012,
+        z = 0.07,
+        rx = 5,
+        ry = 0,
+        rz = 180,
+        scale = 1.08,
+    },
+    rarity   = 7,
+}
+
+ClothesTable.hat_beanie2 = {
+    name     = "Beanie (Gray)",
+    layer    = "hat",
+    model    = "mheadd02",
+    icon     = "icon_equipment_Head_D_02.png",
+    attach   = {
+        bone = 1,
+        x = 0,
+        y = 0.012,
+        z = 0.07,
+        rx = 5,
+        ry = 0,
+        rz = 180,
+        scale = 1.08,
+    },
+    rarity   = 7,
+}
+
+ClothesTable.hat_beanie3 = {
+    name     = "Beanie (Black)",
+    layer    = "hat",
+    model    = "mheadd02",
+    icon     = "icon_equipment_Head_D_03.png",
+    attach   = {
+        bone = 1,
+        x = 0,
+        y = 0.012,
+        z = 0.07,
+        rx = 5,
+        ry = 0,
+        rz = 180,
+        scale = 1.08,
+    },
+    material = "*",
+    texture  = "hat/mheadd/2.png",
+    rarity   = 7,
+}
+
+ClothesTable.hat_patrol1 = {
+    name     = "Patrol Cap (Gray)",
+    layer    = "hat",
+    model    = "mheadh",
+    icon     = "icon_equipment_Head_H_01.png",
+    material = "mheadh",
+    texture  = "hat/mheadh/1.png",
+    rarity   = 2,
+}
+
+ClothesTable.hat_patrol2 = {
+    name     = "Patrol Cap (Brown)",
+    layer    = "hat",
+    model    = "mheadh",
+    icon     = "icon_equipment_Head_H_02.png",
+    material = "mheadh",
+    texture  = "hat/mheadh/2.png",
+    rarity   = 2,
+}
+

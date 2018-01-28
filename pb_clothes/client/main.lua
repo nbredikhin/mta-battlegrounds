@@ -9,19 +9,6 @@ local layerNames = {
     "hat"
 }
 
-local attachOffsets = {
-    hat = {
-        bone = 1,
-        x = 0,
-        y = 0.02,
-        z = 0.099,
-        rx = 5,
-        ry = 0,
-        rz = 180,
-        scale = 1.05,
-    }
-}
-
 local bodyParts = {
     "body1",
     "body2",
@@ -64,7 +51,11 @@ local function createClothesShader(ped, material, texture)
     if not isElement(texture) then
         outputDebugString("Failed to load " .. material)
     end
-    local shader = dxCreateShader("assets/shaders/replace.fx", 0, 0, false, "ped")
+    local elementType = "ped"
+    if ped.type == "object" then
+        elementType = "object"
+    end
+    local shader = dxCreateShader("assets/shaders/replace.fx", 0, 0, false, elementType)
     shader:setValue("gTexture", texture)
     engineApplyShaderToWorldTexture(shader, material, ped)
     return shader
@@ -91,6 +82,7 @@ function loadPedClothes(ped)
     if head and ClothesTable[head] and ClothesTable[head].body then
         bodyTextureName = ClothesTable[head].body
     end
+    ped.doubleSided = true
     -- Текстура тела
     local bodyTexture = getTexture("assets/textures/skin/"..bodyTextureName..".png")
 
@@ -101,7 +93,29 @@ function loadPedClothes(ped)
             if ClothesTable[name].texture then
                 texture = getTexture("assets/textures/" .. ClothesTable[name].texture)
             end
-            if ClothesTable[name].material then
+            -- Если указана модель, то необходимо создать и прикрепить аттач
+            if ClothesTable[name].model then
+                local model = exports.pb_models:getReplacedModel(ClothesTable[name].model)
+                local object = createObject(model, ped.position)
+                object:setCollisionsEnabled(false)
+                object.doubleSided = true
+                object.dimension = ped.dimension
+                local attach = ClothesTable[name].attach or Config.attachOffsets[layer]
+                object.scale = attach.scale or 1
+                -- Прикрепление объекта через bone_attach
+                exports.bone_attach:attachElementToBone(object, ped, attach.bone,
+                    attach.x, attach.y, attach.z,
+                    attach.rx, attach.ry, attach.rz)
+                table.insert(loadedClothes[ped], object)
+
+                -- Если есть материал, то наложить текстуру
+                if ClothesTable[name].material then
+                    local shader = createClothesShader(object, ClothesTable[name].material, texture)
+                    table.insert(loadedClothes[ped], shader)
+                end
+
+            -- Если указан только материал, то наложить шейдер
+            elseif ClothesTable[name].material then
                 if layer == "body" then
                     for i = 1, 3 do
                         local useTexture = texture
@@ -118,19 +132,6 @@ function loadPedClothes(ped)
                     local shader = createClothesShader(ped, ClothesTable[name].material, texture)
                     table.insert(loadedClothes[ped], shader)
                 end
-            elseif ClothesTable[name].model then
-                local object = createObject(ClothesTable[name].model, ped.position)
-                object:setCollisionsEnabled(false)
-                object.doubleSided = true
-                object.dimension = ped.dimension
-                local attach = ClothesTable[name].attach or attachOffsets[layer]
-                if attach.scale then
-                    object.scale = attach.scale
-                end
-                exports.bone_attach:attachElementToBone(object, ped, attach.bone,
-                    attach.x, attach.y, attach.z,
-                    attach.rx, attach.ry, attach.rz)
-                table.insert(loadedClothes[ped], object)
             end
 
             if ClothesTable[name].hide then

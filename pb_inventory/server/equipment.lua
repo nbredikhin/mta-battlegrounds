@@ -50,7 +50,7 @@ function updatePlayerEquipment(player)
         for slot in pairs(equipmentSlots) do
             local item = playerEquipments[player][slot]
             if item then
-                player:setData("wear_"..tostring(slot), exports.pb_models:getItemModel(item.name))
+                player:setData("wear_"..tostring(slot), exports.pb_models:getReplacedModel(item.name))
             else
                 player:removeData("wear_"..tostring(slot))
             end

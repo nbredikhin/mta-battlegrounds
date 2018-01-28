@@ -26,21 +26,21 @@ function spawnLootItem(item, position, dimension)
         model = lootColors.green
     elseif Items[item.name].category == "ammo" then
         if isResourceRunning("pb_models") then
-            model = exports.pb_models:getItemModel(item.name)
+            model = exports.pb_models:getReplacedModel(item.name)
         end
         if not model then
             model = lootColors.blue
         end
     elseif Items[item.name].category == "backpack" or Items[item.name].category == "armor" then
         if isResourceRunning("pb_models") then
-            model = exports.pb_models:getItemModel("loot_"..item.name)
+            model = exports.pb_models:getReplacedModel("loot_"..item.name)
         end
         if not model then
             model = lootColors.orange
         end
     elseif Items[item.name].category == "helmet" then
         if isResourceRunning("pb_models") then
-            model = exports.pb_models:getItemModel(item.name)
+            model = exports.pb_models:getReplacedModel(item.name)
             offset = Vector3(0, 0, 0.1)
         end
         if not model then
