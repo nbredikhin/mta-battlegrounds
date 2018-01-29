@@ -6,7 +6,8 @@ local layerNames = {
     "legs",
     "feet",
     "gloves",
-    "hat"
+    "hat",
+    "hair"
 }
 
 local bodyParts = {
@@ -76,6 +77,8 @@ function loadPedClothes(ped)
     hasPants = not not ClothesTable[hasPants]
     local hasShoes  = ped:getData("clothes_feet")
     hasShoes = not not ClothesTable[hasShoes]
+    local hasHat  = ped:getData("clothes_hat")
+    hasHat = not not ClothesTable[hasHat]
     -- Части тела, которые должны быть скрыты
     local hideParts = {}
     -- Части тела, для которых игнорируется скрытие
@@ -98,11 +101,10 @@ function loadPedClothes(ped)
                 texture = getTexture("assets/textures/" .. ClothesTable[name].texture)
             end
             -- Если указана модель, то необходимо создать и прикрепить аттач
-            if ClothesTable[name].model then
+            if ClothesTable[name].model and (layer ~= "hair" or (layer == "hair" and not hasHat)) then
                 local model = exports.pb_models:getReplacedModel(ClothesTable[name].model)
                 local object = createObject(model, ped.position)
                 object:setCollisionsEnabled(false)
-                object.doubleSided = true
                 object.dimension = ped.dimension
                 local attach = ClothesTable[name].attach or Config.attachOffsets[layer]
                 object.scale = attach.scale or 1
@@ -117,6 +119,12 @@ function loadPedClothes(ped)
                     local shader = createClothesShader(object, ClothesTable[name].material, texture)
                     table.insert(loadedClothes[ped], shader)
                 end
+
+                setTimer(function ()
+                    if isElement(object) then
+                        object.doubleSided = true
+                    end
+                end, 50, 1)
 
             -- Если указан только материал, то наложить шейдер
             elseif ClothesTable[name].material then

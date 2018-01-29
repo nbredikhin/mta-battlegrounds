@@ -51,6 +51,15 @@ ReplacedModels = {
     mheadd02  = 1877,
     mheadh    = 1878,
     uganda    = 1879,
+    -- Волосы
+    hair1    = 1880,
+    hair2    = 1881,
+    hair3    = 1882,
+    hair4    = 1899,
+    hair5    = 1900,
+    hair6    = 1901,
+    hair7    = 1902,
+    hair8    = 1903,
 }
 
 OverwriteFiles = {
@@ -67,6 +76,13 @@ OverwriteFiles = {
     ammo_556mm = { txd = "ammo_9mm" },
     ammo_12gauge = { txd = "ammo_9mm" },
     ammo_45 = { txd = "ammo_9mm" },
+    hair2 = { txd = "hair1" },
+    hair3 = { txd = "hair1" },
+    hair4 = { txd = "hair1" },
+    hair5 = { txd = "hair1" },
+    hair6 = { txd = "hair1" },
+    hair7 = { txd = "hair1" },
+    hair8 = { txd = "hair1" },
 }
 
 function getReplacedModel(name)

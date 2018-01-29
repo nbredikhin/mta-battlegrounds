@@ -126,7 +126,7 @@ function drawButton(text, x, y, width, height, bg, color, scale)
     if not scale then scale = 1.5 end
     dxDrawRectangle(x, y, width, height, bg)
     dxDrawRectangle(x, y + height - 5, width, 5, tocolor(0, 0, 0, 10))
-    dxDrawText(text, x, y, x + width, y + height, color, scale, "default-bold", "center", "center")
+    dxDrawText(text, x, y, x + width, y + height, color, scale, "default-bold", "center", "center", true, true)
 
     if isMouseOver(x, y, width, height) then
         dxDrawRectangle(x, y, width, height, tocolor(0, 0, 0, 100))

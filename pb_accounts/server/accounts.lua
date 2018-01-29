@@ -8,6 +8,7 @@ local clothesData = {
     "clothes_body",
     "clothes_feet",
     "clothes_jacket",
+    "clothes_hair",
 }
 
 local loadAccountData = {
@@ -269,6 +270,15 @@ function dbLoginPlayer(result, params)
             player:setData("clothes_head", "head"..math.random(1, 2))
         end
 
+        local hair = player:getData("clothes_hair")
+        if not exports.pb_clothes:isValidClothesName(hair) then
+            if player:getData("clothes_head") == "head1" then
+                player:setData("clothes_hair", "hair"..math.random(2, 8))
+            else
+                player:setData("clothes_hair", "hair"..math.random(1, 8))
+            end
+        end
+
         if not result.last_seen then
             result.last_seen = nil
         end
@@ -448,7 +458,8 @@ addEventHandler("onResourceStart", resourceRoot, function ()
             clothes_head VARCHAR(64),
             clothes_body VARCHAR(64),
             clothes_legs VARCHAR(64),
-            clothes_feet VARCHAR(64)
+            clothes_feet VARCHAR(64),
+            clothes_hair VARCHAR(64)
         );
     ]])
 

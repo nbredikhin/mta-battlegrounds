@@ -215,10 +215,10 @@ local function draw()
 
     local x, y = screenSize.x/2 - panelWidth/2, screenSize.y/2 - panelHeight/2
     if currentPanel == "statistics" then
-        if drawButton(localize("lobby_rating"), x + panelWidth - 180, y - 50, 180, 40) then
+        if drawButton(localize("lobby_rating"), x + panelWidth - 180, y - 80, 180, 40) then
             currentPanel = "rating"
         end
-        drawStatisticsPanel(x, y)
+        drawStatisticsPanel(x, y - 30)
     else
         if drawButton(localize("lobby_statistics"), x + panelWidth - 180, y - 50, 180, 40) then
             currentPanel = "statistics"

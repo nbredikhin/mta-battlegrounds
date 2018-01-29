@@ -1,5 +1,9 @@
 ClothesTable = {}
 
+------------------------------
+------------ HEAD ------------
+------------------------------
+
 ClothesTable.head1 = {
     layer    = "head",
     material = "head1",
@@ -11,6 +15,68 @@ ClothesTable.head2 = {
     material = "head2",
     texture  = "head/head2/1.png",
     body     = "niggabody",
+}
+
+------------------------------
+------------ HAIR ------------
+------------------------------
+
+ClothesTable.hair1 = {
+    name     = "Hair 1",
+    layer    = "hair",
+    model    = "hair1",
+}
+
+ClothesTable.hair2 = {
+    name     = "Hair 2",
+    layer    = "hair",
+    model    = "hair2",
+}
+
+ClothesTable.hair3 = {
+    name     = "Hair 3",
+    layer    = "hair",
+    model    = "hair3",
+}
+
+ClothesTable.hair4 = {
+    name     = "Hair 4",
+    layer    = "hair",
+    model    = "hair4",
+}
+
+ClothesTable.hair5 = {
+    name     = "Hair 5",
+    layer    = "hair",
+    model    = "hair5",
+    attach   = {
+        bone = 1,
+        x = 0.0025,
+        y = 0.018,
+        z = 0.037,
+        rx = 5,
+        ry = 0,
+        rz = 180,
+        scale = 1.02,
+    }
+}
+
+ClothesTable.hair6 = {
+    name     = "Hair 6",
+    layer    = "hair",
+    model    = "hair6",
+}
+
+ClothesTable.hair7 = {
+    name     = "Hair 7",
+    layer    = "hair",
+    model    = "hair7",
+}
+
+ClothesTable.hair8 = {
+    name     = "Hair 8",
+    layer    = "hair",
+    model    = "hair8",
 }
 
 ------------------------------
@@ -1061,7 +1127,7 @@ ClothesTable.hat_xbox_cap = {
 }
 
 ClothesTable.hat_baseball1 = {
-    name     = "Baseball Hat",
+    name     = "Baseball Cap",
     layer    = "hat",
     model    = "mheadc",
     icon     = "icon_equipment_Head_C_01.png",
@@ -1069,7 +1135,7 @@ ClothesTable.hat_baseball1 = {
 }
 
 ClothesTable.hat_baseball2 = {
-    name     = "Vintage Baseball Hat (White)",
+    name     = "Vintage Baseball Cap (White)",
     layer    = "hat",
     model    = "mheadc",
     icon     = "icon_equipment_Head_C_02.png",
@@ -1079,7 +1145,7 @@ ClothesTable.hat_baseball2 = {
 }
 
 ClothesTable.hat_baseball3 = {
-    name     = "Vintage Baseball Hat (Black)",
+    name     = "Vintage Baseball Cap (Black)",
     layer    = "hat",
     model    = "mheadc",
     icon     = "icon_equipment_Head_C_03.png",

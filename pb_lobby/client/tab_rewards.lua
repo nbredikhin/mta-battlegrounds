@@ -201,7 +201,7 @@ local function drawOpenCrate(x, y, width, height)
     local cx = x + width / 2 - iconSize / 2
     local cy = y
     cy = cy + height / 2 - iconSize / 2
-    dxDrawText(localize("lobby_crate_received").."\n"..openCrateItem.capitalizedName.."!", x, y, x + width, cy, tocolor(254, 181, 0, logoAlpha), 2, "default-bold", "center", "center", true, false, false, false)
+    dxDrawText(localize("lobby_crate_received").."\n"..openCrateItem.capitalizedName.."!", x, y, x + width, cy, tocolor(254, 181, 0, logoAlpha), 2, "default-bold", "center", "center", true, true, false, false)
 
     dxDrawImage(x + width / 2 - iconSize * iconScale / 2, y + height / 2 - iconSize * iconScale / 2, iconSize * iconScale, iconSize * iconScale, clothesIcons[openCrateItem.name], math.sin(getTickCount() * 0.005) * 5, 0, 0, tocolor(255, 255, 255, iconAlpha))
     local buttonHeight = math.min(50, height / 10)

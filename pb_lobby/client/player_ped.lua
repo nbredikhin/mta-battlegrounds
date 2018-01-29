@@ -18,7 +18,8 @@ local layerNames = {
     "legs",
     "feet",
     "gloves",
-    "hat"
+    "hat",
+    "hair"
 }
 
 local function createLobbyPed(position)
@@ -64,7 +65,7 @@ function setClothesCamera(active)
         targetLookAt = playerPed.position + Vector3(0, 0, 0.3)
         targetFOV = 70
     else
-        targetLookAt = playerPed.matrix:transformPosition(-1, -2, -0.05)
+        targetLookAt = playerPed.matrix:transformPosition(-1.5, -2, -0.05)
         targetFOV = 58
     end
 end
