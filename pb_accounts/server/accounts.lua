@@ -8,6 +8,7 @@ local clothesData = {
     "clothes_body",
     "clothes_feet",
     "clothes_jacket",
+    "clothes_legs",
     "clothes_hair",
 }
 
@@ -232,6 +233,8 @@ function savePlayerAccount(player)
             .. table.concat(saveQuery, ",\n") ..
         [[ WHERE username = ?;
     ]], unpack(saveArgs))
+
+    outputDebugString("[ACCOUNTS] Saved player account '"..player.name.."' ("..username..")")
 end
 
 function dbLoginPlayer(result, params)
@@ -293,8 +296,6 @@ function dbLoginPlayer(result, params)
 
         setupPlayerInventory(player, fromJSON(result.items))
         setupPlayerSession(player, result)
-
-        savePlayerAccount(player)
 
         exports.mysql:dbExec(dbTableName, [[
             UPDATE ?? SET online_server = ?, nickname = ? WHERE username = ?;

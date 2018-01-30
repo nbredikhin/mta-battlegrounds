@@ -208,10 +208,13 @@ function drawBattlepoints()
         local bPoints = tostring(localPlayer:getData("battlepoints"))
         dxDrawText(bPoints, screenSize.x - 145, y, screenSize.x, y, tocolor(255, 255, 255), 2, "default-bold", "left", "top")
 
-        -- y = y + 40
-        -- dxDrawImage(screenSize.x - 180, y - 0, 30, 30, "assets/dp.png", 0, 0, 0, tocolor(255, 255, 255))
-        -- local dPoints = tostring(localPlayer:getData("donatepoints"))
-        -- dxDrawText(dPoints, screenSize.x - 145, y, screenSize.x, y, tocolor(255, 255, 255), 2, "default-bold", "left", "top")
+        local donatepoints = localPlayer:getData("donatepoints")
+        if donatepoints and donatepoints > 0 then
+            y = y + 40
+            dxDrawImage(screenSize.x - 180, y - 0, 30, 30, "assets/dp.png", 0, 0, 0, tocolor(255, 255, 255))
+            local dPoints = tostring(donatepoints)
+            dxDrawText(dPoints, screenSize.x - 145, y, screenSize.x, y, tocolor(255, 255, 255), 2, "default-bold", "left", "top")
+        end
     end
 end
 

@@ -142,8 +142,8 @@ local function handleItemSelect(index)
         return
     end
     if item.clothes then
-        local bPoints = localPlayer:getData("battlepoints") or 0
-        if not item.price or item.price > bPoints then
+        local dPoints = localPlayer:getData("donatepoints") or 0
+        if not item.price or item.price > dPoints then
             blinkPriceItem = item
             if isTimer(blinkPriceTimer) then
                 killTimer(blinkPriceTimer)
@@ -192,7 +192,7 @@ function showConfirmWindow(item)
         text = string.format(
             localize("shop_confirm_text"),
             tostring(localize(item.name)),
-            tostring(item.price) .. "BP"),
+            tostring(item.price) .. "DP"),
         accept_text = localize("shop_confirm_yes"),
         cancel_text = localize("shop_confirm_no"),
         width = 450,
@@ -269,6 +269,7 @@ function drawGUI()
     local isMouseOverItems = isMouseOver(x, y, panelWidth, itemHeight * visibleItemsCount)
 
     local bPoints = localPlayer:getData("battlepoints") or 0
+    local dPoints = localPlayer:getData("donatepoints") or 0
     for index = visibleItemsOffset, visibleItemsOffset + visibleItemsCount - 1 do
         local item = currentItemsList[index]
         if not item then
@@ -319,18 +320,22 @@ function drawGUI()
         dxDrawText(nameText, x + 10, y, x + panelWidth, y + itemHeight, nameColor, 1, "default-bold", "left", "center")
         if item.price then
             local priceColor = textColor
-            local priceText = tostring(item.price) .. " BP"
+            local priceText = tostring(item.price)
             -- if hasPlayerClothes(item.clothes) then
             --     priceText = priceText
             -- end
-            if bPoints < item.price then
+            if dPoints < item.price then
+                local iconColor = tocolor(255, 255, 255)
                 if blinkPriceItem == item and math.floor(getTickCount() / 250) % 2 == 0 then
                     priceColor = tocolor(0, 0, 0, 0)
                 else
                     priceColor = tocolor(255, 0, 0, 150)
+                    iconColor = tocolor(255, 0, 0)
                 end
             end
-            dxDrawText(priceText, x, y, x + panelWidth - 10, y + itemHeight, priceColor, 1, "default-bold", "right", "center")
+            local iconSize = itemHeight * 0.5
+            dxDrawText(priceText, x, y, x + panelWidth - 5 - iconSize * 0.8 - 5, y + itemHeight, priceColor, 1, "default-bold", "right", "center")
+            dxDrawImage(x + panelWidth - 5 - iconSize, y + itemHeight / 2 - iconSize / 2, iconSize, iconSize, ":pb_lobby/assets/dp.png", 0, 0, 0, iconColor)
         end
         y = y + itemHeight
     end
@@ -339,10 +344,13 @@ function drawGUI()
     dxDrawRectangle(x, y, panelWidth, itemHeight, tocolor(0, 0, 0, 200))
     dxDrawImage(x + panelWidth / 2 - arrowsSize / 2, y + itemHeight / 2 - arrowsSize / 2, arrowsSize, arrowsSize, "assets/arrows.png")
     y = y + itemHeight + 10
-    dxDrawRectangle(x, y, panelWidth, 45, tocolor(0, 0, 0, 200))
+    dxDrawRectangle(x, y, panelWidth, 80, tocolor(0, 0, 0, 200))
     y = y + 10
     dxDrawImage(x + 10, y, 25, 25, ":pb_lobby/assets/bp.png")
     dxDrawText(bPoints, x + 45, y, x + panelWidth, y + 25, tocolor(255, 255, 255), 1.5, "default-bold", "left", "center")
+    y = y + 35
+    dxDrawImage(x + 10, y, 25, 25, ":pb_lobby/assets/dp.png")
+    dxDrawText(dPoints, x + 45, y, x + panelWidth, y + 25, tocolor(255, 255, 255), 1.5, "default-bold", "left", "center")
 
     drawWindow()
 end

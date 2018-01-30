@@ -75,16 +75,16 @@ addEventHandler("onPlayerBuyClothes", root, function (itemName)
         return
     end
     local itemClass = getItemClass(item)
-    local bPoints = client:getData("battlepoints") or 0
-    if not itemClass.price or bPoints < itemClass.price then
+    local dPonts = client:getData("donatepoints") or 0
+    if not itemClass.price or dPonts < itemClass.price then
         return
     end
-    bPoints = bPoints - itemClass.price
-    client:setData("battlepoints", bPoints)
+    dPonts = dPonts - itemClass.price
+    client:setData("donatepoints", dPonts)
     addPlayerInventoryItem(client, item, true)
     client:setData("clothes_"..itemClass.layer, itemClass.clothes)
     savePlayerAccount(client)
 
-    outputDebugString("[ACCOUNTS] Player " .. tostring(client.name) .. "(acc "..tostring(client:getData("username"))..",money "..tostring(bPoints)..") buy " .. tostring(item.name) .. " for " .. tostring(itemClass.price))
+    outputDebugString("[ACCOUNTS] Player " .. tostring(client.name) .. "(acc "..tostring(client:getData("username"))..",donatepoints "..tostring(dPoints)..") buy " .. tostring(item.name) .. " for " .. tostring(itemClass.price))
 end)
 
