@@ -1,12 +1,18 @@
 local screenSize = Vector2(guiGetScreenSize())
+local globalScale = 1
+if screenSize.x < 1600 then
+    globalScale = 1 * (screenSize.x - 800) / 800 * 0.3 + 0.7
+end
 local isVisible = false
 
 DEBUG_DRAW = false
 
 local isHealthbarVisible = true
-local healthbarWidth = 400
-local healthbarHeight = 28
+local healthbarWidth = 400 * globalScale
+local healthbarHeight = 28 * globalScale
 local healthbarBorder = 1
+
+local damageBarValue = 100
 
 local markerTexture
 local markerColors = {
@@ -47,22 +53,29 @@ local function dxDrawBorderRect(x, y, width, height, color, borderWidth)
     dxDrawLine(x, y + height, x, y, color, borderWidth)
 end
 
-local function drawHealthbar(health, x, y, width, height)
+local function drawHealthbar(health, x, y, width, height, noStripes, damageValue)
     if not health then
         return
     end
     dxDrawRectangle(x - 1, y - 1, width + 2, height + 2, tocolor(0, 0, 0, 150))
+    if not noStripes then
+        dxDrawImage(x, y, width * 0.75, height, "assets/health.png", 0, 0, 0, tocolor(255, 255, 255, 30))
+    end
 
     local hpMul = health / 100
     local color = tocolor(255, 255, 255)
     local borderColor = tocolor(255, 255, 255, 150)
-    if health < 75 then
+    if health < 25 then
+        color = tocolor(220, 60, 50)
+    elseif health < 75 then
         color = tocolor(255, 150, 150)
     elseif health > 99.5 then
-        color = tocolor(255, 255, 255, 100)
+        color = tocolor(220, 220, 220, 255)
         borderColor = tocolor(255, 255, 255, 120)
     end
-    dxDrawBorderRect(x - 1, y - 1, width + 1, height + 1, borderColor, 1)
+    if damageValue then
+        dxDrawRectangle(x, y, width * (damageValue / 100), height, tocolor(255, 0, 0))
+    end
     dxDrawRectangle(x, y, width * hpMul, height, color)
 end
 
@@ -71,11 +84,15 @@ local function drawPlayerHealthbar()
     local y = screenSize.y - 35 - healthbarHeight
 
     local spectatingPlayer = localPlayer:getData("spectatingPlayer")
+    local health
     if isElement(spectatingPlayer) then
-        drawHealthbar(spectatingPlayer.health, x, y, healthbarWidth, healthbarHeight)
+        health = spectatingPlayer.health
     else
-        drawHealthbar(localPlayer.health, x, y, healthbarWidth, healthbarHeight)
+        health = localPlayer.health
     end
+    damageBarValue = damageBarValue + (health - damageBarValue) * 0.1
+    drawHealthbar(health, x, y, healthbarWidth, healthbarHeight, false, damageBarValue)
+
     local healthbarText = string.gsub(localPlayer.name, '#%x%x%x%x%x%x', '') .. " - " .. tostring(getVersion().sortable)
     dxDrawText(healthbarText, x + 1, screenSize.y - 34, x + healthbarWidth + 1, screenSize.y + 1, tocolor(0, 0, 0, 150), 1, "default", "center", "center")
     dxDrawText(healthbarText, x, screenSize.y - 35, x + healthbarWidth, screenSize.y, tocolor(255, 255, 255, 150), 1, "default", "center", "center")
@@ -137,12 +154,12 @@ local function drawCounter(x, y, count, label)
     local countWidth = dxGetTextWidth(count, 2.8, "default-bold")
     local labelWidth = dxGetTextWidth(label, 2.5, "default")
     x = x - countWidth - labelWidth
-    dxDrawRectangle(x, y, countWidth + 10, 42, tocolor(0, 0, 0, 150))
+    dxDrawRectangle(x, y, countWidth + 10, 42, tocolor(100, 100, 100, 150))
     dxDrawText(count, x + 6, y + 1, x + 5, y, tocolor(0, 0, 0), 2.8, "default-bold")
     dxDrawText(count, x + 5, y, x + 5, y, tocolor(255, 255, 255), 2.8, "default-bold")
     x = x + countWidth + 10
-    dxDrawRectangle(x, y, labelWidth + 10, 42, tocolor(255, 255, 255, 150))
-    dxDrawText(label, x + 5, y + 1, x + 5, y, tocolor(0, 0, 0, 150), 2.5, "default")
+    dxDrawRectangle(x, y, labelWidth + 10, 42, tocolor(50, 50, 50, 150))
+    dxDrawText(label, x + 5, y + 1, x + 5, y, tocolor(255, 255, 255, 150), 2.5, "default")
     return countWidth + labelWidth
 end
 
@@ -199,7 +216,7 @@ addEventHandler("onClientRender", root, function ()
                 local isize = 20
                 local iy = y + 5 - isize / 2
                 if playerHealth > 0 then
-                    drawHealthbar(playerHealth, x, y, 150, 10)
+                    drawHealthbar(playerHealth, x, y, 150, 10, true)
                     ix = ix + 155
                 else
                     icon = "dead"

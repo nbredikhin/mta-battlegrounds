@@ -13,10 +13,10 @@ local viewportX = screenSize.x - viewportWidth - 37
 local viewportY = screenSize.y - viewportHeight - 30
 local viewport
 
-local radarBorderSize = 2
+local radarBorderSize = 1
 local radarTextureSize = 3000
 
-local radarBorderColor = tocolor(255, 255, 255, 100)
+local radarBorderColor = tocolor(0, 0, 0, 150)
 local radarLinesColor = tocolor(255, 255, 255, 40)
 local radarTextColor = tocolor(255, 255, 255, 140)
 
