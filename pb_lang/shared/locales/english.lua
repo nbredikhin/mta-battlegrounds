@@ -67,6 +67,8 @@ Languages.english = {
     lobby_crate_take_item = "TAKE ITEM",
     lobby_button_get_crates = "GET CRATES",
     lobby_button_my_crates = "MY CRATES",
+    lobby_button_donate = "DONATE",
+    lobby_donate_disabled = "Donations are not available yet",
 
     -- INVENTORY
     inventory_backpack_weight = "Total weight",

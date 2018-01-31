@@ -216,6 +216,11 @@ local function drawOpenCrate(x, y, width, height)
     end
 end
 
+function drawDonations(x, y, width, height)
+    dxDrawRectangle(x, y, width, height, tocolor(0, 0, 0, 150))
+    dxDrawText(localize("lobby_donate_disabled"), x, y, x + width, y + height, tocolor(255, 255, 255), 2, "default-bold", "center", "center", true, false, false, false)
+end
+
 local function draw()
     dxDrawRectangle(0, 0, screenSize.x, screenSize.y, tocolor(0, 0, 0, 150))
     local x, y = screenSize.x / 2 - panelWidth / 2, screenSize.y / 2 - panelHeight / 2
@@ -235,6 +240,13 @@ local function draw()
     if drawButton(localize("lobby_button_my_crates"), x, y + 50, 150, 40, bg) then
         currentSection = "my_rewards"
     end
+    bg = nil
+    if currentSection == "donate" then
+        bg = bgColor
+    end
+    if drawButton(localize("lobby_button_donate"), x, y + 100, 150, 40, bg) then
+        currentSection = "donate"
+    end
 
     x = x + 160
     if currentSection == "get_reward" then
@@ -245,6 +257,8 @@ local function draw()
         drawCrate(x, y, panelWidth - 160, panelHeight)
     elseif currentSection == "open_crate" then
         drawOpenCrate(x, y, math.min(panelHeight, panelWidth - 160), panelHeight)
+    elseif currentSection == "donate" then
+        drawDonations(x, y, math.min(panelHeight, panelWidth - 160), panelHeight)
     end
 
     drawBattlepoints()

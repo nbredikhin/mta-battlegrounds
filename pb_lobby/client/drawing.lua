@@ -199,21 +199,52 @@ function drawInvitePanel()
 end
 
 function drawBattlepoints()
-    local x, y = getTabsPosition()
+    local offset = 200
+    local textScale = 2
+    if screenSize.x < 1024 then
+        textScale = 1
+        offset = 100
+    elseif screenSize.x < 1600 then
+        textScale = 1.5
+        offset = 150
+    end
+    local fontHeight = dxGetFontHeight(textScale, "default-bold")
+    local tabsX, tabsY = getTabsPosition()
     local username = localPlayer:getData("username")
     if username then
-        dxDrawText(string.upper(username), 0, y, screenSize.x - 200, y, tocolor(255, 255, 255, 150), 2, "default-bold", "right", "top")
-
-        dxDrawImage(screenSize.x - 180, y - 0, 30, 30, "assets/bp.png")
+        local iconSize = fontHeight * 1.2
+        local x = screenSize.x - offset
+        local y = tabsY
+        dxDrawText(string.upper(username), 0, y, x, y, tocolor(255, 255, 255, 150), textScale, "default-bold", "right", "top")
+        x = x + iconSize * 0.25
+        dxDrawImage(x, y, iconSize, iconSize, "assets/bp.png")
+        x = x + iconSize * 1.2
         local bPoints = tostring(localPlayer:getData("battlepoints"))
-        dxDrawText(bPoints, screenSize.x - 145, y, screenSize.x, y, tocolor(255, 255, 255), 2, "default-bold", "left", "top")
+        dxDrawText(bPoints, x, y, screenSize.x, y, tocolor(255, 255, 255), textScale, "default-bold", "left", "top")
 
         local donatepoints = localPlayer:getData("donatepoints")
         if donatepoints and donatepoints > 0 then
-            y = y + 40
-            dxDrawImage(screenSize.x - 180, y - 0, 30, 30, "assets/dp.png", 0, 0, 0, tocolor(255, 255, 255))
+            x = screenSize.x - offset + iconSize * 0.25
+            y = y + iconSize * 1.25
+            dxDrawImage(x, y - 0, iconSize, iconSize, "assets/dp.png", 0, 0, 0, tocolor(255, 255, 255))
+            x = x + iconSize * 1.2
             local dPoints = tostring(donatepoints)
-            dxDrawText(dPoints, screenSize.x - 145, y, screenSize.x, y, tocolor(255, 255, 255), 2, "default-bold", "left", "top")
+            dxDrawText(dPoints, x, y, screenSize.x, y, tocolor(255, 255, 255), textScale, "default-bold", "left", "top")
+            -- y = y + iconSize * 1.2
+            -- x = x - iconSize * 1.2
+            -- local textWidth = dxGetTextWidth(dPoints, textScale, "default-bold")
+            -- local bw = math.max(85, textWidth + iconSize * 1.2)
+            -- local bh = 20
+
+            -- if isMouseOver(x, y, bw, bh) then
+            --     dxDrawRectangle(x, y, bw, bh, tocolor(254, 181, 0, 255))
+            --     if isMousePressed then
+
+            --     end
+            -- else
+            --     dxDrawRectangle(x, y, bw, bh, tocolor(0, 0, 0, 150))
+            -- end
+            -- dxDrawText("Convert to BP", x, y, x + bw, y + bh, tocolor(255, 255, 255), 1, "default", "center", "center")
         end
     end
 end

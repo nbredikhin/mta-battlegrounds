@@ -8,6 +8,7 @@ local clothesLayers = {
     "clothes_jacket",
     "clothes_legs",
     "clothes_feet",
+    "clothes_hat",
 }
 
 local playerInventory = {}
@@ -37,7 +38,7 @@ function hasPlayerClothes(name)
     if not name then
         return false
     end
-    return not not playerInventory["clothes_"..name]
+    return not not playerInventory[name]
 end
 
 function resetClothesPreview()

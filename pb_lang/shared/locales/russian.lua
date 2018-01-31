@@ -67,6 +67,8 @@ Languages.russian = {
     lobby_crate_take_item = "ЗАБРАТЬ ВЕЩЬ",
     lobby_button_get_crates = "КУПИТЬ ЯЩИК",
     lobby_button_my_crates  = "МОИ ЯЩИКИ",
+    lobby_button_donate  = "ДОНАТ",
+    lobby_donate_disabled = "Донат недоступен на тестовом сервере",
 
     -- INVENTORY
     inventory_backpack_weight = "Носимый вес",

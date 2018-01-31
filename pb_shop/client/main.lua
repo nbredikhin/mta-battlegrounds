@@ -35,5 +35,5 @@ function buyClothes(name)
     if not name then
         return
     end
-    triggerServerEvent("onPlayerBuyClothes", resourceRoot, "clothes_" .. name)
+    triggerServerEvent("onPlayerBuyClothes", resourceRoot, name)
 end

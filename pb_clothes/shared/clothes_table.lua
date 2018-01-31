@@ -92,7 +92,7 @@ ClothesTable.shirt_floral = {
     texture  = "body/mbodyd/1.png",
     icon     = "icon_equipment_Body_D_04.png",
     rarity   = 4,
-    hide     = { forearm = true }
+    hide     = { forearm = true },
 }
 
 ClothesTable.shirt_dirty_green = {
@@ -196,7 +196,6 @@ ClothesTable.tshirt_pioneer = {
     texture  = "body/mbodybr03/9.png",
     icon     = "icon_equipment_Body_EA_01.png",
     rarity   = 6,
-    price    = "default",
 }
 
 ClothesTable.tshirt_raglan2 = {
@@ -398,7 +397,7 @@ ClothesTable.shirt_floral_black = {
     material = "mbodypu",
     texture  = "body/mbodypu/4.png",
     icon     = "icon_equipment_Body_PU_06.png",
-    rarity   = 3,
+    rarity   = 2,
     hide     = { forearm = true },
 }
 
@@ -530,7 +529,6 @@ ClothesTable.tracksuit_top3 = {
     texture  = "jacket/mjacketbr05/2.png",
     icon     = "icon_equipment_Jacket_BR05_01.png",
     rarity   = 4,
-    price    = "default",
 }
 
 -- mjacketbr06
@@ -792,7 +790,6 @@ ClothesTable.pants_combat1 = {
     texture  = "legs/mlegsc/1.png",
     icon     = "icon_equipment_Legs_C_05.png",
     rarity   = 6,
-    price    = "default",
 }
 
 ClothesTable.pants_combat2 = {
@@ -984,7 +981,6 @@ ClothesTable.boots_working1 = {
     texture  = "feet/mfeetd/1.png",
     icon     = "icon_equipment_Feet_D_01.png",
     rarity   = 7,
-    price    = "default",
 }
 
 ClothesTable.boots_working2 = {
@@ -994,7 +990,6 @@ ClothesTable.boots_working2 = {
     texture  = "feet/mfeetd/2.png",
     icon     = "icon_equipment_Feet_D_02.png",
     rarity   = 7,
-    price    = "default",
 }
 
 ClothesTable.boots_working3 = {

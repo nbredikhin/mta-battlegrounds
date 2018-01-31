@@ -1,10 +1,11 @@
 <meta>
     <oop>true</oop>
 
+    <script type="shared" src="shared/config.lua"/>
     <script type="shared" src="shared/usercheck.lua"/>
     <script type="shared" src="shared/item_classes.lua"/>
     <script type="shared" src="shared/clothes.lua"/>
-    <script type="shared" src="shared/config.lua"/>
+    <script type="shared" src="shared/crates.lua"/>
 
     <script type="client" src="client/inventory.lua"/>
     <script type="client" src="client/stats.lua"/>
@@ -22,6 +23,7 @@
     <export type="shared" function="getDefaultClothes"/>
     <export type="shared" function="calculateClothesSellPrice"/>
     <export type="shared" function="getRewardPrice"/>
+    <export type="shared" function="isCrateClothes"/>
     <export type="server" function="addPlayerStatsField"/>
     <export type="server" function="updatePlayerRating"/>
     <export type="client" function="getInventory"/>

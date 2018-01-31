@@ -85,7 +85,9 @@ local function getCurrentItems()
             items = {}
             if clothesList then
                 for i, item in ipairs(clothesList) do
-                    table.insert(items, item)
+                    if not exports.pb_accounts:isCrateClothes(item.clothes) then
+                        table.insert(items, item)
+                    end
                 end
             end
             table.insert(items, {name = "Назад", back = true})

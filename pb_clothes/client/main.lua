@@ -115,6 +115,7 @@ function loadPedClothes(ped)
                 local object = createObject(model, ped.position)
                 object:setCollisionsEnabled(false)
                 object.dimension = ped.dimension
+                object.interior = ped.interior
                 local attach = ClothesTable[name].attach or Config.attachOffsets[layer]
                 object.scale = attach.scale or 1
                 -- Прикрепление объекта через bone_attach
@@ -209,6 +210,10 @@ addEventHandler("onClientElementStreamIn", root, function ()
 end)
 
 addEventHandler("onClientElementStreamOut", root, function ()
+    unloadPedClothes(source)
+end)
+
+addEventHandler("onClientElementDestroy", root, function ()
     unloadPedClothes(source)
 end)
 

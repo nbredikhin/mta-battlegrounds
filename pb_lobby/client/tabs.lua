@@ -9,7 +9,7 @@ local currentTab = Tabs.home
 
 local tabsY = 30
 local tabsHeight = 45
-local tabsX = 100
+local tabsX = 50
 local tabsHorizontalOffset = 10
 local tabsSpace = 20
 local tabsTextScale = 1.5
@@ -19,12 +19,14 @@ if screenSize.x >= 1600 then
     tabsHeight = 60
     tabsSpace = 35
     tabsHorizontalOffset = 20
+    tabsX = 100
 end
 if screenSize.x < 1024 then
     tabsTextScale = 1
     tabsHeight = 40
     tabsHorizontalOffset = 5
     tabsSpace = 15
+    tabsX = 20
     tabsY = 10
 end
 
@@ -44,7 +46,7 @@ end
 
 Tabs.shop = {
     title = localize("lobby_tab_shop"),
-
+    disabled = true,
     load = function ()
         localPlayer:setData("lobbyReady", false)
         fadeCamera(false, 0)
@@ -95,7 +97,7 @@ function drawTabs()
             dxDrawRectangle(x, y + 15 * tabsTextScale + 2, width*selectAnim, 1.5 * tabsTextScale, tocolor(254, 181, 0))
         end
         if tab.disabled then
-            color = tocolor(150, 150, 150)
+            color = tocolor(150, 150, 150, 150)
         end
         dxDrawText(str, x, y, x, y + tabsHeight, color, tabsTextScale, "default-bold", "left", "top")
         x = x + width + tabsSpace

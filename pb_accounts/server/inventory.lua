@@ -111,8 +111,7 @@ function setupPlayerInventory(player, playerInventory)
         end
     end
     -- Выдача дефолтной одежды, если её нет
-    for layer, name in pairs(DefaultClothes) do
-        local itemName = "clothes_"..tostring(name)
+    for layer, itemName in pairs(DefaultClothes) do
         if not isItem(playerInventory[itemName]) then
             playerInventory[itemName] = createItem(itemName)
         end

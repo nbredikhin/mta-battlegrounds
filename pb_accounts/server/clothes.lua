@@ -74,6 +74,9 @@ addEventHandler("onPlayerBuyClothes", root, function (itemName)
     if not isItem(item) then
         return
     end
+    if isCrateClothes(item.name) then
+        return
+    end
     local itemClass = getItemClass(item)
     local dPonts = client:getData("donatepoints") or 0
     if not itemClass.price or dPonts < itemClass.price then

@@ -297,6 +297,15 @@ function dbLoginPlayer(result, params)
         setupPlayerInventory(player, fromJSON(result.items))
         setupPlayerSession(player, result)
 
+        for i, name in ipairs(clothesData) do
+            if name ~= "clothes_head" and name ~= "clothes_hair" then
+                local itemName = player:getData(name)
+                if itemName and not getPlayerInventoryItem(player, itemName) then
+                    player:removeData(name)
+                end
+            end
+        end
+
         exports.mysql:dbExec(dbTableName, [[
             UPDATE ?? SET online_server = ?, nickname = ? WHERE username = ?;
         ]], serverId, player.name, result.username)

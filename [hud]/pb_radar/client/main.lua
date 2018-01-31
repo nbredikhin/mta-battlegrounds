@@ -44,6 +44,11 @@ local sectionNames = {
     y = {"I", "J", "K", "L", "M", "N", "O", "P"}
 }
 
+local settings = {
+    grid = true
+}
+
+
 local function worldToRadar(x, y)
     if not x then
         return 0, 0
@@ -123,29 +128,31 @@ local function drawRadar()
         textures.map
     )
     -- Сетка
-    local gridSize = 40
+    if settings.grid then
+        local gridSize = 40
 
-    local g1 = math.max(1, math.floor((localX) / radarTextureSize * gridSize) + 1)
-    local g2 = math.min(40, math.floor((localX + localWidth) / radarTextureSize * gridSize) + 1)
-    for i = g1, g2 do
-        local lx = (i - 1) * radarTextureSize / gridSize - localX
-        local ly = (i - 1) * radarTextureSize / gridSize - localY
-        local ix = i - math.floor((i - 1) / 5) * 5
-        local sx, sy = getSectionName(lx + localX, ly + localY)
-        dxDrawLine(lx, 0, lx, 0 + radarTextureSize, radarLinesColor, 2)
-        dxDrawText(sx..ix, lx + 5, 8, lx + 5, 8, radarTextColor)
-    end
+        local g1 = math.max(1, math.floor((localX) / radarTextureSize * gridSize) + 1)
+        local g2 = math.min(40, math.floor((localX + localWidth) / radarTextureSize * gridSize) + 1)
+        for i = g1, g2 do
+            local lx = (i - 1) * radarTextureSize / gridSize - localX
+            local ly = (i - 1) * radarTextureSize / gridSize - localY
+            local ix = i - math.floor((i - 1) / 5) * 5
+            local sx, sy = getSectionName(lx + localX, ly + localY)
+            dxDrawLine(lx, 0, lx, 0 + radarTextureSize, radarLinesColor, 2)
+            dxDrawText(sx..ix, lx + 5, 8, lx + 5, 8, radarTextColor)
+        end
 
-    g1 = math.max(1, math.floor((localY) / radarTextureSize * gridSize) + 1)
-    g2 = math.min(40, math.floor((localY + localHeight) / radarTextureSize * gridSize) + 1)
-    for i = g1, g2 do
-        local lx = (i - 1) * radarTextureSize / gridSize - localX
-        local ly = (i - 1) * radarTextureSize / gridSize - localY
+        g1 = math.max(1, math.floor((localY) / radarTextureSize * gridSize) + 1)
+        g2 = math.min(40, math.floor((localY + localHeight) / radarTextureSize * gridSize) + 1)
+        for i = g1, g2 do
+            local lx = (i - 1) * radarTextureSize / gridSize - localX
+            local ly = (i - 1) * radarTextureSize / gridSize - localY
 
-        local iy = i - math.floor((i - 1) / 5) * 5
-        local sx, sy = getSectionName(lx + localX, ly + localY)
-        dxDrawLine(0, ly, 0 + radarTextureSize, ly, radarLinesColor, 2)
-        dxDrawText(sy..iy, 8, ly + 3, 8, ly + 3, radarTextColor)
+            local iy = i - math.floor((i - 1) / 5) * 5
+            local sx, sy = getSectionName(lx + localX, ly + localY)
+            dxDrawLine(0, ly, 0 + radarTextureSize, ly, radarLinesColor, 2)
+            dxDrawText(sy..iy, 8, ly + 3, 8, ly + 3, radarTextColor)
+        end
     end
 
     -- Зоны
@@ -315,4 +322,13 @@ addEventHandler("onClientResourceStart", resourceRoot, function ()
     textures.runner = dxCreateTexture("assets/runner.png")
 
     viewport = dxCreateRenderTarget(viewportWidth, viewportHeight, false)
+end)
+
+addCommandHandler("radargrid", function ()
+    settings.grid = not settings.grid
+    local state = "disabled"
+    if settings.grid then
+        state = "enabled"
+    end
+    outputConsole("Radar grid is now "..state)
 end)
