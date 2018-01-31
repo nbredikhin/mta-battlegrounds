@@ -34,16 +34,16 @@ Config.airdropTimeMin = 180
 Config.airdropTimeMax = 300
 
 Config.airdropItems = {
-    medkit         = {0, 3},
+    medkit         = {0, 2},
     helmet3        = {0, 1},
     armor3         = {0, 1},
-    weapon_grenade = {0, 5},
-    backpack_large = {0, 1},
-    painkiller     = {0, 6},
+    weapon_grenade = {0, 2},
+    backpack3      = {0, 1},
+    painkiller     = {0, 3},
     energy_drink   = {0, 1},
     weapon_m4      = {0, 1},
-    ammo_556mm     = {30, 90},
-    ammo_762mm     = {30, 90},
+    ammo_556mm     = {15, 60},
+    ammo_762mm     = {15, 60},
 }
 
 Config.planeSpeed = 100

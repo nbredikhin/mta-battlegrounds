@@ -299,31 +299,31 @@ Items = {
         weight       = 8
     },
 
-    backpack_small = {
+    backpack1 = {
         level        = 1,
         tag          = "equipment",
 
-        icon         = "backpack_small.png",
+        icon         = "backpack1.png",
         readableName = "item_backpack1",
         category     = "backpack",
         capacity     = 220,
     },
 
-    backpack_medium = {
+    backpack2 = {
         level        = 2,
         tag          = "equipment",
 
-        icon         = "backpack_medium.png",
+        icon         = "backpack2.png",
         readableName = "item_backpack2",
         category     = "backpack",
         capacity     = 270,
     },
 
-    backpack_large = {
+    backpack3 = {
         level        = 3,
         tag          = "equipment",
 
-        icon         = "backpack_large.png",
+        icon         = "backpack3.png",
         readableName = "item_backpack3",
         category     = "backpack",
         capacity     = 320,

@@ -32,7 +32,7 @@ setTimer(function ()
 
     -- Снаряжение
     -- addPlayerEquipment(player, createItem("helmet2"))
-    -- addPlayerEquipment(player, createItem("backpack_small"))
+    -- addPlayerEquipment(player, createItem("backpack1"))
     -- addPlayerEquipment(player, createItem("helmet3",1,{health=5}))
 
     -- Вещи
