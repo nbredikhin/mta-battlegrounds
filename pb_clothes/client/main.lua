@@ -79,6 +79,10 @@ function loadPedClothes(ped)
     hasShoes = not not ClothesTable[hasShoes]
     local hasHat  = ped:getData("clothes_hat")
     hasHat = not not ClothesTable[hasHat]
+    local tmpHat = ped:getData("tmp_clothes_hat")
+    if tmpHat and ClothesTable[tmpHat] then
+        hasHat = true
+    end
     -- Части тела, которые должны быть скрыты
     local hideParts = {}
     -- Части тела, для которых игнорируется скрытие
@@ -94,7 +98,12 @@ function loadPedClothes(ped)
     local bodyTexture = getTexture("assets/textures/skin/"..bodyTextureName..".png")
 
     for i, layer in ipairs(layerNames) do
-        local name = ped:getData("clothes_" .. tostring(layer))
+        local tmpName = ped:getData("tmp_clothes_"..layer)
+        if tmpName then
+            name = tmpName
+        else
+            name = ped:getData("clothes_"..layer)
+        end
         if name and ClothesTable[name] then
             local texture
             if ClothesTable[name].texture then
@@ -213,9 +222,4 @@ addEventHandler("onClientResourceStart", resourceRoot, function ()
     for i, ped in ipairs(getElementsByType("ped")) do
         loadPedClothes(ped)
     end
-end)
-
-addCommandHandler("cl", function (cmd, name)
-    outputChatBox("Clothes " .. name)
-    addPedClothes(localPlayer, name, true)
 end)

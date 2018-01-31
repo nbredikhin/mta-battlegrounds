@@ -50,9 +50,17 @@ function updatePlayerEquipment(player)
         for slot in pairs(equipmentSlots) do
             local item = playerEquipments[player][slot]
             if item then
-                player:setData("wear_"..tostring(slot), exports.pb_models:getReplacedModel(item.name))
+                if slot == "helmet" then
+                    player:setData("tmp_clothes_hat", item.name)
+                else
+                    player:setData("wear_"..tostring(slot), exports.pb_models:getReplacedModel(item.name))
+                end
             else
-                player:removeData("wear_"..tostring(slot))
+                if slot == "helmet" then
+                    player:removeData("tmp_clothes_hat")
+                else
+                    player:removeData("wear_"..tostring(slot))
+                end
             end
         end
         triggerClientEvent("updateWearableItems", resourceRoot, player)
