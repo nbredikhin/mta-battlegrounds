@@ -50,7 +50,7 @@ addEventHandler("onClientPreRender", root, function (deltaTime)
     local passedTime = (getTickCount() - startTime) / 1000
     currentPlane.position = Vector3(startX + velocityX * passedTime, startY + velocityY * passedTime, Config.planeZ - 10)
     if isClientInPlane then
-        setElementPosition(localPlayer, currentPlane.position - Vector3(0, 0, 10), false)
+        setElementPosition(localPlayer, currentPlane.position, false)
     end
     if math.abs(currentPlane.position.x) > Config.planeDistance + 50 or
        math.abs(currentPlane.position.y) > Config.planeDistance + 50

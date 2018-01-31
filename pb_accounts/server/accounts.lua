@@ -142,11 +142,12 @@ function savePlayerAccountData(player)
 
     for i, name in ipairs(saveAccountData) do
         local value = player:getData(name)
-        if not value then
-            value = nil
+        if value then
+            table.insert(saveQuery, tostring(name) .. " = ?")
+            table.insert(saveArgs, value)
+        else
+            table.insert(saveQuery, tostring(name) .. " = NULL")
         end
-        table.insert(saveQuery, tostring(name) .. " = ?")
-        table.insert(saveArgs, value)
     end
 
     table.insert(saveArgs, username)
@@ -178,11 +179,12 @@ function savePlayerAccount(player)
 
     for i, name in ipairs(saveAccountData) do
         local value = player:getData(name)
-        if not value then
-            value = nil
+        if value then
+            table.insert(saveQuery, tostring(name) .. " = ?")
+            table.insert(saveArgs, value)
+        else
+            table.insert(saveQuery, tostring(name) .. " = NULL")
         end
-        table.insert(saveQuery, tostring(name) .. " = ?")
-        table.insert(saveArgs, value)
     end
 
     local inventoryString = toJSON(getPlayerInventory(player))
@@ -484,4 +486,8 @@ addEventHandler("onElementDataChange", root, function(dataName, oldValue)
             source:setData(dataName, oldValue)
         end
     end
+end)
+
+addCommandHandler("accsave", function (player)
+    savePlayerAccount(player)
 end)
