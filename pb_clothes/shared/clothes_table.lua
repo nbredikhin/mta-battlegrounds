@@ -454,7 +454,7 @@ ClothesTable.mghilie1 = {
     material = "mghilie",
     texture  = "jacket/mghilie/1.png",
     icon     = "icon_equipment_Ghillie_01.png",
-    hide     = { forearm = true },
+    hide     = { forearm = true, elbow = true },
 }
 
 ClothesTable.mghilie2 = {
@@ -463,7 +463,7 @@ ClothesTable.mghilie2 = {
     material = "mghilie",
     texture  = "jacket/mghilie/2.png",
     icon     = "icon_equipment_Ghillie_02.png",
-    hide     = { forearm = true },
+    hide     = { forearm = true, elbow = true },
 }
 
 -- mjacketbr01

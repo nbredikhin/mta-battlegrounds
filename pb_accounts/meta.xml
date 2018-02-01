@@ -17,6 +17,7 @@
     <script type="server" src="server/stats.lua"/>
     <script type="server" src="server/rating.lua"/>
     <script type="server" src="server/crates.lua"/>
+    <script type="server" src="server/admin.lua"/>
 
     <export type="shared" function="checkUsername"/>
     <export type="shared" function="getItemClass"/>

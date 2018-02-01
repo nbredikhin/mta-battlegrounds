@@ -126,22 +126,3 @@ function sendPlayerInventory(player)
         triggerClientEvent(player, "onClientInventoryUpdated", resourceRoot, playerInventories[player])
     end
 end
-
-function isPlayerAdmin(player)
-    return hasObjectPermissionTo(player, "command.srun", false)
-end
-
-addCommandHandler("accgive", function (player, cmd, name)
-    if not isPlayerAdmin(player) then
-        return
-    end
-    local item = createItem(name)
-    if not isItem(item) then
-        outputDebugString("Item does not exist", name)
-    end
-    if addPlayerInventoryItem(player, item) then
-        outputDebugString("[ACCOUNTS] Admin " .. tostring(player.name) .. "(acc "..tostring(player:getData("username"))..") gave item " .. tostring(item.name))
-    else
-        outputDebugString("Failed to add", name)
-    end
-end)
