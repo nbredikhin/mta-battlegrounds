@@ -51,7 +51,7 @@ bone_0[20],bone_t[20],bone_f[20] = 54,53,52 --right foot
 
 function putAttachedElementsOnBones()
 	for element,ped in pairs(attached_ped) do
-		if not isElement(element) then
+		if not isElement(element) or not isElement(ped) then
 			clearAttachmentData(element)
 		elseif isElementStreamedIn(ped) then
 			local bone = attached_bone[element]

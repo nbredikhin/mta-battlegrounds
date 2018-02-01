@@ -37,6 +37,9 @@ addEventHandler("onPlayerJoin", root, function ()
     initPlayerSkillStats(source)
 
     source.nametagShowing = false
+    source.dimension = 1000 + math.random(1, 1000)
+    source.position = Vector3(-4000, 4000, 1000)
+    source.frozen = true
 end)
 
 local overrideStat = {

@@ -182,8 +182,8 @@ function drawInvitePanel()
     dxDrawText(localize("lobby_counter_text") .. ": "..tostring(playersCount).."/4", x, y, x + 150, y + h, tocolor(255, 255, 255), 1, "default-bold", "center", "center", true, true)
     x = x + 150
     local bh = 30
+    local bw = 240
     if isOwnLobby() then
-        local bw = w - x + (screenSize.x - w - 20)
         if playersCount >= 4 then
             drawButton(localize("lobby_button_full"), x, y + h/2-bh/2,bw,bh)
         else

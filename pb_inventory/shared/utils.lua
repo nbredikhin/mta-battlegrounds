@@ -69,7 +69,7 @@ function isItemEquipment(item)
         return
     end
     local itemClass = Items[item.name]
-    return itemClass.category == "helmet" or itemClass.category == "armor" or itemClass.category == "backpack"
+    return itemClass.category == "helmet" or itemClass.category == "armor" or itemClass.category == "backpack" or itemClass.category == "ghillie"
 end
 
 function getItemWeight(item)

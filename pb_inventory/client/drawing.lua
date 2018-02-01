@@ -9,8 +9,8 @@ local listSpace = 2
 local listItemWidth = 215
 local listItemHeight = 60
 local slotSpace = 15
-local equipSlotSize = 135
 local weaponSlotSize = (listItemHeight + slotSpace) * 3 - slotSpace
+local equipSlotSize = math.floor(weaponSlotSize / 2 - slotSpace / 2)
 local capacityBarWidth = 15
 local capacityBarHeight = weaponSlotSize * 2 + slotSpace
 local capacityBarTexture
@@ -492,6 +492,7 @@ addEventHandler("onClientRender", root, function ()
     drawEquipmentSlot("helmet", x, y, equipSlotSize)
     drawEquipmentSlot("backpack", x, y + slotSpace + equipSlotSize, equipSlotSize)
     drawEquipmentSlot("armor", x, y + slotSpace * 2 + equipSlotSize * 2, equipSlotSize)
+    drawEquipmentSlot("ghillie", x, y + slotSpace * 3 + equipSlotSize * 3, equipSlotSize)
 
     -- Заполненность рюкзака
     x = x - slotSpace - capacityBarWidth

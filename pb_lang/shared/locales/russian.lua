@@ -114,6 +114,8 @@ Languages.russian = {
     item_762mm = "7.62мм",
     item_556mm = "5.56мм",
     item_12gauge = "12 калибр",
+    item_mghilie1 = "Маскхалат (лесной)",
+    item_mghilie2 = "Маскхалат (пустыня)",
 
     -- ALERS
     alert_shrink_started  = "ОГРАНИЧЕНИЕ ИГРОВОЙ ОБЛАСТИ!",

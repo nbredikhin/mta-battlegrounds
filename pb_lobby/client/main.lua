@@ -190,6 +190,7 @@ function setVisible(visible)
         resetFarClipDistance()
         resetFogDistance()
         localPlayer.interior = 0
+        localPlayer.dimension = 1337
         localPlayer.position = Vector3(3500, 0, 100)
         localPlayer.frozen = true
         if math.random() > 0.5 then
@@ -211,6 +212,8 @@ function setVisible(visible)
         backgroundVehicle.frozen = true
         backgroundVehicle:setCollisionsEnabled(false)
         backgroundVehicle.dimension = localPlayer.dimension
+
+        exports.pb_clothes:reloadClothes()
     else
         localPlayer.frozen = false
         resetFarClipDistance()

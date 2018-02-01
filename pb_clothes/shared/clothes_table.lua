@@ -454,6 +454,7 @@ ClothesTable.mghilie1 = {
     material = "mghilie",
     texture  = "jacket/mghilie/1.png",
     icon     = "icon_equipment_Ghillie_01.png",
+    hide     = { forearm = true },
 }
 
 ClothesTable.mghilie2 = {
@@ -462,6 +463,7 @@ ClothesTable.mghilie2 = {
     material = "mghilie",
     texture  = "jacket/mghilie/2.png",
     icon     = "icon_equipment_Ghillie_02.png",
+    hide     = { forearm = true },
 }
 
 -- mjacketbr01
@@ -574,7 +576,7 @@ ClothesTable.coat = {
     texture  = "jacket/mjacketd/4.png",
     icon     = "icon_equipment_Jacket_D_01.png",
     rarity   = 2,
-    hide     = { elbow = true, forearm = true },
+    hide     = { forearm = true },
 }
 
 ClothesTable.coat_camel = {
@@ -584,7 +586,7 @@ ClothesTable.coat_camel = {
     texture  = "jacket/mjacketd/1.png",
     icon     = "icon_equipment_Jacket_D_03.png",
     rarity   = 3,
-    hide     = { elbow = true, forearm = true },
+    hide     = { forearm = true },
 }
 
 ClothesTable.coat_gray = {
@@ -594,7 +596,7 @@ ClothesTable.coat_gray = {
     texture  = "jacket/mjacketd/2.png",
     icon     = "icon_equipment_Jacket_D_02.png",
     rarity   = 3,
-    hide     = { elbow = true, forearm = true },
+    hide     = { forearm = true },
 }
 
 ClothesTable.coat_red = {
@@ -604,7 +606,7 @@ ClothesTable.coat_red = {
     texture  = "jacket/mjacketd/3.png",
     icon     = "icon_equipment_Jacket_D_04.png",
     rarity   = 2,
-    hide     = { elbow = true, forearm = true },
+    hide     = { forearm = true },
 }
 
 ------------------------------

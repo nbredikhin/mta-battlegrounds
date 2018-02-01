@@ -34,7 +34,7 @@ addEventHandler("onClientRender", root, function ()
         plane = nil
     end
     for player, info in pairs(streamedPlayers) do
-        if not isElement(player) or player:getData("dead") then
+        if not isElement(player) or player:getData("dead") or player.dimension ~= localPlayer.dimension then
             streamedPlayers[player] = nil
             return
         end

@@ -2,7 +2,13 @@ local playerEquipments = {}
 local equipmentSlots = {
     helmet = true,
     armor = true,
-    backpack = true
+    backpack = true,
+    ghillie = true,
+}
+
+local clothesSlots = {
+    helmet = "tmp_clothes_hat",
+    ghillie = "tmp_clothes_jacket"
 }
 
 function initPlayerEquipment(player)
@@ -14,6 +20,7 @@ function initPlayerEquipment(player)
         helmet   = nil,
         armor    = nil,
         backpack = nil,
+        ghillie  = nil,
     }
 
     for slot in pairs(equipmentSlots) do
@@ -50,14 +57,14 @@ function updatePlayerEquipment(player)
         for slot in pairs(equipmentSlots) do
             local item = playerEquipments[player][slot]
             if item then
-                if slot == "helmet" then
-                    player:setData("tmp_clothes_hat", item.name)
+                if clothesSlots[slot] then
+                    player:setData(clothesSlots[slot], item.name)
                 else
                     player:setData("wear_"..tostring(slot), exports.pb_models:getReplacedModel(item.name))
                 end
             else
-                if slot == "helmet" then
-                    player:removeData("tmp_clothes_hat")
+                if clothesSlots[slot] then
+                    player:removeData(clothesSlots[slot])
                 else
                     player:removeData("wear_"..tostring(slot))
                 end

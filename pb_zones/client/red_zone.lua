@@ -58,10 +58,11 @@ local function createNextExplosion()
             local x, y = getRandomPoint(zoneRadius)
             x = x + zoneX
             y = y + zoneY
+            local z = getGroundHeight(x, y) or 0
             if not disableDamage then
-                createExplosion(x, y, getGroundHeight(x, y), 10)
+                createExplosion(x, y, z, 10)
             else
-                createExplosion(x, y, getGroundHeight(x, y), 10, true, 0, false)
+                createExplosion(x, y, z, 10, true, 0, false)
             end
         end
     end

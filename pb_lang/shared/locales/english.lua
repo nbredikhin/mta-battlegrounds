@@ -114,6 +114,8 @@ Languages.english = {
     item_762mm = "7.62mm",
     item_556mm = "5.56mm",
     item_12gauge = "12 gauge",
+    item_mghilie1 = "Ghillie Suit (Woodland)",
+    item_mghilie2 = "Ghillie Suit (Desert)",
 
     -- ALERS
     alert_shrink_started  = "RESTRICTING PLAY AREA!",

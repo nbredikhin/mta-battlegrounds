@@ -6,11 +6,11 @@ Config.rewardCrates = {
 }
 
 Config.rewardPrices = {
-    100,
-    200,
-    300,
-    400,
-    500
+    450,
+    900,
+    1800,
+    2700,
+    3600
 }
 
 function getRewardPrice(level)

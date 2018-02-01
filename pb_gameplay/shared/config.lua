@@ -44,6 +44,8 @@ Config.airdropItems = {
     weapon_m4      = {0, 1},
     ammo_556mm     = {15, 60},
     ammo_762mm     = {15, 60},
+    mghilie1       = {0, 1},
+    mghilie2       = {0, 1},
 }
 
 Config.planeSpeed = 100

@@ -457,6 +457,26 @@ Items = {
         category     = "ammo",
         stackable    = true,
         weight       = 1.25,
+    },
+
+    mghilie1 = {
+        level        = 3,
+        tag          = "equipment",
+        nospawn      = true,
+
+        icon         = "mghilie1.png",
+        readableName = "item_mghilie1",
+        category     = "ghillie",
+    },
+
+    mghilie2 = {
+        level        = 3,
+        tag          = "equipment",
+        nospawn      = true,
+
+        icon         = "mghilie2.png",
+        readableName = "item_mghilie1",
+        category     = "ghillie",
     }
 }
 

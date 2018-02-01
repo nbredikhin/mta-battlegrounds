@@ -68,6 +68,9 @@ addEventHandler("onJoinedMatch", resourceRoot, function (settings, aliveCount, s
         setTime(settings.hour, 0)
         setMinuteDuration(600000)
     end
+
+    -- Выгрузить лишнюю одежду
+    exports.pb_clothes:reloadClothes()
 end)
 
 addEvent("onLeftMatch", true)

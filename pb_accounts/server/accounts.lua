@@ -398,12 +398,6 @@ addEventHandler("onResourceStop", resourceRoot, function ()
     ]], serverId)
 end)
 
-setTimer(function ()
-    for i, player in ipairs(getElementsByType("player")) do
-        savePlayerAccount(player, true)
-    end
-end, autosaveInterval * 1000, 0)
-
 addCommandHandler("pbreg", function (player, cmd, username, password)
     registerPlayer(player, username, password)
 end)
@@ -486,8 +480,4 @@ addEventHandler("onElementDataChange", root, function(dataName, oldValue)
             source:setData(dataName, oldValue)
         end
     end
-end)
-
-addCommandHandler("accsave", function (player)
-    savePlayerAccount(player)
 end)

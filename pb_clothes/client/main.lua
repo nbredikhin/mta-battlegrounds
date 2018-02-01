@@ -23,8 +23,49 @@ local bodyParts = {
 
 local loadedClothes = {}
 local loadedTextures = {}
+local localHat = nil
 
-local function unloadPedClothes(ped)
+function getLocalPlayerHat()
+    return localHat
+end
+
+function reloadClothes()
+    local startTime = getTickCount()
+    local elementsCount = 0
+    local pedsCount = 0
+    for ped in pairs(loadedClothes) do
+        pedsCount = pedsCount + 1
+        for i, element in ipairs(loadedClothes[ped]) do
+            if isElement(element) then
+                destroyElement(element)
+                elementsCount = elementsCount + 1
+            end
+        end
+    end
+    loadedClothes = {}
+
+    local texturesCount = 0
+    for i, texture in ipairs(loadedTextures) do
+        if isElement(texture) then
+            destroyElement(texture)
+            texturesCount = texturesCount + 1
+        end
+    end
+    loadedTextures = {}
+    outputDebugString("[CLOTHES] Reload clothes. Destroyed "..texturesCount.." texture(s); "..elementsCount.." element(s) on "..pedsCount.." ped(s).")
+
+    local loadedElements = 0
+    for i, player in ipairs(getElementsByType("player")) do
+        loadPedClothes(player, true)
+    end
+
+    for i, ped in ipairs(getElementsByType("ped")) do
+        loadPedClothes(ped, true)
+    end
+    outputDebugString("[CLOTHES] Reload total time: "..(getTickCount()-startTime).."ms")
+end
+
+local function unloadPedClothes(ped, omitLog)
     if not ped or not loadedClothes[ped] then
         return
     end
@@ -34,6 +75,10 @@ local function unloadPedClothes(ped)
         end
     end
     loadedClothes[ped] = nil
+
+    if not omitLog then
+        outputDebugString("[CLOTHES] Unloaded ped clothes "..tostring(ped))
+    end
 end
 
 local function getTexture(path)
@@ -45,6 +90,7 @@ local function getTexture(path)
         texture = dxCreateTexture(path, "dxt5", false)
         loadedTextures[path] = texture
     end
+
     return texture
 end
 
@@ -58,15 +104,19 @@ local function createClothesShader(ped, material, texture)
     end
     local shader = dxCreateShader("assets/shaders/replace.fx", 0, 0, false, elementType)
     shader:setValue("gTexture", texture)
-    engineApplyShaderToWorldTexture(shader, material, ped)
+    if material then
+        engineApplyShaderToWorldTexture(shader, material, ped)
+    end
     return shader
 end
 
-function loadPedClothes(ped)
-    if not isElement(ped) then
+function loadPedClothes(ped, omitLog)
+    if not isElement(ped) or not ped.streamedIn or (ped.type ~= "ped" and ped.type ~= "player") then
         return
     end
-    unloadPedClothes(ped)
+
+    local startTime = getTickCount()
+    unloadPedClothes(ped, true)
     loadedClothes[ped] = {}
     -- Наличие слоев одежды
     local hasJacket = ped:getData("clothes_jacket")
@@ -96,7 +146,11 @@ function loadPedClothes(ped)
     ped.doubleSided = false
     -- Текстура тела
     local bodyTexture = getTexture("assets/textures/skin/"..bodyTextureName..".png")
-
+    local bodyShader = createClothesShader(ped, nil, bodyTexture)
+    table.insert(loadedClothes[ped], bodyShader)
+    if ped == localPlayer then
+        localHat = nil
+    end
     for i, layer in ipairs(layerNames) do
         local tmpName = ped:getData("tmp_clothes_"..layer)
         if tmpName then
@@ -130,6 +184,14 @@ function loadPedClothes(ped)
                     table.insert(loadedClothes[ped], shader)
                 end
 
+                if ped == localPlayer and layer == "hat" then
+                    localHat = object
+                end
+                object:setData("scale", object.scale)
+                if ped:getData("isInPlane") then
+                    object.scale = 0
+                end
+
                 setTimer(function ()
                     if isElement(object) then
                         object.doubleSided = true
@@ -145,8 +207,13 @@ function loadPedClothes(ped)
                             useTexture = bodyTexture
                         end
                         if not (i == 2 and hasJacket) then
-                            local shader = createClothesShader(ped, ClothesTable[name].material .. "p"..i, useTexture)
-                            table.insert(loadedClothes[ped], shader)
+                            local material = ClothesTable[name].material .. "p"..i
+                            if useTexture == bodyTexture then
+                                engineApplyShaderToWorldTexture(bodyShader, material, ped)
+                            else
+                                local shader = createClothesShader(ped, material, useTexture)
+                                table.insert(loadedClothes[ped], shader)
+                            end
                         end
                     end
                 else
@@ -188,8 +255,12 @@ function loadPedClothes(ped)
 
     for i, name in ipairs(bodyParts) do
         if not hideParts[name] then
-            table.insert(loadedClothes[ped], createClothesShader(ped, name, bodyTexture))
+            engineApplyShaderToWorldTexture(bodyShader, name, ped)
         end
+    end
+
+    if not omitLog then
+        outputDebugString("[CLOTHES] Loaded ped clothes "..tostring(ped)..". Elements: "..tostring(#loadedClothes[ped]).."; Time: "..(getTickCount() - startTime).."ms")
     end
 end
 
@@ -202,6 +273,22 @@ addEventHandler("onClientElementDataChange", root, function (dataName)
     end
     if string.find(dataName, "clothes_") then
         loadPedClothes(source)
+    elseif dataName == "isInPlane" then
+        if loadedClothes[source] then
+            local hide = false
+            if source:getData("isInPlane") then
+                hide = true
+            end
+            for i, element in ipairs(loadedClothes[source]) do
+                if element.type == "object" then
+                    if hide then
+                        element.scale = 0
+                    else
+                        element.scale = element:getData("scale")
+                    end
+                end
+            end
+        end
     end
 end)
 
@@ -228,3 +315,13 @@ addEventHandler("onClientResourceStart", resourceRoot, function ()
         loadPedClothes(ped)
     end
 end)
+
+-- addCommandHandler("cl", function (cmd, name)
+--     if not name then
+--         for i, name in ipairs(layerNames) do
+--             localPlayer:setData("clothes_"..name, false, true)
+--         end
+--     else
+--         addPedClothes(localPlayer, name, true)
+--     end
+-- end)
