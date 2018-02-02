@@ -315,13 +315,3 @@ addEventHandler("onClientResourceStart", resourceRoot, function ()
         loadPedClothes(ped)
     end
 end)
-
--- addCommandHandler("cl", function (cmd, name)
---     if not name then
---         for i, name in ipairs(layerNames) do
---             localPlayer:setData("clothes_"..name, false, true)
---         end
---     else
---         addPedClothes(localPlayer, name, true)
---     end
--- end)

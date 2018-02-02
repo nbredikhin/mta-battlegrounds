@@ -100,7 +100,7 @@ function updateLobby(owner)
     -- iprint("updateLobby", owner)
     for player in pairs(playerLobbies[owner].players) do
         if isElement(player) then
-            triggerClientEvent(player, "onLobbyUpdated", resourceRoot, owner, getLobbyPlayers(owner))
+            triggerClientEvent(player, "onLobbyUpdated", resourceRoot, owner, getLobbyPlayers(owner), exports.pb_gameplay:getServerMatchType())
         end
     end
 end
@@ -171,9 +171,15 @@ addEvent("updateLobby", true)
 addEventHandler("updateLobby", resourceRoot, function ()
     local lobby = getPlayerLobby(client)
     if lobby then
-        triggerClientEvent(client, "onLobbyUpdated", resourceRoot, lobby.owner, getLobbyPlayers(lobby.owner))
+        triggerClientEvent(client, "onLobbyUpdated", resourceRoot, lobby.owner, getLobbyPlayers(lobby.owner), exports.pb_gameplay:getServerMatchType())
     end
 end)
+
+function updateAllLobbies()
+    for player in pairs(playerLobbies) do
+        updateLobby(player)
+    end
+end
 
 addEvent("onPlayerLobbyKick", true)
 addEventHandler("onPlayerLobbyKick", resourceRoot, function (targetPlayer)
@@ -185,10 +191,6 @@ end)
 
 addCommandHandler("updatelobby", function (player)
     updateLobby(player)
-end)
-
-addCommandHandler("lobby", function (player)
-    outputConsole(inspect(playerLobbies))
 end)
 
 addEvent("onLobbyStartSearch", true)

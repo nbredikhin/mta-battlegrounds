@@ -24,8 +24,11 @@ Languages.russian = {
 
     lobby_players_in_lobby = "Игроков в лобби",
     lobby_matches_running = "Запущено матчей",
-    lobby_type_solo  = "Тип игры: SOLO",
-    lobby_type_squad = "Тип игры: ОТРЯД",
+    lobby_match_type = "ТИП ИГРЫ",
+    lobby_type_solo  = "ОДИНОЧНЫЙ",
+    lobby_type_squad = "ОТРЯД",
+    lobby_type_1m_squad = "ОТРЯД (1 ИГРОК)",
+    lobby_type_2m_squad = "ОТРЯД",
     lobby_not_enough_players = "Недостаточно игроков",
 
     lobby_invite_text = "Игрок %s приглашает вас в лобби",
@@ -92,6 +95,7 @@ Languages.russian = {
     item_jerrycan = "Канистра с топливом",
     item_bandage  = "Бинт",
     item_medkit   = "Большая аптечка",
+    item_adrenaline = "Шприц с адреналином",
     item_first_aid = "Малая аптечка",
     item_energy_drink = "Энергетик",
     item_painkiller = "Обезболивающее",

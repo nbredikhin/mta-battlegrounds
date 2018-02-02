@@ -24,8 +24,11 @@ Languages.english = {
 
     lobby_players_in_lobby = "Players in lobby",
     lobby_matches_running  = "Matches running",
-    lobby_type_solo  = "Match type: SOLO",
-    lobby_type_squad = "Match type: SQUAD",
+    lobby_match_type = "MATCH TYPE",
+    lobby_type_solo  = "SOLO",
+    lobby_type_squad = "SQUAD",
+    lobby_type_1m_squad = "1-MAN SQUAD",
+    lobby_type_2m_squad = "2-MAN SQUAD",
     lobby_not_enough_players = "Not enough players",
 
     lobby_invite_text = "You have received an invite from %s",
@@ -92,6 +95,7 @@ Languages.english = {
     item_jerrycan = "Gas Can",
     item_bandage  = "Bandage",
     item_medkit   = "Med Kit",
+    item_adrenaline = "Adrenaline Syringe",
     item_first_aid = "First Aid Kit",
     item_energy_drink = "Energy Drink",
     item_painkiller = "Painkillers",

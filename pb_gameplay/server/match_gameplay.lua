@@ -1,3 +1,5 @@
+local unusedAirdropTypes = {}
+
 function initMatch(match)
     match.createdTimestamp = getRealTime().timestamp
     match.waitingTimestamp = match.createdTimestamp
@@ -536,6 +538,14 @@ addEventHandler("onPlayerWasted", root, function (ammo, killer, weaponId)
     handlePlayerMatchDeath(match, source, killer, weaponId)
 end)
 
+addEventHandler("onPlayerQuit", root, function ()
+    local match = getPlayerMatch(source)
+    if not isMatch(match) then
+        return
+    end
+    handlePlayerMatchDeath(match, source)
+end, true, "high")
+
 addEvent("onMatchElementCreated", false)
 addEventHandler("onMatchElementCreated", root, function (matchId)
     local match = getMatchById(matchId)
@@ -546,6 +556,21 @@ addEventHandler("onMatchElementCreated", root, function (matchId)
     table.insert(match.elements, source)
 end)
 
+local function getNextAirdropItems()
+    if #unusedAirdropTypes == 0 then
+        unusedAirdropTypes = {}
+        for i = 1, #Config.airdropTypes do
+            table.insert(unusedAirdropTypes, i)
+        end
+    end
+    local takeIndex = 1
+    if #unusedAirdropTypes > 1 then
+        takeIndex = math.random(1, #unusedAirdropTypes)
+    end
+    local index = table.remove(unusedAirdropTypes, takeIndex)
+    return Config.airdropTypes[index]
+end
+
 addEvent("onAirdropLanded", false)
 addEventHandler("onAirdropLanded", root, function (matchId, x, y, z)
     if not isResourceRunning("pb_inventory") then
@@ -555,8 +580,19 @@ addEventHandler("onAirdropLanded", root, function (matchId, x, y, z)
     if not isMatch(match) then
         return
     end
-    for name, range in pairs(Config.airdropItems) do
-        local count = math.random(range[1], range[2])
+    local airdropItems = getNextAirdropItems()
+    for name, data in pairs(airdropItems) do
+        local itemName = name
+        local count = 1
+        if type(data) == "table" then
+            if type(data[1]) == "string" then
+                itemName = data[math.random(1, #data)]
+            elseif type(data[1]) == "number" then
+                count = math.random(data[1], data[2])
+            end
+        elseif type(data) == "number" then
+            count = data
+        end
         if count > 0 then
             local item = exports.pb_inventory:createItem(name, count)
             exports.pb_inventory:spawnLootItem(item, Vector3(x, y, z), match.dimension)

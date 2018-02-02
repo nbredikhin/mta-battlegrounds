@@ -33,21 +33,6 @@ Config.redZoneMinPlayers = 10
 Config.airdropTimeMin = 180
 Config.airdropTimeMax = 300
 
-Config.airdropItems = {
-    medkit         = {0, 2},
-    helmet3        = {0, 1},
-    armor3         = {0, 1},
-    weapon_grenade = {0, 2},
-    backpack3      = {0, 1},
-    painkiller     = {0, 3},
-    energy_drink   = {0, 1},
-    weapon_m4      = {0, 1},
-    ammo_556mm     = {15, 60},
-    ammo_762mm     = {15, 60},
-    mghilie1       = {0, 1},
-    mghilie2       = {0, 1},
-}
-
 Config.planeSpeed = 100
 Config.planeZ = 650
 Config.planeDistance = 3500
@@ -72,5 +57,48 @@ Config.overrideWeaponProperties = {
     },
     ["ak47"] = {
         damage = 32,
+    },
+}
+
+-- Варианты вещей в аирдропах
+Config.airdropTypes = {
+    {
+        adrenaline_syringe = {0, 1},
+        first_aid          = {1, 3},
+        medkit             = {0, 2},
+        energy_drink       = {1, 2},
+        weapon_awm         = 1,
+        ammo_556mm         = {30, 60},
+        mghilie            = {"mghilie1", "mghilie2"},
+        helmet3            = {0, 1},
+        armor3             = {0, 1},
+        backpack3          = {0, 1},
+    },
+    {
+        adrenaline_syringe = {0, 1},
+        first_aid          = {1, 4},
+        medkit             = {0, 2},
+        energy_drink       = {1, 3},
+        painkiller         = {0, 3},
+        weapon_m4          = 1,
+        ammo_556mm         = {150, 200},
+        weapon_grenade     = {0, 3},
+        helmet3            = {0, 1},
+        armor3             = {0, 1},
+        backpack3          = {0, 1},
+    },
+    {
+        adrenaline_syringe = {0, 1},
+        first_aid          = {1, 4},
+        medkit             = {0, 2},
+        energy_drink       = {1, 3},
+        painkiller         = {0, 3},
+        weapon_ak47        = 1,
+        ammo_762mm         = {150, 200},
+        weapon_molotov     = {0, 3},
+        weapon_pan         = {0, 1},
+        helmet3            = {0, 1},
+        armor3             = {0, 1},
+        backpack3          = {0, 1},
     },
 }

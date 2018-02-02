@@ -371,7 +371,7 @@ end
 
 addEventHandler("onPlayerQuit", root, function ()
     logoutPlayer(source)
-end)
+end, true, "low")
 
 addEventHandler("onResourceStart", resourceRoot, function ()
     local name = getServerName()

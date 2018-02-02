@@ -13,17 +13,37 @@ local lobbyPeds = {}
 local currentLobbyOwner = localPlayer
 local lobbyPlayersList = {}
 local backgroundVehicle
+local serverMatchType
+
+local lobbyReadyTimer
+
+-- Проверка, готовы ли все игроки
+local function checkLobbyReadyState()
+    if not isOwnLobby() then
+        return false
+    end
+    for i, player in ipairs(getLobbyPlayers()) do
+        if isElement(player) and not player:getData("lobbyReady") then
+            return false
+        end
+    end
+
+    triggerServerEvent("onLobbyStartSearch", resourceRoot)
+end
+
+local function restartLobbyReadyTimer()
+    if isTimer(lobbyReadyTimer) then
+        killTimer(lobbyReadyTimer)
+    end
+    lobbyReadyTimer = setTimer(checkLobbyReadyState, 3000, 0)
+end
 
 function isOwnLobby()
     return currentLobbyOwner == localPlayer
 end
 
 function getLobbyType()
-    if #lobbyPlayersList > 1 then
-        return "squad"
-    else
-        return "solo"
-    end
+    return serverMatchType
 end
 
 addEventHandler("onClientClick", root, function (button, state, _, _, _, _, _, element)
@@ -46,6 +66,7 @@ end)
 
 local function updatePlayerReadyState(player)
     if player and lobbyPeds[player] then
+        restartLobbyReadyTimer()
         local state = "[not ready]"
         if player:getData("lobbyReady") then
             state = "[ready]"
@@ -116,6 +137,10 @@ addEventHandler("onLobbyUpdated", resourceRoot, function (lobbyOwner, playersLis
     if not isVisible() then
         return
     end
+    if type(lobbyType) ~= "string" then
+        lobbyType = "solo"
+    end
+    serverMatchType = lobbyType
     currentLobbyOwner = lobbyOwner
     respawnPeds(playersList)
     lobbyPlayersList = playersList
@@ -164,20 +189,6 @@ addEventHandler("onMatchSearchFailed", resourceRoot, function ()
     showMessageBox(localize("lobby_search_failed"))
 end)
 
-setTimer(function ()
-    if not isVisible() or not isOwnLobby() then
-        return
-    end
-
-    for i, player in ipairs(getLobbyPlayers()) do
-        if isElement(player) and not player:getData("lobbyReady") then
-            return
-        end
-    end
-
-    triggerServerEvent("onLobbyStartSearch", resourceRoot)
-end, 3000, 0)
-
 function setVisible(visible)
     if isLobbyVisible == not not visible then
         return
@@ -214,7 +225,11 @@ function setVisible(visible)
         backgroundVehicle.dimension = localPlayer.dimension
 
         exports.pb_clothes:reloadClothes()
+        restartLobbyReadyTimer()
     else
+        if isTimer(lobbyReadyTimer) then
+            killTimer(lobbyReadyTimer)
+        end
         localPlayer.frozen = false
         resetFarClipDistance()
         resetFogDistance()

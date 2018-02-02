@@ -42,7 +42,7 @@ addCommandHandler("startmatch", function (player, cmd, id)
     end
 end)
 
-addCommandHandler("matchwait", function (player, cmd, id)
+addCommandHandler("matchdrop", function (player, cmd, id)
     if not isPlayerAdmin(player) then
         return
     end
@@ -54,11 +54,11 @@ addCommandHandler("matchwait", function (player, cmd, id)
             return
         end
 
-        match.stateTime = 0
+        match.aidropTimestamp = getRealTime().timestamp - match.airdropTime - 1
     end
 end)
 
-addCommandHandler("skipzone", function (player, cmd, id)
+addCommandHandler("matchredzone", function (player, cmd, id)
     if not isPlayerAdmin(player) then
         return
     end
@@ -70,25 +70,15 @@ addCommandHandler("skipzone", function (player, cmd, id)
             return
         end
 
-        -- match.shrinkTimer = 0
-        match.zoneTimer = 0
+        match.redZoneTimestamp = getRealTime().timestamp - match.redZoneTime - 1
     end
 end)
 
-addCommandHandler("skipshrink", function (player, cmd, id)
+addCommandHandler("servermode", function (player, cmd, matchType)
     if not isPlayerAdmin(player) then
         return
     end
-    local id = tonumber(id)
-
-    if id then
-        local match = getMatchById(id)
-        if not match then
-            return
-        end
-
-        match.shrinkTimer = 0
-        --match.zoneTimer = 0
+    if setServerMatchType(matchType) then
+        outputConsole("Server gamemode changed to: "..matchType)
     end
 end)
-

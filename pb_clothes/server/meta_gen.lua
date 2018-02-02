@@ -1,4 +1,7 @@
 addCommandHandler("cmeta", function ()
+    if not isPlayerAdmin(player) then
+        return
+    end
     local f = fileCreate("clothes.xml")
     for name, item in pairs(ClothesTable) do
         if item.texture then

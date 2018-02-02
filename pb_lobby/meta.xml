@@ -16,6 +16,7 @@
 
     <export type="client" function="setVisible"/>
     <export type="server" function="getPlayerLobbyPlayers"/>
+    <export type="server" function="updateAllLobbies"/>
 
     <file src="assets/button.png"/>
     <file src="assets/logo.png"/>

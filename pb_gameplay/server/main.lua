@@ -15,6 +15,11 @@ function setupWeaponProps()
 end
 
 addEventHandler("onResourceStart", resourceRoot, function ()
+    if string.find(string.lower(getServerName()), "squad") or string.find(string.lower(getServerName()), "test") then
+        setServerMatchType("squad")
+    else
+        setServerMatchType("solo")
+    end
     setupWeaponProps()
 
     for i, player in ipairs(getElementsByType("player")) do

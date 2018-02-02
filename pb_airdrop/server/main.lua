@@ -2,8 +2,7 @@ local planeDistance = 3200
 local planeZ = 200
 local planeSpeed = 85
 
-local playerGroups = {}
-local eventGroups = {}
+local landedAirdrops = {}
 
 function createAirDrop(matchId, x, y)
     if not matchId or not x or not y then
@@ -36,6 +35,7 @@ function createAirDrop(matchId, x, y)
 
     local angle = math.deg(math.atan2(vectorY, vectorX)) - 90
     outputDebugString("[AIRDROP] Airdrop created in match " .. tostring(matchId) .. " (" .. tostring(#players) .. " players)")
+    landedAirdrops[matchId] = nil
     triggerClientEvent(players, "createAirDrop", resourceRoot, matchId, sx, sy, planeZ, angle, velocityX, velocityY, dropTime, x, y)
 end
 
@@ -67,6 +67,10 @@ addEventHandler("onPlayerCrateLanded", resourceRoot, function (x, y, z)
     if not matchId then
         return
     end
+    if landedAirdrops[matchId] then
+        return
+    end
+    landedAirdrops[matchId] = true
     local players = exports.pb_gameplay:getAllMatchPlayers(matchId)
     if type(players) ~= "table" or #players == 0 then
         return

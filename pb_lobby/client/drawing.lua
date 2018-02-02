@@ -81,11 +81,12 @@ function drawStartGameButton()
     local y = screenSize.y - height - 10
 
     local buttonText = localize("lobby_start_game")
+    local lobbyPlayers = getLobbyPlayers()
     if localPlayer:getData("lobbyReady") then
         buttonText = localize("lobby_ready")
 
         local allReady = true
-        for i, player in ipairs(getLobbyPlayers()) do
+        for i, player in ipairs(lobbyPlayers) do
             if isElement(player) and not player:getData("lobbyReady") then
                 allReady = false
                 break
@@ -107,6 +108,26 @@ function drawStartGameButton()
     end
     dxDrawText(buttonText, x+2, y+2, x + width+2, y + height+2, tocolor(0, 0, 0, 150), textScale, "default-bold", "center", "center")
     dxDrawText(buttonText, x, y, x + width, y + height, tocolor(255, 255, 255), textScale, "default-bold", "center", "center")
+
+    local infoText = localize("lobby_match_type")..": "
+    if getLobbyType() == "solo" then
+        infoText = infoText..localize("lobby_type_solo")
+    else
+        if #lobbyPlayers == 1 then
+            infoText = infoText..localize("lobby_type_1m_squad")
+        elseif #lobbyPlayers == 2 then
+            infoText = infoText..localize("lobby_type_2m_squad")
+        else
+            infoText = infoText..localize("lobby_type_squad")
+        end
+    end
+    y = y - 15
+    local textWidth = dxGetTextWidth(infoText, 2, "default-bold")
+    local scale = 2
+    if width < textWidth then
+        scale = scale * width / textWidth
+    end
+    dxDrawText(infoText, x, y + 11, x + width, y + 10, tocolor(255, 255, 255, 150), scale, "default-bold", "left", "bottom")
 end
 
 function drawMessageBox()
@@ -294,7 +315,10 @@ addEventHandler("onClientRender", root, function ()
 
     drawMessageBox()
     drawWindow()
-    drawInvitePanel()
+
+    if getLobbyType() == "squad" then
+        drawInvitePanel()
+    end
 end)
 
 addEvent("updateLobbyPlayersCount", true)

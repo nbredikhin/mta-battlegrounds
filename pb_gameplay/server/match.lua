@@ -1,5 +1,21 @@
+local serverMatchType = "squad"
+
 local matchesList = {}
 local matchCounter = 0
+
+function setServerMatchType(matchType)
+    if matchType and matchType == "solo" or matchType == "squad" then
+        serverMatchType = matchType
+        exports.pb_lobby:updateAllLobbies()
+        return true
+    else
+        return false
+    end
+end
+
+function getServerMatchType()
+    return serverMatchType
+end
 
 function getAllMatches()
     return matchesList
@@ -12,6 +28,9 @@ function findMatch(players)
     if #players > Config.maxSquadPlayers then
         return false
     end
+    if serverMatchType == "solo" and #players > 1 then
+        return false
+    end
     -- Проверка нахождения игроков в других матчах
     for i, player in ipairs(players) do
         if isPlayerInMatch(player) then
@@ -19,20 +38,14 @@ function findMatch(players)
             return false
         end
     end
-    -- Выбор типа матча
-    local matchType = "solo"
-    if #players > 1 then
-        matchType = "squad"
-    end
     -- Поиск подходящего матча
     for i, match in ipairs(matchesList) do
-        if match.state == "waiting" and match.matchType == matchType and #getMatchAlivePlayers(match) + #players <= match.maxPlayers then
+        if match.state == "waiting" and match.matchType == serverMatchType and #getMatchAlivePlayers(match) + #players <= match.maxPlayers then
             return addMatchSquad(match, players)
         end
     end
-
     -- Матч не найден - создаём новый
-    local match = createMatch(matchType)
+    local match = createMatch(serverMatchType)
     return addMatchSquad(match, players)
 end
 

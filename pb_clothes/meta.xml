@@ -10,6 +10,7 @@
     <script type="client" src="client/exports.lua"/>
     <script type="client" src="client/aim.lua"/>
 
+    <script type="server" src="server/admin.lua"/>
     <script type="server" src="server/meta_gen.lua"/>
 
     <!-- Экспорты -->

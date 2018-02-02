@@ -29,10 +29,11 @@ addCommandHandler("userinfo", function (player, cmd, targetName)
         outputConsole("Player not found")
         return
     end
-    outputConsole("Name: "..targetPlayer.name)
-    outputConsole("Username: "..targetPlayer:getData("username"))
-    outputConsole("BP: "..targetPlayer:getData("battlepoints"))
-    outputConsole("DP: "..targetPlayer:getData("donatepoints"))
+    outputConsole("*** USER INFO ***")
+    outputConsole("* Name: "..targetPlayer.name)
+    outputConsole("* Username: "..targetPlayer:getData("username"))
+    outputConsole("* BP: "..targetPlayer:getData("battlepoints"))
+    outputConsole("* DP: "..targetPlayer:getData("donatepoints"))
 end)
 
 addCommandHandler("userpoints", function (player, cmd, targetName, count)
