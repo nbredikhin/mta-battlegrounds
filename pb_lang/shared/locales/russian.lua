@@ -66,12 +66,17 @@ Languages.russian = {
     lobby_crate_new = "НОВЫЙ",
     lobby_crate_cancel = "Отмена",
     lobby_crate_opening = "Сундук открывается...",
+    lobby_crate_purchasing = "Покупка сундука...",
     lobby_crate_received = "ВЫ ПОЛУЧИЛИ",
     lobby_crate_take_item = "ЗАБРАТЬ ВЕЩЬ",
     lobby_button_get_crates = "КУПИТЬ ЯЩИК",
     lobby_button_my_crates  = "МОИ ЯЩИКИ",
     lobby_button_donate  = "ДОНАТ",
     lobby_donate_disabled = "Донат недоступен на тестовом сервере",
+    lobby_donate_converting = "Перевод валюты...",
+    lobby_donate_site = "Для доната посетите наш сайт",
+    lobby_donate_balance = "Баланс",
+    lobby_donate_btn_convert = "ПЕРЕВЕСТИ В BATTLEPOINTS",
 
     -- INVENTORY
     inventory_backpack_weight = "Носимый вес",

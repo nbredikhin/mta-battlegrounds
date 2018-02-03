@@ -4,8 +4,8 @@ local tabsOrder = {
     "home", "character", "shop", "rewards", "statistics"
 }
 
-local currentTabName = "home"
-local currentTab = Tabs.home
+local currentTabName
+local currentTab
 
 local tabsY = 30
 local tabsHeight = 45

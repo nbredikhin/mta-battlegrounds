@@ -6,6 +6,7 @@
     <script type="shared" src="shared/item_classes.lua"/>
     <script type="shared" src="shared/clothes.lua"/>
     <script type="shared" src="shared/crates.lua"/>
+    <script type="shared" src="shared/exports.lua"/>
 
     <script type="client" src="client/inventory.lua"/>
     <script type="client" src="client/stats.lua"/>
@@ -24,6 +25,7 @@
     <export type="shared" function="getDefaultClothes"/>
     <export type="shared" function="calculateClothesSellPrice"/>
     <export type="shared" function="getRewardPrice"/>
+    <export type="shared" function="convertDonatepoints"/>
     <export type="shared" function="isCrateClothes"/>
     <export type="server" function="addPlayerStatsField"/>
     <export type="server" function="updatePlayerRating"/>

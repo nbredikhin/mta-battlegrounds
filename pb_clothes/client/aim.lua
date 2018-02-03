@@ -5,18 +5,22 @@ bindKey("mouse2", "down", function ()
         if isTimer(showTimer) then
             killTimer(showTimer)
         end
-        local object = getLocalPlayerHat()
-        if object then
-            object.scale = 0
+        local objects = getPlayerAttachedObjects(localPlayer)
+        if objects then
+            for layer, object in pairs(objects) do
+                object.scale = 0
+            end
         end
     end
 end)
 
 bindKey("mouse2", "up", function ()
     showTimer = setTimer(function ()
-        local object = getLocalPlayerHat()
-        if object then
-            object.scale = 1
+        local objects = getPlayerAttachedObjects(localPlayer)
+        if objects then
+            for layer, object in pairs(objects) do
+                object.scale = 1
+            end
         end
     end, 50, 1)
 end)

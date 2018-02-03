@@ -66,12 +66,17 @@ Languages.english = {
     lobby_crate_new = "NEW",
     lobby_crate_cancel = "Cancel",
     lobby_crate_opening = "Opening crate...",
+    lobby_crate_purchasing = "Crate is being received...",
     lobby_crate_received = "YOU RECEIVED",
     lobby_crate_take_item = "TAKE ITEM",
     lobby_button_get_crates = "GET CRATES",
     lobby_button_my_crates = "MY CRATES",
     lobby_button_donate = "DONATE",
     lobby_donate_disabled = "Donations are not available yet",
+    lobby_donate_converting = "Points are being converted...",
+    lobby_donate_site = "To donate visit out web-site",
+    lobby_donate_balance = "Balance",
+    lobby_donate_btn_convert = "CONVERT TO BATTLEPOINTS",
 
     -- INVENTORY
     inventory_backpack_weight = "Total weight",

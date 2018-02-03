@@ -481,3 +481,24 @@ addEventHandler("onElementDataChange", root, function(dataName, oldValue)
         end
     end
 end)
+
+addEvent("onPlayerConvertDonatepoints", true)
+addEventHandler("onPlayerConvertDonatepoints", root, function (amount)
+    if type(amount) ~= "number" then
+        return
+    end
+    local battlepoints = client:getData("battlepoints")
+    local donatepoints = client:getData("donatepoints")
+    if type(battlepoints) ~= "number" or type(donatepoints) ~= "number" then
+        return
+    end
+    if amount > donatepoints then
+        return
+    end
+    battlepoints = battlepoints + convertDonatepoints(amount)
+    donatepoints = donatepoints - amount
+    client:setData("battlepoints", battlepoints)
+    client:setData("donatepoints", donatepoints)
+    savePlayerAccount(client)
+    triggerClientEvent(client, "onClientDonatepointsConverted", resourceRoot)
+end)

@@ -21,6 +21,10 @@ function localize(name)
     end
 end
 
+function getMousePos()
+    return mouseX, mouseY
+end
+
 function isMouseOver(x, y, w, h)
     return mouseX >= x     and
            mouseX <= x + w and

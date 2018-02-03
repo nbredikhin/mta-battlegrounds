@@ -240,13 +240,10 @@ bindKey("mouse2", "down", function ()
 end)
 
 bindKey("mouse2", "up", function ()
-    local object = getPlayerAttachedObject(localPlayer, "helmet")
-    if isElement(object) then
-        for name in pairs(itemsAttach) do
-            local object = getPlayerAttachedObject(localPlayer, name)
-            if isElement(object) then
-                object.scale = 1
-            end
+    for name in pairs(itemsAttach) do
+        local object = getPlayerAttachedObject(localPlayer, name)
+        if isElement(object) then
+            object.scale = 1
         end
     end
 end)

@@ -194,18 +194,18 @@ function updatePlayerRating(player, matchType, rank, totalSquads)
         if kills > 0 then
             ratingKills = kills * 2
         else
-            ratingKills = -50
+            ratingKills = -20
         end
         ratingKills = ratingKills * 0.5 + ratingKills * damageTakenMultiplier * 0.5
         -- Battlepoints
         battlepoints = 10 + math.random(1, 6) + kills * 1 + damageTakenMultiplier * 30
     else
         -- Win rating
-        ratingWins = -(rank - maxGoodRank) / (maxRank - maxGoodRank) * 125
+        ratingWins = -(rank - maxGoodRank) / (maxRank - maxGoodRank) * 30
         ratingWins = ratingWins + kills * math.min(kills, 8)
         ratingWins = ratingWins + 15 * damageTakenMultiplier
         -- Kill rating
-        ratingKills = math.max(0, -150 + kills * 5 + 50 * damageTakenMultiplier)
+        ratingKills = math.max(0, -50 + kills * 5 + 50 * damageTakenMultiplier)
         -- Battlepoints
         battlepoints = math.random(3, 6) + kills * 1 + damageTakenMultiplier * 20
     end

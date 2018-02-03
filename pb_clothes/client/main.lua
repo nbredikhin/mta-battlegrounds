@@ -1,4 +1,4 @@
-local skinId = 235
+local clothesModel = 235
 local layerNames = {
     "head",
     "body",
@@ -21,38 +21,73 @@ local bodyParts = {
     "legsbody3",
 }
 
-local loadedClothes = {}
-local loadedTextures = {}
-local localHat = nil
+-- Загруженные части одежды
+local loadedMaterials = {}
+local attachedObjects = {}
+local attachedShaders = {}
 
-function getLocalPlayerHat()
-    return localHat
+function getPlayerAttachedObjects(player)
+    return attachedObjects[player]
+end
+
+function unloadPedClothes(ped, omitLog)
+    if not isElement(ped) or (ped.type ~= "player" and ped.type ~= "ped") then
+        return false
+    end
+
+    if attachedShaders[ped] then
+        for i, data in ipairs(attachedShaders[ped]) do
+            if isElement(data[1]) then
+                engineRemoveShaderFromWorldTexture(data[1], data[2], ped)
+            end
+        end
+    end
+    if ped and attachedObjects[ped] then
+        for layer, object in pairs(attachedObjects[ped]) do
+            if isElement(object) then
+                object.scale = 0
+            end
+        end
+    end
+    attachedShaders[ped] = nil
+
+    if not omitLog then
+        outputDebugString("[CLOTHES] Unloaded ped clothes "..tostring(ped))
+    end
+end
+
+function destroyPedAttaches(ped)
+    if ped and attachedObjects[ped] then
+        for layer, object in pairs(attachedObjects[ped]) do
+            if isElement(object) then
+                destroyElement(object)
+            end
+        end
+    end
 end
 
 function reloadClothes()
     local startTime = getTickCount()
     local elementsCount = 0
     local pedsCount = 0
-    for ped in pairs(loadedClothes) do
+    for ped in pairs(attachedObjects) do
         pedsCount = pedsCount + 1
-        for i, element in ipairs(loadedClothes[ped]) do
-            if isElement(element) then
-                destroyElement(element)
-                elementsCount = elementsCount + 1
-            end
-        end
+        unloadPedClothes(ped, true)
     end
-    loadedClothes = {}
+    attachedObjects = {}
 
-    local texturesCount = 0
-    for i, texture in ipairs(loadedTextures) do
-        if isElement(texture) then
-            destroyElement(texture)
-            texturesCount = texturesCount + 1
+    local materialsCount = 0
+    for i, material in ipairs(loadedMaterials) do
+        if isElement(material.shader) then
+            destroyElement(material.shader)
         end
+        if isElement(material.texture) then
+            destroyElement(material.texture)
+        end
+        materialsCount = materialsCount + 1
     end
-    loadedTextures = {}
-    outputDebugString("[CLOTHES] Reload clothes. Destroyed "..texturesCount.." texture(s); "..elementsCount.." element(s) on "..pedsCount.." ped(s).")
+    loadedMaterials = {}
+    outputDebugString("[CLOTHES] Reload clothes. Destroyed "..materialsCount.." material(s) on "..pedsCount.." ped(s).")
 
     local loadedElements = 0
     for i, player in ipairs(getElementsByType("player")) do
@@ -65,73 +100,53 @@ function reloadClothes()
     outputDebugString("[CLOTHES] Reload total time: "..(getTickCount()-startTime).."ms")
 end
 
-local function unloadPedClothes(ped, omitLog)
-    if not ped or not loadedClothes[ped] then
-        return
-    end
-    for i, element in ipairs(loadedClothes[ped]) do
-        if isElement(element) then
-            destroyElement(element)
+local function replaceElementMaterial(element, material, texturePath)
+    if not loadedMaterials[texturePath] then
+        local elementType = element.type
+        if element.type == "player" then
+            elementType = "ped"
         end
-    end
-    loadedClothes[ped] = nil
-
-    if not omitLog then
-        outputDebugString("[CLOTHES] Unloaded ped clothes "..tostring(ped))
-    end
-end
-
-local function getTexture(path)
-    if not fileExists(path) then
-        return placeholderTexture
-    end
-    local texture = loadedTextures[path]
-    if not texture then
-        texture = dxCreateTexture(path, "dxt5", false)
-        loadedTextures[path] = texture
+        loadedMaterials[texturePath] = {
+            texture = dxCreateTexture(texturePath, "argb", false),
+            shader  = dxCreateShader("assets/shaders/replace.fx", 0, 0, false, elementType)
+        }
+        loadedMaterials[texturePath].shader:setValue("gTexture", loadedMaterials[texturePath].texture)
     end
 
-    return texture
-end
-
-local function createClothesShader(ped, material, texture)
-    if not isElement(texture) then
-        outputDebugString("Failed to load " .. material)
-    end
-    local elementType = "ped"
-    if ped.type == "object" then
-        elementType = "object"
-    end
-    local shader = dxCreateShader("assets/shaders/replace.fx", 0, 0, false, elementType)
-    shader:setValue("gTexture", texture)
-    if material then
-        engineApplyShaderToWorldTexture(shader, material, ped)
-    end
+    local shader = loadedMaterials[texturePath].shader
+    engineApplyShaderToWorldTexture(shader, material, element)
     return shader
 end
 
-function loadPedClothes(ped, omitLog)
+local function getTexturePath(texture)
+    return "assets/textures/"..texture
+end
+
+function loadPedClothes(ped)
     if not isElement(ped) or not ped.streamedIn or (ped.type ~= "ped" and ped.type ~= "player") then
-        return
+        return false
     end
 
-    local startTime = getTickCount()
+    local loadStartTime = getTickCount()
+
     unloadPedClothes(ped, true)
-    loadedClothes[ped] = {}
-    -- Наличие слоев одежды
-    local hasJacket = ped:getData("clothes_jacket")
-    hasJacket = not not ClothesTable[hasJacket]
-    local hasShirt  = ped:getData("clothes_body")
-    hasShirt = not not ClothesTable[hasShirt]
-    local hasPants  = ped:getData("clothes_legs")
-    hasPants = not not ClothesTable[hasPants]
-    local hasShoes  = ped:getData("clothes_feet")
-    hasShoes = not not ClothesTable[hasShoes]
-    local hasHat  = ped:getData("clothes_hat")
-    hasHat = not not ClothesTable[hasHat]
-    local tmpHat = ped:getData("tmp_clothes_hat")
-    if tmpHat and ClothesTable[tmpHat] then
-        hasHat = true
+    if not attachedObjects[ped] then
+        attachedObjects[ped] = {}
+    end
+    attachedShaders[ped] = {}
+
+    -- Проверка валидности одежды
+    local pedClothes = {}
+    for i, layer in ipairs(layerNames) do
+        local name = ped:getData("clothes_"..layer)
+        if name and ClothesTable[name] then
+            pedClothes[layer] = name
+        end
+
+        local tmp = ped:getData("tmp_clothes_"..layer)
+        if tmp and ClothesTable[tmp] then
+            pedClothes[layer] = tmp
+        end
     end
     -- Части тела, которые должны быть скрыты
     local hideParts = {}
@@ -139,113 +154,94 @@ function loadPedClothes(ped, omitLog)
     local showParts = {}
     -- Цвет кожи, определяется головой
     local bodyTextureName = "whitebody"
-    local head = ped:getData("clothes_head")
-    if head and ClothesTable[head] and ClothesTable[head].body then
-        bodyTextureName = ClothesTable[head].body
+    if pedClothes.head and ClothesTable[pedClothes.head].body then
+        bodyTextureName = ClothesTable[pedClothes.head].body
     end
-    ped.doubleSided = false
-    -- Текстура тела
-    local bodyTexture = getTexture("assets/textures/skin/"..bodyTextureName..".png")
-    local bodyShader = createClothesShader(ped, nil, bodyTexture)
-    table.insert(loadedClothes[ped], bodyShader)
-    if ped == localPlayer then
-        localHat = nil
-    end
-    for i, layer in ipairs(layerNames) do
-        local tmpName = ped:getData("tmp_clothes_"..layer)
-        if tmpName then
-            name = tmpName
-        else
-            name = ped:getData("clothes_"..layer)
-        end
-        if name and ClothesTable[name] then
-            local texture
-            if ClothesTable[name].texture then
-                texture = getTexture("assets/textures/" .. ClothesTable[name].texture)
-            end
-            -- Если указана модель, то необходимо создать и прикрепить аттач
-            if ClothesTable[name].model and (layer ~= "hair" or (layer == "hair" and not hasHat)) then
-                local model = exports.pb_models:getReplacedModel(ClothesTable[name].model)
-                local object = createObject(model, ped.position)
+    bodyTextureName = "assets/textures/skin/"..bodyTextureName..".png"
+    for layer, name in pairs(pedClothes) do
+        local clothesTable = ClothesTable[name]
+        if clothesTable.model and (layer ~= "hair" or (layer == "hair" and not pedClothes.hat)) then
+            local model = exports.pb_models:getReplacedModel(clothesTable.model)
+
+            -- Создание и настройка объекта
+            local attach = clothesTable.attach or Config.attachOffsets[layer]
+            local object
+            if attachedObjects[ped][layer] then
+                object = attachedObjects[ped][layer]
+                object.model = model
+            else
+                object = createObject(model, ped.position)
                 object:setCollisionsEnabled(false)
-                object.dimension = ped.dimension
-                object.interior = ped.interior
-                local attach = ClothesTable[name].attach or Config.attachOffsets[layer]
-                object.scale = attach.scale or 1
-                -- Прикрепление объекта через bone_attach
-                exports.bone_attach:attachElementToBone(object, ped, attach.bone,
-                    attach.x, attach.y, attach.z,
-                    attach.rx, attach.ry, attach.rz)
-                table.insert(loadedClothes[ped], object)
+            end
+            object.dimension = ped.dimension
+            object.interior = ped.interior
+            object.scale = attach.scale or 1
 
-                -- Если есть материал, то наложить текстуру
-                if ClothesTable[name].material then
-                    local shader = createClothesShader(object, ClothesTable[name].material, texture)
-                    table.insert(loadedClothes[ped], shader)
-                end
+            -- Прикрепление объекта через bone_attach
+            exports.bone_attach:attachElementToBone(object, ped, attach.bone,
+                attach.x, attach.y, attach.z,
+                attach.rx, attach.ry, attach.rz)
+            attachedObjects[ped][layer] = object
 
-                if ped == localPlayer and layer == "hat" then
-                    localHat = object
-                end
-                object:setData("scale", object.scale)
-                if ped:getData("isInPlane") then
-                    object.scale = 0
-                end
-
-                setTimer(function ()
-                    if isElement(object) then
-                        object.doubleSided = true
-                    end
-                end, 50, 1)
-
-            -- Если указан только материал, то наложить шейдер
-            elseif ClothesTable[name].material then
-                if layer == "body" then
-                    for i = 1, 3 do
-                        local useTexture = texture
-                        if i == 1 then
-                            useTexture = bodyTexture
-                        end
-                        if not (i == 2 and hasJacket) then
-                            local material = ClothesTable[name].material .. "p"..i
-                            if useTexture == bodyTexture then
-                                engineApplyShaderToWorldTexture(bodyShader, material, ped)
-                            else
-                                local shader = createClothesShader(ped, material, useTexture)
-                                table.insert(loadedClothes[ped], shader)
-                            end
-                        end
-                    end
-                else
-                    local shader = createClothesShader(ped, ClothesTable[name].material, texture)
-                    table.insert(loadedClothes[ped], shader)
-                end
+            -- Если есть материал, то наложить текстуру
+            if clothesTable.material then
+                local shader = replaceElementMaterial(object, clothesTable.material, getTexturePath(clothesTable.texture))
+                table.insert(attachedShaders[ped], {shader, clothesTable.material})
             end
 
-            if ClothesTable[name].hide then
-                for name in pairs(ClothesTable[name].hide) do
-                    hideParts[name] = true
-                end
+            object:setData("scale", object.scale)
+            if ped:getData("isInPlane") then
+                object.scale = 0
             end
 
-            if ClothesTable[name].show then
-                for name in pairs(ClothesTable[name].show) do
-                    showParts[name] = true
+            setTimer(function ()
+                if isElement(object) then
+                    object.doubleSided = true
                 end
+            end, 50, 1)
+        elseif clothesTable.material then
+            if layer == "body" then
+                for i = 1, 3 do
+                    local texture = getTexturePath(clothesTable.texture)
+                    if i == 1 then
+                        texture = bodyTextureName
+                    end
+                    if not (i == 2 and pedClothes.jacket) then
+                        local material = ClothesTable[name].material .. "p"..i
+                        local shader = replaceElementMaterial(ped, material, texture)
+                        table.insert(attachedShaders[ped], {shader, material})
+                    end
+                end
+            else
+                local shader = replaceElementMaterial(ped, clothesTable.material, getTexturePath(clothesTable.texture))
+                table.insert(attachedShaders[ped], {shader, clothesTable.material})
+            end
+        end
+
+        if clothesTable.hide then
+            for name in pairs(clothesTable.hide) do
+                hideParts[name] = true
+            end
+        end
+
+        if clothesTable.show then
+            for name in pairs(clothesTable.show) do
+                showParts[name] = true
             end
         end
     end
-    if hasShirt then
+    -- Скрываем части тела в зависимости от надетой одежды
+    if pedClothes.body then
         hideParts.body2 = true
     end
-    if hasShirt or hasJacket then
+    if pedClothes.body or pedClothes.jacket then
         hideParts.body1 = true
     end
-    if hasPants then
+    if pedClothes.legs then
         hideParts.legsbody1 = true
         hideParts.legsbody2 = true
     end
-    if hasShoes then
+    if pedClothes.feet then
         hideParts.legsbody3 = true
     end
 
@@ -255,42 +251,15 @@ function loadPedClothes(ped, omitLog)
 
     for i, name in ipairs(bodyParts) do
         if not hideParts[name] then
-            engineApplyShaderToWorldTexture(bodyShader, name, ped)
+            local shader = replaceElementMaterial(ped, name, bodyTextureName)
+            table.insert(attachedShaders[ped], {shader, name})
         end
     end
 
     if not omitLog then
-        outputDebugString("[CLOTHES] Loaded ped clothes "..tostring(ped)..". Elements: "..tostring(#loadedClothes[ped]).."; Time: "..(getTickCount() - startTime).."ms")
+        outputDebugString("[CLOTHES] Loaded ped clothes "..tostring(ped).."; Time: "..(getTickCount() - loadStartTime).."ms")
     end
 end
-
-addEventHandler("onClientElementDataChange", root, function (dataName)
-    if source.type ~= "player" and source.type ~= "ped" then
-        return
-    end
-    if source ~= localPlayer and not isElementStreamedIn(source) then
-        return
-    end
-    if string.find(dataName, "clothes_") then
-        loadPedClothes(source)
-    elseif dataName == "isInPlane" then
-        if loadedClothes[source] then
-            local hide = false
-            if source:getData("isInPlane") then
-                hide = true
-            end
-            for i, element in ipairs(loadedClothes[source]) do
-                if element.type == "object" then
-                    if hide then
-                        element.scale = 0
-                    else
-                        element.scale = element:getData("scale")
-                    end
-                end
-            end
-        end
-    end
-end)
 
 addEventHandler("onClientElementStreamIn", root, function ()
     loadPedClothes(source)
@@ -302,16 +271,48 @@ end)
 
 addEventHandler("onClientElementDestroy", root, function ()
     unloadPedClothes(source)
+    destroyPedAttaches(source)
+end)
+
+addEventHandler("onClientPlayerQuit", root, function ()
+    unloadPedClothes(source)
+    destroyPedAttaches(source)
 end)
 
 addEventHandler("onClientResourceStart", resourceRoot, function ()
-    setElementDoubleSided(localPlayer, true)
-
     for i, player in ipairs(getElementsByType("player")) do
         loadPedClothes(player)
     end
 
     for i, ped in ipairs(getElementsByType("ped")) do
         loadPedClothes(ped)
+    end
+end)
+
+addEventHandler("onClientElementDataChange", root, function (dataName)
+    if source.type ~= "player" and source.type ~= "ped" then
+        return
+    end
+    if source ~= localPlayer and not isElementStreamedIn(source) then
+        return
+    end
+    if string.find(dataName, "clothes_") then
+        loadPedClothes(source)
+    elseif dataName == "isInPlane" then
+        if attachedObjects[source] then
+            local hide = false
+            if source:getData("isInPlane") then
+                hide = true
+            end
+            for i, element in ipairs(attachedObjects[source]) do
+                if element.type == "object" then
+                    if hide then
+                        element.scale = 0
+                    else
+                        element.scale = element:getData("scale")
+                    end
+                end
+            end
+        end
     end
 end)
