@@ -474,7 +474,7 @@ addEventHandler("onResourceStart", resourceRoot, function ()
             clothes_hair    VARCHAR(64),
             clothes_gloves  VARCHAR(64),
             clothes_mask    VARCHAR(64),
-            clothes_glasses VARCHAR(64),
+            clothes_glasses VARCHAR(64)
         );
     ]])
 

@@ -46,7 +46,7 @@ end
 
 Tabs.shop = {
     title = localize("lobby_tab_shop"),
-    disabled = true,
+    -- disabled = true,
     load = function ()
         localPlayer:setData("lobbyReady", false)
         fadeCamera(false, 0)

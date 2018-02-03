@@ -35,11 +35,11 @@ end
 function resetClothesPreview()
     playerClothes = {}
     for i, name in ipairs(exports.pb_clothes:getClothesLayers()) do
-        local clothes = localPlayer:getData(name)
+        local clothes = localPlayer:getData("clothes_"..name)
         if clothes then
             playerClothes[clothes] = true
         end
-        previewPed:setData(name, clothes)
+        previewPed:setData("clothes_"..name, clothes)
     end
 end
 
