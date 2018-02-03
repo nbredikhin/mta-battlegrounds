@@ -57,11 +57,13 @@ addEventHandler("onPlayerBuyNextCrate", root, function ()
     if not isItem(item) then
         return
     end
-    bPoints = bPoints - price
-    client:setData("battlepoints", bPoints)
-    addPlayerInventoryItem(client, item, true)
-    triggerClientEvent("onClientCrateReceived", resourceRoot, item.name)
-    client:setData("crate_level", math.min(#Config.rewardPrices, crateLevel + 1))
-    savePlayerAccount(client)
-    outputDebugString("[ACCOUNTS] Player " .. tostring(client.name) .. "(acc "..tostring(client:getData("username"))..",money "..tostring(bPoints)..") buy crate " .. tostring(item.name) .. " for " .. tostring(price))
+    if addPlayerInventoryItem(client, item) then
+        bPoints = bPoints - price
+        client:setData("battlepoints", bPoints)
+        triggerClientEvent("onClientCrateReceived", resourceRoot, item.name)
+        client:setData("crate_level", math.min(#Config.rewardPrices, crateLevel + 1))
+        outputDebugString("[ACCOUNTS] Player " .. tostring(client.name) .. "(acc "..tostring(client:getData("username"))..",money "..tostring(bPoints)..") buy crate " .. tostring(item.name) .. " for " .. tostring(price))
+    else
+        outputDebugString("[ACCOUNTS] Error adding crate to " .. tostring(client.name) .. "(acc "..tostring(client:getData("username"))..",money "..tostring(bPoints)..") " .. tostring(item.name) .. " for " .. tostring(price))
+    end
 end)

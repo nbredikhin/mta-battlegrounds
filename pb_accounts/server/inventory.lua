@@ -38,10 +38,8 @@ function addPlayerInventoryItem(player, item, omitSave)
     if not isInventory(inventory) then
         return false
     end
-    if inventory[item.name] then
-        if inventory[item.name].count then
-            inventory[item.name].count = inventory[item.name].count + item.count
-        end
+    if isItem(inventory[item.name]) then
+        inventory[item.name].count = inventory[item.name].count + item.count
     else
         inventory[item.name] = item
     end

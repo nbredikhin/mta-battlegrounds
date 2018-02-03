@@ -27,19 +27,23 @@ ReplacedModels = {
 
     playermodel = 235,
 
-    -- loot_backpack1 = 1063,
-    -- loot_backpack2 = 1067,
-    -- loot_backpack3 = 1068,
+    loot_backpack1 = 1862,
+    loot_backpack2 = 1863,
+    loot_backpack3 = 1864,
 
-    -- loot_armor1 = 1051,
-    -- loot_armor2 = 1011,
-    -- loot_armor3 = 1012,
+    loot_armor1 = 1865,
+    loot_armor2 = 1866,
+    loot_armor3 = 1867,
 
-    -- ammo_9mm = 1013,
-    -- ammo_762mm = 1017,
-    -- ammo_556mm = 1024,
-    -- ammo_12gauge = 1026,
-    -- ammo_45 = 1027,
+    loot_mghilie1 = 1868,
+    loot_mghilie2 = 1869,
+
+    loot_painkiller = 1870,
+    loot_medkit = 1871,
+    loot_energy_drink = 1872,
+    loot_bandage = 1013,
+    loot_adrenaline_syringe = 1017,
+    loot_first_aid = 1024,
 
     swburbhaus01_open = 3307,
     swburbhaus02_open = 3306,
@@ -54,6 +58,7 @@ ReplacedModels = {
     mheadd02  = 1877,
     mheadh    = 1878,
     uganda    = 1879,
+
     -- Волосы
     hair1    = 1880,
     hair2    = 1881,
@@ -63,22 +68,19 @@ ReplacedModels = {
     hair6    = 1901,
     hair7    = 1902,
     hair8    = 1903,
+
+    loot_ammo_9mm     = 1904,
+    loot_ammo_12gauge = 1905,
+    loot_ammo_45acp   = 1906,
+    loot_ammo_556mm   = 1907,
+    loot_ammo_762mm   = 1908,
+    loot_ammo300      = 1909,
 }
 
 OverwriteFiles = {
-    loot_backpack1 =  { txd = "backpack_small" },
-    loot_backpack2 = { txd = "backpack_medium" },
-    loot_backpack3 =  { txd = "backpack_large" },
-    loot_armor1 = { txd = "armor1" },
-    loot_armor2 = { txd = "armor2" },
-    loot_armor3 = { txd = "armor3" },
     swburbhaus02_open = { txd = "swburbhaus01_open" },
     swburbhaus03_open = { txd = "swburbhaus01_open" },
     swburbhaus04_open = { txd = "swburbhaus01_open" },
-    ammo_762mm = { txd = "ammo_9mm" },
-    ammo_556mm = { txd = "ammo_9mm" },
-    ammo_12gauge = { txd = "ammo_9mm" },
-    ammo_45 = { txd = "ammo_9mm" },
     hair2 = { txd = "hair1" },
     hair3 = { txd = "hair1" },
     hair4 = { txd = "hair1" },
@@ -86,6 +88,7 @@ OverwriteFiles = {
     hair6 = { txd = "hair1" },
     hair7 = { txd = "hair1" },
     hair8 = { txd = "hair1" },
+    loot_mghilie2 = { dff = "loot_mghilie1" },
 }
 
 function getReplacedModel(name)

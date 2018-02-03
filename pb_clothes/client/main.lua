@@ -304,7 +304,7 @@ addEventHandler("onClientElementDataChange", root, function (dataName)
             if source:getData("isInPlane") then
                 hide = true
             end
-            for i, element in ipairs(attachedObjects[source]) do
+            for layer, element in pairs(attachedObjects[source]) do
                 if element.type == "object" then
                     if hide then
                         element.scale = 0

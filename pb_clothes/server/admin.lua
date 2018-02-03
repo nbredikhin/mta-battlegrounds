@@ -6,11 +6,16 @@ addCommandHandler("wear", function (player, cmd, name)
     if not isPlayerAdmin(player) then
         return
     end
-    if not name then
-        for i, name in ipairs(layerNames) do
-            player:setData("clothes_"..name, false, true)
-        end
-    else
+    if name then
         addPedClothes(player, name, true)
+    end
+end)
+
+addCommandHandler("unwear", function (player, cmd, name)
+    if not isPlayerAdmin(player) then
+        return
+    end
+    if name then
+        player:setData("clothes_"..name, false, true)
     end
 end)

@@ -386,6 +386,9 @@ addEventHandler("onResourceStart", resourceRoot, function ()
             player:removeData(name)
         end
     end
+    exports.mysql:dbExec(dbTableName, [[
+        UPDATE ?? SET online_server = 0 WHERE online_server = ?;
+    ]], serverId)
 end)
 
 addEventHandler("onResourceStop", resourceRoot, function ()

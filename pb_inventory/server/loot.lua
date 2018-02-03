@@ -7,13 +7,25 @@ local lootColors = {
     red    = 1580,
 }
 
-function spawnLootItem(item, position, dimension)
+local lootScale = {
+    ammo_556mm = 1.5,
+    ammo_762mm = 1.5,
+    ammo_12gauge = 1,
+    ammo_9mm = 1.2,
+    ammo_45acp = 1.0,
+    ammo_300 = 0.8,
+    energy_drink = 1.5
+}
+
+function spawnLootItem(item, position, dimension, isInvisible)
     if not isItem(item) or not position then
         return
     end
     local model = lootColors.white
     local rotation = Vector3(0, 0, math.random(360))
     local offset = Vector3(0, 0, 0)
+
+    local lootModel = exports.pb_models:getReplacedModel("loot_"..item.name)
     if isItemWeapon(item) then
         local itemClass = getItemClass(item.name)
         if weaponModels[itemClass.weaponId] then
@@ -21,22 +33,6 @@ function spawnLootItem(item, position, dimension)
             rotation = Vector3(90, -5, math.random(360))
         else
             model = lootColors.red
-        end
-    elseif Items[item.name].category == "medicine" then
-        model = lootColors.green
-    elseif Items[item.name].category == "ammo" then
-        if isResourceRunning("pb_models") then
-            model = exports.pb_models:getReplacedModel(item.name)
-        end
-        if not model then
-            model = lootColors.blue
-        end
-    elseif Items[item.name].category == "backpack" or Items[item.name].category == "armor" then
-        if isResourceRunning("pb_models") then
-            model = exports.pb_models:getReplacedModel("loot_"..item.name)
-        end
-        if not model then
-            model = lootColors.orange
         end
     elseif Items[item.name].category == "helmet" then
         if isResourceRunning("pb_models") then
@@ -49,10 +45,18 @@ function spawnLootItem(item, position, dimension)
     elseif item.name == "jerrycan" then
         model = 1650
         offset = Vector3(0, 0, 0.32)
+    elseif lootModel then
+        model = lootModel
     end
     local object = createObject(model, position + offset)
     object.rotation = rotation
     object:setCollisionsEnabled(false)
+    if lootScale[item.name] then
+        object.scale = lootScale[item.name]
+    end
+    if isInvisible then
+        object.scale = 0
+    end
 
     item.lootElement = object
     if dimension then
