@@ -75,6 +75,21 @@ ReplacedModels = {
     loot_ammo_556mm   = 1907,
     loot_ammo_762mm   = 1908,
     loot_ammo300      = 1909,
+
+    -- Маски
+    mask1 = 1910,
+    mask2 = 1911,
+    mask3 = 1912,
+    mask4 = 1913,
+    mask5 = 1914,
+
+    -- Очки
+    glasses1 = 1915,
+    glasses2 = 1916,
+    glasses3 = 1917,
+    glasses4 = 1918,
+    glasses5 = 1919,
+    glasses6 = 1920,
 }
 
 OverwriteFiles = {

@@ -1238,10 +1238,210 @@ ClothesTable.hat_uganda = {
 ---------- GLASSES ----------
 -----------------------------
 
+ClothesTable.glasses_punk = {
+    name     = "Glasses (Punk)",
+    layer    = "glasses",
+    model    = "glasses1",
+    material = "mea",
+    texture  = "glasses/mea/1.png",
+    icon     = "icon_equipment_Eyes_A_01.png",
+    rarity   = 5
+}
+
+ClothesTable.glasses_sun1 = {
+    name     = "Rimless Sunglasses",
+    layer    = "glasses",
+    model    = "glasses2",
+    material = "med1",
+    texture  = "glasses/med1/1.png",
+    icon     = "icon_equipment_Eyes_D_02.png",
+    rarity   = 5
+}
+
+ClothesTable.glasses_sun2 = {
+    name     = "Sunglasses",
+    layer    = "glasses",
+    model    = "glasses2",
+    material = "med1",
+    texture  = "glasses/med1/2.png",
+    icon     = "icon_equipment_Eyes_D_01.png",
+    rarity   = 5
+}
+
+ClothesTable.glasses_protective = {
+    name     = "Protective Glasses",
+    layer    = "glasses",
+    model    = "glasses3",
+    material = "med3",
+    texture  = "glasses/med3/1.png",
+    icon     = "icon_equipment_Eyes_D_03.png",
+    rarity   = 2
+}
+
+ClothesTable.glasses_aviator1 = {
+    name     = "Aviator Goggles",
+    layer    = "glasses",
+    model    = "glasses4",
+    material = "meh",
+    texture  = "glasses/meh/1.png",
+    icon     = "icon_equipment_Eyes_H_01.png",
+    rarity   = 3
+}
+
+ClothesTable.glasses_aviator2 = {
+    name     = "Aviator Sunglasses",
+    layer    = "glasses",
+    model    = "glasses5",
+    material = "mei",
+    texture  = "glasses/mei/1.png",
+    icon     = "icon_equipment_Eyes_I_01.png",
+    rarity   = 3
+}
+
+ClothesTable.glasses_hornrimmed1 = {
+    name     = "Horn-rimmed Glasses (Black) ",
+    layer    = "glasses",
+    model    = "glasses6",
+    material = "mel",
+    texture  = "glasses/mel/1.png",
+    icon     = "icon_equipment_Eyes_L_01.png",
+    rarity   = 4
+}
+
+ClothesTable.glasses_hornrimmed2 = {
+    name     = "Horn-rimmed Glasses (Brown) ",
+    layer    = "glasses",
+    model    = "glasses6",
+    material = "mel",
+    texture  = "glasses/mel/2.png",
+    icon     = "icon_equipment_Eyes_L_02.png",
+    rarity   = 4
+}
+
 -----------------------------
 ----------- MASK ------------
 -----------------------------
 
+ClothesTable.mask_balaclava1 = {
+    name     = "Balaclava",
+    layer    = "mask",
+    model    = "mask1",
+    icon     = "icon_equipment_Mask_TW_01.png",
+    material = "mheadh",
+    texture  = "mask/balaclava/1.png",
+    rarity   = 2,
+}
+
+ClothesTable.mask_balaclava2 = {
+    name     = "Balaclava (Green)",
+    layer    = "mask",
+    model    = "mask1",
+    icon     = "icon_equipment_Mask_XB_01.png",
+    material = "mheadh",
+    texture  = "mask/balaclava/2.png",
+    rarity   = 2,
+}
+
+ClothesTable.mask_ballistic = {
+    name     = "Ballistic Mask",
+    layer    = "mask",
+    model    = "mask2",
+    icon     = "icon_equipment_Mask_D_01.png",
+    rarity   = 5,
+}
+
+ClothesTable.mask_bandana1 = {
+    name     = "Leopard Bandana",
+    layer    = "mask",
+    model    = "mask3",
+    material = "bandana",
+    texture  = "mask/bandana/1.png",
+    icon     = "icon_equipment_Mask_PU_02.png",
+    rarity   = 1,
+}
+
+ClothesTable.mask_bandana2 = {
+    name     = "Red Bandana",
+    layer    = "mask",
+    model    = "mask3",
+    material = "bandana",
+    texture  = "mask/bandana/2.png",
+    icon     = "icon_equipment_Mask_PU_01.png",
+    rarity   = 1,
+}
+
+ClothesTable.mask_bandana3 = {
+    name     = "Checkered Bandana",
+    layer    = "mask",
+    model    = "mask3",
+    material = "bandana",
+    texture  = "mask/bandana/3.png",
+    icon     = "icon_equipment_Mask_PU_03.png",
+    rarity   = 1,
+}
+
+ClothesTable.mask_gas = {
+    name     = "Gas Mask",
+    layer    = "mask",
+    model    = "mask4",
+    icon     = "icon_equipment_Mask_C_01.png",
+    rarity   = 2,
+}
+
+ClothesTable.mask_gas_half = {
+    name     = "Gas Mask (Half)",
+    layer    = "mask",
+    model    = "mask5",
+    icon     = "icon_equipment_Mask_B_01.png",
+    rarity   = 3,
+}
+
 -----------------------------
 ---------- GLOVES -----------
 -----------------------------
+
+ClothesTable.gloves1 = {
+    name     = "Fingerless Gloves (Leather)",
+    layer    = "gloves",
+    material = "gloves",
+    texture  = "gloves/gloves/1.png",
+    icon     = "icon_equipment_Hands_D_01.png",
+    rarity   = 7
+}
+
+ClothesTable.gloves2 = {
+    name     = "Fingerless Gloves (Tan)",
+    layer    = "gloves",
+    material = "gloves",
+    texture  = "gloves/gloves/2.png",
+    icon     = "icon_equipment_Hands_D_02.png",
+    rarity   = 7
+}
+
+ClothesTable.gloves3 = {
+    name     = "Fingerless Gloves (Camo)",
+    layer    = "gloves",
+    material = "gloves",
+    texture  = "gloves/gloves/3.png",
+    icon     = "icon_equipment_Hands_D_03.png",
+    rarity   = 6,
+}
+
+ClothesTable.gloves4 = {
+    name     = "Gloves 4",
+    layer    = "gloves",
+    material = "gloves",
+    texture  = "gloves/gloves/4.png",
+    icon     = "icon_equipment_Hands_PU_01.png",
+    rarity   = 7,
+}
+
+ClothesTable.gloves5 = {
+    name     = "Green Fingerless Gloves",
+    layer    = "gloves",
+    material = "gloves",
+    texture  = "gloves/gloves/5.png",
+    icon     = "icon_equipment_Hands_XB_01.png",
+    rarity   = 5,
+}
+

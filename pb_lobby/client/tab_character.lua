@@ -4,6 +4,11 @@ local itemWidth = 300
 local itemHeight = 60
 local itemSpace = 4
 
+if screenSize.y < 900 then
+    itemHeight = 50
+    itemSpace = 2
+end
+
 local animOffset = 0
 
 local tagIcons = {}
@@ -19,11 +24,16 @@ local itemsY = screenSize.y / 2 - itemsHeight / 2
 
 local tagNames = {
     "hat",
+    "glasses",
+    "mask",
     "body",
     "jacket",
+    "gloves",
     "legs",
     "feet",
 }
+
+local hasItemsTags = {}
 
 local currentTag = nil
 local inventoryItems = {}
@@ -113,9 +123,14 @@ local function draw()
     x = itemsX - itemHeight - 20 + animOffset
     y = itemsY
     for i = 1, #tagNames do
-        dxDrawRectangle(x, y, itemHeight, itemHeight, tocolor(0, 0, 0, 200))
         local color = tocolor(255, 255, 255, 100)
-        if isMouseOver(x, y, itemHeight, itemHeight) then
+        if hasItemsTags[tagNames[i]] then
+            dxDrawRectangle(x, y, itemHeight, itemHeight, tocolor(0, 0, 0, 200))
+        else
+            dxDrawRectangle(x, y, itemHeight, itemHeight, tocolor(30, 30, 30, 150))
+            color = tocolor(150, 150, 150, 100)
+        end
+        if hasItemsTags[tagNames[i]] and isMouseOver(x, y, itemHeight, itemHeight) then
             color = tocolor(255, 255, 255, 255)
 
             if isMousePressed then
@@ -174,11 +189,13 @@ end)
 function updateInventory()
     local localInventory = exports.pb_accounts:getInventory()
     inventoryItems = {}
+    hasItemsTags = {}
     for name, item in pairs(localInventory) do
         local itemClass = exports.pb_accounts:getItemClass(item.name)
         if itemClass and itemClass.clothes then
             item.itemClass = itemClass
             item.sellPrice = exports.pb_accounts:calculateClothesSellPrice(itemClass.price)
+            hasItemsTags[itemClass.layer] = true
             if currentTag then
                 if itemClass.layer == currentTag then
                     table.insert(inventoryItems, item)
@@ -188,9 +205,13 @@ function updateInventory()
             end
         end
     end
-    -- table.sort(inventoryItems, function (a, b)
-    --     return a.itemClass.readableName < b.itemClass.readableName
-    -- end)
+    table.sort(inventoryItems, function (a, b)
+        if a.itemClass.readableName and b.itemClass.readableName then
+            return a.itemClass.readableName < b.itemClass.readableName
+        else
+            return true
+        end
+    end)
 
     maxVisibleItemsCount = #inventoryItems - visibleItemsCount + 1
 

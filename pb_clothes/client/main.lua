@@ -7,7 +7,9 @@ local layerNames = {
     "feet",
     "gloves",
     "hat",
-    "hair"
+    "hair",
+    "mask",
+    "glasses"
 }
 
 local bodyParts = {
@@ -20,6 +22,10 @@ local bodyParts = {
     "legsbody2",
     "legsbody3",
 }
+
+function getClothesLayers()
+    return layerNames
+end
 
 -- Загруженные части одежды
 local loadedMaterials = {}
@@ -38,7 +44,7 @@ function unloadPedClothes(ped, omitLog)
     if attachedShaders[ped] then
         for i, data in ipairs(attachedShaders[ped]) do
             if isElement(data[1]) then
-                engineRemoveShaderFromWorldTexture(data[1], data[2], ped)
+                engineRemoveShaderFromWorldTexture(data[1], data[2], data[3] or ped)
             end
         end
     end
@@ -186,7 +192,7 @@ function loadPedClothes(ped)
             -- Если есть материал, то наложить текстуру
             if clothesTable.material then
                 local shader = replaceElementMaterial(object, clothesTable.material, getTexturePath(clothesTable.texture))
-                table.insert(attachedShaders[ped], {shader, clothesTable.material})
+                table.insert(attachedShaders[ped], {shader, clothesTable.material, object})
             end
 
             object:setData("scale", object.scale)

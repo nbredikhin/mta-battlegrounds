@@ -189,6 +189,9 @@ Languages.english = {
     clothes_feet = "Shoes",
     clothes_jacket = "Shoes",
     clothes_hat = "Hats",
+    clothes_gloves = "Gloves",
+    clothes_glasses = "Glasses",
+    clothes_mask = "Masks",
     clothes_all = "All clothes",
 
     -- Shop

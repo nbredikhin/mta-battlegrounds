@@ -11,17 +11,6 @@ local targetLookAt = Vector3()
 local cameraFOV = 70
 local targetFOV = 70
 
-local layerNames = {
-    "head",
-    "body",
-    "jacket",
-    "legs",
-    "feet",
-    "gloves",
-    "hat",
-    "hair"
-}
-
 local function createLobbyPed(position)
     local ped = createPed(235, position, -40)
     ped.frozen = true
@@ -33,7 +22,7 @@ end
 
 function updatePedClothes(ped, player)
     if isElement(ped) and isElement(player) then
-        for i, name in ipairs(layerNames) do
+        for i, name in ipairs(exports.pb_clothes:getClothesLayers() or {}) do
             ped:setData("clothes_"..name, player:getData("clothes_"..name))
         end
     end

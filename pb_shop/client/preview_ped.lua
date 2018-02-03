@@ -2,15 +2,6 @@ local pedPosition = Vector3(148.075, -82.624, 1001.805)
 local previewPed
 
 local playerClothes = {}
-local clothesLayers = {
-    "clothes_head",
-    "clothes_body",
-    "clothes_jacket",
-    "clothes_legs",
-    "clothes_feet",
-    "clothes_hat",
-}
-
 local playerInventory = {}
 
 addEvent("onClientInventoryUpdated", true)
@@ -43,7 +34,7 @@ end
 
 function resetClothesPreview()
     playerClothes = {}
-    for i, name in ipairs(clothesLayers) do
+    for i, name in ipairs(exports.pb_clothes:getClothesLayers()) do
         local clothes = localPlayer:getData(name)
         if clothes then
             playerClothes[clothes] = true

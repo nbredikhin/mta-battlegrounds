@@ -10,6 +10,9 @@ local clothesData = {
     "clothes_jacket",
     "clothes_legs",
     "clothes_hair",
+    "clothes_gloves",
+    "clothes_mask",
+    "clothes_glasses",
 }
 
 local loadAccountData = {
@@ -463,12 +466,15 @@ addEventHandler("onResourceStart", resourceRoot, function ()
 
             online_server INTEGER UNSIGNED NOT NULL DEFAULT 0,
 
-            clothes_hat  VARCHAR(64),
-            clothes_head VARCHAR(64),
-            clothes_body VARCHAR(64),
-            clothes_legs VARCHAR(64),
-            clothes_feet VARCHAR(64),
-            clothes_hair VARCHAR(64)
+            clothes_hat     VARCHAR(64),
+            clothes_head    VARCHAR(64),
+            clothes_body    VARCHAR(64),
+            clothes_legs    VARCHAR(64),
+            clothes_feet    VARCHAR(64),
+            clothes_hair    VARCHAR(64),
+            clothes_gloves  VARCHAR(64),
+            clothes_mask    VARCHAR(64),
+            clothes_glasses VARCHAR(64),
         );
     ]])
 

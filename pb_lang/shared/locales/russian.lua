@@ -189,6 +189,9 @@ Languages.russian = {
     clothes_feet = "Обувь",
     clothes_jacket = "Куртки",
     clothes_hat = "Шапки",
+    clothes_gloves = "Перчатки",
+    clothes_glasses = "Очки",
+    clothes_mask = "Маски",
     clothes_all = "Вся одежда",
 
     -- Shop

@@ -4,6 +4,9 @@ ShopClothes = {
     jacket = {},
     legs = {},
     feet = {},
+    gloves = {},
+    mask = {},
+    glasses = {},
 }
 
 local clothesTable = exports.pb_clothes:getClothesTable()
