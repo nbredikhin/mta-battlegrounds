@@ -28,3 +28,41 @@ addCommandHandler("cmeta", function (player)
     f:close()
     outputDebugString("Meta generated")
 end)
+
+addCommandHandler("clist", function (player)
+    if not isPlayerAdmin(player) then
+        return
+    end
+    local usedPaths = {}
+    local f = fileCreate("clothes.txt")
+    local clothesByLayers = {}
+    for name, item in pairs(ClothesTable) do
+        if item.layer then
+            if not clothesByLayers[item.layer] then
+                clothesByLayers[item.layer] = {}
+            end
+            table.insert(clothesByLayers[item.layer], {item, name})
+        else
+            table.insert(clothesByLayers["без слоя"], {item, name})
+        end
+    end
+
+    f:write("*** Список одежды ***\n")
+    for layer, items in pairs(clothesByLayers) do
+        table.sort(items, function (a, b)
+            return a[2] < b[2]
+        end)
+        f:write("\n* Слой "..layer.." (вещей: "..#items..")\n")
+        for i, item in pairs(items) do
+            local name = tostring(item[2])
+            local item = item[1]
+            if item.name then
+                f:write("\t"..name.." - "..item.name.."\n")
+            else
+                f:write("\t"..name.."\n")
+            end
+        end
+    end
+    f:close()
+    outputDebugString("Clothes list generated")
+end)
