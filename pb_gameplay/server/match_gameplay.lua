@@ -77,13 +77,22 @@ function updateMatch(match)
             return
         end
         local needPlayersCount = math.min(math.max(1, math.floor(#getElementsByType("player") * 0.12)), Config.minMatchPlayers)
+        -- Если игроки заполнились, отменяем таймер только если вышло 30% игроков
+        if match.enoughPlayersJoined then
+            needPlayersCount = math.ceil(needPlayersCount * 0.7)
+        end
         local alivePlayers = getMatchAlivePlayers(match)
         local waitingTimePassed = currentTimestamp - match.waitingTimestamp
         -- Если зашло слишком мало игроков
         if #alivePlayers < needPlayersCount then
+            if match.enoughPlayersJoined then
+                match.enoughPlayersJoined = false
+            end
             match.waitingTimestamp = currentTimestamp
             triggerMatchEvent(match, "onMatchAlert", resourceRoot, "need_players", { current = #alivePlayers, need = needPlayersCount })
         else
+            -- Флаг, запрещающий возврат к ожиданию заполнения матча
+            match.enoughPlayersJoined = true
             -- Иначе ждём начала матча
             local timeLeft = Config.matchWaitingTime - waitingTimePassed
             if timeLeft > 0 then
