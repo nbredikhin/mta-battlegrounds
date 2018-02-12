@@ -1,7 +1,7 @@
 Config = {}
 
 -- Курс донат очков к БП
-Config.donatepointsToBattlepoints = 10
+Config.donatepointsToBattlepoints = 5
 
 Config.rewardCrates = {
     "crate_weekly1",
