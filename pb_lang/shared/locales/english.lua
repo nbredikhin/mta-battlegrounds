@@ -17,7 +17,7 @@ Languages.english = {
 
     -- LOBBY
     lobby_start_game = "START GAME",
-    lobby_searching  = "SEARCHING",
+    lobby_searching  = "MATCHMAKING",
     lobby_ready      = "READY",
 
     lobby_beta_label = "OPEN BETA",
@@ -108,6 +108,7 @@ Languages.english = {
     item_crowbar = "Crowbar",
     item_pan     = "Pan",
     item_machete = "Machete",
+    item_smoke = "Smoke Grenade",
     item_grenade = "Frag Grenade",
     item_molotov = "Molotov Cocktail",
     item_backpack1 = "Backpack (Lv.1)",

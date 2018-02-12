@@ -275,6 +275,18 @@ Items = {
         }
     },
 
+    weapon_smoke = {
+        level        = 1,
+        tag          = "weapon",
+
+        icon         = "smoke.png",
+        readableName = "item_smoke",
+        category     = "weapon_grenade",
+        weaponId     = 17,
+        stackable    = true,
+        weight       = 16
+    },
+
     weapon_grenade = {
         level        = 2,
         tag          = "weapon",

@@ -594,7 +594,7 @@ addEventHandler("onAirdropLanded", root, function (matchId, x, y, z)
             count = data
         end
         if count > 0 then
-            local item = exports.pb_inventory:createItem(name, count)
+            local item = exports.pb_inventory:createItem(itemName, count)
             exports.pb_inventory:spawnLootItem(item, Vector3(x, y, z), match.dimension, true)
         end
     end

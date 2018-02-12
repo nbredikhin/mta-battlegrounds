@@ -45,4 +45,6 @@ Config.resourceList = {
 
     "pb_lobby",
     "pb_gameplay",
+
+    "pb_donat",
 }

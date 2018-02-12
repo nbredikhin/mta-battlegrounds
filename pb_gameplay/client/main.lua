@@ -52,3 +52,10 @@ function localize(name)
         return name
     end
 end
+
+-- Отключение урона от газа
+addEventHandler("onClientPlayerChoke", localPlayer, function (weaponId)
+    if weaponId == 18 then
+        cancelEvent()
+    end
+end)

@@ -108,6 +108,7 @@ Languages.russian = {
     item_crowbar = "Монтировка",
     item_pan     = "Сковорода",
     item_machete = "Мачете",
+    item_smoke = "Дымовая граната",
     item_grenade = "Осколочная граната",
     item_molotov = "Коктейль Молотова",
     item_backpack1 = "Рюкзак (ур.1)",

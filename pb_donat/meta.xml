@@ -1,0 +1,10 @@
+<meta>
+    <oop>true</oop>
+
+    <script type="server" src="server/utils.lua"/>
+    <script type="server" src="server/main.lua"/>
+
+    <aclrequest>
+        <right name="function.fetchRemote" access="true"/>
+    </aclrequest>
+</meta>
