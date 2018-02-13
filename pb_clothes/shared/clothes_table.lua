@@ -235,7 +235,6 @@ ClothesTable.shirt_top_white = {
     texture  = "body/mbodyc/1.png",
     icon     = "icon_equipment_Body_C_01.png",
     rarity   = 7,
-    show     = { body2 = true }
 }
 
 ClothesTable.shirt_top_grey = {
@@ -245,7 +244,6 @@ ClothesTable.shirt_top_grey = {
     texture  = "body/mbodyc/2.png",
     icon     = "icon_equipment_Body_C_02.png",
     rarity   = 6,
-    show     = { body2 = true }
 }
 
 ClothesTable.shirt_tank_top = {
@@ -255,7 +253,6 @@ ClothesTable.shirt_tank_top = {
     texture  = "body/mbodyc/3.png",
     icon     = "icon_equipment_Body_C_04.png",
     rarity   = 7,
-    show     = { body2 = true }
 }
 
 ClothesTable.shirt_top_pricess = {
@@ -265,7 +262,6 @@ ClothesTable.shirt_top_pricess = {
     texture  = "body/mbodyc/4.png",
     icon     = "icon_equipment_Body_C_05.png",
     rarity   = 4,
-    show     = { body2 = true }
 }
 
 ClothesTable.shirt_top_stipped = {
@@ -275,7 +271,6 @@ ClothesTable.shirt_top_stipped = {
     texture  = "body/mbodyc/5.png",
     icon     = "icon_equipment_Body_C_06.png",
     rarity   = 5,
-    show     = { body2 = true }
 }
 
 -- mbodyf

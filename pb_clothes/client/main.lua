@@ -211,12 +211,12 @@ function loadPedClothes(ped)
             end, 50, 1)
         elseif clothesTable.material then
             if layer == "body" then
-                for i = 1, 3 do
+                for i = 1, 4 do
                     local texture = getTexturePath(clothesTable.texture)
-                    if i == 1 then
+                    if i == 1 or i == 4 then
                         texture = bodyTextureName
                     end
-                    if not (i == 2 and pedClothes.jacket) then
+                    if not (i == 2 and pedClothes.jacket) and not (i == 1 and pedClothes.jacket) then
                         local material = ClothesTable[name].material .. "p"..i
                         local shader = replaceElementMaterial(ped, material, texture)
                         table.insert(attachedShaders[ped], {shader, material})
