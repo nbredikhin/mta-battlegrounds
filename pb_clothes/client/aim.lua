@@ -19,7 +19,7 @@ bindKey("mouse2", "up", function ()
         local objects = getPlayerAttachedObjects(localPlayer)
         if objects then
             for layer, object in pairs(objects) do
-                object.scale = 1
+                object.scale = object:getData("scale") or 1
             end
         end
     end, 50, 1)

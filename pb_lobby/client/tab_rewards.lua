@@ -228,10 +228,10 @@ end
 
 function drawDonations(x, y, width, height)
     dxDrawRectangle(x, y, width, height, tocolor(0, 0, 0, 150))
-    if true then
-        dxDrawText(localize("lobby_donate_disabled"), x, y, x + width, y + height, tocolor(255, 255, 255), 2, "default-bold", "center", "center", true, false, false, false)
-        return
-    end
+    -- if true then
+    --     dxDrawText(localize("lobby_donate_disabled"), x, y, x + width, y + height, tocolor(255, 255, 255), 2, "default-bold", "center", "center", true, false, false, false)
+    --     return
+    -- end
 
     if isConvertInProgress then
         dxDrawText(localize("lobby_donate_converting"), x, y, x + width, y + height, tocolor(255, 255, 255, 200 + 55 * math.sin(getTickCount() * 0.004)), 2, "default-bold", "center", "center", true, false, false, false)

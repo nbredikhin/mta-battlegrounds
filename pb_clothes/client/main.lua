@@ -163,10 +163,11 @@ function loadPedClothes(ped)
     if pedClothes.head and ClothesTable[pedClothes.head].body then
         bodyTextureName = ClothesTable[pedClothes.head].body
     end
+
     bodyTextureName = "assets/textures/skin/"..bodyTextureName..".png"
     for layer, name in pairs(pedClothes) do
         local clothesTable = ClothesTable[name]
-        if clothesTable.model and (layer ~= "hair" or (layer == "hair" and not pedClothes.hat)) then
+        if clothesTable.model then
             local model = exports.pb_models:getReplacedModel(clothesTable.model)
 
             -- Создание и настройка объекта
@@ -195,6 +196,9 @@ function loadPedClothes(ped)
                 table.insert(attachedShaders[ped], {shader, clothesTable.material, object})
             end
 
+            if layer == "hair" and pedClothes.hat then
+                object.scale = 0
+            end
             object:setData("scale", object.scale)
             if ped:getData("isInPlane") then
                 object.scale = 0
