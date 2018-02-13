@@ -429,6 +429,9 @@ function handlePlayerMatchDeath(match, player, killer, weaponId)
             end
         end
 
+        -- Игрок, который уронил игрока
+        local knockedBy = player:getData("knockedBy")
+
         -- Нокаут
         if isResourceRunning("pb_knockout") then
             exports.pb_knockout:cancelPlayerReviving(player)
@@ -462,14 +465,7 @@ function handlePlayerMatchDeath(match, player, killer, weaponId)
             exports.pb_knockout:resetPlayerKnockout(player)
         end
 
-        if isResourceRunning("pb_inventory") then
-            exports.pb_inventory:spawnPlayerLootBox(player)
-        end
-
-        player:setData("dead", true)
-
         -- Обновление счётчика у убийцы
-        local knockedBy = player:getData("knockedBy")
         if isElement(knockedBy) then
             -- Засчитать убийство тому, кто уронил игрока
             local kills = knockedBy:getData("kills") or 0
@@ -480,6 +476,12 @@ function handlePlayerMatchDeath(match, player, killer, weaponId)
             local kills = killerPlayer:getData("kills") or 0
             killerPlayer:setData("kills", kills + 1)
         end
+
+        if isResourceRunning("pb_inventory") then
+            exports.pb_inventory:spawnPlayerLootBox(player)
+        end
+
+        player:setData("dead", true)
 
         -- Статистика
         if isResourceRunning("pb_accounts") then
