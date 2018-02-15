@@ -1,11 +1,11 @@
 ShopClothes = {
-    hat = {},
-    body = {},
-    jacket = {},
-    legs = {},
-    feet = {},
-    gloves = {},
-    mask = {},
+    hat     = {},
+    body    = {},
+    jacket  = {},
+    legs    = {},
+    feet    = {},
+    gloves  = {},
+    mask    = {},
     glasses = {},
 }
 
@@ -13,6 +13,7 @@ local clothesTable = exports.pb_clothes:getClothesTable()
 if not clothesTable then
     return
 end
+
 local function addClothesToShop(name, category)
     if not ShopClothes[category] then
         return
@@ -31,7 +32,6 @@ for name, item in pairs(clothesTable) do
         })
     end
 end
-
 
 for name, clothes in pairs(ShopClothes) do
     table.sort(clothes, function (a, b)

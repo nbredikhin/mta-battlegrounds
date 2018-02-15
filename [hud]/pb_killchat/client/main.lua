@@ -214,7 +214,7 @@ addEventHandler("onClientKey", root, function (key, down)
         inputText = utf8.sub(inputText, 1, -2)
         backspaceTimer = setTimer(checkLongBackspacePress, 350, 1)
     elseif key == "t" then
-        if isTextInputActive or guiGetInputEnabled() then
+        if isTextInputActive or guiGetInputEnabled() or not localPlayer:getData("username") then
             return
         end
         guiSetInputMode("no_binds")

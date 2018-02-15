@@ -196,7 +196,7 @@ function loadPedClothes(ped)
                 table.insert(attachedShaders[ped], {shader, clothesTable.material, object})
             end
 
-            if layer == "hair" and pedClothes.hat then
+            if layer == "hair" and (pedClothes.hat or (pedClothes.mask and ClothesTable[pedClothes.mask].model == "mask1")) then
                 object.scale = 0
             end
             object:setData("scale", object.scale)
@@ -216,7 +216,7 @@ function loadPedClothes(ped)
                     if i == 1 or i == 4 then
                         texture = bodyTextureName
                     end
-                    if not (i == 2 and pedClothes.jacket) and not (i == 1 and pedClothes.jacket) then
+                    if not (i == 2 and pedClothes.jacket) and not (i == 1 and pedClothes.jacket and clothesTable.material == "mbodyc") then
                         local material = ClothesTable[name].material .. "p"..i
                         local shader = replaceElementMaterial(ped, material, texture)
                         table.insert(attachedShaders[ped], {shader, material})

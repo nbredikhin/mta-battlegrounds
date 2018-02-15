@@ -10,7 +10,7 @@
 
     "enableReadmeFiles": true,
 
-    "only": ["pb_donat", "pb_lobby"],
+    "only": ["pb_donat", "pb_gameplay", "pb_clothes"],
 
     "include": [
         "bone_attach",

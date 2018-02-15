@@ -206,6 +206,8 @@ Languages.russian = {
     shop_category_torso = "Торс",
     shop_category_pants = "Ноги",
     shop_category_shoes = "Обувь",
+    shop_category_mask = "Маски",
+    shop_category_gloves = "Перчатки",
 
     shop_subcategory_other = "Прочее",
     shop_subcategory_sport = "Спорт",

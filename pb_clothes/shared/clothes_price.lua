@@ -1,14 +1,13 @@
 for name, item in pairs(ClothesTable) do
     if item.rarity then
         item.price = Config.rarityPrices[item.rarity]
+
+        if item.priceMul then
+            if item.price > 1000 then
+                item.price = math.max(5, math.ceil(math.floor(item.price * item.priceMul) / 100) * 100)
+            else
+                item.price = math.max(5, math.ceil(math.floor(item.price * item.priceMul) / 5) * 5)
+            end
+        end
     end
 end
-
-ClothesTable.mask_bandana1.price = 18000 -- Леопард
-ClothesTable.mask_bandana2.price = 20000 -- Красная
-ClothesTable.mask_bandana3.price = 16000 -- Обычная
-
-ClothesTable.skirt3.price = 16000 -- Синяя юбка
-ClothesTable.skirt4.price = 20000 -- Чёрная юбка
-
-ClothesTable.shirt_top_pricess.price = 3500

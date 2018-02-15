@@ -1,4 +1,5 @@
-local ENABLE_X2 = false
+local ENABLE_X2 = true
+
 local dbTableName = "payments"
 
 local trademcItems = {
@@ -43,14 +44,14 @@ function dbPaymentsReceived(result, params)
     for i, player in ipairs(getElementsByType("player")) do
         local username = player:getData("username")
         if username then
-            accountPlayers[username] = player
+            accountPlayers[utf8.lower(username)] = player
         end
     end
 
     outputDebugString("[DONAT] Checking payments...")
 
     for i, payment in ipairs(result) do
-        local username = tostring(payment.username)
+        local username = utf8.lower(tostring(payment.username))
         local itemId = tostring(payment.trademc_item)
         if isElement(accountPlayers[username]) and trademcItems[itemId] then
             local donatepoints = tonumber(accountPlayers[username]:getData("donatepoints"))

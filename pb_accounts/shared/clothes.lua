@@ -15,5 +15,5 @@ function calculateClothesSellPrice(price)
         return 0
     end
     price = price * Config.donatepointsToBattlepoints
-    return math.min(200, math.floor(price * 0.02))
+    return math.min(200, math.floor(price * 0.1))
 end

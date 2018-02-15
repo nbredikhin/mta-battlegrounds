@@ -206,6 +206,8 @@ Languages.english = {
     shop_category_torso = "Torso",
     shop_category_pants = "Pants",
     shop_category_shoes = "Shoes",
+    shop_category_mask = "Mask",
+    shop_category_gloves = "Gloves",
 
     shop_subcategory_other = "Other",
     shop_subcategory_sport = "Sport",

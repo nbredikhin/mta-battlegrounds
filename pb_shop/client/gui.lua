@@ -14,8 +14,10 @@ local currentWindow = nil
 
 local categoriesList = {name = "shop_categories", subcategories = {
     {name = "shop_category_hats",  category = "hat"},
+    {name = "shop_category_mask",  category = "mask"},
     {name = "shop_category_torso", category = "body"},
     {name = "shop_subcategory_jacket", category = "jacket"},
+    {name = "shop_category_gloves",  category = "gloves"},
     {name = "shop_category_pants", category = "legs"},
     {name = "shop_category_shoes", category = "feet"},
     {name = "shop_exit", back = true }
@@ -85,9 +87,7 @@ local function getCurrentItems()
             items = {}
             if clothesList then
                 for i, item in ipairs(clothesList) do
-                    if not exports.pb_accounts:isCrateClothes(item.clothes) then
-                        table.insert(items, item)
-                    end
+                    table.insert(items, item)
                 end
             end
             table.insert(items, {name = "Назад", back = true})
