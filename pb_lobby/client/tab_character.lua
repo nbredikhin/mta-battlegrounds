@@ -40,6 +40,8 @@ local inventoryItems = {}
 
 local clothesIcons = {}
 
+local appearanceDelay
+
 local function draw()
     drawBattlepoints()
 
@@ -158,6 +160,20 @@ local function draw()
         local barHeight = itemHeight * 1.5
         local barY = y + barHeight / 2+ (itemsHeight - barHeight) * (visibleItemsOffset - 1) / (maxVisibleItemsCount - 1)
         dxDrawRectangle(x - 2.5, barY - barHeight / 2, 10, barHeight, tocolor(255, 255, 255, 150))
+    end
+
+    if not appearanceDelay then
+        local color = nil
+        local enabled = not not (localPlayer:getData("battlepoints") >= 500)
+        if not enabled then
+            color = tocolor(150, 150, 150, 150)
+        end
+        if drawButton("Randomize character\n(500 BP)", 30, screenSize.y - 200, 180, 50, color, nil, 1.25) and enabled then
+            triggerServerEvent("onPlayerBuyAppearance", resourceRoot)
+            appearanceDelay = setTimer(function ()
+                appearanceDelay = nil
+            end, 3000, 1)
+        end
     end
 
     animOffset = animOffset - animOffset * 0.1

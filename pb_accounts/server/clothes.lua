@@ -91,3 +91,28 @@ addEventHandler("onPlayerBuyClothes", root, function (itemName)
     outputDebugString("[ACCOUNTS] Player " .. tostring(client.name) .. "(acc "..tostring(client:getData("username"))..",donatepoints "..tostring(dPoints)..") buy " .. tostring(item.name) .. " for " .. tostring(itemClass.price))
 end)
 
+addEvent("onPlayerBuyAppearance", true)
+addEventHandler("onPlayerBuyAppearance", root, function ()
+    local price = 500
+    if not client:getData("username") then
+        return
+    end
+
+    local bPoints = client:getData("battlepoints")
+    if type(bPoints) ~= "number" then
+        return
+    end
+    if bPoints < price then
+        return
+    end
+
+    client:setData("clothes_head", "head"..math.random(1, 2))
+    if client:getData("clothes_head") == "head1" then
+        client:setData("clothes_hair", "hair"..math.random(2, 8))
+    else
+        client:setData("clothes_hair", "hair"..math.random(1, 8))
+    end
+
+    bPoints = bPoints - price
+    client:setData("battlepoints", bPoints)
+end)
