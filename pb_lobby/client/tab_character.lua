@@ -168,7 +168,7 @@ local function draw()
         if not enabled then
             color = tocolor(150, 150, 150, 150)
         end
-        if drawButton("Randomize character\n(500 BP)", 30, screenSize.y - 200, 180, 50, color, nil, 1.25) and enabled then
+        if drawButton(localize("lobby_randomize_character").."\n(500 BP)", 30, screenSize.y - 200, 200, 50, color, nil, 1.25) and enabled then
             triggerServerEvent("onPlayerBuyAppearance", resourceRoot)
             appearanceDelay = setTimer(function ()
                 appearanceDelay = nil

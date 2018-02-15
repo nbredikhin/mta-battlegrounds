@@ -78,6 +78,8 @@ Languages.english = {
     lobby_donate_balance = "Balance",
     lobby_donate_btn_convert = "CONVERT TO BATTLEPOINTS",
 
+    lobby_randomize_character = "Randomize character",
+
     -- INVENTORY
     inventory_backpack_weight = "Total weight",
     inventory_no_space = "Not enough space!",
@@ -208,6 +210,7 @@ Languages.english = {
     shop_category_shoes = "Shoes",
     shop_category_mask = "Mask",
     shop_category_gloves = "Gloves",
+    shop_category_glasses = "Glasses",
 
     shop_subcategory_other = "Other",
     shop_subcategory_sport = "Sport",

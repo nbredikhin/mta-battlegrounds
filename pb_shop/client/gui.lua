@@ -14,6 +14,7 @@ local currentWindow = nil
 
 local categoriesList = {name = "shop_categories", subcategories = {
     {name = "shop_category_hats",  category = "hat"},
+    {name = "shop_category_glasses",  category = "glasses"},
     {name = "shop_category_mask",  category = "mask"},
     {name = "shop_category_torso", category = "body"},
     {name = "shop_subcategory_jacket", category = "jacket"},

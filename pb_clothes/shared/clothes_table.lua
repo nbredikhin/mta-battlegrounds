@@ -1377,6 +1377,7 @@ ClothesTable.mask_balaclava2 = {
     material = "mheadh",
     texture  = "mask/balaclava/2.png",
     rarity   = 1,
+    priceMul = 1.15,
 }
 
 ClothesTable.mask_ballistic = {
@@ -1396,6 +1397,7 @@ ClothesTable.mask_bandana1 = {
     texture  = "mask/bandana/1.png",
     icon     = "icon_equipment_Mask_PU_02.png",
     rarity   = 1,
+    priceMul = 1.3,
 }
 
 ClothesTable.mask_bandana2 = {
@@ -1406,6 +1408,7 @@ ClothesTable.mask_bandana2 = {
     texture  = "mask/bandana/2.png",
     icon     = "icon_equipment_Mask_PU_01.png",
     rarity   = 1,
+    priceMul = 1.5,
 }
 
 ClothesTable.mask_bandana3 = {
@@ -1416,6 +1419,7 @@ ClothesTable.mask_bandana3 = {
     texture  = "mask/bandana/3.png",
     icon     = "icon_equipment_Mask_PU_03.png",
     rarity   = 1,
+    priceMul = 1.25,
 }
 
 ClothesTable.mask_gas = {
@@ -1424,6 +1428,7 @@ ClothesTable.mask_gas = {
     model    = "mask4",
     icon     = "icon_equipment_Mask_C_01.png",
     rarity   = 2,
+    priceMul = 1.5,
 }
 
 ClothesTable.mask_gas_half = {

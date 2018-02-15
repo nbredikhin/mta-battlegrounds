@@ -78,6 +78,8 @@ Languages.russian = {
     lobby_donate_balance = "Баланс",
     lobby_donate_btn_convert = "ПЕРЕВЕСТИ В BATTLEPOINTS",
 
+    lobby_randomize_character = "Случайная внешность",
+
     -- INVENTORY
     inventory_backpack_weight = "Носимый вес",
     inventory_no_space = "Недостаточно места!",
@@ -208,6 +210,7 @@ Languages.russian = {
     shop_category_shoes = "Обувь",
     shop_category_mask = "Маски",
     shop_category_gloves = "Перчатки",
+    shop_category_glasses = "Очки",
 
     shop_subcategory_other = "Прочее",
     shop_subcategory_sport = "Спорт",
