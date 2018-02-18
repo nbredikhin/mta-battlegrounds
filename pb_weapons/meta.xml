@@ -1,0 +1,7 @@
+<meta>
+    <oop>true</oop>
+
+    <script type="client" src="client/camera.lua"/>
+    <script type="client" src="client/cursor.lua"/>
+    <script type="client" src="client/scope.lua"/>
+</meta>
