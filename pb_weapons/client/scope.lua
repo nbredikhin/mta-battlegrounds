@@ -94,6 +94,8 @@ addEventHandler("onClientResourceStart", resourceRoot, function ()
     scopeShader:setValue("MainTexture", dxCreateTexture("assets/scopes/holographic.png"))
     scopeShader:setValue("NormalTexture", dxCreateTexture("assets/scopes/holographic_normal.png"))
     scopeShader:setValue("AmbientColor", {0.2, 0.2, 0.2})
+
+    showPlayerHudComponent("crosshair", false)
 end)
 
 addEventHandler("onClientKey", root, function (key, state)
@@ -127,13 +129,14 @@ end)
 addEventHandler("onClientRender", root, function ()
     if isScopeActive then
         -- dxDrawRectangle(screenSize.x/2-2,screenSize.y/2-2,4,4,tocolor(255, 255, 255, 150))
+        local rx, ry = getCameraRecoilVelocity()
+
         local offset = Config.scopeOffsets[currentScope]
-        local scale = 1.8
+        local scale = 1.8 - ry * 0.0015
 
         local width, height = 423 * scale, 498 * scale
         local ox, oy = offset.x * scale, offset.y * scale
 
-        local rx, ry = getCameraRecoilVelocity()
         local moveX, moveY = rx + movementX + walkingX, ry * 0.5 + movementY + walkingY
 
         local rotation = rx + (1-scopeAnim) * 45
@@ -150,6 +153,22 @@ addEventHandler("onClientRender", root, function ()
         local lightMul = scopeFireLightTime / scopeFireLightTimeMax
         local r, g, b = 50 + 205 * lightMul, 50 + 100 * lightMul, 50
         scopeShader:setValue("AmbientColor", {r / 255, g / 255, b / 255})
+    elseif getControlState("aim_weapon") then
+        local tx, ty, tz = getPedTargetEnd(localPlayer)
+        local x, y = getScreenFromWorldPosition(tx, ty, tz)
+        if x then
+            dxDrawRectangle(x-1,y-1,2,2,tocolor(255, 255, 255, 150))
+
+            local rx, ry = getCameraRecoilVelocity()
+            local offset = 5 + (rx * rx + ry * ry) * 0.01
+            local w = 15
+            local h = 2
+            local color2 = tocolor(255, 255, 255, 100)
+            dxDrawRectangle(x - offset - w, y - h/2, w, h, color2)
+            dxDrawRectangle(x + offset, y - h/2, w, h, color2)
+            dxDrawRectangle(x - h/2, y - offset - w, h, w, color2)
+            dxDrawRectangle(x - h/2, y + offset, h, w, color2)
+        end
     end
 end)
 
