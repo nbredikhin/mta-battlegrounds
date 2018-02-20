@@ -11,4 +11,9 @@
 
     <file src="assets/nil.png"/>
     <file src="assets/replace.fx"/>
+    <file src="assets/shader.fx"/>
+
+    <file src="assets/scopes/holographic.png"/>
+    <file src="assets/scopes/holographic_inner.png"/>
+    <file src="assets/scopes/holographic_normal.png"/>
 </meta>

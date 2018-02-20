@@ -27,8 +27,18 @@ local camera = {
 local recoilVelocityX = 0
 local recoilVelocityY = 0
 
+local cameraLookDirection = Vector3()
+
 function setCustomCameraEnabled(enabled)
     camera.enabled = not not enabled
+end
+
+function getCameraRecoilVelocity()
+    return recoilVelocityX, recoilVelocityY
+end
+
+function getCameraLookDirection()
+    return cameraLookDirection
 end
 
 function getWeaponCameraOffset()
@@ -47,6 +57,8 @@ local function updateFirstPersonCamera()
         math.cos(yaw) * math.cos(pitch),
         math.sin(yaw) * math.cos(pitch),
         math.sin(pitch))
+
+    cameraLookDirection = lookDirection
 
     local offset = getWeaponCameraOffset()
     if not offset then
@@ -158,7 +170,7 @@ local function handleMouseInput(x, y)
     if not camera.enabled or isCursorVisible() then
         return
     end
-    setCursorPosition(screenSize.x/2, screenSize.y/2)
+
     local mx = x - 0.5
     local my = y - 0.5
     camera.rotationHorizontal = camera.rotationHorizontal - mx * lookSensitivity
