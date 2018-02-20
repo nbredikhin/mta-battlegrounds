@@ -1,7 +1,14 @@
 <meta>
     <oop>true</oop>
 
+    <script type="shared" src="shared/config.lua"/>
+
     <script type="client" src="client/camera.lua"/>
     <script type="client" src="client/cursor.lua"/>
     <script type="client" src="client/scope.lua"/>
+
+    <script type="server" src="server/properties.lua"/>
+
+    <file src="assets/nil.png"/>
+    <file src="assets/replace.fx"/>
 </meta>
