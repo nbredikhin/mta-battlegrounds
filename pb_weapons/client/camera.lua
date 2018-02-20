@@ -210,5 +210,3 @@ addEventHandler("onClientPlayerWeaponFire", localPlayer, function ()
     recoilVelocityX = recoilVelocityX + math.random()*x - x/2
     recoilVelocityY = math.max(-30, recoilVelocityY - 30)
 end)
-
-createPed(0, Vector3{ x = -1244.579, y = -61.346, z = 14.148 })

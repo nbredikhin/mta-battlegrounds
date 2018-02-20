@@ -1,0 +1,10 @@
+<meta>
+    <oop>true</oop>
+
+    <script type="client" src="client/particles.lua"/>
+    <script type="client" src="client/blood.lua"/>
+    <script type="client" src="client/smoke.lua"/>
+
+    <file src="assets/blood.png"/>
+    <file src="assets/smoke.png"/>
+</meta>
