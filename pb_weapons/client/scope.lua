@@ -2,7 +2,7 @@ local screenSize = Vector2(guiGetScreenSize())
 local isScopeActive = false
 local keyTimer
 
-local hideShader
+local hideShaders = {}
 local hideTexture = dxCreateTexture("assets/nil.png")
 
 local currentScope = "holographic"
@@ -16,9 +16,46 @@ local walkingY = 0
 local scopeShader
 local scopeAnim = 0
 
+local scopeFireLightTime = 0
+local scopeFireLightTimeMax = 0.1
+
+local blockedTasks =
+{
+    "TASK_SIMPLE_IN_AIR", -- We're falling or in a jump.
+    "TASK_SIMPLE_JUMP", -- We're beginning a jump
+    "TASK_SIMPLE_LAND", -- We're landing from a jump
+    "TASK_SIMPLE_GO_TO_POINT", -- In MTA, this is the player probably walking to a car to enter it
+    "TASK_SIMPLE_NAMED_ANIM", -- We're performing a setPedAnimation
+    "TASK_SIMPLE_CAR_OPEN_DOOR_FROM_OUTSIDE", -- Opening a car door
+    "TASK_SIMPLE_CAR_GET_IN", -- Entering a car
+    "TASK_SIMPLE_CLIMB", -- We're climbing or holding on to something
+    "TASK_SIMPLE_SWIM",
+    "TASK_SIMPLE_HIT_HEAD", -- When we try to jump but something hits us on the head
+    "TASK_SIMPLE_FALL", -- We fell
+    "TASK_SIMPLE_GET_UP" -- We're getting up from a fall
+}
+
+local function isScopeBlocked()
+    if localPlayer.vehicle then
+        return true
+    end
+    -- Usually, getting the simplest task is enough to suffice
+    local task = getPedSimplestTask (localPlayer)
+
+    -- Iterate through our list of blocked tasks
+    for idx, badTask in ipairs(blockedTasks) do
+        -- If the player is performing any unwanted tasks, do not fire an event to reload
+        if (task == badTask) then
+            return true
+        end
+    end
+
+    return false
+end
+
 function toggleScope()
     isScopeActive = not isScopeActive
-    if not getWeaponCameraOffset() then
+    if not getWeaponCameraOffset() or isScopeBlocked() then
         isScopeActive = false
     end
 
@@ -29,13 +66,26 @@ function toggleScope()
     scopeAnim = 0
 
     if isScopeActive then
-        hideShader = dxCreateShader("assets/replace.fx", 0, 0, false, "ped")
-        dxSetShaderValue(hideShader, "gTexture", hideTexture)
-        engineApplyShaderToWorldTexture(hideShader, "*", localPlayer)
+        hideShaders = {}
+
+        local shader = dxCreateShader("assets/replace.fx", 0, 0, false, "ped")
+        dxSetShaderValue(shader, "gTexture", hideTexture)
+        engineApplyShaderToWorldTexture(shader, "*", localPlayer)
+        table.insert(hideShaders, shader)
+
+        local shader = dxCreateShader("assets/replace.fx")
+        dxSetShaderValue(shader, "gTexture", hideTexture)
+        engineApplyShaderToWorldTexture(shader, "smokeii_*")
+        engineApplyShaderToWorldTexture(shader, "collisionsmoke*")
+        table.insert(hideShaders, shader)
     else
-        if isElement(hideShader) then
-            destroyElement(hideShader)
+        setControlState("fire", false)
+        if hideShaders then
+            for i, shader in ipairs(hideShaders) do
+                destroyElement(shader)
+            end
         end
+        hideShaders = nil
     end
 end
 
@@ -95,7 +145,11 @@ addEventHandler("onClientRender", root, function ()
         local lookDirection = getCameraLookDirection()
         scopeShader:setValue("LightDirectionX", lookDirection.y)
         scopeShader:setValue("LightDirectionY", lookDirection.z)
-        scopeShader:setValue("LightDirectionZ", math.max(0.5, lookDirection.x))--math.sin(time))
+        scopeShader:setValue("LightDirectionZ", math.max(0.5, lookDirection.x))
+
+        local lightMul = scopeFireLightTime / scopeFireLightTimeMax
+        local r, g, b = 50 + 205 * lightMul, 50 + 100 * lightMul, 50
+        scopeShader:setValue("AmbientColor", {r / 255, g / 255, b / 255})
     end
 end)
 
@@ -104,6 +158,8 @@ addEventHandler("onClientPreRender", root, function (deltaTime)
         return
     end
     deltaTime = deltaTime / 1000
+
+    scopeFireLightTime = math.max(0, scopeFireLightTime - deltaTime)
 
     movementX = movementX * math.exp(deltaTime * -15)
     movementY = movementY * math.exp(deltaTime * -8)
@@ -115,6 +171,10 @@ addEventHandler("onClientPreRender", root, function (deltaTime)
         end
         local wx = math.cos(getTickCount() * 0.004 * velocityMul) * 30 * velocityMul
         local wy = math.sin(getTickCount() * 0.008 * velocityMul) * 20 * velocityMul
+        if localPlayer.ducked then
+            wx = wx + 20
+            wy = wy + 50
+        end
         walkingX = walkingX + (wx - walkingX) * 0.2
         walkingY = walkingY + (wy - walkingY) * 0.2
     else
@@ -133,4 +193,8 @@ addEventHandler("onClientCursorMove", root, function (x, y)
     local my = y - 0.5
     movementX = movementX - mx * 250
     movementY = movementY - my * 250
+end)
+
+addEventHandler("onClientPlayerWeaponFire", localPlayer, function ()
+    scopeFireLightTime = scopeFireLightTimeMax
 end)

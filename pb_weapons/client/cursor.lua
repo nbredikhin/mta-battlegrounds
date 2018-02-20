@@ -13,7 +13,7 @@ function setCursorVisible(visible)
 end
 
 addEventHandler("onClientResourceStart", resourceRoot, function ()
-    showCursor(false)
+    showCursor(true, false)
     setCursorVisible(false)
 end)
 
@@ -22,6 +22,9 @@ addEventHandler("onClientResourceStop", resourceRoot, function ()
 end)
 
 addDebugHook("postFunction", function (sourceResource, _, _, _, _, state)
+    if sourceResource == resource then
+        return
+    end
     cursorState = not not state
 
     if cursorState then
@@ -34,3 +37,11 @@ addDebugHook("postFunction", function (sourceResource, _, _, _, _, state)
         showCursor(true, false)
     end
 end, {"showCursor"})
+
+addEventHandler("onClientPlayerVehicleEnter", localPlayer, function ()
+    showCursor(false)
+end)
+
+addEventHandler("onClientPlayerVehicleExit", localPlayer, function ()
+    showCursor(true, false)
+end)

@@ -126,7 +126,7 @@ function setFirstPersonEnabled(enabled)
             rotationVertical = camera.rotationVertical,
         }
         camera.rotationHorizontal = localPlayer.rotation.z + 90
-        camera.rotationVertical = 0
+        camera.rotationVertical = camera.rotationVertical + 30
         localPlayer.alpha = 0
     else
         setCameraTarget(localPlayer)
