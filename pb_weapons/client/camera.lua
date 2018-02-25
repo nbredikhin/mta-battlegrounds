@@ -154,6 +154,9 @@ function setFirstPersonZoom(value)
 end
 
 addEventHandler("onClientPreRender", root, function (deltaTime)
+    if not camera.enabled then
+        return
+    end
     deltaTime = deltaTime / 1000
 
     recoilVelocityX = recoilVelocityX * math.exp(deltaTime * -15)
@@ -176,7 +179,7 @@ addEventHandler("onClientPreRender", root, function (deltaTime)
 end)
 
 local function handleMouseInput(x, y)
-    if not camera.enabled or isCursorVisible() then
+    if not camera.enabled or isCursorVisible()then
         return
     end
 

@@ -15,6 +15,11 @@ end
 addEventHandler("onClientResourceStart", resourceRoot, function ()
     showCursor(true, false)
     setCursorVisible(false)
+
+    if localPlayer.vehicle then
+        showCursor(false)
+        setCustomCameraEnabled(false)
+    end
 end)
 
 addEventHandler("onClientResourceStop", resourceRoot, function ()
@@ -40,8 +45,10 @@ end, {"showCursor"})
 
 addEventHandler("onClientPlayerVehicleEnter", localPlayer, function ()
     showCursor(false)
+    setCustomCameraEnabled(false)
 end)
 
 addEventHandler("onClientPlayerVehicleExit", localPlayer, function ()
     showCursor(true, false)
+    setCustomCameraEnabled(true)
 end)
