@@ -21,7 +21,7 @@ local function emitSmoke(x, y, z)
     particle.totalLifetime = particle.lifetime
 
     particle.vx = (math.random() - 0.5) * 0.4
-    particle.vy = (math.random() - 0.5) * 0.4
+    particle.vy = (math.random() - 0.5) * 0.4 - math.random() * 0.5
     particle.vz = 0.5 + 0.5 * math.random()
 end
 
@@ -29,9 +29,9 @@ addEventHandler("onClientPreRender", root, function (deltaTime)
     deltaTime = deltaTime / 1000
     emitTime = emitTime - deltaTime
     if emitTime < 0 then
-        emitSmoke(-532.956, -1986.225, 46.650)
+        emitSmoke(-1242.640, -54.762, 14.148)
         emitTime = 0.1
     end
 end)
 
-local object = createObject(1860, -532.956, -1986.225, 45.650)
+local object = createObject(1860, Vector3{ x = -1242.640, y = -54.762, z = 13.148 })

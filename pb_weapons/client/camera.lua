@@ -3,7 +3,7 @@ local screenSize = Vector2(guiGetScreenSize())
 local firstPersonEnabled = false
 local firstPersonZ = 0
 
-local lookSensitivity = 150
+local lookSensitivity = Config.defaultSensitivity
 local maxVerticalLookAngle = 85
 local minVerticalLookAngle = -80
 
@@ -21,7 +21,7 @@ local camera = {
     rotationHorizontal = 0,
 
     roll = 0,
-    FOV = 70
+    FOV = Config.defaultFOV
 }
 
 local recoilVelocityX = 0
@@ -126,9 +126,10 @@ function setFirstPersonEnabled(enabled)
             rotationVertical = camera.rotationVertical,
         }
         camera.rotationHorizontal = localPlayer.rotation.z + 90
-        camera.rotationVertical = camera.rotationVertical + 30
+        camera.rotationVertical = camera.rotationVertical + 33.5
         localPlayer.alpha = 0
     else
+        setFirstPersonZoom(1)
         setCameraTarget(localPlayer)
         if previousState.rotationHorizontal then
             camera.rotationHorizontal = previousState.rotationHorizontal
@@ -142,6 +143,14 @@ function setFirstPersonEnabled(enabled)
         toggleControl("right", true)
         toggleControl("backwards", true)
     end
+end
+
+function setFirstPersonZoom(value)
+    if type(value) ~= "number" or value < 1 then
+        value = 1
+    end
+    camera.FOV = Config.defaultFOV / tonumber(value)
+    lookSensitivity = Config.defaultSensitivity / tonumber(value)
 end
 
 addEventHandler("onClientPreRender", root, function (deltaTime)

@@ -33,3 +33,5 @@ addEventHandler("onClientPlayerWeaponFire", localPlayer, function (_, _, _, x, y
         element.health = 100
     end
 end)
+
+local ped = createPed(23, Vector3{ x = -1237.220, y = -52.791, z = 14.148 })

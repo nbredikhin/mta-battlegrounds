@@ -16,4 +16,8 @@
     <file src="assets/scopes/holographic.png"/>
     <file src="assets/scopes/holographic_inner.png"/>
     <file src="assets/scopes/holographic_normal.png"/>
+
+    <file src="assets/scopes/2x.png"/>
+    <file src="assets/scopes/2x_inner.png"/>
+    <file src="assets/scopes/2x_normal.png"/>
 </meta>

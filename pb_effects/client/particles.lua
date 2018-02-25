@@ -36,5 +36,5 @@ addEventHandler("onClientPreRender", root, function (deltaTime)
         end
     end
 
-    dxDrawText(#particles, 100, 500)
+    -- dxDrawText(#particles, 100, 500)
 end)

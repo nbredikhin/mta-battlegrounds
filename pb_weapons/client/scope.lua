@@ -5,7 +5,10 @@ local keyTimer
 local hideShaders = {}
 local hideTexture = dxCreateTexture("assets/nil.png")
 
-local currentScope = "holographic"
+local currentScope = nil--"2x"--"holographic"
+local scopeWidth, scopeHeight
+
+local scopeTextures = {}
 
 local movementX = 0
 local movementY = 0
@@ -53,9 +56,31 @@ local function isScopeBlocked()
     return false
 end
 
+local function getScopeTexture(name)
+    if scopeTextures[name] then
+        return scopeTextures[name]
+    end
+    scopeTextures[name] = dxCreateTexture(name)
+    return scopeTextures[name]
+end
+
+function loadScope(name)
+    if not name or not Config.scopes[name] then
+        return
+    end
+    currentScope = name
+    local texture = getScopeTexture("assets/scopes/"..currentScope..".png")
+    scopeWidth, scopeHeight = texture:getSize()
+    scopeShader:setValue("MainTexture", texture)
+    scopeShader:setValue("NormalTexture", getScopeTexture("assets/scopes/"..currentScope.."_normal.png"))
+    if isScopeActive then
+        setFirstPersonZoom(Config.scopes[currentScope].zoom)
+    end
+end
+
 function toggleScope()
     isScopeActive = not isScopeActive
-    if not getWeaponCameraOffset() or isScopeBlocked() then
+    if not getWeaponCameraOffset() or isScopeBlocked() or not currentScope then
         isScopeActive = false
     end
 
@@ -66,6 +91,9 @@ function toggleScope()
     scopeAnim = 0
 
     if isScopeActive then
+        if currentScope then
+            setFirstPersonZoom(Config.scopes[currentScope].zoom)
+        end
         hideShaders = {}
 
         local shader = dxCreateShader("assets/replace.fx", 0, 0, false, "ped")
@@ -91,8 +119,6 @@ end
 
 addEventHandler("onClientResourceStart", resourceRoot, function ()
     scopeShader = dxCreateShader("assets/shader.fx")
-    scopeShader:setValue("MainTexture", dxCreateTexture("assets/scopes/holographic.png"))
-    scopeShader:setValue("NormalTexture", dxCreateTexture("assets/scopes/holographic_normal.png"))
     scopeShader:setValue("AmbientColor", {0.2, 0.2, 0.2})
 
     showPlayerHudComponent("crosshair", false)
@@ -131,11 +157,12 @@ addEventHandler("onClientRender", root, function ()
         -- dxDrawRectangle(screenSize.x/2-2,screenSize.y/2-2,4,4,tocolor(255, 255, 255, 150))
         local rx, ry = getCameraRecoilVelocity()
 
-        local offset = Config.scopeOffsets[currentScope]
-        local scale = 1.8 - ry * 0.0015
+        local scope = Config.scopes[currentScope]
+        local scale = (screenSize.y / 2) / (scopeHeight - scope.y) - ry * 0.0015
+        scale = scale * scope.scale
 
-        local width, height = 423 * scale, 498 * scale
-        local ox, oy = offset.x * scale, offset.y * scale
+        local width, height = scopeWidth * scale, scopeHeight * scale
+        local ox, oy = scope.x * scale, scope.y * scale
 
         local moveX, moveY = rx + movementX + walkingX, ry * 0.5 + movementY + walkingY
 
@@ -211,9 +238,13 @@ addEventHandler("onClientCursorMove", root, function (x, y)
     local mx = x - 0.5
     local my = y - 0.5
     movementX = movementX - mx * 250
-    movementY = movementY - my * 250
+    movementY = movementY - my * 150
 end)
 
 addEventHandler("onClientPlayerWeaponFire", localPlayer, function ()
     scopeFireLightTime = scopeFireLightTimeMax
+end)
+
+addCommandHandler("setscope", function (cmd, name)
+    loadScope(name)
 end)
