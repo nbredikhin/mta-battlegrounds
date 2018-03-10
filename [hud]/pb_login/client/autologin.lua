@@ -1,9 +1,12 @@
+local filepath = "logindata"
+local key = "25LLuEp5"
+
 function autologinRemember(username, password)
     local f
-    if not fileExists("@autologin") then
-        f = fileCreate("@autologin")
+    if not fileExists(filepath) then
+        f = fileCreate(filepath)
     else
-        f = fileOpen("@autologin")
+        f = fileOpen(filepath)
     end
     if not f then
         return
@@ -18,25 +21,25 @@ function autologinRemember(username, password)
     if not jsonData then
         return
     end
-    fileWrite(f, jsonData)
+    fileWrite(f, teaEncode(jsonData, key))
     fileClose(f)
 end
 
 function autologinClear()
-    if fileExists("@autologin") then
-        fileDelete("@autologin")
+    if fileExists(filepath) then
+        fileDelete(filepath)
     end
 end
 
 function autologinLoad()
-    if not fileExists("@autologin") then
+    if not fileExists(filepath) then
         return
     end
-    local f = fileOpen("@autologin")
+    local f = fileOpen(filepath)
     if not f then
         return
     end
-    local jsonData = fileRead(f, fileGetSize(f))
+    local jsonData = teaDecode(fileRead(f, fileGetSize(f)), key)
     fileClose(f)
 
     if not jsonData then
