@@ -22,6 +22,15 @@ local scopeAnim = 0
 local scopeFireLightTime = 0
 local scopeFireLightTimeMax = 0.1
 
+local firingMode = 1
+local firingModes = {
+    {name="auto"  , title = "Full auto"},
+    {name="single", title = "Single shot"},
+    {name="burst" , title = "Burst"},
+}
+local burstCount = 0
+local firingModeMessageTimer = nil
+
 local blockedTasks =
 {
     "TASK_SIMPLE_IN_AIR", -- We're falling or in a jump.
@@ -144,6 +153,24 @@ addEventHandler("onClientKey", root, function (key, state)
     if key == "mouse1" and not isScopeActive and not localPlayer:getControlState("aim_weapon") then
         cancelEvent()
     end
+
+    if key == "mouse1" and not state then
+        burstCount = 0
+    end
+
+    if key == Config.firingModeKey and state then
+        firingMode = firingMode + 1
+        if firingMode > 3 then
+            firingMode = 1
+        end
+
+        if isTimer(firingModeMessageTimer) then
+            killTimer(firingModeMessageTimer)
+        end
+        firingModeMessageTimer = setTimer(function ()
+            firingModeMessageTimer = nil
+        end, 2500, 1)
+    end
 end)
 
 addEventHandler("onClientPlayerWeaponSwitch", root, function (_, slot)
@@ -153,6 +180,11 @@ addEventHandler("onClientPlayerWeaponSwitch", root, function (_, slot)
 end)
 
 addEventHandler("onClientRender", root, function ()
+    if firingModeMessageTimer then
+        local str = "Firing mode changed to: " .. firingModes[firingMode].title
+        dxDrawText(str, 0, screenSize.y * 0.8, screenSize.x, screenSize.y, tocolor(255, 255, 255, 255), 1.5, "default-bold", "center", "top")
+    end
+
     if isScopeActive then
         -- dxDrawRectangle(screenSize.x/2-2,screenSize.y/2-2,4,4,tocolor(255, 255, 255, 150))
         local rx, ry = getCameraRecoilVelocity()
@@ -180,7 +212,7 @@ addEventHandler("onClientRender", root, function ()
         local lightMul = scopeFireLightTime / scopeFireLightTimeMax
         local r, g, b = 50 + 205 * lightMul, 50 + 100 * lightMul, 50
         scopeShader:setValue("AmbientColor", {r / 255, g / 255, b / 255})
-    elseif getControlState("aim_weapon") then
+    elseif getControlState("aim_weapon") and localPlayer:getWeapon() ~= 0 then
         local tx, ty, tz = getPedTargetEnd(localPlayer)
         local x, y = getScreenFromWorldPosition(tx, ty, tz)
         if x then
@@ -243,6 +275,16 @@ end)
 
 addEventHandler("onClientPlayerWeaponFire", localPlayer, function ()
     scopeFireLightTime = scopeFireLightTimeMax
+
+    if firingMode == 3 then
+        burstCount = burstCount + 1
+        if burstCount >= 3 then
+            localPlayer:setControlState("fire", false)
+            burstCount = 0
+        end
+    elseif firingMode == 2 then
+        localPlayer:setControlState("fire", false)
+    end
 end)
 
 addCommandHandler("setscope", function (cmd, name)

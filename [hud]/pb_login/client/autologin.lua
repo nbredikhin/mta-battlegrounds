@@ -21,7 +21,7 @@ function autologinRemember(username, password)
     if not jsonData then
         return
     end
-    fileWrite(f, teaEncode(jsonData, key))
+    fileWrite(f, base64Encode(teaEncode(jsonData, key)))
     fileClose(f)
 end
 
@@ -39,7 +39,7 @@ function autologinLoad()
     if not f then
         return
     end
-    local jsonData = teaDecode(fileRead(f, fileGetSize(f)), key)
+    local jsonData = teaDecode(base64Decode(fileRead(f, fileGetSize(f)), key))
     fileClose(f)
 
     if not jsonData then

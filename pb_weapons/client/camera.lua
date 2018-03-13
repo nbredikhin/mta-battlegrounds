@@ -1,6 +1,8 @@
 local screenSize = Vector2(guiGetScreenSize())
 
 local firstPersonEnabled = false
+local firstPersonX = 0
+local firstPersonY = 0
 local firstPersonZ = 0
 
 local lookSensitivity = Config.defaultSensitivity
@@ -72,8 +74,10 @@ local function updateFirstPersonCamera()
         y = offset.ducked.y
         z = offset.ducked.z
     end
+    firstPersonX = firstPersonX + (x - firstPersonX) * 0.1
+    firstPersonY = firstPersonY + (y - firstPersonY) * 0.1
     firstPersonZ = firstPersonZ + (z - firstPersonZ) * 0.1
-    local targetPosition = localPlayer.matrix:transformPosition(x, y, firstPersonZ)
+    local targetPosition = localPlayer.matrix:transformPosition(firstPersonX, firstPersonY, firstPersonZ)
     setCameraMatrix(
         targetPosition,
         targetPosition + lookDirection,
