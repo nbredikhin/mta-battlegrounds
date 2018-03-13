@@ -47,7 +47,7 @@ local blockedTasks =
     "TASK_SIMPLE_GET_UP" -- We're getting up from a fall
 }
 
-local function isScopeBlocked()
+function isScopeBlocked()
     if localPlayer.vehicle then
         return true
     end
