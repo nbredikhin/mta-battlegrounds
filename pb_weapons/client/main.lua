@@ -1,4 +1,6 @@
 local isFireAllowed = false
+local currentClip = 0
+local isReloading = false
 
 addEventHandler("onClientPreRender", root, function ()
     local isReloading = localPlayer:getData("isReloading")
@@ -52,24 +54,45 @@ end)
 
 
 addEventHandler("onClientPlayerWeaponFire", localPlayer, function ()
-    -- TODO: Забирать патроны из обоймы
+    currentClip = math.max(0, currentClip - 1)
+    if currentClip == 0 then
+        isFireAllowed = false
+    end
 end)
 
 bindKey("r", "down", function ()
-    if isScopeBlocked() then
+    if isScopeBlocked() or localPlayer.weaponSlot == 0 then
         return
     end
-    -- TODO: Перезарядка
+    isReloading = true
+    triggerServerEvent("onPlayerRequestReload", resourceRoot)
+end)
+
+addEvent("onClientReloadWeapon", true)
+addEventHandler("onClientReloadWeapon", resourceRoot, function (clip)
+    currentClip = clip
+    if currentClip > 0 then
+        isFireAllowed = true
+    end
 end)
 
 bindKey("x", "down", function ()
-    -- TODO: Убрать оружие из рук
+    localPlayer.weaponSlot = 0
+    triggerServerEvent("onPlayerUnequipWeapon", resourceRoot)
+    isReloading = false
 end)
 
 bindKey("next_weapon", "down", function ()
-
+    isReloading = false
 end)
 
 bindKey("previous_weapon", "down", function ()
-
+    isReloading = false
 end)
+
+setTimer(function ()
+    if isReloading and getPedAmmoInClip(localPlayer) < 500 then
+        isReloading = false
+        triggerServerEvent("onPlayerReloadWeapon", resourceRoot, currentClip)
+    end
+end, 250, 0)
