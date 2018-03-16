@@ -8,9 +8,11 @@
     <script type="client" src="client/cursor.lua"/>
     <script type="client" src="client/scope.lua"/>
     <script type="client" src="client/main.lua"/>
+    <script type="client" src="client/slots.lua"/>
 
     <script type="server" src="server/properties.lua"/>
     <script type="server" src="server/main.lua"/>
+    <script type="server" src="server/slots.lua"/>
 
     <file src="assets/nil.png"/>
     <file src="assets/replace.fx"/>

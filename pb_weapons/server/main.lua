@@ -1,5 +1,5 @@
 -- Взять оружие в руки
-function equipPlayerWeapon(player, name)
+function equipPlayerWeapon(player, name, clip)
     if not isElement(player) then
         return
     end
@@ -15,6 +15,9 @@ function equipPlayerWeapon(player, name)
     if Config.skillFromWeapon[weaponId] then
         local weaponStat = (WeaponsTable[name].propsGroup or 1) * 500 - 500
         setPedStat(player, Config.skillFromWeapon[weaponId], weaponStat)
+    end
+    if clip and clip > 0 then
+        triggerClientEvent("onClientReloadWeapon", resourceRoot, clip)
     end
 end
 
@@ -34,10 +37,6 @@ end)
 
 addEventHandler("onPlayerWeaponFire", root, function (weaponId)
     setWeaponAmmo(source, weaponId, 999, 999)
-end)
-
-addCommandHandler("weapon", function (player, cmd, name)
-    equipPlayerWeapon(player, name)
 end)
 
 addEvent("onPlayerRequestReload", true)

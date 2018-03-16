@@ -76,19 +76,15 @@ addEventHandler("onClientReloadWeapon", resourceRoot, function (clip)
     end
 end)
 
-bindKey("x", "down", function ()
-    localPlayer.weaponSlot = 0
-    triggerServerEvent("onPlayerUnequipWeapon", resourceRoot)
+function cancelReload()
     isReloading = false
-end)
+end
 
-bindKey("next_weapon", "down", function ()
-    isReloading = false
-end)
-
-bindKey("previous_weapon", "down", function ()
-    isReloading = false
-end)
+-- bindKey("x", "down", function ()
+--     localPlayer.weaponSlot = 0
+--     triggerServerEvent("onPlayerUnequipWeapon", resourceRoot)
+--     isReloading = false
+-- end)
 
 setTimer(function ()
     if isReloading and getPedAmmoInClip(localPlayer) < 500 then
@@ -96,3 +92,8 @@ setTimer(function ()
         triggerServerEvent("onPlayerReloadWeapon", resourceRoot, currentClip)
     end
 end, 250, 0)
+
+addEventHandler("onClientPlayerWeaponSwitch", localPlayer, function ()
+    isReloading = false
+    currentClip = 0
+end)
