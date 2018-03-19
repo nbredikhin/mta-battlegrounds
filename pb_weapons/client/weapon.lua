@@ -1,3 +1,7 @@
+------------------------------------------
+-- Отображение оружия в руках персонажа --
+------------------------------------------
+
 local isFireAllowed = false
 local currentClip = 0
 local isReloading = false
@@ -96,4 +100,5 @@ end, 250, 0)
 addEventHandler("onClientPlayerWeaponSwitch", localPlayer, function ()
     isReloading = false
     currentClip = 0
+    isFireAllowed = false
 end)

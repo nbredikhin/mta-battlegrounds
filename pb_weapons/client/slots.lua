@@ -1,3 +1,7 @@
+--------------------------------------------
+-- Добавление и удаление оружия из слотов --
+--------------------------------------------
+
 local weaponSlotsOrder = {
     "primary1",
     "primary2",
@@ -6,7 +10,16 @@ local weaponSlotsOrder = {
     "grenade"
 }
 
+local localSlots = {}
 local currentWeaponSlot = 1
+
+addEvent("onClientWeaponSlotChange", true)
+addEventHandler("onClientWeaponSlotChange", resourceRoot, function (slot, item)
+    if not slot or type(item) ~= "table" then
+        return
+    end
+    localSlots[slot] = item
+end)
 
 bindKey("next_weapon", "down", function ()
     cancelReload()

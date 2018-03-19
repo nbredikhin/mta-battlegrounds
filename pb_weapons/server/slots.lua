@@ -1,3 +1,7 @@
+--------------------------------------------
+-- Добавление и удаление оружия из слотов --
+--------------------------------------------
+
 local weaponSlots = {
     primary1  = true,
     primary2  = true,
@@ -21,45 +25,62 @@ addEventHandler("onResourceStart", resourceRoot, function ()
     end
 end)
 
-function setPlayerSlotWeapon(player, slot, weapon, clip)
-    if not isElement(player) or not slot or not weaponSlots[slot] then
+-- Помещает оружие в слот
+function givePlayerWeapon(player, slot, item)
+    if not isElement(player) or type(item) ~= "table" or not slot then
+        return false
+    end
+    -- Несуществующий слот
+    if not playerWeaponSlots[player] or not weaponSlots[slot] or playerWeaponSlots[player][slot] then
+        return false
+    end
+    -- Несуществующее оружие
+    local weapon = WeaponsTable[item.name]
+    if not weapon then
+        return false
+    end
+    local _slot = slot
+    if _slot == "primary1" or _slot == "primary2" then
+        _slot = "primary"
+    end
+    -- Попытка положить в неподходящий слот
+    if weapon.slot ~= _slot then
         return
     end
-    if weapon and not playerWeaponSlots[player] then
-        return
+    if not item.clip then
+        item.clip = 0
     end
-
-    if type(weapon) == "string" then
-        if type(clip) ~= "number" then
-            clip = 0
-        end
-
-        playerWeaponSlots[player][slot] = { weapon = weapon, clip = clip }
-    else
-        if slot == player:getData("weaponSlot") then
-            unequipPlayerWeapon(player)
-            player:setData("weaponSlot", false)
-        end
-        playerWeaponSlots[player][slot] = nil
-    end
+    playerWeaponSlots[player][slot] = item
+    triggerClientEvent(player, "onClientWeaponSlotChange", resourceRoot, slot, playerWeaponSlots[player][slot])
 end
 
-function equipPlayerSlot(player, slot)
+function takePlayerWeapon(player, slot)
+    if not isElement(player) or not slot then
+        return false
+    end
+    if not playerWeaponSlots[player] or not playerWeaponSlots[player][slot] then
+        return
+    end
+    local item = playerWeaponSlots[player][slot]
+    playerWeaponSlots[player][slot] = nil
+    return item
+end
+
+function equipPlayerWeaponSlot(player, slot)
     if not isElement(player) or not slot or not weaponSlots[slot] then
         return
     end
-    if not playerWeaponSlots[player][slot] then
+    if not playerWeaponSlots[player] or not playerWeaponSlots[player][slot] then
         return
     end
     player:setData("weaponSlot", slot)
-
-    equipPlayerWeapon(player, playerWeaponSlots[player][slot].weapon, playerWeaponSlots[player][slot].clip)
+    equipPlayerWeapon(player, playerWeaponSlots[player][slot].name, playerWeaponSlots[player][slot].clip)
 end
 
 addEvent("onPlayerEquipWeaponSlot", true)
 addEventHandler("onPlayerEquipWeaponSlot", resourceRoot, function (slot)
     if slot then
-        equipPlayerSlot(client, slot)
+        equipPlayerWeaponSlot(client, slot)
     else
         unequipPlayerWeapon(client)
         player:setData("weaponSlot", false)
@@ -67,5 +88,5 @@ addEventHandler("onPlayerEquipWeaponSlot", resourceRoot, function (slot)
 end)
 
 addCommandHandler("weapon", function (player, cmd, slot, name)
-    setPlayerSlotWeapon(player, slot, name, 30)
+    givePlayerWeapon(player, slot, {name=name,clip=30})
 end)
