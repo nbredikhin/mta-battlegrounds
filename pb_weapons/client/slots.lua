@@ -13,6 +13,14 @@ local weaponSlotsOrder = {
 local localSlots = {}
 local currentWeaponSlot = 1
 
+function equipWeaponSlot(name)
+    local currentClip = getCurrentClip()
+    if not localSlots[name] then
+        name = nil
+    end
+    triggerServerEvent("onPlayerEquipWeaponSlot", resourceRoot, name, currentClip)
+end
+
 addEvent("onClientWeaponSlotChange", true)
 addEventHandler("onClientWeaponSlotChange", resourceRoot, function (slot, item)
     if not slot or type(item) ~= "table" then
@@ -28,7 +36,7 @@ bindKey("next_weapon", "down", function ()
     if currentWeaponSlot > #weaponSlotsOrder then
         currentWeaponSlot = 1
     end
-    triggerServerEvent("onPlayerEquipWeaponSlot", resourceRoot, weaponSlotsOrder[currentWeaponSlot])
+    equipWeaponSlot(weaponSlotsOrder[currentWeaponSlot])
 end)
 
 bindKey("previous_weapon", "down", function ()
@@ -38,15 +46,22 @@ bindKey("previous_weapon", "down", function ()
     if currentWeaponSlot < 1 then
         currentWeaponSlot = #weaponSlotsOrder
     end
-    triggerServerEvent("onPlayerEquipWeaponSlot", resourceRoot, weaponSlotsOrder[currentWeaponSlot])
+    equipWeaponSlot(weaponSlotsOrder[currentWeaponSlot])
 end)
 
 bindKey("x", "down", function ()
     if localPlayer.weaponSlot == 0 then
-        triggerServerEvent("onPlayerEquipWeaponSlot", resourceRoot, weaponSlotsOrder[currentWeaponSlot])
+        tequipWeaponSlot(weaponSlotsOrder[currentWeaponSlot])
     else
         localPlayer.weaponSlot = 0
         cancelReload()
-        triggerServerEvent("onPlayerEquipWeaponSlot", resourceRoot)
+        equipWeaponSlot()
     end
 end)
+
+for i = 1, #weaponSlotsOrder do
+    bindKey(tostring(i), "down", function ()
+        currentWeaponSlot = i
+        equipWeaponSlot(weaponSlotsOrder[i])
+    end)
+end

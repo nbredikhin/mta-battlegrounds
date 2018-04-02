@@ -21,6 +21,8 @@ end)
 
 addEventHandler("onResourceStart", resourceRoot, function ()
     for i, player in ipairs(getElementsByType("player")) do
+        takeAllWeapons(player)
+        player:setData("weaponSlot", false)
         playerWeaponSlots[player] = {}
     end
 end)
@@ -37,6 +39,7 @@ function givePlayerWeapon(player, slot, item)
     -- Несуществующее оружие
     local weapon = WeaponsTable[item.name]
     if not weapon then
+        outputDebugString("givePlayerWeapon: invalid weapon")
         return false
     end
     local _slot = slot
@@ -78,15 +81,28 @@ function equipPlayerWeaponSlot(player, slot)
 end
 
 addEvent("onPlayerEquipWeaponSlot", true)
-addEventHandler("onPlayerEquipWeaponSlot", resourceRoot, function (slot)
+addEventHandler("onPlayerEquipWeaponSlot", resourceRoot, function (slot, clip)
+    if clip then
+        local slots = playerWeaponSlots[client]
+        local prevSlot = client:getData("weaponSlot")
+        if prevSlot and slots[prevSlot] then
+            slots[prevSlot].clip = clip
+            iprint("save", prevSlot, clip)
+        end
+    end
     if slot then
         equipPlayerWeaponSlot(client, slot)
     else
         unequipPlayerWeapon(client)
-        player:setData("weaponSlot", false)
+        client:setData("weaponSlot", false)
     end
 end)
 
-addCommandHandler("weapon", function (player, cmd, slot, name)
-    givePlayerWeapon(player, slot, {name=name,clip=30})
-end)
+-- addCommandHandler("weapon", function (player, cmd, slot, name)
+--     givePlayerWeapon(player, slot, {name=name,clip=30})
+-- end)
+
+setTimer(function ()
+    givePlayerWeapon(getRandomPlayer(), "primary1", {name="weapon_akm",clip=5})
+    givePlayerWeapon(getRandomPlayer(), "primary2", {name="weapon_akm",clip=1})
+end, 150, 1)

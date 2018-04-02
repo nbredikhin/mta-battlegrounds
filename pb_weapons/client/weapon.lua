@@ -75,9 +75,7 @@ end)
 addEvent("onClientReloadWeapon", true)
 addEventHandler("onClientReloadWeapon", resourceRoot, function (clip)
     currentClip = clip
-    if currentClip > 0 then
-        isFireAllowed = true
-    end
+    isFireAllowed = currentClip > 0
 end)
 
 function cancelReload()
@@ -102,3 +100,7 @@ addEventHandler("onClientPlayerWeaponSwitch", localPlayer, function ()
     currentClip = 0
     isFireAllowed = false
 end)
+
+function getCurrentClip()
+    return currentClip
+end
