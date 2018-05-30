@@ -1,0 +1,10 @@
+<meta>
+    <oop>true</oop>
+
+    <script type="client" src="client/utils.lua"/>
+    <script type="client" src="client/component_manager.lua"/>
+    <script type="client" src="client/components/container.lua"/>
+
+    <script type="client" src="client/graphics.lua"/>
+    <script type="client" src="client/rendering.lua"/>
+</meta>
