@@ -27,13 +27,25 @@ function removeArrayValue(t, removeValue)
     return false
 end
 
+table.indexOf = function(t, object)
+    local result
+    if "table" == type(t) then
+        for i=1,#t do
+            if object == t[i] then
+                result = i
+                break
+            end
+        end
+    end
+    return result
+end
+
 local screenWidth, screenHeight = guiGetScreenSize()
 
 function getMousePosition()
     if isCursorShowing() then
         local mx, my = getCursorPosition()
-        mx = mx * screenWidth
-        my = my * screenHeight
+        return mx * screenWidth, my * screenHeight
     else
         return screenWidth / 2, screenHeight / 2
     end
@@ -41,4 +53,10 @@ end
 
 function isPointInRect(x, y, rx, ry, rw, rh)
     return (x >= rx and y >= ry and x <= rx + rw and y <= ry + rh)
+end
+
+function printDebug(str)
+    if Config.debugMessages then
+        outputDebugString("[UI][DEBUG] "..tostring(str))
+    end
 end

@@ -1,10 +1,17 @@
 <meta>
     <oop>true</oop>
 
+    <script type="client" src="client/config.lua"/>
     <script type="client" src="client/utils.lua"/>
-    <script type="client" src="client/component_manager.lua"/>
-    <script type="client" src="client/components/container.lua"/>
+    <script type="client" src="client/middleclass.lua"/>
+    <script type="client" src="client/widgets/Widget.lua"/>
+    <script type="client" src="client/widgets/Button.lua"/>
 
     <script type="client" src="client/graphics.lua"/>
-    <script type="client" src="client/rendering.lua"/>
+    <script type="client" src="client/render_manager.lua"/>
+    <script type="client" src="client/exports.lua"/>
+
+    <script type="client" src="client/test.lua"/>
+
+    <export type="client" function="create"/>
 </meta>
