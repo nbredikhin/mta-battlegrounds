@@ -59,6 +59,7 @@ addEventHandler("onClientResourceStart", resourceRoot, function ()
     loadAsset("font", "bold",    "assets/fonts/OpenSans-Bold.ttf",    Config.fontSizeDefault)
     loadAsset("font", "bold-lg", "assets/fonts/OpenSans-Bold.ttf",    Config.fontSizeLarge)
     loadAsset("font", "italic",  "assets/fonts/OpenSans-Italic.ttf",  Config.fontSizeDefault)
+    loadAsset("font", "debug",   "assets/fonts/OpenSans-Regular.ttf", 8)
 
     -- Изображения
     loadAsset("image", "caption-separator", "assets/images/caption-separator.png")

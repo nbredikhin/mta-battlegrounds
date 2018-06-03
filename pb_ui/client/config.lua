@@ -1,6 +1,9 @@
 Config = {}
 
 Config.debugMessages = true
+Config.debugDrawBoxes = true
+Config.debugDrawNames = false
+Config.testModeEnabled = true
 
 Config.defaultFont = "regular"
 Config.fontSizeExtraSmall = 6

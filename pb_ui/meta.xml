@@ -8,6 +8,7 @@
     <script type="client" src="client/widgets/Widget.lua"/>
     <script type="client" src="client/widgets/Button.lua"/>
     <script type="client" src="client/widgets/Window.lua"/>
+    <script type="client" src="client/widgets/Label.lua"/>
 
     <script type="client" src="client/graphics.lua"/>
     <script type="client" src="client/render_manager.lua"/>

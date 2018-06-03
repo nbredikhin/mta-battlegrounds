@@ -10,6 +10,7 @@ function Window:initialize(params)
     -- Параметры текста заголовка
     self.textColorCoded = false
     self.textWordBreak  = true
+    self.textClip = true
     self.font = params.font or "bold"
     -- Параметры дополнительного текста заголовка
     self.textRight = params.textRight
@@ -55,14 +56,14 @@ function Window:draw()
         Graphics.setFont(self.font)
         Graphics.setColor(self.colorText)
         Graphics.text(self.x + textOffset, self.y - self.headerHeight, self.width-textOffset, self.headerHeight, self.text, self.textAlignHorizontal,
-            self.textAlignVertical, self.textWordBreak, self.textColorCoded)
+            self.textAlignVertical, self.textClip, self.textWordBreak, self.textColorCoded)
 
         if self.textRight then
             local textOffset = 10
             Graphics.setFont(self.fontRight)
             Graphics.setColor(self.colorTextRight)
             Graphics.text(self.x, self.y - self.headerHeight, self.width-textOffset, self.headerHeight, self.textRight, "right",
-                self.textAlignVertical, self.textWordBreak, self.textColorCoded)
+                self.textAlignVertical, self.textClip, self.textWordBreak, self.textColorCoded)
         end
     end
     -- Основная часть окна

@@ -55,6 +55,19 @@ function Widget:render(mouseX, mouseY)
     Graphics.setFont(self.font)
     self:draw()
 
+    if Config.debugDrawBoxes and self.parent then
+        Graphics.setColor(tocolor(255, 0, 0, 200))
+        Graphics.line(self.x, self.y, self.x + self.width, self.y, 1)
+        Graphics.line(self.x + self.width, self.y, self.x + self.width, self.y + self.height, 1)
+        Graphics.line(self.x + self.width, self.y + self.height, self.x, self.y + self.height, 1)
+        Graphics.line(self.x, self.y + self.height, self.x, self.y, 1)
+    end
+    if Config.debugDrawNames then
+        Graphics.setColor(tocolor(255, 0, 0))
+        Graphics.setFont("debug")
+        Graphics.text(self.x + 3, self.y, 1, 1, self.class.name .. " [ID="..(self.id or "<none>").."]")
+    end
+
     Graphics.translate(self.x, self.y)
     for i, child in ipairs(self.children) do
         child:render(mouseX, mouseY)
@@ -64,6 +77,14 @@ end
 
 function Widget:draw()
 
+end
+
+function Widget:__tostring()
+    local str = self.class.name
+    if self.id then
+        str = str.."("..self.id..")"
+    end
+    return str
 end
 
 -- Добавление дочернего виджета

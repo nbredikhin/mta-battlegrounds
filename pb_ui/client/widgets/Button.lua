@@ -10,6 +10,7 @@ function Button:initialize(params)
     -- Параметры текста
     self.textColorCoded = false
     self.textWordBreak  = true
+    self.textClip = true
 
     -- Цвета фона кнопки в различных состояниях
     self.colorMain  = params.colorMain  or tocolor(50, 50, 50)
@@ -50,5 +51,5 @@ function Button:draw()
     Graphics.rectangle(self.x, self.y, self.width, self.height)
     Graphics.setColor(colorText)
     Graphics.text(self.x, self.y, self.width, self.height, self.text, self.textAlignHorizontal,
-        self.textAlignVertical, self.textWordBreak, self.textColorCoded)
+        self.textAlignVertical, self.textClip, self.textWordBreak, self.textColorCoded)
 end
