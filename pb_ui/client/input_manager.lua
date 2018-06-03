@@ -9,6 +9,7 @@ local checkKeys = {
 
 local clickedWidget = nil
 local focusedWidget = nil
+local hoveredWidget = nil
 
 local inputActionWaitTimer = nil
 local inputActionRepeatTimer = nil
@@ -33,6 +34,7 @@ local function processTextInputAction(action)
     end
     if action == "backspace" then
         focusedWidget.text = utf8.sub(focusedWidget.text, 1, -2)
+        triggerWidgetEvent("onWidgetInput", hoveredWidget)
     end
 end
 
@@ -59,7 +61,7 @@ end
 
 function InputManager.update()
     clickedWidget = nil
-
+    hoveredWidget = nil
     for i, name in ipairs(checkKeys) do
         keysPressed[name] = false
     end
@@ -87,6 +89,14 @@ end
 
 function InputManager.getFocusedWidget()
     return focusedWidget
+end
+
+function InputManager.setHoveredWidget(widget)
+    hoveredWidget = widget
+end
+
+function InputManager.getHoveredWidget()
+    return hoveredWidget
 end
 
 -- Если ничего не передано в качестве аргумента, убирает фокус с виджетов
@@ -120,17 +130,32 @@ addEventHandler("onClientCharacter", root, function (character)
 
     if focusedWidget and focusedWidget.receiveTextInput then
         focusedWidget.text = focusedWidget.text..character
+        triggerWidgetEvent("onWidgetInput", hoveredWidget)
     end
 end)
 
 addEventHandler("onClientKey", root, function (key, state)
-    if not focusedWidget or not state then
+    if not state then
         return
     end
 
     if focusedWidget and focusedWidget.receiveTextInput then
         if key == "backspace" then
             startTextInputAction("backspace")
+        end
+    end
+
+    if hoveredWidget then
+        local scrollDelta
+        if key == "mouse_wheel_up" then
+            scrollDelta = -1
+        elseif key == "mouse_wheel_down" then
+            scrollDelta = 1
+        end
+
+        if scrollDelta then
+            hoveredWidget:handleScroll(scrollDelta)
+            triggerWidgetEvent("onWidgetScroll", hoveredWidget, scrollDelta)
         end
     end
 end)

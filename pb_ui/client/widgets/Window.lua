@@ -6,11 +6,11 @@ function Window:initialize(params)
     -- Текст заголовка и его выравнивание
     self.text = params.text or ""
     self.textAlignHorizontal = params.textAlignHorizontal or "left"
-    self.textAlignVertical = params.textAlignVertical or "center"
+    self.textAlignVertical   = params.textAlignVertical   or "center"
     -- Параметры текста заголовка
     self.textColorCoded = false
     self.textWordBreak  = true
-    self.textClip = true
+    self.textClip       = true
     self.font = params.font or "bold"
     -- Параметры дополнительного текста заголовка
     self.textRight = params.textRight
@@ -25,11 +25,11 @@ function Window:initialize(params)
     end
 
     -- Цвет фона
-    self.colorMain = params.colorMain or tocolor(20, 20, 20)
-    self.colorHeader = params.colorMain or tocolor(40, 40, 40)
+    self.colorMain        = params.colorMain or tocolor(20, 20, 20)
+    self.colorHeader      = params.colorMain or tocolor(40, 40, 40)
     self.colorHeaderRight = params.colorMain or tocolor(30, 30, 30)
     -- Цвет заголовка
-    self.colorText = params.colorText or tocolor(200, 200, 200)
+    self.colorText      = params.colorText      or tocolor(200, 200, 200)
     self.colorTextRight = params.colorTextRight or tocolor(150, 150, 150)
 end
 

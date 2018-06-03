@@ -14,7 +14,6 @@ function Widget:initialize(params)
         height = 0,
 
         visible = true,
-
         enabled = true
     })
 
@@ -47,7 +46,7 @@ function Widget:render(mouseX, mouseY)
 
     if isPointInRect(mouseX, mouseY, 0, 0, self.width, self.height) then
         self.isMouseOver = true
-
+        InputManager.setHoveredWidget(self)
         if self.enabled and InputManager.isPressed("mouse1") then
             InputManager.setClickedWidget(self)
         end
@@ -87,6 +86,10 @@ function Widget:render(mouseX, mouseY)
 end
 
 function Widget:draw()
+
+end
+
+function Widget:handleScroll(delta)
 
 end
 

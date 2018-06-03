@@ -6,14 +6,14 @@ function Label:initialize(params)
     -- Текст кнопки и его выравнивание
     self.text = params.text or ""
     self.textAlignHorizontal = params.textAlignHorizontal or "left"
-    self.textAlignVertical = params.textAlignVertical or "center"
+    self.textAlignVertical   = params.textAlignVertical   or "center"
     -- Параметры текста
     self.textColorCoded = false
     self.textWordBreak  = true
-    self.textClip = true
+    self.textClip       = true
 
     self.color = params.color or tocolor(200, 200, 200)
-    self.font = params.font or "regular"
+    self.font  = params.font  or "regular"
 end
 
 function Label:draw()

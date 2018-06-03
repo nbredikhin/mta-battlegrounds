@@ -6,24 +6,24 @@ function Input:initialize(params)
     -- Текст и его выравнивание
     self.text = params.text or ""
     self.textAlignHorizontal = params.textAlignHorizontal or "left"
-    self.textAlignVertical = params.textAlignVertical or "center"
-    self.textOffset = params.textOffset or 5
+    self.textAlignVertical   = params.textAlignVertical   or "center"
+    self.textOffset          = params.textOffset          or 5
     -- Текст, когда поле ввода пустое
     self.placeholder = params.placeholder or ""
     -- Параметры текста
     self.textColorCoded = false
     self.textWordBreak  = false
-    self.textClip = true
+    self.textClip       = true
 
-    self.borderSize = 2
+    self.borderSize = params.borderSize or 2
 
-    self.colorText = params.colorText or tocolor(20, 20, 20)
+    self.colorText            = params.colorText            or tocolor(20, 20, 20)
     self.colorTextPlaceholder = params.colorTextPlaceholder or tocolor(100, 100, 100)
-    self.colorMain = params.colorMain or tocolor(200, 200, 200)
-    self.colorMainHover = params.colorMainHover or tocolor(210, 210, 210)
-    self.colorMainFocused = params.colorMainFocused or tocolor(220, 220, 220)
-    self.colorBorder = params.colorBorder or tocolor(100, 100, 100)
-    self.colorBorderFocused = params.colorBorderFocused or tocolor(150, 150, 150)
+    self.colorMain            = params.colorMain            or tocolor(200, 200, 200)
+    self.colorMainHover       = params.colorMainHover       or tocolor(210, 210, 210)
+    self.colorMainFocused     = params.colorMainFocused     or tocolor(220, 220, 220)
+    self.colorBorder          = params.colorBorder          or tocolor(100, 100, 100)
+    self.colorBorderFocused   = params.colorBorderFocused   or tocolor(150, 150, 150)
 
     self.font = params.font or "regular"
 

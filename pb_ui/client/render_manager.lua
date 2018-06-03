@@ -20,7 +20,7 @@ local function render()
         InputManager.setFocusedWidget(clickedWidget)
 
         if clickedWidget.id then
-            triggerEvent("onWidgetClick", clickedWidget.sourceResourceRoot or resourceRoot, clickedWidget.id)
+            triggerWidgetEvent("onWidgetClick", clickedWidget)
         end
     elseif InputManager.isPressed("mouse1") then
         -- Если не кликнули по виджету, но был клик, убираем фокус с виджета

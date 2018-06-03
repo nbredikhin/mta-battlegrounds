@@ -9,6 +9,7 @@
     <script type="client" src="client/widgets/Button.lua"/>
     <script type="client" src="client/widgets/Input.lua"/>
     <script type="client" src="client/widgets/Label.lua"/>
+    <script type="client" src="client/widgets/ScrollBar.lua"/>
     <script type="client" src="client/widgets/Window.lua"/>
 
     <script type="client" src="client/graphics.lua"/>
@@ -21,6 +22,8 @@
     <export type="client" function="create"/>
     <export type="client" function="setParams"/>
     <export type="client" function="centerWidget"/>
+    <export type="client" function="alignWidget"/>
+    <export type="client" function="fillSize"/>
 
     <file src="assets/fonts/OpenSans-Bold.ttf"/>
     <file src="assets/fonts/OpenSans-Regular.ttf"/>

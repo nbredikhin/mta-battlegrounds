@@ -24,15 +24,20 @@ addEventHandler("onClientResourceStart", resourceRoot, function ()
         font = "bold-lg"
     })
 
-    ui.window = widget("Window", { x = 500, width = 350, height = 200, text = "Большой заголовок", font = "bold-lg", headerHeight = 50 })
+    ui.window = widget("Window", { x = 500, width = 350, height = 185, text = "Большой заголовок", font = "bold-lg", headerHeight = 50 })
     exports.pb_ui:centerWidget(ui.window, false, true)
     local labelText = "Lorem ipsum eros ultricies elementum: nulla metus nibh massa sem sagittis. Cursus sodales curabitur non gravida non ut gravida enim arcu, porttitor, tellus rutrum. "
     widget("Label", { x = 15, y = 15, width = 350 - 30, height = 90, text = labelText, parent = ui.window, textAlignVertical = "top", color = tocolor(150, 150, 150)})
     widget("Label", { x = 15, y = 120, width = 350 - 30, height = 20, text = "Поле ввода", parent = ui.window, textAlignVertical = "top", font = "bold"})
     ui.input = widget("Input", { x = 15, y = 145, width = 200, height = 25, placeholder = "Введите текст...", text = "Test", parent = ui.window})
+    exports.pb_ui:fillSize(ui.input, 15)
 
     ui.window = widget("Window", { x = 900, width = 350, height = 250, text = "Двойной заголовок", textRight = "Какой-то текст", font = "bold" })
     exports.pb_ui:centerWidget(ui.window, false, true)
+
+    ui.scrollBar = widget("ScrollBar", { width = 15 , parent = ui.window })
+    exports.pb_ui:fillSize(ui.scrollBar, nil, 5)
+    exports.pb_ui:alignWidget(ui.scrollBar, "horizontal", "right", 5)
 
     showCursor(true)
 end)
