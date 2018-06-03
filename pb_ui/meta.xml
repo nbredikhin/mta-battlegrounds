@@ -19,11 +19,86 @@
 
     <script type="client" src="client/test.lua"/>
 
+    <!--
+        create(string widget, table params)
+
+        Описание:
+            Создание виджета
+
+        Аргументы:
+            widget - тип виджета (Button, Label и т. д.)
+            params - таблица параметров (например: { x = 5, y = 5, text = "Hello" })
+    -->
     <export type="client" function="create"/>
+
+    <!-- Удаление виджета -->
+    <export type="client" function="destroy"/>
+
+    <!--
+        setParams(number widget, table params)
+
+        Описание:
+            Изменение параметров виджета
+
+        Аргументы:
+            widget - id виджета для изменения
+            params - таблица параметров для изменения (ключ=значение)
+    -->
     <export type="client" function="setParams"/>
-    <export type="client" function="centerWidget"/>
+
+    <!--
+        getParam(number widget, string name)
+
+        Описание:
+            Получение параметра виджета
+
+        Аргументы:
+            widget - id виджета для изменения
+            name - название параметра, значение которого необходимо получить
+    -->
+    <export type="client" function="getParam"/>
+
+    <!--
+        alignWidget(number widget, string alignAxis, string alignType [, number offset] )
+
+        Описание:
+            Выравнивание виджета
+
+        Аргументы:
+            widget - id виджета для выравнивания
+            alignAxis - ось для выравнивания ("horizontal" или "vertical"). Также можно указывать "x" или "y" для краткости
+            alignType - тип выравнивания ("left", "right"- для горизонтального, "top", "bottom" - для вертикального, "center")
+            offset - оффсет выравнивания (например, если выровнять виджет по правому краю и указать оффсет 10, он будет сдвинут влево от края на 10 пикселей)
+    -->
     <export type="client" function="alignWidget"/>
+
+    <!--
+        fillSize(number widget, marginHorizontal, marginVertical)
+
+        Описание:
+            Выставляет размер виджета по размерам родителя.
+            Можно использовать, например, для заполнения ширины кнопки по ширине окна и т. д.
+
+        Аргументы:
+            widget - id виджета для выравнивания
+            marginHorizontal - расстояние по горизонтали (или nil, чтобы не заполнять)
+            marginVertical - расстояние по вертикали (или nil, чтобы не заполнять)
+    -->
     <export type="client" function="fillSize"/>
+
+    <!--
+        События UI:
+            onWidgetCreate
+            onWidgetClick
+            onWidgetInput
+            onWidgetScroll (number delta)
+
+        source - resourceRoot ресурса, который создал виджет
+        первым аргументом всегда передаётся id виджета
+        addEventHandler("onWidgetClick", resourceRoot, function (id)
+            ...обработка события...
+        end)
+    -->
 
     <file src="assets/fonts/OpenSans-Bold.ttf"/>
     <file src="assets/fonts/OpenSans-Regular.ttf"/>

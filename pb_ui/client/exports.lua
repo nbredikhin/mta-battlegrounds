@@ -51,7 +51,23 @@ function create(name, params)
     widget.sourceResourceRoot = sourceResourceRoot
 
     printDebug("Created widget "..tostring(name).."("..widget.id..") by resource '"..sourceResource.name.."'")
+    triggerWidgetEvent("onWidgetCreate", widget)
     return widget.id
+end
+
+function destroy(id)
+    if not id then
+        return false
+    end
+    local widget = widgetInstances[id]
+    if not widget then
+        return false
+    end
+    if widget.parent then
+        widget.parent:removeChild(widget)
+    end
+    widgetInstances[id] = nil
+    return true
 end
 
 function setParams(id, params)
@@ -63,6 +79,8 @@ function setParams(id, params)
     end
     params.parent = nil
     params.children = nil
+    params.id = nil
+    params.sourceResourceRoot = nil
 
     for key, value in pairs(params) do
         widgetInstances[id][key] = value
@@ -71,35 +89,14 @@ function setParams(id, params)
     return true
 end
 
-function centerWidget(id, centerHorizontal, centerVertical)
-    if not id then
+function getParams(id, key)
+    if not id or type(params) ~= "table" then
         return false
     end
-    local widget = widgetInstances[id]
-    if not widget then
+    if not widgetInstances[id] then
         return false
     end
-    if centerHorizontal == nil then
-        centerHorizontal = true
-    end
-    if centerVertical == nil then
-        centerVertical = true
-    end
-
-    local parentWidth, parentHeight
-    if widget.parent then
-        parentWidth, parentHeight = widget.parent.width, widget.parent.height
-    else
-        parentWidth, parentHeight = guiGetScreenSize()
-    end
-
-    if centerHorizontal then
-        widget.x = parentWidth/2 - widget.width/2
-    end
-    if centerVertical then
-        widget.y = parentHeight/2 - widget.height/2
-    end
-    return true
+    return widgetInstances[id][key]
 end
 
 function alignWidget(id, alignAxis, align, offset)
@@ -175,3 +172,10 @@ function fillSize(id, marginHorizontal, marginVertical)
     end
     return true
 end
+
+addEventHandler("onClientResourceStop", root, function ()
+    if resourceWidgets[source] then
+        RenderManager.removeWidget(resourceWidgets[source])
+        resourceWidgets[source] = nil
+    end
+end)
