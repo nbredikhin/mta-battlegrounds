@@ -4,8 +4,10 @@
     <script type="client" src="client/config.lua"/>
     <script type="client" src="client/utils.lua"/>
     <script type="client" src="client/middleclass.lua"/>
+    <script type="client" src="client/assets.lua"/>
     <script type="client" src="client/widgets/Widget.lua"/>
     <script type="client" src="client/widgets/Button.lua"/>
+    <script type="client" src="client/widgets/Window.lua"/>
 
     <script type="client" src="client/graphics.lua"/>
     <script type="client" src="client/render_manager.lua"/>
@@ -14,4 +16,12 @@
     <script type="client" src="client/test.lua"/>
 
     <export type="client" function="create"/>
+    <export type="client" function="setParams"/>
+    <export type="client" function="centerWidget"/>
+
+    <file src="assets/fonts/OpenSans-Bold.ttf"/>
+    <file src="assets/fonts/OpenSans-Regular.ttf"/>
+    <file src="assets/fonts/OpenSans-Italic.ttf"/>
+
+    <file src="assets/images/caption-separator.png"/>
 </meta>

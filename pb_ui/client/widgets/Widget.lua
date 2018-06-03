@@ -54,8 +54,6 @@ function Widget:render(mouseX, mouseY)
     Graphics.setColor(self.color)
     Graphics.setFont(self.font)
     self:draw()
-    Graphics.setColor()
-    Graphics.setFont()
 
     Graphics.translate(self.x, self.y)
     for i, child in ipairs(self.children) do

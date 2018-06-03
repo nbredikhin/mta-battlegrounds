@@ -1,7 +1,7 @@
 Graphics = {}
 
 local defaultDrawColor = tocolor(255, 255, 255)
-local defaultDrawFont = "default"
+local defaultDrawFont = Config.defaultFont
 
 local drawColor = defaultDrawColor
 local drawFont = defaultDrawFont
@@ -53,7 +53,7 @@ end
 function Graphics.text(x, y, width, height, text, alignX, alignY, clip, wordBreak, colorCoded)
     x = x + drawX
     y = y + drawY
-    dxDrawText(text, x, y, x + width, y + height, drawColor, 1, drawFont, alignX, alignY, clip, wordBreak, drawPostGUI, false, colorCoded)
+    dxDrawText(text, x, y, x + width, y + height, drawColor, 1, Assets.getFont(drawFont), alignX, alignY, clip, wordBreak, drawPostGUI, false, colorCoded)
 end
 
 function Graphics.image(x, y, width, height, image)
