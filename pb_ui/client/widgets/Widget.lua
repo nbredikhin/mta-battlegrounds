@@ -13,7 +13,9 @@ function Widget:initialize(params)
         width  = 0,
         height = 0,
 
-        visible = true
+        visible = true,
+
+        enabled = true
     })
 
     -- Положение мыши относительно виджета
@@ -46,7 +48,9 @@ function Widget:render(mouseX, mouseY)
     if isPointInRect(mouseX, mouseY, 0, 0, self.width, self.height) then
         self.isMouseOver = true
 
-        -- TODO: Click
+        if self.enabled and InputManager.isPressed("mouse1") then
+            InputManager.setClickedWidget(self)
+        end
     else
         self.isMouseOver = false
     end
@@ -56,11 +60,18 @@ function Widget:render(mouseX, mouseY)
     self:draw()
 
     if Config.debugDrawBoxes and self.parent then
+        local lineWidth
+        if self.isFocused then
+            lineWidth = 3
+        else
+            lineWidth = 1
+        end
         Graphics.setColor(tocolor(255, 0, 0, 200))
-        Graphics.line(self.x, self.y, self.x + self.width, self.y, 1)
-        Graphics.line(self.x + self.width, self.y, self.x + self.width, self.y + self.height, 1)
-        Graphics.line(self.x + self.width, self.y + self.height, self.x, self.y + self.height, 1)
-        Graphics.line(self.x, self.y + self.height, self.x, self.y, 1)
+
+        Graphics.line(self.x, self.y, self.x + self.width, self.y, lineWidth)
+        Graphics.line(self.x + self.width, self.y, self.x + self.width, self.y + self.height, lineWidth)
+        Graphics.line(self.x + self.width, self.y + self.height, self.x, self.y + self.height, lineWidth)
+        Graphics.line(self.x, self.y + self.height, self.x, self.y, lineWidth)
     end
     if Config.debugDrawNames then
         Graphics.setColor(tocolor(255, 0, 0))

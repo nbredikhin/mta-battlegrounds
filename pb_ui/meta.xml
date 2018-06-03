@@ -7,10 +7,12 @@
     <script type="client" src="client/assets.lua"/>
     <script type="client" src="client/widgets/Widget.lua"/>
     <script type="client" src="client/widgets/Button.lua"/>
-    <script type="client" src="client/widgets/Window.lua"/>
+    <script type="client" src="client/widgets/Input.lua"/>
     <script type="client" src="client/widgets/Label.lua"/>
+    <script type="client" src="client/widgets/Window.lua"/>
 
     <script type="client" src="client/graphics.lua"/>
+    <script type="client" src="client/input_manager.lua"/>
     <script type="client" src="client/render_manager.lua"/>
     <script type="client" src="client/exports.lua"/>
 

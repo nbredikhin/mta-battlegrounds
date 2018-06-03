@@ -1,6 +1,10 @@
 local resourceWidgets = {}
 local widgetInstances = {}
 
+function getWidgetById(id)
+    return widgetInstances[id]
+end
+
 function create(name, params)
     if type(name) ~= "string" then
         return false
@@ -26,7 +30,8 @@ function create(name, params)
             local screenWidth, screenHeight = guiGetScreenSize()
             resourceWidgets[sourceResourceRoot] = Widget:new({
                 width  = screenWidth,
-                height = screenHeight
+                height = screenHeight,
+                enabled = false
             })
             RenderManager.addWidget(resourceWidgets[sourceResourceRoot])
         end
@@ -37,6 +42,7 @@ function create(name, params)
 
     table.insert(widgetInstances, widget)
     widget.id = #widgetInstances
+    widget.sourceResourceRoot = sourceResourceRoot
 
     printDebug("Created widget "..tostring(name).."("..widget.id..") by resource '"..sourceResource.name.."'")
     return widget.id

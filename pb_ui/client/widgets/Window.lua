@@ -30,6 +30,7 @@ function Window:initialize(params)
     self.colorHeaderRight = params.colorMain or tocolor(30, 30, 30)
     -- Цвет заголовка
     self.colorText = params.colorText or tocolor(200, 200, 200)
+    self.colorTextRight = params.colorTextRight or tocolor(150, 150, 150)
 end
 
 function Window:draw()

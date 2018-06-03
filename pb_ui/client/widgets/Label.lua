@@ -13,6 +13,7 @@ function Label:initialize(params)
     self.textClip = true
 
     self.color = params.color or tocolor(200, 200, 200)
+    self.font = params.font or "regular"
 end
 
 function Label:draw()
