@@ -19,6 +19,8 @@ local function render()
     if clickedWidget then
         InputManager.setFocusedWidget(clickedWidget)
 
+        clickedWidget:handleClick()
+
         if clickedWidget.id then
             triggerWidgetEvent("onWidgetClick", clickedWidget)
         end
@@ -45,7 +47,7 @@ function RenderManager.removeWidget(widget)
     if not index then
         return false
     end
-    table.remove(renderWidgets, widget)
+    table.remove(renderWidgets, index)
     return true
 end
 

@@ -39,6 +39,9 @@ addEventHandler("onClientResourceStart", resourceRoot, function ()
     exports.pb_ui:fillSize(ui.scrollBar, nil, 5)
     exports.pb_ui:alignWidget(ui.scrollBar, "horizontal", "right", 5)
 
+    ui.checkBox = widget("Checkbox", { x = 15, y = 15, width = 300, height = 15, text = "Тестовый checkbox", parent = ui.window})
+    ui.checkBox = widget("Checkbox", { x = 15, y = 45, width = 300, height = 15, text = "Ещё один checkbox", parent = ui.window})
+
     showCursor(true)
 end)
 

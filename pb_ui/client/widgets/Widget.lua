@@ -93,6 +93,10 @@ function Widget:handleScroll(delta)
 
 end
 
+function Widget:handleClick()
+
+end
+
 function Widget:__tostring()
     local str = self.class.name
     if self.id then
