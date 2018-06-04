@@ -89,8 +89,8 @@ function setParams(id, params)
     return true
 end
 
-function getParams(id, key)
-    if not id or type(params) ~= "table" then
+function getParam(id, key)
+    if not id then
         return false
     end
     if not widgetInstances[id] then

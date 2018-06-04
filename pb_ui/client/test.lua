@@ -30,9 +30,9 @@ addEventHandler("onClientResourceStart", resourceRoot, function ()
     widget("Label", { x = 15, y = 15, width = 350 - 30, height = 90, text = labelText, parent = ui.window, textAlignVertical = "top", color = tocolor(150, 150, 150)})
     widget("Label", { x = 15, y = 120, width = 350 - 30, height = 20, text = "Поле ввода", parent = ui.window, textAlignVertical = "top", font = "bold"})
     ui.input = widget("Input", { x = 15, y = 145, width = 200, height = 25, placeholder = "Введите текст...", text = "Test", parent = ui.window})
-    exports.pb_ui:fillSize(ui.input, 15)
+    ui.buttonAccept = widget("Button", { x = 230, y = 145, width = 105, height = 25, text = "Принять", parent = ui.window })
 
-    ui.window = widget("Window", { x = 900, width = 350, height = 250, text = "Двойной заголовок", textRight = "Какой-то текст", font = "bold" })
+    ui.window = widget("Window", { x = 900, width = 350, height = 250, text = "Двойной заголовок", textRight = "Какой-то текст" })
     exports.pb_ui:alignWidget(ui.window, "vertical", "center")
 
     ui.scrollBar = widget("ScrollBar", { width = 15 , parent = ui.window })
@@ -49,5 +49,7 @@ addEvent("onWidgetClick", true)
 addEventHandler("onWidgetClick", resourceRoot, function (widget)
     if widget == ui.button1 then
         exports.pb_ui:destroy(ui.button1)
+    elseif widget == ui.buttonAccept then
+        exports.pb_ui:setParams(ui.window, { textRight = exports.pb_ui:getParam(ui.input, "text") })
     end
 end)
