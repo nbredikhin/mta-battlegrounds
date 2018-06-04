@@ -44,7 +44,12 @@ function create(name, params)
         params.parent = resourceWidgets[sourceResourceRoot]
     end
 
-    local widget = _G[name]:new(params)
+    local widgetClass = _G[name]
+    if type(widgetClass) ~= "table" or widgetClass.name ~= name then
+        outputDebugString("[UI][ERROR] Failed to create widget '"..tostring(name).."': No such class")
+        return false
+    end
+    local widget = widgetClass:new(params)
 
     table.insert(widgetInstances, widget)
     widget.id = #widgetInstances

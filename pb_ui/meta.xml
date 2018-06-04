@@ -10,6 +10,7 @@
     <script type="client" src="client/widgets/Checkbox.lua"/>
     <script type="client" src="client/widgets/Input.lua"/>
     <script type="client" src="client/widgets/Label.lua"/>
+    <script type="client" src="client/widgets/ProgressBar.lua"/>
     <script type="client" src="client/widgets/ScrollBar.lua"/>
     <script type="client" src="client/widgets/Window.lua"/>
 
@@ -19,6 +20,7 @@
     <script type="client" src="client/exports.lua"/>
 
     <script type="client" src="client/test.lua"/>
+    <script type="client" src="client/debug.lua"/>
 
     <!--
         create(string widget, table params)

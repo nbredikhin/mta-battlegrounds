@@ -39,8 +39,11 @@ addEventHandler("onClientResourceStart", resourceRoot, function ()
     exports.pb_ui:fillSize(ui.scrollBar, nil, 5)
     exports.pb_ui:alignWidget(ui.scrollBar, "horizontal", "right", 5)
 
-    ui.checkBox = widget("Checkbox", { x = 15, y = 15, width = 300, height = 15, text = "Тестовый checkbox", parent = ui.window})
-    ui.checkBox = widget("Checkbox", { x = 15, y = 45, width = 300, height = 15, text = "Ещё один checkbox", parent = ui.window})
+    widget("Checkbox", { x = 15, y = 15, width = 300, height = 15, text = "Тестовый checkbox", parent = ui.window})
+    widget("Checkbox", { x = 15, y = 45, width = 300, height = 15, text = "Ещё один checkbox", parent = ui.window})
+    local progress = math.random()
+    widget("Label", { x = 15, y = 100, width = 320, height = 20, text = "Прогресс: "..math.floor(progress*100).."%", parent = ui.window, textAlignVertical = "top", font = "bold"})
+    widget("ProgressBar", { x = 15, y = 130, width = 300, height = 15, text = "Ещё один checkbox", parent = ui.window, progress = progress})
 
     showCursor(true)
 end)

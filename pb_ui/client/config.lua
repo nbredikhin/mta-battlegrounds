@@ -1,6 +1,7 @@
 Config = {}
 
 Config.debugMessages = true
+Config.debugCommandsEnabled = true
 Config.debugDrawBoxes = false
 Config.debugDrawNames = false
 Config.testModeEnabled = true
