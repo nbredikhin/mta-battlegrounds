@@ -97,6 +97,10 @@ function Widget:handleClick()
 
 end
 
+function Widget:handleParamChange(name, value)
+
+end
+
 function Widget:__tostring()
     local str = self.class.name
     if self.id then

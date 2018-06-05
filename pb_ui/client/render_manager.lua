@@ -7,6 +7,8 @@ local renderWidgets = {}
 -----------------------
 
 local function render()
+    local renderStartTime = getTickCount()
+
     InputManager.update()
     local mouseX, mouseY = getMousePosition()
     Graphics.origin()
@@ -33,6 +35,11 @@ local function render()
     elseif InputManager.isPressed("mouse1") then
         -- Если не кликнули по виджету, но был клик, убираем фокус с виджета
         InputManager.setFocusedWidget()
+    end
+
+    if Config.debugDrawRenderTime then
+        local renderTime = getTickCount() - renderStartTime
+        dxDrawText("Render time: "..renderTime.."ms", 20, 420, 0, 0, tocolor(255, 0, 0))
     end
 end
 

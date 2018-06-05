@@ -4,7 +4,7 @@ function Button:initialize(params)
     Widget.initialize(self, params)
 
     -- Текст кнопки и его выравнивание
-    self.text = params.text or ""
+    self.text                = params.text                or ""
     self.textAlignHorizontal = params.textAlignHorizontal or "center"
     self.textAlignVertical   = params.textAlignVertical   or "center"
     -- Параметры текста

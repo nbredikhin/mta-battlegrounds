@@ -20,7 +20,9 @@ addEventHandler("onClientResourceStart", resourceRoot, function ()
         colorHover  = tocolor(220, 150, 0),
         colorPress  = tocolor(255, 190, 0),
         colorBorder = tocolor(240, 170, 0),
-        colorText   = tocolor(255, 255, 255),
+        colorText   = tocolor(235, 235, 235),
+        colorTextHover = tocolor(255, 255, 255),
+        colorTextPress = tocolor(255, 210, 150),
         font = "bold-lg"
     })
 
@@ -32,12 +34,12 @@ addEventHandler("onClientResourceStart", resourceRoot, function ()
     ui.input = widget("Input", { x = 15, y = 145, width = 200, height = 25, placeholder = "Введите текст...", text = "Test", parent = ui.window})
     ui.buttonAccept = widget("Button", { x = 230, y = 145, width = 105, height = 25, text = "Принять", parent = ui.window })
 
-    ui.window = widget("Window", { x = 900, width = 350, height = 250, text = "Двойной заголовок", textRight = "Какой-то текст" })
+    ui.window = widget("Window", { x = 900, width = 350, height = 265, text = "Двойной заголовок", textRight = "Какой-то текст" })
     exports.pb_ui:alignWidget(ui.window, "vertical", "center")
 
     ui.scrollBar = widget("ScrollBar", { width = 15 , parent = ui.window })
-    exports.pb_ui:fillSize(ui.scrollBar, nil, 5)
-    exports.pb_ui:alignWidget(ui.scrollBar, "horizontal", "right", 5)
+    exports.pb_ui:fillSize(ui.scrollBar, nil, 0)
+    exports.pb_ui:alignWidget(ui.scrollBar, "horizontal", "right", 0)
 
     widget("Checkbox", { x = 15, y = 15, width = 300, height = 15, text = "Тестовый checkbox", parent = ui.window})
     widget("Checkbox", { x = 15, y = 45, width = 300, height = 15, text = "Ещё один checkbox", parent = ui.window})
@@ -61,11 +63,17 @@ addEventHandler("onWidgetClick", resourceRoot, function (widget)
 end)
 
 addEvent("onWidgetScroll", true)
-addEventHandler("onWidgetScroll", resourceRoot, function (widget)
+addEventHandler("onWidgetScroll", resourceRoot, function (widget, delta)
     if widget == ui.scrollBar2 then
         local value = exports.pb_ui:getParam(ui.scrollBar2, "value")
 
         exports.pb_ui:setParams(ui.progressLabel, { text = "Прогресс: "..math.floor(value*100).."%" })
         exports.pb_ui:setParams(ui.progressBar, { progress = value })
+    elseif widget == ui.window  then
+        local value = exports.pb_ui:getParam(ui.scrollBar, "value")
+        local step = exports.pb_ui:getParam(ui.scrollBar, "step")
+
+        value = value + delta * step
+        exports.pb_ui:setParams(ui.scrollBar, { value = value })
     end
 end)

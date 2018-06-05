@@ -13,7 +13,11 @@ end
 
 function create(name, params)
     if type(name) ~= "string" then
+        outputDebugString("[UI][ERROR] Failed to create widget '"..tostring(name).."': Invalid widget name")
         return false
+    end
+    if type(params) ~= "table" then
+        params = {}
     end
 
     if not sourceResourceRoot then
@@ -88,7 +92,9 @@ function setParams(id, params)
     params.sourceResourceRoot = nil
 
     for key, value in pairs(params) do
+        local oldValue = widgetInstances[id][key]
         widgetInstances[id][key] = value
+        widgetInstances[id]:handleParamChange(key, oldValue)
     end
 
     return true
@@ -101,7 +107,14 @@ function getParam(id, key)
     if not widgetInstances[id] then
         return false
     end
-    return widgetInstances[id][key]
+    if key == "children" then
+        return false
+    end
+    local value = widgetInstances[id][key]
+    if key == "parent" and value then
+        value = value.id
+    end
+    return value
 end
 
 function alignWidget(id, alignAxis, align, offset)
