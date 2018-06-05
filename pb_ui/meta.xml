@@ -4,6 +4,7 @@
     <script type="client" src="client/config.lua"/>
     <script type="client" src="client/utils.lua"/>
     <script type="client" src="client/middleclass.lua"/>
+    <script type="client" src="client/scaling.lua"/>
     <script type="client" src="client/assets.lua"/>
     <script type="client" src="client/widgets/Widget.lua"/>
     <script type="client" src="client/widgets/Button.lua"/>
@@ -103,6 +104,8 @@
             ...обработка события...
         end)
     -->
+
+    <export type="client" function="enableScaling"/>
 
     <file src="assets/fonts/OpenSans-Bold.ttf"/>
     <file src="assets/fonts/OpenSans-Regular.ttf"/>

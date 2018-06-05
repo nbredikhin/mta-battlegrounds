@@ -29,7 +29,7 @@ function Caption:draw()
     local textOffset = 0
     if self.textAlignHorizontal == "left" then
         textOffset = 10
-        local textWidth = dxGetTextWidth(self.text, 1, Assets.getFont(self.font)) + textOffset
+        local textWidth = Graphics.getTextWidth(self.text, self.font) + textOffset
         if textWidth > self.width - self.height then
             textWidth = self.width - self.height
         end

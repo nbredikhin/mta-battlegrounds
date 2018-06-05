@@ -8,10 +8,29 @@ local drawFont = defaultDrawFont
 local drawX = 0
 local drawY = 0
 
+local drawScale = 1
+local drawTextScale = 1
+
 local drawPostGUI = false
 
 function Graphics.setDrawPostGUI(v)
     drawPostGUI = not not v
+end
+
+function Graphics.setScale(scale)
+    if not scale then
+        scale = 1
+    end
+    drawScale = scale
+    if Config.scalingFontsMode == "scale_text" then
+        drawTextScale = scale
+    elseif Config.scalingFontsMode == "scale_font" then
+        drawTextScale = 1
+    end
+end
+
+function Graphics.getScale()
+    return drawScale
 end
 
 function Graphics.getGlobalPosition(x, y)
@@ -39,7 +58,7 @@ end
 function Graphics.rectangle(x, y, width, height)
     x = x + drawX
     y = y + drawY
-    dxDrawRectangle(x, y, width, height, drawColor, drawPostGUI, false)
+    dxDrawRectangle(x*drawScale, y*drawScale, width*drawScale, height*drawScale, drawColor, drawPostGUI, false)
 end
 
 function Graphics.line(x1, y1, x2, y2, width)
@@ -53,11 +72,15 @@ end
 function Graphics.text(x, y, width, height, text, alignX, alignY, clip, wordBreak, colorCoded)
     x = x + drawX
     y = y + drawY
-    dxDrawText(text, x, y, x + width, y + height, drawColor, 1, Assets.getFont(drawFont), alignX, alignY, clip, wordBreak, drawPostGUI, false, colorCoded)
+    dxDrawText(text, x*drawScale, y*drawScale, x*drawScale + width*drawScale, y*drawScale + height*drawScale, drawColor, drawTextScale, Assets.getFont(drawFont), alignX, alignY, clip, wordBreak, drawPostGUI, false, colorCoded)
+end
+
+function Graphics.getTextWidth(text, font)
+    return dxGetTextWidth(text, Assets.getFont(font)) / Graphics.getScale()
 end
 
 function Graphics.image(x, y, width, height, image)
     x = x + drawX
     y = y + drawY
-    dxDrawImage(x, y, width, height, image, 0, 0, 0, drawColor, drawPostGUI)
+    dxDrawImage(x*drawScale, y*drawScale, width*drawScale, height*drawScale, image, 0, 0, 0, drawColor, drawPostGUI)
 end

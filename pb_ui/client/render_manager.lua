@@ -11,6 +11,8 @@ local function render()
 
     InputManager.update()
     local mouseX, mouseY = getMousePosition()
+    mouseX = mouseX / Graphics.getScale()
+    mouseY = mouseY / Graphics.getScale()
     Graphics.origin()
     for i, widget in ipairs(renderWidgets) do
         widget:render(mouseX, mouseY)

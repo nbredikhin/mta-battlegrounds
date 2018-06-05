@@ -49,18 +49,31 @@ function Assets.getImage(name)
     return assetTables.image[name]
 end
 
+function Assets.reload()
+    for assetType, assets in pairs(assetTables) do
+        for name, asset in pairs(assets) do
+            if isElement(asset) then
+                destroyElement(asset)
+            end
+        end
+        assetTables[assetType] = {}
+    end
+
+    -- Шрифты
+    loadAsset("font", "regular", "assets/fonts/OpenSans-Regular.ttf", Scaling.fontSize(Config.fontSizeDefault))
+    loadAsset("font", "bold",    "assets/fonts/OpenSans-Bold.ttf",    Scaling.fontSize(Config.fontSizeDefault))
+    loadAsset("font", "bold-lg", "assets/fonts/OpenSans-Bold.ttf",    Scaling.fontSize(Config.fontSizeLarge))
+    loadAsset("font", "italic",  "assets/fonts/OpenSans-Italic.ttf",  Scaling.fontSize(Config.fontSizeDefault))
+    loadAsset("font", "debug",   "assets/fonts/OpenSans-Regular.ttf", Scaling.fontSize(8))
+
+    -- Изображения
+    loadAsset("image", "caption-separator", "assets/images/caption-separator.png")
+end
+
 -----------------------
 -- Обработка событий --
 -----------------------
 
 addEventHandler("onClientResourceStart", resourceRoot, function ()
-    -- Шрифты
-    loadAsset("font", "regular", "assets/fonts/OpenSans-Regular.ttf", Config.fontSizeDefault)
-    loadAsset("font", "bold",    "assets/fonts/OpenSans-Bold.ttf",    Config.fontSizeDefault)
-    loadAsset("font", "bold-lg", "assets/fonts/OpenSans-Bold.ttf",    Config.fontSizeLarge)
-    loadAsset("font", "italic",  "assets/fonts/OpenSans-Italic.ttf",  Config.fontSizeDefault)
-    loadAsset("font", "debug",   "assets/fonts/OpenSans-Regular.ttf", 8)
-
-    -- Изображения
-    loadAsset("image", "caption-separator", "assets/images/caption-separator.png")
+    Assets.reload()
 end)

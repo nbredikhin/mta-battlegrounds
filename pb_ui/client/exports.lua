@@ -1,6 +1,8 @@
 local resourceWidgets = {}
 local widgetInstances = {}
 
+local screenWidth, screenHeight = guiGetScreenSize()
+
 function getWidgetById(id)
     return widgetInstances[id]
 end
@@ -37,10 +39,9 @@ function create(name, params)
 
     if not params.parent then
         if not resourceWidgets[sourceResourceRoot] then
-            local screenWidth, screenHeight = guiGetScreenSize()
             resourceWidgets[sourceResourceRoot] = Widget:new({
-                width  = screenWidth,
-                height = screenHeight,
+                width  = Scaling.screenWidth,
+                height = Scaling.screenHeight,
                 enabled = false
             })
             RenderManager.addWidget(resourceWidgets[sourceResourceRoot])
@@ -135,7 +136,7 @@ function alignWidget(id, alignAxis, align, offset)
         if widget.parent then
             parentWidth = widget.parent.width
         else
-            parentWidth = guiGetScreenSize()
+            parentWidth = Scaling.screenWidth
         end
 
         if align == "left" then
@@ -150,7 +151,7 @@ function alignWidget(id, alignAxis, align, offset)
         if widget.parent then
             parentHeight = widget.parent.height
         else
-            parentHeight = guiGetScreenSize()
+            parentHeight = Scaling.screenHeight
         end
 
         if align == "top" then
@@ -177,7 +178,7 @@ function fillSize(id, marginHorizontal, marginVertical)
     if widget.parent then
         parentWidth, parentHeight = widget.parent.width, widget.parent.height
     else
-        parentWidth, parentHeight = guiGetScreenSize()
+        parentWidth, parentHeight = Scaling.screenWidth, Scaling.screenHeight
     end
 
     if marginHorizontal then
