@@ -6,8 +6,8 @@ if Config.debugCommandsEnabled then
             return
         end
 
-        Config.debugDrawBoxes = mode >= 1
-        Config.debugDrawNames = mode >= 2
+        Config.debugDrawBoxes      = mode >= 1
+        Config.debugDrawNames      = mode >= 2
         Config.debugDrawRenderTime = mode >= 3
 
         outputChatBox("debugui: Your debug mode was set to "..tostring(mode))

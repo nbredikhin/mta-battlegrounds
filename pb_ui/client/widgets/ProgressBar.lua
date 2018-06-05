@@ -11,7 +11,7 @@ function ProgressBar:initialize(params)
     self.progress        = params.progress        or 0
 end
 
-function ScrollBar:handleParamChange(name)
+function ProgressBar:handleParamChange(name)
     if name == "progress" then
         self.progress = math.max(0, math.min(1, self.progress))
     end

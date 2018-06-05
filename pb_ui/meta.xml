@@ -7,6 +7,7 @@
     <script type="client" src="client/assets.lua"/>
     <script type="client" src="client/widgets/Widget.lua"/>
     <script type="client" src="client/widgets/Button.lua"/>
+    <script type="client" src="client/widgets/Caption.lua"/>
     <script type="client" src="client/widgets/Checkbox.lua"/>
     <script type="client" src="client/widgets/Input.lua"/>
     <script type="client" src="client/widgets/Label.lua"/>
