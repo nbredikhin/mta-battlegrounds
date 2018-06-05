@@ -14,6 +14,12 @@ local function render()
         widget:render(mouseX, mouseY)
     end
 
+    -- Потеря фокуса при отпускании мыши
+    local focusedWidget = InputManager.getFocusedWidget()
+    if focusedWidget and focusedWidget.loseFocusOnMouseUp and InputManager.isReleased("mouse1") then
+        InputManager.setFocusedWidget()
+    end
+
     local clickedWidget = InputManager.getClickedWidget()
     -- Если был клик по виджету
     if clickedWidget then

@@ -42,8 +42,11 @@ addEventHandler("onClientResourceStart", resourceRoot, function ()
     widget("Checkbox", { x = 15, y = 15, width = 300, height = 15, text = "Тестовый checkbox", parent = ui.window})
     widget("Checkbox", { x = 15, y = 45, width = 300, height = 15, text = "Ещё один checkbox", parent = ui.window})
     local progress = math.random()
-    widget("Label", { x = 15, y = 100, width = 320, height = 20, text = "Прогресс: "..math.floor(progress*100).."%", parent = ui.window, textAlignVertical = "top", font = "bold"})
-    widget("ProgressBar", { x = 15, y = 130, width = 300, height = 15, text = "Ещё один checkbox", parent = ui.window, progress = progress})
+    ui.progressLabel = widget("Label", { x = 15, y = 100, width = 320, height = 20, text = "Прогресс: "..math.floor(progress*100).."%", parent = ui.window, textAlignVertical = "top", font = "bold"})
+    ui.progressBar = widget("ProgressBar", { x = 15, y = 130, width = 300, height = 15, text = "Ещё один checkbox", parent = ui.window, progress = progress})
+
+    widget("Label", { x = 15, y = 160, width = 320, height = 20, text = "Полоса прокрутки:", parent = ui.window, textAlignVertical = "top", font = "bold"})
+    ui.scrollBar2 = widget("ScrollBar", { x = 15, y = 190, width = 300, height = 15, parent = ui.window, progress = progress, isHorizontal = true, scrollSize = 0.4})
 
     showCursor(true)
 end)
@@ -54,5 +57,15 @@ addEventHandler("onWidgetClick", resourceRoot, function (widget)
         exports.pb_ui:destroy(ui.button1)
     elseif widget == ui.buttonAccept then
         exports.pb_ui:setParams(ui.window, { textRight = exports.pb_ui:getParam(ui.input, "text") })
+    end
+end)
+
+addEvent("onWidgetScroll", true)
+addEventHandler("onWidgetScroll", resourceRoot, function (widget)
+    if widget == ui.scrollBar2 then
+        local value = exports.pb_ui:getParam(ui.scrollBar2, "value")
+
+        exports.pb_ui:setParams(ui.progressLabel, { text = "Прогресс: "..math.floor(value*100).."%" })
+        exports.pb_ui:setParams(ui.progressBar, { progress = value })
     end
 end)

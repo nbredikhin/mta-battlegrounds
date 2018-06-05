@@ -2,6 +2,7 @@ InputManager = {}
 
 local keysState = {}
 local keysPressed = {}
+local keysReleased = {}
 
 local checkKeys = {
     "mouse1"
@@ -64,11 +65,14 @@ function InputManager.update()
     hoveredWidget = nil
     for i, name in ipairs(checkKeys) do
         keysPressed[name] = false
+        keysReleased[name] = false
     end
     for i, name in ipairs(checkKeys) do
         local state = getKeyState(name)
         if state and not keysState[name] then
             keysPressed[name] = true
+        elseif not state and keysState[name] then
+            keysReleased[name] = true
         end
         keysState[name] = state
     end
@@ -77,6 +81,11 @@ end
 -- Была ли нажата клавиша "name" в текущем кадре
 function InputManager.isPressed(name)
     return keysPressed[name]
+end
+
+-- Была ли отпущена клавиша "name" в текущем кадре
+function InputManager.isReleased(name)
+    return keysReleased[name]
 end
 
 function InputManager.getClickedWidget()
@@ -154,8 +163,8 @@ addEventHandler("onClientKey", root, function (key, state)
         end
 
         if scrollDelta then
-            hoveredWidget:handleScroll(scrollDelta)
-            triggerWidgetEvent("onWidgetScroll", hoveredWidget, scrollDelta)
+            local delta = hoveredWidget:handleScroll(scrollDelta)
+            triggerWidgetEvent("onWidgetScroll", hoveredWidget, delta or scrollDelta)
         end
     end
 end)
