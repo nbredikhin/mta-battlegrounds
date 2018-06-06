@@ -8,8 +8,12 @@ Scaling.scale = 1
 
 if Config.scalingMode == "fit_horizontal" then
     Scaling.scale = screenWidth / Config.scalingWidth
+    Scaling.screenWidth  = Config.scalingWidth
+    Scaling.screenHeight = Config.scalingHeight
 elseif Config.scalingMode == "fit_vertical" then
     Scaling.scale = screenHeight / Config.scalingHeight
+    Scaling.screenWidth  = Config.scalingWidth
+    Scaling.screenHeight = Config.scalingHeight
 end
 
 function Scaling.fontSize(size)

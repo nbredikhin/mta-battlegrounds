@@ -40,10 +40,12 @@ function create(name, params)
     if not params.parent then
         if not resourceWidgets[sourceResourceRoot] then
             resourceWidgets[sourceResourceRoot] = Widget:new({
+                y = (screenHeight/Scaling.scale)/2-Scaling.screenHeight/2,
                 width  = Scaling.screenWidth,
                 height = Scaling.screenHeight,
                 enabled = false
             })
+
             RenderManager.addWidget(resourceWidgets[sourceResourceRoot])
         end
         params.parent = resourceWidgets[sourceResourceRoot]
@@ -78,6 +80,13 @@ function destroy(id)
     end
     widgetInstances[id] = nil
     return true
+end
+
+function isWidget(id)
+    if not id then
+        return false
+    end
+    return not not widgetInstances[id]
 end
 
 function setParams(id, params)
@@ -116,6 +125,16 @@ function getParam(id, key)
         value = value.id
     end
     return value
+end
+
+function getWidgetType(id, key)
+    if not id then
+        return false
+    end
+    if not widgetInstances[id] or not widgetInstances[id].class then
+        return false
+    end
+    return widgetInstances[id].class.name
 end
 
 function alignWidget(id, alignAxis, align, offset)
@@ -190,6 +209,10 @@ function fillSize(id, marginHorizontal, marginVertical)
         widget.height = parentHeight - marginVertical * 2
     end
     return true
+end
+
+function getRenderResolution()
+    return Scaling.screenWidth, Scaling.screenHeight
 end
 
 addEventHandler("onClientResourceStop", root, function ()

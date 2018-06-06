@@ -1,3 +1,7 @@
+if Config.debugFakeResolution then
+    guiGetScreenSize = function () return Config.debugFakeResolution[1], Config.debugFakeResolution[2] end
+end
+
 function defaultValue(t, key, default)
     local v = t[key]
     if v == nil then

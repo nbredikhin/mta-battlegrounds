@@ -1,5 +1,7 @@
 <meta>
     <oop>true</oop>
+    <!-- Повышенный приоритет загрузки -->
+    <download_priority_group>1</download_priority_group>
 
     <script type="client" src="client/config.lua"/>
     <script type="client" src="client/utils.lua"/>
@@ -38,6 +40,8 @@
 
     <!-- Удаление виджета -->
     <export type="client" function="destroy"/>
+    <!-- Проверка существования виджета -->
+    <export type="client" function="isWidget"/>
 
     <!--
         setParams(number widget, table params)
@@ -105,7 +109,8 @@
         end)
     -->
 
-    <export type="client" function="enableScaling"/>
+    <export type="client" function="getWidgetType"/>
+    <export type="client" function="getRenderResolution"/>
 
     <file src="assets/fonts/OpenSans-Bold.ttf"/>
     <file src="assets/fonts/OpenSans-Regular.ttf"/>

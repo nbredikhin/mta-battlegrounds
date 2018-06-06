@@ -4,6 +4,11 @@ end
 
 local ui = {}
 
+addEventHandler("onClientRender", root, function ()
+    local sw, sh = guiGetScreenSize()
+    dxDrawRectangle(0, 0, sw, sh, tocolor(50, 50, 50))
+end)
+
 addEventHandler("onClientResourceStart", resourceRoot, function ()
     local function widget(...)
         return exports.pb_ui:create(...)

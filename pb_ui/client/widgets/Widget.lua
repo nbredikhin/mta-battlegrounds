@@ -58,7 +58,7 @@ function Widget:render(mouseX, mouseY)
     Graphics.setFont(self.font)
     self:draw()
 
-    if Config.debugDrawBoxes and self.parent then
+    if Config.debugDrawBoxes then
         local lineWidth
         if self.isFocused then
             lineWidth = 3

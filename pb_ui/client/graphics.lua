@@ -66,7 +66,7 @@ function Graphics.line(x1, y1, x2, y2, width)
     y1 = y1 + drawY
     x2 = x2 + drawX
     y2 = y2 + drawY
-    dxDrawLine(x1, y1, x2, y2, drawColor, width, drawPostGUI)
+    dxDrawLine(x1*drawScale, y1*drawScale, x2*drawScale, y2*drawScale, drawColor, math.max(1, width*drawScale), drawPostGUI)
 end
 
 function Graphics.text(x, y, width, height, text, alignX, alignY, clip, wordBreak, colorCoded)
@@ -76,7 +76,7 @@ function Graphics.text(x, y, width, height, text, alignX, alignY, clip, wordBrea
 end
 
 function Graphics.getTextWidth(text, font)
-    return dxGetTextWidth(text, Assets.getFont(font)) / Graphics.getScale()
+    return dxGetTextWidth(text, 1, Assets.getFont(font)) / Graphics.getScale()
 end
 
 function Graphics.image(x, y, width, height, image)
