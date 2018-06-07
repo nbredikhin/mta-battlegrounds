@@ -1,4 +1,4 @@
-local UI = exports.pb_ui
+UI = exports.pb_ui
 local widgetBindings = {}
 local widgetEvents = {
     "onWidgetClick",
@@ -6,24 +6,15 @@ local widgetEvents = {
     "onWidgetScroll",
 }
 local componentsRegistry = {}
+local localizedWidgets = {}
 
 ---------------------
 -- Local functions --
 ---------------------
 
-function table.copy(orig)
-    local orig_type = type(orig)
-    local copy
-    if orig_type == 'table' then
-        copy = {}
-        for orig_key, orig_value in next, orig, nil do
-            copy[table.copy(orig_key)] = table.copy(orig_value)
-        end
-        setmetatable(copy, table.copy(getmetatable(orig)))
-    else -- number, string, boolean, etc
-        copy = orig
-    end
-    return copy
+local function isResourceRunning(resName)
+    local res = getResourceFromName(resName)
+    return (res) and (getResourceState(res) == "running")
 end
 
 local function equals(o1, o2, ignore_mt)
@@ -124,23 +115,28 @@ local function addWidgetBinding(eventName, widget, callback)
         widgetBindings[eventName][widget] = {}
     end
 
-    table.insert(widgetBindings[widget][eventName], callback)
+    table.insert(widgetBindings[eventName][widget], callback)
 end
 
-local function bindWidgetToState(view, widget, arg1)
-    if type(view) ~= "table" or not UI:isWidget(widget) then
+local function bindWidgetToState(component, widget, arg1, ...)
+    if type(component) ~= "table" or not UI:isWidget(widget) then
         return false
     end
 
     local widgetType = UI:getWidgetType(widget)
+    local args = {...}
 
     if widgetType == "Button" then
         if type(arg1) == "function" then
-            addWidgetBinding("onWidgetClick", widget, arg1)
+            addWidgetBinding("onWidgetClick", widget, function ()
+                arg1(unpack(args))
+            end)
         elseif type(arg1) == "string" then
             addWidgetBinding("onWidgetClick", widget, function ()
-                if view.component.state[arg1] then
-                    view.component.state[arg1]()
+                if type(component.state[arg1]) == "function" then
+                    component.state[arg1](unpack(args))
+                else
+                    component.setState({[arg1] = args[1]})
                 end
             end)
         end
@@ -151,19 +147,55 @@ local function bindWidgetToState(view, widget, arg1)
             end, false)
         elseif type(arg1) == "string" then
             addWidgetBinding("onWidgetInput", widget, function ()
-                view.component.setState({[arg1] = UI:getParam(widget, "text")})
+                component.setState({[arg1] = UI:getParam(widget, "text")})
             end, false)
         end
     else
         if type(arg1) == "function" then
-            addWidgetBinding("onWidgetClick", widget, arg1)
+            addWidgetBinding("onWidgetClick", widget, function ()
+                arg1(unpack(args))
+            end)
         end
+    end
+end
+
+local function updateLocalizedWidget(params)
+    if not params or not params.widget then
+        return
+    end
+
+    local text
+    if isResourceRunning("pb_lang") then
+        text = exports.pb_lang:localize(params.locale)
+    else
+        text = params.locale
+    end
+
+    if type(params.callback) == "function" then
+        UI:setParams(params.widget, { [params.propertyName] = params.callback(text) })
+    else
+        UI:setParams(params.widget, { [params.propertyName] = text })
     end
 end
 
 ----------------------
 -- Global functions --
 ----------------------
+
+function table.copy(orig)
+    local orig_type = type(orig)
+    local copy
+    if orig_type == 'table' then
+        copy = {}
+        for orig_key, orig_value in next, orig, nil do
+            copy[table.copy(orig_key)] = table.copy(orig_value)
+        end
+        setmetatable(copy, table.copy(getmetatable(orig)))
+    else -- number, string, boolean, etc
+        copy = orig
+    end
+    return copy
+end
 
 function View(constructor)
     if type(constructor) ~= "function" then
@@ -206,6 +238,24 @@ function Component(name, view, constructor)
     return true
 end
 
+function localizeWidget(widget, locale, propertyName, callback)
+    if not UI:isWidget(widget) then
+        return
+    end
+    if not propertyName then
+        propertyName = "text"
+    end
+
+    local params = {
+        widget       = widget,
+        locale       = locale,
+        propertyName = propertyName,
+        callback     = callback
+    }
+    table.insert(localizedWidgets, params)
+    updateLocalizedWidget(params)
+end
+
 --------------------
 -- Event handlers --
 --------------------
@@ -222,3 +272,10 @@ for i, eventName in ipairs(widgetEvents) do
         end
     end)
 end
+
+addEvent("onLanguageChanged", false)
+addEventHandler("onLanguageChanged", root, function ()
+    for i, params in pairs(localizedWidgets) do
+        updateLocalizedWidget(params)
+    end
+end)

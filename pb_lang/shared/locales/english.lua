@@ -260,4 +260,24 @@ Languages.english = {
     ranktable_playtime = "Total Playtime",
     ranktable_rating_wins = "Win Rating",
     ranktable_rating_kills = "Kill Rating",
+
+    -- Game menu
+    game_menu_title = "Main menu",
+    game_menu_continue = "Continue game",
+    game_menu_lobby = "Abandon match",
+    game_menu_settings = "Settings",
+    game_menu_exit = "Exit game",
+
+    game_settings_gameplay = "Gameplay",
+    game_settings_gameplay_ui = "UI settings",
+    game_settings_show_hud = "Show game HUD",
+    game_settings_show_radar_grid = "Show radar grid",
+    game_settings_show_chat = "Show team chat",
+    game_settings_show_kills = "Show killchat",
+    game_settings_gameplay_stats = "Advanced info",
+    game_settings_show_ping = "Show ping",
+    game_settings_show_fps = "Show framerate counter",
+    game_settings_graphics = "Graphics",
+    game_settings_controls = "Controls",
+    game_settings_account = "Account",
 }

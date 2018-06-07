@@ -260,4 +260,25 @@ Languages.russian = {
     ranktable_playtime = "Время игры",
     ranktable_rating_wins = "Рейтинг побед",
     ranktable_rating_kills = "Рейтинг убийств",
+
+    -- Game menu
+    game_menu_title = "Меню игры",
+    game_menu_continue = "Продолжить игру",
+    game_menu_lobby = "Покинуть матч",
+    game_menu_settings = "Настройки",
+    game_menu_exit = "Выйти из игры",
+
+    game_settings_gameplay = "Игра",
+    game_settings_gameplay_ui = "Настройки интерфейса",
+    game_settings_show_hud = "Показывать интерфейс в игре",
+    game_settings_show_radar_grid = "Отображать сетку радара",
+    game_settings_show_chat = "Отображать чат команды",
+    game_settings_show_kills = "Отображать убийства",
+    game_settings_gameplay_stats = "Дополнительная информация",
+    game_settings_show_ping = "Показывать свой пинг",
+    game_settings_show_fps = "Показывать частоту кадров",
+
+    game_settings_graphics = "Графика",
+    game_settings_controls = "Управление",
+    game_settings_account = "Аккаунт",
 }

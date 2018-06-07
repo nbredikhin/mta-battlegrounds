@@ -12,6 +12,8 @@ function Checkbox:initialize(params)
     self.textWordBreak  = true
     self.textClip       = true
 
+    self.checkboxSize   = params.checkboxSize or 15
+
     -- Цвета фона в различных состояниях
     self.colorMain     = params.colorMain  or tocolor(50, 50, 50)
     self.colorDisabled = params.colorMain  or tocolor(35, 35, 35)
@@ -61,21 +63,21 @@ function Checkbox:draw()
         colorBackground = self.colorDisabled
     end
 
-    local size = self.height
+    local size = self.checkboxSize
 
     if self.borderSize > 0 then
         local bs = self.borderSize
         Graphics.setColor(colorBorder)
-        Graphics.rectangle(self.x-bs, self.y-bs, size+bs*2, size+bs*2)
+        Graphics.rectangle(self.x-bs, self.y+self.height/2-size/2-bs, size+bs*2, size+bs*2)
     end
 
     Graphics.setColor(colorBackground)
-    Graphics.rectangle(self.x, self.y, size, size)
+    Graphics.rectangle(self.x, self.y+self.height/2-size/2, size, size)
 
     if self.state then
         local innerSize = size * 0.5
         Graphics.setColor(self.colorChecked)
-        Graphics.rectangle(self.x+innerSize/2, self.y+innerSize/2, innerSize, innerSize)
+        Graphics.rectangle(self.x+innerSize/2, self.y+innerSize/2+self.height/2-size/2, innerSize, innerSize)
     end
 
     Graphics.setColor(colorText)

@@ -1,7 +1,10 @@
 bindKey("f1", "down", function ()
-    local isVisible = not Component("Menu").getState().visible
+    local isMenuVisible = not Component("Menu").getState().visible
     Component("Menu").setState({
-        visible = isVisible
+        visible = isMenuVisible
     })
-    showCursor(isVisible)
 end)
+
+Component("Settings").setState({
+    visible = true
+})

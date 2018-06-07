@@ -1,7 +1,8 @@
 <meta>
     <oop>true</oop>
 
-    <script type="client" src="client/mvc.lua"/>
+    <script type="client" src="client/ui_helper.lua"/>
     <script type="client" src="client/gui_menu.lua"/>
+    <script type="client" src="client/gui_settings.lua"/>
     <script type="client" src="client/main.lua"/>
 </meta>
