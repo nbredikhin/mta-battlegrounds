@@ -46,6 +46,7 @@ function Button:draw()
             end
         else
             colorBackground = self.colorMain
+            colorText = self.colorText
         end
     else
         colorBorder = self.colorBorderDisabled

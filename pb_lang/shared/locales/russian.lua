@@ -269,6 +269,7 @@ Languages.russian = {
     game_menu_exit = "Выйти из игры",
 
     game_settings_gameplay = "Игра",
+    game_settings_gameplay_language = "Язык интерфейса",
     game_settings_gameplay_ui = "Настройки интерфейса",
     game_settings_show_hud = "Показывать интерфейс в игре",
     game_settings_show_radar_grid = "Отображать сетку радара",
@@ -281,4 +282,6 @@ Languages.russian = {
     game_settings_graphics = "Графика",
     game_settings_controls = "Управление",
     game_settings_account = "Аккаунт",
+
+    game_settings_close = "Закрыть",
 }

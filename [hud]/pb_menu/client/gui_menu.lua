@@ -40,12 +40,11 @@ Component("Menu", view, function (component)
         visible = false,
 
         menuAction = function (name)
-            iprint(name, name == "settings")
             if name == "continue" then
                 component.setState({ visible = false })
             elseif name == "settings" then
-                Component("Menu").setState({ visible = false })
-                Component("Settings").setState({ visible = true })
+                component.setState({ visible = false })
+                Component("Settings").setState({ visible = true, returnToMenu = true })
             end
         end
     })

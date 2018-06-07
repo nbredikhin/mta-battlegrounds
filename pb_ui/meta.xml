@@ -21,6 +21,7 @@
     <script type="client" src="client/graphics.lua"/>
     <script type="client" src="client/input_manager.lua"/>
     <script type="client" src="client/render_manager.lua"/>
+    <script type="client" src="client/styles.lua"/>
     <script type="client" src="client/exports.lua"/>
 
     <script type="client" src="client/test.lua"/>
@@ -111,6 +112,8 @@
 
     <export type="client" function="getWidgetType"/>
     <export type="client" function="getRenderResolution"/>
+    <export type="client" function="defineStyle"/>
+    <export type="client" function="toggleStyle"/>
 
     <file src="assets/fonts/OpenSans-Bold.ttf"/>
     <file src="assets/fonts/OpenSans-Regular.ttf"/>

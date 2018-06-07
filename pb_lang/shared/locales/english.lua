@@ -269,6 +269,7 @@ Languages.english = {
     game_menu_exit = "Exit game",
 
     game_settings_gameplay = "Gameplay",
+    game_settings_gameplay_language = "UI language",
     game_settings_gameplay_ui = "UI settings",
     game_settings_show_hud = "Show game HUD",
     game_settings_show_radar_grid = "Show radar grid",
@@ -280,4 +281,6 @@ Languages.english = {
     game_settings_graphics = "Graphics",
     game_settings_controls = "Controls",
     game_settings_account = "Account",
+
+    game_settings_close = "Close",
 }

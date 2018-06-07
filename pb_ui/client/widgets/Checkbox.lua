@@ -75,9 +75,9 @@ function Checkbox:draw()
     Graphics.rectangle(self.x, self.y+self.height/2-size/2, size, size)
 
     if self.state then
-        local innerSize = size * 0.5
+        local innerSize = size * 0.7
         Graphics.setColor(self.colorChecked)
-        Graphics.rectangle(self.x+innerSize/2, self.y+innerSize/2+self.height/2-size/2, innerSize, innerSize)
+        Graphics.rectangle(self.x+size/2-innerSize/2, self.y+self.height/2-innerSize/2, innerSize, innerSize)
     end
 
     Graphics.setColor(colorText)
