@@ -5,4 +5,7 @@
     <script type="client" src="client/gui_menu.lua"/>
     <script type="client" src="client/gui_settings.lua"/>
     <script type="client" src="client/main.lua"/>
+
+    <export type="client" function="toggleGameMenu"/>
+    <export type="client" function="toggleSettingsWindow"/>
 </meta>

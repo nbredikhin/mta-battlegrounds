@@ -1,6 +1,6 @@
 local isGameMenuVisible = false
 
-bindKey("f1", "down", function ()
+function toggleGameMenu()
     isGameMenuVisible = not isGameMenuVisible
     Component("Menu").setState({
         visible = isGameMenuVisible
@@ -8,8 +8,15 @@ bindKey("f1", "down", function ()
     Component("Settings").setState({
         visible = isGameMenuVisible and Component("Settings").state.visible
     })
-end)
+end
 
-Component("Settings").setState({
-    visible = true
-})
+function toggleSettingsWindow()
+    if isGameMenuVisible then
+        return
+    end
+    Component("Settings").setState({
+        visible = not Component("Settings").state.visible
+    })
+end
+
+bindKey("f1", "down", toggleGameMenu)
