@@ -1,3 +1,17 @@
+local configWidgetsByWidget = {}
+local configWidgetsByProperty = {}
+
+local function bindWidgetToConfig(widget, widgetProperty, configProperty)
+    local t = {
+        widget = widget,
+        widgetProperty = widgetProperty,
+        configProperty = configProperty
+    }
+    configWidgetsByWidget[widget] = t
+    configWidgetsByProperty[configProperty] = t
+    UI:setParams(widget, {[widgetProperty] = exports.pb_config:getProperty(configProperty)})
+end
+
 local view = View(function (ui, component)
     UI:defineStyle("settings-tab-selected", {
         colorMain  = tocolor(200, 130, 0),
@@ -86,6 +100,7 @@ local view = View(function (ui, component)
             text = utf8.gsub(name, "^%l", utf8.upper),
             parent = ui.section_gameplay
         })
+        component.bind(widget, "setLanguage", name)
     end
     y = y + 25 + 10
     widget = UI:create("Label", { y = y, height = 25, parent = ui.section_gameplay, font = "bold" })
@@ -95,18 +110,22 @@ local view = View(function (ui, component)
     widget = UI:create("Checkbox", { y = y, height = 25, parent = ui.section_gameplay})
     UI:fillSize(widget, 10)
     localizeWidget(widget, "game_settings_show_hud")
+    bindWidgetToConfig(widget, "state", "ui_hud_visible")
     y = y + 25 + 10
     widget = UI:create("Checkbox", { y = y, height = 25, parent = ui.section_gameplay})
     UI:fillSize(widget, 10)
     localizeWidget(widget, "game_settings_show_radar_grid")
+    bindWidgetToConfig(widget, "state", "ui_radar_grid_visible")
     y = y + 25 + 10
     widget = UI:create("Checkbox", { y = y, height = 25, parent = ui.section_gameplay})
     UI:fillSize(widget, 10)
     localizeWidget(widget, "game_settings_show_chat")
+    bindWidgetToConfig(widget, "state", "ui_chat_visible")
     y = y + 25 + 10
     widget = UI:create("Checkbox", { y = y, height = 25, parent = ui.section_gameplay})
     UI:fillSize(widget, 10)
     localizeWidget(widget, "game_settings_show_kills")
+    bindWidgetToConfig(widget, "state", "ui_killchat_visible")
 
     y = y + 25 + 10
     widget = UI:create("Label", { y = y, height = 25, parent = ui.section_gameplay, font = "bold" })
@@ -116,10 +135,12 @@ local view = View(function (ui, component)
     widget = UI:create("Checkbox", { y = y, height = 25, parent = ui.section_gameplay})
     UI:fillSize(widget, 10)
     localizeWidget(widget, "game_settings_show_ping")
+    bindWidgetToConfig(widget, "state", "ui_ping_visible")
     y = y + 25 + 10
     widget = UI:create("Checkbox", { y = y, height = 25, parent = ui.section_gameplay})
     UI:fillSize(widget, 10)
     localizeWidget(widget, "game_settings_show_fps")
+    bindWidgetToConfig(widget, "state", "ui_fps_visible")
     -- Graphics
     y = 0
 
@@ -136,11 +157,32 @@ Component("Settings", view, function (component)
         visible = false,
         activeSection = "gameplay",
 
+        setLanguage = function (name)
+            exports.pb_lang:setLanguage(name)
+        end,
+
         closeSettings = function ()
             component.setState({ visible = false })
             if component.state.returnToMenu then
                 Component("Menu").setState({ visible = true })
             end
-        end
+        end,
     })
+end)
+
+addEvent("onWidgetClick")
+addEventHandler("onWidgetClick", resourceRoot, function (widget)
+    if configWidgetsByWidget[widget] then
+        local value = UI:getParam(widget, configWidgetsByWidget[widget].widgetProperty)
+        exports.pb_config:setProperty(configWidgetsByWidget[widget].configProperty, value)
+    end
+end)
+
+addEvent("onConfigChanged")
+addEventHandler("onConfigChanged", root, function (name, value)
+    if configWidgetsByProperty[name] then
+        UI:setParams(configWidgetsByProperty[name].widget, {
+            [configWidgetsByProperty[name].widgetProperty] = value
+        })
+    end
 end)
