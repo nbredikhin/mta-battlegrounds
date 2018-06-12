@@ -82,7 +82,12 @@ addEventHandler("onPlayerWeaponReload", resourceRoot, function (state, currentSl
     elseif state == "finish" then
         setWeaponAmmo(client, client:getWeapon(), 999, 999)
 
-        local clip = 30
+        local item = getPlayerWeaponSlot(client, currentSlot)
+        if not item then
+            return
+        end
+        local weapon = WeaponsTable[item.name]
+        local clip = weapon.magazine -- TODO: Take from inventory
         triggerClientEvent(client, "onClientWeaponReloadFinish", resourceRoot, currentSlot, clip)
     end
 end)
@@ -99,6 +104,14 @@ addEventHandler("onPlayerWeaponSlotSave", resourceRoot, function (slot, clip)
     item.clip = clip
 
     if slot == "grenade" and clip == 0 then
-        removePlayerWeaponSlot(client, slot)
+        local ammo = 1 -- TODO: Take from inventory
+        if ammo > 0 then
+            ammo = ammo - 1
+            item.clip = 1
+
+            triggerClientEvent(client, "onClientWeaponReloadFinish", resourceRoot, slot, item.clip)
+        else
+            removePlayerWeaponSlot(client, slot)
+        end
     end
 end)

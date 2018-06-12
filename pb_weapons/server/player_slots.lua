@@ -117,5 +117,5 @@ setTimer(function ()
     setPlayerWeaponSlot(getRandomPlayer(), "secondary", {name="weapon_pistol",clip=15})
 
     setPlayerWeaponSlot(getRandomPlayer(), "melee", {name="weapon_shovel",clip=1})
-    setPlayerWeaponSlot(getRandomPlayer(), "grenade", {name="weapon_grenade",clip=30})
+    setPlayerWeaponSlot(getRandomPlayer(), "grenade", {name="weapon_grenade",clip=1})
 end, 150, 1)

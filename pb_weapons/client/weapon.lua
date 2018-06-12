@@ -81,6 +81,7 @@ function handleSlotSwitch()
     cancelReload()
     localPlayer.weaponSlot = 0
     currentSlot = nil
+    setControlState("fire", false)
 end
 
 -----------------------
@@ -96,9 +97,13 @@ end)
 -- Обработка завершения перезарядки
 addEvent("onClientWeaponReloadFinish", true)
 addEventHandler("onClientWeaponReloadFinish", resourceRoot, function (slot, clip)
+    if slot == "grenade" then
+        isReloading = true
+    end
     if slot ~= currentSlot or not isReloading then
         return
     end
+    isReloading = false
     currentClip = clip
     checkFireAllowed()
     saveCurrentSlotClip()
@@ -119,6 +124,7 @@ addEventHandler("onClientWeaponSwitch", resourceRoot, function (slot)
         currentClip = 0
         isFireAllowed = false
     end
+    setControlState("fire", false)
 end)
 
 addEventHandler("onClientPlayerWeaponFire", localPlayer, function ()
