@@ -69,6 +69,11 @@ function removePlayerWeaponSlot(player, slot)
     end
     local item = playerWeaponSlots[player][slot]
     playerWeaponSlots[player][slot] = nil
+
+    if slot == player:getData("weaponSlot") then
+        equipPlayerWeaponSlot(player)
+    end
+    triggerClientEvent(player, "onClientWeaponSlotUpdate", resourceRoot, slot)
     return item
 end
 
@@ -110,4 +115,7 @@ setTimer(function ()
     setPlayerWeaponSlot(getRandomPlayer(), "primary1", {name="weapon_akm",clip=30})
 
     setPlayerWeaponSlot(getRandomPlayer(), "secondary", {name="weapon_pistol",clip=15})
+
+    setPlayerWeaponSlot(getRandomPlayer(), "melee", {name="weapon_shovel",clip=1})
+    setPlayerWeaponSlot(getRandomPlayer(), "grenade", {name="weapon_grenade",clip=30})
 end, 150, 1)

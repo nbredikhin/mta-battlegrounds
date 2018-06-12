@@ -31,6 +31,16 @@ local firingModes = {
 local burstCount = 0
 local firingModeMessageTimer = nil
 
+local disableScopeSlots = {
+    [0] = true,
+    [1] = true,
+    [8] = true,
+    [9] = true,
+    [10] = true,
+    [11] = true,
+    [12] = true,
+}
+
 local blockedTasks =
 {
     "TASK_SIMPLE_IN_AIR", -- We're falling or in a jump.
@@ -150,7 +160,7 @@ addEventHandler("onClientKey", root, function (key, state)
         end
     end
 
-    if key == "mouse1" and not isScopeActive and not localPlayer:getControlState("aim_weapon") then
+    if key == "mouse1" and not isScopeActive and not localPlayer:getControlState("aim_weapon") and not disableScopeSlots[localPlayer.weaponSlot] then
         cancelEvent()
     end
 
@@ -212,7 +222,7 @@ addEventHandler("onClientRender", root, function ()
         local lightMul = scopeFireLightTime / scopeFireLightTimeMax
         local r, g, b = 50 + 205 * lightMul, 50 + 100 * lightMul, 50
         scopeShader:setValue("AmbientColor", {r / 255, g / 255, b / 255})
-    elseif getControlState("aim_weapon") and localPlayer:getWeapon() ~= 0 then
+    elseif getControlState("aim_weapon") and not disableScopeSlots[localPlayer.weaponSlot] then
         local tx, ty, tz = getPedTargetEnd(localPlayer)
         local x, y = getScreenFromWorldPosition(tx, ty, tz)
         if x then

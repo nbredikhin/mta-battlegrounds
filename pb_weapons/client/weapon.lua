@@ -10,6 +10,16 @@ local currentClip = 0
 
 local reloadCheckDelay = 100
 
+local disableReloadSlots = {
+    [0] = true,
+    [1] = true,
+    [8] = true,
+    [9] = true,
+    [10] = true,
+    [11] = true,
+    [12] = true,
+}
+
 -----------------------
 -- Локальные функции --
 -----------------------
@@ -48,7 +58,7 @@ function getReloading()
 end
 
 function reloadWeapon()
-    if isScopeBlocked() or localPlayer.weaponSlot == 0 then
+    if isScopeBlocked() or disableReloadSlots[localPlayer.weaponSlot] then
         return
     end
     cancelReload()

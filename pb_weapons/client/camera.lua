@@ -115,7 +115,7 @@ local function update3rdPersonCamera()
         math.cos(yaw) * math.cos(pitch),
         math.sin(yaw) * math.cos(pitch),
         math.sin(pitch))
-
+    cameraLookDirection = lookDirection
     setCameraTarget(targetElement.position - lookDirection)
 end
 

@@ -73,7 +73,7 @@ end
 
 addEvent("onClientWeaponSlotUpdate", true)
 addEventHandler("onClientWeaponSlotUpdate", resourceRoot, function (slot, item)
-    if not slot or type(item) ~= "table" then
+    if not slot then
         return
     end
     localSlots[slot] = item

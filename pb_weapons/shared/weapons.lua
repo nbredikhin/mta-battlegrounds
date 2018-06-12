@@ -1,20 +1,20 @@
 WeaponsTable = {}
 
-WeaponsTable.weapon_test = {
-    baseWeapon = 30,
-    propsGroup = 1,
+-- WeaponsTable.weapon_sample = {
+--     baseWeapon = 30,
+--     propsGroup = 1,
 
-    magazine = 30,
-    ammo = "ammo_762mm",
-    damage = 48,
+--     magazine = 30,
+--     ammo = "ammo_762mm",
+--     damage = 48,
 
-    slot = "primary",
+--     slot = "primary",
 
-    attachments = {
-        scope_2 = true,
-        scope_holographic = true,
-    }
-}
+--     attachments = {
+--         scope_2 = true,
+--         scope_holographic = true,
+--     }
+-- }
 
 WeaponsTable.weapon_akm = {
     baseWeapon = 30,
@@ -45,4 +45,23 @@ WeaponsTable.weapon_pistol = {
     attachments = {
         scope_holographic = true,
     }
+}
+
+WeaponsTable.weapon_grenade = {
+    baseWeapon = 16,
+    propsGroup = 1,
+
+    magazine = 1,
+    damage = 12,
+
+    slot = "grenade",
+}
+
+WeaponsTable.weapon_shovel = {
+    baseWeapon = 6,
+    propsGroup = 1,
+
+    damage = 12,
+
+    slot = "melee",
 }

@@ -97,4 +97,8 @@ addEventHandler("onPlayerWeaponSlotSave", resourceRoot, function (slot, clip)
         return
     end
     item.clip = clip
+
+    if slot == "grenade" and clip == 0 then
+        removePlayerWeaponSlot(client, slot)
+    end
 end)
