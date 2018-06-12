@@ -28,7 +28,7 @@ Config.debugCommandsEnabled = true
 
 -- Запуск тестового интерфейса из test.lua
 -- используется для проверки работы новых виджетов
-Config.testModeEnabled = false
+Config.testModeEnabled = true
 
 -- Шрифты
 Config.defaultFont = "regular" -- Шрифт по умолчанию (используются только шрифты, загруженные в assets.lua)

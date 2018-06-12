@@ -11,57 +11,83 @@ local weaponSlotsOrder = {
 }
 
 local localSlots = {}
-local currentWeaponSlot = 1
+local activeSlotIndex = 1
 
-function equipWeaponSlot(name)
-    local currentClip = getCurrentClip()
-    if not localSlots[name] then
-        name = nil
+-----------------------
+-- Локальные функции --
+-----------------------
+
+local function nextWeaponSlot()
+    activeSlotIndex = activeSlotIndex + 1
+    if activeSlotIndex > #weaponSlotsOrder then
+        activeSlotIndex = 1
     end
-    triggerServerEvent("onPlayerEquipWeaponSlot", resourceRoot, name, currentClip)
+    equipWeaponSlot(weaponSlotsOrder[activeSlotIndex])
 end
 
-addEvent("onClientWeaponSlotChange", true)
-addEventHandler("onClientWeaponSlotChange", resourceRoot, function (slot, item)
+local function prevWeaponSlot()
+    activeSlotIndex = activeSlotIndex - 1
+    if activeSlotIndex < 1 then
+        activeSlotIndex = #weaponSlotsOrder
+    end
+    equipWeaponSlot(weaponSlotsOrder[activeSlotIndex])
+end
+
+local function toggleWeaponSlot()
+    if localPlayer:getData("weaponSlot") then
+        equipWeaponSlot()
+    else
+        equipWeaponSlot(weaponSlotsOrder[activeSlotIndex])
+    end
+end
+
+------------------------
+-- Глобальные функции --
+------------------------
+
+function equipWeaponSlot(name)
+    if not name or not localSlots[name] then
+        name = nil
+    end
+    if name == localPlayer:getData("weaponSlot") then
+        return
+    end
+    handleSlotSwitch()
+    -- Запросить новое оружие
+    triggerServerEvent("onPlayerEquipWeaponSlot", resourceRoot, name)
+end
+
+function getWeaponSlot(slot)
+    if slot then
+        return localSlots[slot]
+    end
+end
+
+function getLocalSlots()
+    return localSlots
+end
+
+-----------------------
+-- Обработка событий --
+-----------------------
+
+addEvent("onClientWeaponSlotUpdate", true)
+addEventHandler("onClientWeaponSlotUpdate", resourceRoot, function (slot, item)
     if not slot or type(item) ~= "table" then
         return
     end
     localSlots[slot] = item
 end)
 
-bindKey("next_weapon", "down", function ()
-    cancelReload()
-    localPlayer.weaponSlot = 0
-    currentWeaponSlot = currentWeaponSlot + 1
-    if currentWeaponSlot > #weaponSlotsOrder then
-        currentWeaponSlot = 1
-    end
-    equipWeaponSlot(weaponSlotsOrder[currentWeaponSlot])
-end)
+addEventHandler("onClientResourceStart", resourceRoot, function ()
+    bindKey("next_weapon",     "down", nextWeaponSlot)
+    bindKey("previous_weapon", "down", prevWeaponSlot)
+    bindKey("x", "down", toggleWeaponSlot)
 
-bindKey("previous_weapon", "down", function ()
-    cancelReload()
-    localPlayer.weaponSlot = 0
-    currentWeaponSlot = currentWeaponSlot - 1
-    if currentWeaponSlot < 1 then
-        currentWeaponSlot = #weaponSlotsOrder
-    end
-    equipWeaponSlot(weaponSlotsOrder[currentWeaponSlot])
-end)
-
-bindKey("x", "down", function ()
-    if localPlayer.weaponSlot == 0 then
-        tequipWeaponSlot(weaponSlotsOrder[currentWeaponSlot])
-    else
-        localPlayer.weaponSlot = 0
-        cancelReload()
-        equipWeaponSlot()
+    for i = 1, #weaponSlotsOrder do
+        bindKey(tostring(i), "down", function ()
+            activeSlotIndex = i
+            equipWeaponSlot(weaponSlotsOrder[i])
+        end)
     end
 end)
-
-for i = 1, #weaponSlotsOrder do
-    bindKey(tostring(i), "down", function ()
-        currentWeaponSlot = i
-        equipWeaponSlot(weaponSlotsOrder[i])
-    end)
-end

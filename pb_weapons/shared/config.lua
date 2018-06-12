@@ -1,24 +1,31 @@
 Config = {}
 
+Config.debugDrawEnabled = true
 Config.firingModeKey = "b"
 
-Config.skillFromWeapon = {
-    [22] = 69,
-    [23] = 70,
-    [24] = 71,
-    [25] = 72,
-    [26] = 73,
-    [27] = 74,
-    [28] = 75,
-    [29] = 76,
-    [30] = 77,
-    [31] = 78,
-    [34] = 79,
+------------------------
+-- Настройки прицелов --
+------------------------
+
+Config.defaultFOV = 70
+Config.defaultSensitivity = 150
+
+Config.scopes = {
+    ["holographic"] = {
+        x = 227, y = 128,
+        zoom = 1,
+        scale = 1.2,
+    },
+    ["2x"] = {
+        x = 319, y = 423,
+        zoom = 4,
+        scale = 1.05
+    }
 }
 
---------------------------------------------
--- Настройки камеры для всех видов оружия --
---------------------------------------------
+--------------------------------
+-- Настройки камеры в прицеле --
+--------------------------------
 
 Config.weaponCameraOffsets = {}
 
@@ -54,24 +61,4 @@ Config.weaponCameraOffsets[33] = {
 Config.weaponCameraOffsets[34] = {
     x = 0.17, y = -0.4, z = 0.8,
     ducked = { x = 0.2, y = -0.4, z = 0.23 },
-}
-
----------------------------
--- Настройки 2д прицелов --
----------------------------
-
-Config.defaultFOV = 70
-Config.defaultSensitivity = 150
-
-Config.scopes = {
-    ["holographic"] = {
-        x = 227, y = 128,
-        zoom = 1,
-        scale = 1.2,
-    },
-    ["2x"] = {
-        x = 319, y = 423,
-        zoom = 4,
-        scale = 1.05
-    }
 }

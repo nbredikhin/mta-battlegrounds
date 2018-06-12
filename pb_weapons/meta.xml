@@ -3,16 +3,18 @@
 
     <script type="shared" src="shared/config.lua"/>
     <script type="shared" src="shared/weapons.lua"/>
+    <script type="shared" src="shared/props_groups.lua"/>
 
     <script type="client" src="client/camera.lua"/>
     <script type="client" src="client/cursor.lua"/>
     <script type="client" src="client/scope.lua"/>
     <script type="client" src="client/weapon.lua"/>
     <script type="client" src="client/slots.lua"/>
+    <script type="client" src="client/debug.lua"/>
 
     <script type="server" src="server/properties.lua"/>
     <script type="server" src="server/weapon.lua"/>
-    <script type="server" src="server/slots.lua"/>
+    <script type="server" src="server/player_slots.lua"/>
 
     <file src="assets/nil.png"/>
     <file src="assets/replace.fx"/>

@@ -3,18 +3,142 @@
 ------------------------------------------
 
 local isFireAllowed = false
-local currentClip = 0
 local isReloading = false
 
+local currentSlot = nil
+local currentClip = 0
+
+local reloadCheckDelay = 100
+
+-----------------------
+-- Локальные функции --
+-----------------------
+
+local function checkReload()
+    if isReloading and getPedAmmoInClip(localPlayer) < 500 then
+        triggerServerEvent("onPlayerWeaponReload", resourceRoot, "finish", currentSlot, currentClip)
+    end
+end
+
+local function checkFireAllowed()
+    isFireAllowed = currentClip > 0
+end
+
+------------------------
+-- Глобальные функции --
+------------------------
+
+function saveCurrentSlotClip()
+    if not currentSlot then
+        return
+    end
+    local item = getWeaponSlot(currentSlot)
+    if item then
+        item.clip = currentClip
+    end
+    triggerServerEvent("onPlayerWeaponSlotSave", resourceRoot, currentSlot, currentClip)
+end
+
+function getFireAllowed()
+    return isFireAllowed
+end
+
+function getReloading()
+    return isReloading
+end
+
+function reloadWeapon()
+    if isScopeBlocked() or localPlayer.weaponSlot == 0 then
+        return
+    end
+    cancelReload()
+    isReloading = true
+    triggerServerEvent("onPlayerWeaponReload", resourceRoot, "start", currentSlot, currentClip)
+end
+
+function cancelReload()
+    isReloading = false
+end
+
+function getWeaponClip()
+    return currentClip
+end
+
+function handleSlotSwitch()
+    -- Сохранить патроны
+    saveCurrentSlotClip()
+    -- Убрать текущее оружие из рук
+    cancelReload()
+    localPlayer.weaponSlot = 0
+    currentSlot = nil
+end
+
+-----------------------
+-- Обработка событий --
+-----------------------
+
+addEventHandler("onClientResourceStart", resourceRoot, function ()
+    bindKey("r", "down", reloadWeapon)
+
+    setTimer(checkReload, reloadCheckDelay, 0)
+end)
+
+-- Обработка завершения перезарядки
+addEvent("onClientWeaponReloadFinish", true)
+addEventHandler("onClientWeaponReloadFinish", resourceRoot, function (slot, clip)
+    if slot ~= currentSlot or not isReloading then
+        return
+    end
+    currentClip = clip
+    checkFireAllowed()
+    saveCurrentSlotClip()
+end)
+
+-- Обработка смены оружия в руках
+addEvent("onClientWeaponSwitch", true)
+addEventHandler("onClientWeaponSwitch", resourceRoot, function (slot)
+    cancelReload()
+
+    local item = getWeaponSlot(slot)
+    currentSlot = slot
+    hiddenWeaponSlot = nil
+    if item then
+        currentClip = item.clip or 0
+        checkFireAllowed()
+    else
+        currentClip = 0
+        isFireAllowed = false
+    end
+end)
+
+addEventHandler("onClientPlayerWeaponFire", localPlayer, function ()
+    if not isFireAllowed then
+        outputDebugString("onClientPlayerWeaponFire when fire allowed")
+    end
+    currentClip = currentClip - 1
+    if currentClip <= 0 then
+        currentClip = 0
+        isFireAllowed = false
+        saveCurrentSlotClip()
+    end
+end)
+
+addEventHandler("onClientPlayerWeaponSwitch", localPlayer, function (_, weaponSlot)
+    if weaponSlot == 0 then
+        currentSlot = nil
+    end
+end)
+
+-- Обработка состояний клавиш
 addEventHandler("onClientPreRender", root, function ()
     local isReloading = localPlayer:getData("isReloading")
     local isKnockout = localPlayer:getData("knockout")
     if isReloading then
         isFireAllowed = false
     end
-    local enableFire = isFireAllowed
+    local fireState = isFireAllowed
     -- if isInventoryShowing() or isKnockout then
-    --     enableFire = false
+    --     fireState = false
     -- end
 
     toggleControl("forwards",        not isKnockout)
@@ -23,10 +147,10 @@ addEventHandler("onClientPreRender", root, function ()
     toggleControl("next_weapon",     false)
     toggleControl("previous_weapon", false)
     toggleControl("action",          false)
-    toggleControl("fire",            enableFire)
-    toggleControl("vehicle_fire",    enableFire)
+    toggleControl("fire",            fireState)
+    toggleControl("vehicle_fire",    fireState)
 
-    if not enableFire then
+    if not fireState then
         localPlayer:setControlState("fire",         false)
         localPlayer:setControlState("vehicle_fire", false)
     end
@@ -55,52 +179,3 @@ addEventHandler("onClientPreRender", root, function ()
         end
     end
 end)
-
-
-addEventHandler("onClientPlayerWeaponFire", localPlayer, function ()
-    currentClip = math.max(0, currentClip - 1)
-    if currentClip == 0 then
-        isFireAllowed = false
-    end
-end)
-
-bindKey("r", "down", function ()
-    if isScopeBlocked() or localPlayer.weaponSlot == 0 then
-        return
-    end
-    isReloading = true
-    triggerServerEvent("onPlayerRequestReload", resourceRoot)
-end)
-
-addEvent("onClientReloadWeapon", true)
-addEventHandler("onClientReloadWeapon", resourceRoot, function (clip)
-    currentClip = clip
-    isFireAllowed = currentClip > 0
-end)
-
-function cancelReload()
-    isReloading = false
-end
-
--- bindKey("x", "down", function ()
---     localPlayer.weaponSlot = 0
---     triggerServerEvent("onPlayerUnequipWeapon", resourceRoot)
---     isReloading = false
--- end)
-
-setTimer(function ()
-    if isReloading and getPedAmmoInClip(localPlayer) < 500 then
-        isReloading = false
-        triggerServerEvent("onPlayerReloadWeapon", resourceRoot, currentClip)
-    end
-end, 250, 0)
-
-addEventHandler("onClientPlayerWeaponSwitch", localPlayer, function ()
-    isReloading = false
-    currentClip = 0
-    isFireAllowed = false
-end)
-
-function getCurrentClip()
-    return currentClip
-end

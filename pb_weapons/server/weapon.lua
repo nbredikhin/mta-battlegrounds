@@ -2,54 +2,99 @@
 -- Отображение оружия в руках персонажа --
 ------------------------------------------
 
+-- id скилла для оружия
+local weaponSkillId = {
+    [22] = 69,
+    [23] = 70,
+    [24] = 71,
+    [25] = 72,
+    [26] = 73,
+    [27] = 74,
+    [28] = 75,
+    [29] = 76,
+    [30] = 77,
+    [31] = 78,
+    [34] = 79,
+}
+
+-----------------------
+-- Локальные функции --
+-----------------------
+
+------------------------
+-- Глобальные функции --
+------------------------
+
 -- Взять оружие в руки
-function equipPlayerWeapon(player, name, clip)
+function equipPlayerWeaponSlot(player, slot)
     if not isElement(player) then
         return
     end
-    if not WeaponsTable[name] then
+    if slot == nil then
+        slot = false
+    end
+    -- Убрать текущее оружие из рук
+    takeAllWeapons(player)
+    player:setData("weaponSlot", false)
+    if not isValidWeaponSlot(slot) then
+        triggerClientEvent(player, "onClientWeaponSwitch", resourceRoot, false)
         return
     end
 
-    unequipPlayerWeapon(player)
+    local item = getPlayerWeaponSlot(player, slot)
+    if not item then
+        return
+    end
+    local weapon = WeaponsTable[item.name]
 
-    local weaponId = WeaponsTable[name].baseWeapon
+    -- Выдача оружия в руки
+    local weaponId = weapon.baseWeapon
     giveWeapon(player, weaponId, 999, true)
     setWeaponAmmo(player, weaponId, 999, 999)
-    if Config.skillFromWeapon[weaponId] then
-        local weaponStat = (WeaponsTable[name].propsGroup or 1) * 500 - 500
-        setPedStat(player, Config.skillFromWeapon[weaponId], weaponStat)
+
+    -- Установка навыка влаления оружием
+    if weaponSkillId[weaponId] then
+        local weaponStat = (weapon.propsGroup or 1) * 500 - 500
+        setPedStat(player, weaponSkillId[weaponId], weaponStat)
     end
-    if clip and clip > 0 then
-        triggerClientEvent("onClientReloadWeapon", resourceRoot, clip)
-    end
+
+    player:setData("weaponSlot", slot)
+    triggerClientEvent(player, "onClientWeaponSwitch", resourceRoot, slot)
 end
 
--- Убрать оружие из рук
-function unequipPlayerWeapon(player)
-    if not isElement(player) then
+-----------------------
+-- Обработка событий --
+-----------------------
+
+-- Выбор слота игроком
+addEvent("onPlayerEquipWeaponSlot", true)
+addEventHandler("onPlayerEquipWeaponSlot", resourceRoot, function (slot)
+    equipPlayerWeaponSlot(client, slot)
+end)
+
+-- Обработка перезарядки
+addEvent("onPlayerWeaponReload", true)
+addEventHandler("onPlayerWeaponReload", resourceRoot, function (state, currentSlot, currentClip)
+    -- Клиент запрашивает начало перезарядки
+    if state == "start" then
+        reloadPedWeapon(client)
+    -- Клиент завершил анимацию перезарядки и ожидает получения количества патронов после перезарядки
+    elseif state == "finish" then
+        setWeaponAmmo(client, client:getWeapon(), 999, 999)
+
+        local clip = 30
+        triggerClientEvent(client, "onClientWeaponReloadFinish", resourceRoot, currentSlot, clip)
+    end
+end)
+
+addEvent("onPlayerWeaponSlotSave", true)
+addEventHandler("onPlayerWeaponSlotSave", resourceRoot, function (slot, clip)
+    if not slot or not clip then
         return
     end
-
-    takeAllWeapons(player)
-end
-
-addEvent("onPlayerUnequipWeapon", true)
-addEventHandler("onPlayerUnequipWeapon", resourceRoot, function ()
-    unequipPlayerWeapon(client)
-end)
-
-addEventHandler("onPlayerWeaponFire", root, function (weaponId)
-    setWeaponAmmo(source, weaponId, 999, 999)
-end)
-
-addEvent("onPlayerRequestReload", true)
-addEventHandler("onPlayerRequestReload", resourceRoot, function ()
-    reloadPedWeapon(client)
-end)
-
-addEvent("onPlayerReloadWeapon", true)
-addEventHandler("onPlayerReloadWeapon", resourceRoot, function (clip)
-    setWeaponAmmo(client, client:getWeapon(), 999, 999)
-    triggerClientEvent("onClientReloadWeapon", resourceRoot, 5)
+    local item = getPlayerWeaponSlot(client, slot)
+    if not item then
+        return
+    end
+    item.clip = clip
 end)
