@@ -10,13 +10,16 @@ Config.firingModeKey = "b"
 Config.defaultFOV = 70
 Config.defaultSensitivity = 150
 
+Config.defaultRecoilX = 5
+Config.defaultRecoilY = 30
+
 Config.scopes = {
     ["holographic"] = {
         x = 227, y = 128,
         zoom = 1,
         scale = 1.2,
     },
-    ["2x"] = {
+    ["x2"] = {
         x = 319, y = 423,
         zoom = 4,
         scale = 1.05

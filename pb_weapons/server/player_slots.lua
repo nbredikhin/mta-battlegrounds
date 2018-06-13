@@ -112,10 +112,15 @@ addCommandHandler("weapon", function (player, cmd, slot, name)
 end)
 
 setTimer(function ()
-    setPlayerWeaponSlot(getRandomPlayer(), "primary1", {name="weapon_akm",clip=30})
+    setPlayerWeaponSlot(getRandomPlayer(), "primary1", {
+        name        = "weapon_akm",
+        clip        = 30,
+        attachments = {
+            scope = "holographic"
+        }
+    })
 
-    setPlayerWeaponSlot(getRandomPlayer(), "secondary", {name="weapon_pistol",clip=15})
-
-    setPlayerWeaponSlot(getRandomPlayer(), "melee", {name="weapon_shovel",clip=1})
-    setPlayerWeaponSlot(getRandomPlayer(), "grenade", {name="weapon_grenade",clip=1})
+    setPlayerWeaponSlot(getRandomPlayer(), "secondary", {name = "weapon_pistol",   clip = 15})
+    setPlayerWeaponSlot(getRandomPlayer(), "melee",     {name = "weapon_shovel", clip = 1})
+    setPlayerWeaponSlot(getRandomPlayer(), "grenade",   {name = "weapon_grenade",clip = 1})
 end, 150, 1)

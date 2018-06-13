@@ -94,6 +94,37 @@ addEventHandler("onClientResourceStart", resourceRoot, function ()
     setTimer(checkReload, reloadCheckDelay, 0)
 end)
 
+-- Обработка смены оружия в руках
+addEvent("onClientWeaponSwitch", true)
+addEventHandler("onClientWeaponSwitch", resourceRoot, function (slot)
+    cancelReload()
+
+    local item = getWeaponSlot(slot)
+    currentSlot = slot
+    hiddenWeaponSlot = nil
+
+    setWeaponScope()
+    setWeaponRecoil()
+
+    if item then
+        if item.attachments and item.attachments.scope then
+            setWeaponScope(item.attachments.scope)
+        end
+
+        local weapon = WeaponsTable[item.name]
+        if weapon then
+            setWeaponRecoil(weapon.recoilX, weapon.recoilY)
+        end
+
+        currentClip = item.clip or 0
+        checkFireAllowed()
+    else
+        currentClip = 0
+        isFireAllowed = false
+    end
+    setControlState("fire", false)
+end)
+
 -- Обработка завершения перезарядки
 addEvent("onClientWeaponReloadFinish", true)
 addEventHandler("onClientWeaponReloadFinish", resourceRoot, function (slot, clip)
@@ -107,24 +138,6 @@ addEventHandler("onClientWeaponReloadFinish", resourceRoot, function (slot, clip
     currentClip = clip
     checkFireAllowed()
     saveCurrentSlotClip()
-end)
-
--- Обработка смены оружия в руках
-addEvent("onClientWeaponSwitch", true)
-addEventHandler("onClientWeaponSwitch", resourceRoot, function (slot)
-    cancelReload()
-
-    local item = getWeaponSlot(slot)
-    currentSlot = slot
-    hiddenWeaponSlot = nil
-    if item then
-        currentClip = item.clip or 0
-        checkFireAllowed()
-    else
-        currentClip = 0
-        isFireAllowed = false
-    end
-    setControlState("fire", false)
 end)
 
 addEventHandler("onClientPlayerWeaponFire", localPlayer, function ()

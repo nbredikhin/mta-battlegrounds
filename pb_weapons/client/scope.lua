@@ -83,8 +83,9 @@ local function getScopeTexture(name)
     return scopeTextures[name]
 end
 
-function loadScope(name)
+function setWeaponScope(name)
     if not name or not Config.scopes[name] then
+        currentScope = nil
         return
     end
     currentScope = name
@@ -97,8 +98,12 @@ function loadScope(name)
     end
 end
 
-function toggleScope()
-    isScopeActive = not isScopeActive
+function toggleScope(active)
+    if active == nil then
+        isScopeActive = not isScopeActive
+    else
+        isScopeActive = not not active
+    end
     if not getWeaponCameraOffset() or isScopeBlocked() or not currentScope then
         isScopeActive = false
     end
@@ -298,5 +303,5 @@ addEventHandler("onClientPlayerWeaponFire", localPlayer, function ()
 end)
 
 addCommandHandler("setscope", function (cmd, name)
-    loadScope(name)
+    setWeaponScope(name)
 end)

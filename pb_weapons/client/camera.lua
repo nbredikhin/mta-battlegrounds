@@ -29,6 +29,9 @@ local camera = {
 local recoilVelocityX = 0
 local recoilVelocityY = 0
 
+local recoilX = 0
+local recoilY = 0
+
 local cameraLookDirection = Vector3()
 
 function setCustomCameraEnabled(enabled)
@@ -157,6 +160,11 @@ function setFirstPersonZoom(value)
     lookSensitivity = Config.defaultSensitivity / tonumber(value)
 end
 
+function setWeaponRecoil(x, y)
+    recoilX = x or Config.defaultRecoilX
+    recoilY = y or Config.defaultRecoilY
+end
+
 addEventHandler("onClientPreRender", root, function (deltaTime)
     if not camera.enabled then
         return
@@ -222,7 +230,7 @@ addEventHandler("onClientResourceStop", root, function ()
 end)
 
 addEventHandler("onClientPlayerWeaponFire", localPlayer, function ()
-    local x = 5
+    local x = recoilX
     recoilVelocityX = recoilVelocityX + math.random()*x - x/2
-    recoilVelocityY = math.max(-30, recoilVelocityY - 30)
+    recoilVelocityY = math.max(-recoilY/2, recoilVelocityY - recoilY/2)
 end)
