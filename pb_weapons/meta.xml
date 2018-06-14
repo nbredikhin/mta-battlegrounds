@@ -10,6 +10,7 @@
     <script type="client" src="client/scope.lua"/>
     <script type="client" src="client/weapon.lua"/>
     <script type="client" src="client/slots.lua"/>
+    <script type="client" src="client/attach.lua"/>
     <script type="client" src="client/debug.lua"/>
 
     <script type="server" src="server/properties.lua"/>
@@ -19,6 +20,9 @@
     <file src="assets/nil.png"/>
     <file src="assets/replace.fx"/>
     <file src="assets/shader.fx"/>
+
+    <file src="assets/models/box.txd"/>
+    <file src="assets/models/box.dff"/>
 
     <file src="assets/scopes/holographic.png"/>
     <file src="assets/scopes/holographic_inner.png"/>

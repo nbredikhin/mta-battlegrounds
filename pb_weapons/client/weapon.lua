@@ -75,6 +75,7 @@ function getWeaponClip()
 end
 
 function handleSlotSwitch()
+    setWeaponModelVisible(false)
     -- Сохранить патроны
     saveCurrentSlotClip()
     -- Убрать текущее оружие из рук
@@ -118,6 +119,7 @@ addEventHandler("onClientWeaponSwitch", resourceRoot, function (slot)
 
         currentClip = item.clip or 0
         checkFireAllowed()
+        setWeaponModelVisible(true)
     else
         currentClip = 0
         isFireAllowed = false

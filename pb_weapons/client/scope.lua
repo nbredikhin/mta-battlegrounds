@@ -130,6 +130,8 @@ function toggleScope(active)
         engineApplyShaderToWorldTexture(shader, "smokeii_*")
         engineApplyShaderToWorldTexture(shader, "collisionsmoke*")
         table.insert(hideShaders, shader)
+
+        setWeaponModelVisible(false)
     else
         setControlState("fire", false)
         if hideShaders then
@@ -138,6 +140,7 @@ function toggleScope(active)
             end
         end
         hideShaders = nil
+        setWeaponModelVisible(true)
     end
 end
 

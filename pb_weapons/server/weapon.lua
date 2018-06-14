@@ -36,8 +36,10 @@ function equipPlayerWeaponSlot(player, slot)
     -- Убрать текущее оружие из рук
     takeAllWeapons(player)
     player:setData("weaponSlot", false)
+    player:setData("weaponName", false)
     if not isValidWeaponSlot(slot) then
         triggerClientEvent(player, "onClientWeaponSwitch", resourceRoot, false)
+        triggerClientEvent("updatePlayerAttachedWeapon", resourceRoot, player)
         return
     end
 
@@ -59,6 +61,8 @@ function equipPlayerWeaponSlot(player, slot)
     end
 
     player:setData("weaponSlot", slot)
+    player:setData("weaponName", item.name)
+    triggerClientEvent("updatePlayerAttachedWeapon", resourceRoot, player)
     triggerClientEvent(player, "onClientWeaponSwitch", resourceRoot, slot)
 end
 
