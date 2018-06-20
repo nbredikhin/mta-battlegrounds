@@ -77,6 +77,7 @@ addEventHandler("onClientWeaponSlotUpdate", resourceRoot, function (slot, item)
         return
     end
     localSlots[slot] = item
+    triggerEvent("onClientWeaponsUpdate", resourceRoot, localSlots)
 end)
 
 addEventHandler("onClientResourceStart", resourceRoot, function ()

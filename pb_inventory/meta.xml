@@ -4,6 +4,7 @@
     <script type="shared" src="shared/utils.lua"/>
     <script type="shared" src="shared/config.lua"/>
     <script type="shared" src="shared/item_classes.lua"/>
+    <script type="shared" src="shared/weapon_classes.lua"/>
 
     <script type="client" src="client/backpack.lua"/>
     <script type="client" src="client/drawing.lua"/>
@@ -35,8 +36,6 @@
     <file src="assets/icons/painkiller.png"/>
     <file src="assets/icons/adrenaline_syringe.png"/>
     <file src="assets/icons/m4.png"/>
-    <file src="assets/icons/ak47.png"/>
-    <file src="assets/icons/kar98k.png"/>
     <file src="assets/icons/awm.png"/>
     <file src="assets/icons/colt45.png"/>
     <file src="assets/icons/shotgun.png"/>
@@ -64,6 +63,8 @@
     <file src="assets/icons/jerrycan.png"/>
     <file src="assets/icons/mghilie1.png"/>
     <file src="assets/icons/mghilie2.png"/>
+    <file src="assets/icons/weapon_akm.png"/>
+    <file src="assets/icons/weapon_kar98k.png"/>
 
     <file src="assets/sounds/painkiller.wav"/>
 
