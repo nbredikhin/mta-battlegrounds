@@ -4,11 +4,12 @@
 
 local isFireAllowed = false
 local isReloading = false
+local reloadTimer = nil
+local shotDelayTimer = nil
 
 local currentSlot = nil
 local currentClip = 0
-
-local reloadCheckDelay = 100
+local currentWeapon = nil
 
 local disableReloadSlots = {
     [0] = true,
@@ -24,14 +25,24 @@ local disableReloadSlots = {
 -- Локальные функции --
 -----------------------
 
-local function checkReload()
-    if isReloading and getPedAmmoInClip(localPlayer) < 500 then
+local function finishReload()
+    if isReloading then
         triggerServerEvent("onPlayerWeaponReload", resourceRoot, "finish", currentSlot, currentClip)
     end
 end
 
 local function checkFireAllowed()
     isFireAllowed = currentClip > 0
+end
+
+local function handleShotDelay()
+    isFireAllowed = true
+end
+
+local function cancelShotDelay()
+    if isTimer(shotDelayTimer) then
+        killTimer(shotDelayTimer)
+    end
 end
 
 ------------------------
@@ -64,10 +75,15 @@ function reloadWeapon()
     cancelReload()
     isReloading = true
     triggerServerEvent("onPlayerWeaponReload", resourceRoot, "start", currentSlot, currentClip)
+    reloadTimer = setTimer(finishReload, Config.defaultReloadTime, 1)
 end
 
 function cancelReload()
+    setPedAnimation(localPlayer)
     isReloading = false
+    if isTimer(reloadTimer) then
+        killTimer(reloadTimer)
+    end
 end
 
 function getWeaponClip()
@@ -75,6 +91,9 @@ function getWeaponClip()
 end
 
 function handleSlotSwitch()
+    if isReloading then
+        -- TODO: Cancel reloading animation
+    end
     setWeaponModelVisible(false)
     -- Сохранить патроны
     saveCurrentSlotClip()
@@ -91,8 +110,6 @@ end
 
 addEventHandler("onClientResourceStart", resourceRoot, function ()
     bindKey("r", "down", reloadWeapon)
-
-    setTimer(checkReload, reloadCheckDelay, 0)
 end)
 
 -- Обработка смены оружия в руках
@@ -106,6 +123,7 @@ addEventHandler("onClientWeaponSwitch", resourceRoot, function (slot)
 
     setWeaponScope()
     setWeaponRecoil()
+    currentWeapon = nil
 
     if item then
         if item.attachments and item.attachments.scope then
@@ -114,6 +132,7 @@ addEventHandler("onClientWeaponSwitch", resourceRoot, function (slot)
 
         local weapon = WeaponsTable[item.name]
         if weapon then
+            currentWeapon = weapon
             setWeaponRecoil(weapon.recoilX, weapon.recoilY)
         end
 
@@ -152,6 +171,15 @@ addEventHandler("onClientPlayerWeaponFire", localPlayer, function ()
         isFireAllowed = false
         saveCurrentSlotClip()
     end
+
+    if currentWeapon and currentWeapon.singleShot then
+        setControlState("fire", false)
+        isFireAllowed = false
+        if isTimer(shotDelayTimer) then
+            killTimer(shotDelayTimer)
+        end
+        shotDelayTimer = setTimer(handleShotDelay, currentWeapon.shotDelay * 1000, 1)
+    end
 end)
 
 addEventHandler("onClientPlayerWeaponSwitch", localPlayer, function (_, weaponSlot)
@@ -162,7 +190,6 @@ end)
 
 -- Обработка состояний клавиш
 addEventHandler("onClientPreRender", root, function ()
-    local isReloading = localPlayer:getData("isReloading")
     local isKnockout = localPlayer:getData("knockout")
     if isReloading then
         isFireAllowed = false

@@ -35,6 +35,7 @@ function equipPlayerWeaponSlot(player, slot)
     end
     -- Убрать текущее оружие из рук
     takeAllWeapons(player)
+
     player:setData("weaponSlot", false)
     player:setData("weaponName", false)
     if not isValidWeaponSlot(slot) then
@@ -81,9 +82,13 @@ addEvent("onPlayerWeaponReload", true)
 addEventHandler("onPlayerWeaponReload", resourceRoot, function (state, currentSlot, currentClip)
     -- Клиент запрашивает начало перезарядки
     if state == "start" then
-        reloadPedWeapon(client)
+        local player = client
+        setTimer(function ()
+            player:setAnimation("uzi", "uzi_reload", 1, false, false, false, true)
+        end, 200, 1)
     -- Клиент завершил анимацию перезарядки и ожидает получения количества патронов после перезарядки
     elseif state == "finish" then
+        client:setAnimation()
         setWeaponAmmo(client, client:getWeapon(), 999, 999)
 
         local item = getPlayerWeaponSlot(client, currentSlot)

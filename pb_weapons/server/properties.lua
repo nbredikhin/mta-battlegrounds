@@ -48,3 +48,14 @@ addEventHandler("onResourceStart", resourceRoot, function ()
         end
     end
 end)
+
+addCommandHandler("origprops", function ()
+    for name in pairs(PropsGroups) do
+        for i, skill in ipairs(skills) do
+            for _, property in ipairs(resetProperties) do
+                local value = getOriginalWeaponProperty(name, skill, property)
+                iprint(name, skill, property, value)
+            end
+        end
+    end
+end)

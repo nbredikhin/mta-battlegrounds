@@ -191,9 +191,11 @@ WeaponsTable.weapon_awm = {
     baseWeapon = 33,
     propsGroup = 1,
 
-    magazine = 30,
+    magazine = 5,
     ammo = "ammo_300",
     damage = 120,
+    singleShot = true,
+    shotDelay = 1,
 
     slot = "primary",
 
@@ -220,9 +222,11 @@ WeaponsTable.weapon_kar98k = {
     baseWeapon = 33,
     propsGroup = 1,
 
-    magazine = 30,
+    magazine = 5,
     ammo = "ammo_762mm",
     damage = 75,
+    singleShot = true,
+    shotDelay = 0.8,
 
     slot = "primary",
 
@@ -249,9 +253,11 @@ WeaponsTable.weapon_m24 = {
     baseWeapon = 33,
     propsGroup = 1,
 
-    magazine = 30,
+    magazine = 5,
     ammo = "ammo_762mm",
     damage = 75,
+    singleShot = true,
+    shotDelay = 1.5,
 
     slot = "primary",
 

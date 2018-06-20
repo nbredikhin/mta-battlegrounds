@@ -3,6 +3,9 @@ Config = {}
 Config.debugDrawEnabled = true
 Config.firingModeKey = "b"
 
+-- Время перезарядки по умолчанию
+Config.defaultReloadTime = 1400
+
 ------------------------
 -- Настройки прицелов --
 ------------------------

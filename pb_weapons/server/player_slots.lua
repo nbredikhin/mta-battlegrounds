@@ -113,7 +113,7 @@ end)
 
 setTimer(function ()
     setPlayerWeaponSlot(getRandomPlayer(), "primary1", {
-        name        = "weapon_m24",
+        name        = "weapon_akm",
         clip        = 30,
         attachments = {
             scope = "holographic"
