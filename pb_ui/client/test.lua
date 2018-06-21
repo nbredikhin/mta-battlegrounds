@@ -4,15 +4,18 @@ end
 
 local ui = {}
 
-addEventHandler("onClientRender", root, function ()
-    local sw, sh = guiGetScreenSize()
-    dxDrawRectangle(0, 0, sw, sh, tocolor(50, 50, 50))
-end)
+-- addEventHandler("onClientRender", root, function ()
+--     local sw, sh = guiGetScreenSize()
+--     dxDrawRectangle(0, 0, sw, sh, tocolor(50, 50, 50))
+-- end)
 
 addEventHandler("onClientResourceStart", resourceRoot, function ()
     local function widget(...)
         return exports.pb_ui:create(...)
     end
+
+    local screenWidth, screenHeight = exports.pb_ui:getRenderResolution()
+    local bg = widget("Rectangle", { width = screenWidth, height = screenHeight, color = tocolor(50, 50, 50) })
 
     ui.window1 = widget("Window", { x = 200, width = 250, height = 175, text = "Окно 1" })
     exports.pb_ui:alignWidget(ui.window1, "vertical", "center")
