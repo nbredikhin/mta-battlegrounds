@@ -31,3 +31,33 @@ function cloneItem(item)
     end
     return table.copy(item)
 end
+
+function getItemClass(itemOrName)
+    if not itemOrName then
+        return
+    end
+    local name
+    if type(itemOrName) == "table" then
+        name = itemOrName.name
+    else
+        name = itemOrName
+    end
+    if name then
+        return Items[itemOrName]
+    else
+        return
+    end
+end
+
+function isItem(item)
+    return not not (type(item) == "table" and Items[item.name])
+end
+
+function getItemWeight(item)
+    if not isItem(item) then
+        return 0
+    end
+    local itemWeight = Items[item.name].weight or 0
+    local itemCount = item.count or 0
+    return itemWeight * itemCount
+end

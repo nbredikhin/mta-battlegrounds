@@ -1,59 +1,52 @@
-addEvent("finishPlayerHeal", true)
-addEventHandler("finishPlayerHeal", resourceRoot, function (itemName)
-    local player = client
-    local item = getPlayerBackpackItem(player, itemName)
-    if not isItem(item) then
+------------------------------------
+-- Действия игрока над инвентарём --
+------------------------------------
+
+local actionHandlers = {}
+
+-----------------------
+-- Локальные функции --
+-----------------------
+
+--------------------------
+-- Обработчики действий --
+--------------------------
+
+-- Поднять вещь, лежащую рядом в виде лута
+actionHandlers["pickup_item"] = function (inventory, name)
+
+end
+
+-- Выбросить вещь из рюкзака на землю
+actionHandlers["drop_item"] = function (inventory, name)
+
+end
+
+-- Перемещение вещи между рюкзаком и слотами (одежды, оружия и т. д.)
+actionHandlers["move_item"] = function (inventory, moveType, name)
+
+end
+
+------------------------
+-- Глобальные функции --
+------------------------
+
+-----------------------
+-- Обработка событий --
+-----------------------
+
+addEvent("onPlayerInventoryAction", true)
+addEventHandler("onPlayerInventoryAction", resourceRoot, function (actionName, ...)
+    if not actionName then
         return
     end
-    local itemClass = Items[item.name]
-    takePlayerBackpackItem(player, item.name, 1)
-    local prevHealth = player.health
 
-    player.health = player.health + itemClass.heal
-    if itemClass.heal_max and math.ceil(player.health) > itemClass.heal_max then
-        player.health = itemClass.heal_max
-    end
-
-    local diffHealth = player.health - prevHealth
-    local totalHealed = player:getData("hp_healed") or 0
-    player:setData("hp_healed", math.floor(totalHealed + diffHealth))
-
-    exports.pb_accounts:addPlayerStatsField(player, "stats_items_used", 1)
-end)
-
-addEvent("finishPlayerFillFuel", true)
-addEventHandler("finishPlayerFillFuel", resourceRoot, function (itemName)
-    if not isResourceRunning("pb_fuel") then
+    local inventory = getInventory(client)
+    if not inventory then
         return
     end
-    local player = client
-    if not player.vehicle then
-        return
+
+    if actionHandlers[actionName] then
+        actionHandlers[actionName](inventory, ...)
     end
-    local item = getPlayerBackpackItem(player, itemName)
-    if not isItem(item) then
-        return
-    end
-    local itemClass = Items[item.name]
-    takePlayerBackpackItem(player, item.name, 1)
-
-    exports.pb_fuel:fillVehicleFuel(player.vehicle, itemClass.fuel_amount)
-
-    exports.pb_accounts:addPlayerStatsField(player, "stats_items_used", 1)
-end)
-
-addEvent("finishPlayerBoost", true)
-addEventHandler("finishPlayerBoost", resourceRoot, function (itemName)
-    local player = client
-    local item = getPlayerBackpackItem(player, itemName)
-    if not isItem(item) then
-        return
-    end
-    local itemClass = Items[item.name]
-    takePlayerBackpackItem(player, item.name, 1)
-
-    local boost = player:getData("boost") or 0
-    player:setData("boost", math.min(100, boost + itemClass.boost))
-
-    exports.pb_accounts:addPlayerStatsField(player, "stats_items_used", 1)
 end)

@@ -1,92 +1,13 @@
 <meta>
     <oop>true</oop>
 
-    <script type="shared" src="shared/utils.lua"/>
     <script type="shared" src="shared/config.lua"/>
-    <script type="shared" src="shared/item_classes.lua"/>
-    <script type="shared" src="shared/weapon_classes.lua"/>
+    <script type="shared" src="shared/utils.lua"/>
+    <script type="shared" src="shared/items.lua"/>
+    <script type="shared" src="shared/item.lua"/>
 
-    <script type="client" src="client/backpack.lua"/>
-    <script type="client" src="client/drawing.lua"/>
-    <script type="client" src="client/loot.lua"/>
-    <script type="client" src="client/weapons.lua"/>
-    <script type="client" src="client/weapon_switching.lua"/>
-    <script type="client" src="client/equipment.lua"/>
-    <script type="client" src="client/wearing.lua"/>
-    <script type="client" src="client/actions.lua"/>
-    <script type="client" src="client/usable_items.lua"/>
-    <script type="client" src="client/sounds.lua"/>
-
-    <script type="server" src="server/parachute.lua"/>
-    <script type="server" src="server/items.lua"/>
-    <script type="server" src="server/weapons.lua"/>
-    <script type="server" src="server/weapon_switching.lua"/>
-    <script type="server" src="server/backpack.lua"/>
-    <script type="server" src="server/loot.lua"/>
-    <script type="server" src="server/equipment.lua"/>
+    <script type="server" src="server/inventory.lua"/>
     <script type="server" src="server/actions.lua"/>
-    <script type="server" src="server/exports.lua"/>
 
-    <script type="server" src="server/test.lua"/>
-
-    <file src="assets/icons/bandage.png"/>
-    <file src="assets/icons/first_aid.png"/>
-    <file src="assets/icons/medkit.png"/>
-    <file src="assets/icons/energy_drink.png"/>
-    <file src="assets/icons/painkiller.png"/>
-    <file src="assets/icons/adrenaline_syringe.png"/>
-    <file src="assets/icons/m4.png"/>
-    <file src="assets/icons/awm.png"/>
-    <file src="assets/icons/colt45.png"/>
-    <file src="assets/icons/shotgun.png"/>
-    <file src="assets/icons/uzi.png"/>
-    <file src="assets/icons/mp5.png"/>
-    <file src="assets/icons/crowbar.png"/>
-    <file src="assets/icons/pan.png"/>
-    <file src="assets/icons/machete.png"/>
-    <file src="assets/icons/smoke.png"/>
-    <file src="assets/icons/grenade.png"/>
-    <file src="assets/icons/molotov.png"/>
-    <file src="assets/icons/backpack1.png"/>
-    <file src="assets/icons/backpack2.png"/>
-    <file src="assets/icons/backpack3.png"/>
-    <file src="assets/icons/ammo_9mm.png"/>
-    <file src="assets/icons/ammo_556mm.png"/>
-    <file src="assets/icons/ammo_762mm.png"/>
-    <file src="assets/icons/ammo_12gauge.png"/>
-    <file src="assets/icons/helmet1.png"/>
-    <file src="assets/icons/helmet2.png"/>
-    <file src="assets/icons/helmet3.png"/>
-    <file src="assets/icons/armor1.png"/>
-    <file src="assets/icons/armor2.png"/>
-    <file src="assets/icons/armor3.png"/>
-    <file src="assets/icons/jerrycan.png"/>
-    <file src="assets/icons/mghilie1.png"/>
-    <file src="assets/icons/mghilie2.png"/>
-    <file src="assets/icons/weapon_akm.png"/>
-    <file src="assets/icons/weapon_kar98k.png"/>
-
-    <file src="assets/sounds/painkiller.wav"/>
-
-    <file src="assets/bar.png"/>
-
-    <export type="shared" function="getItemClass"/>
-    <export type="shared" function="getLootClasses"/>
-    <export type="shared" function="getWeaponNameFromId"/>
-
-    <export type="client" function="getClientWeapons"/>
-    <export type="client" function="getWeaponSlot"/>
-    <export type="client" function="getWeaponAmmo"/>
-    <export type="client" function="getActiveWeaponSlot"/>
-
-    <export type="client" function="setVisible"/>
-    <export type="client" function="isVisible"/>
-
-    <export type="server" function="givePlayerParachute"/>
-    <export type="server" function="takePlayerParachute"/>
-    <export type="server" function="spawnPlayerLootBox"/>
-    <export type="server" function="takeAllItems"/>
-
-    <export type="server" function="createItem"/>
-    <export type="server" function="spawnLootItem"/>
+    <script type="client" src="client/inventory.lua"/>
 </meta>
