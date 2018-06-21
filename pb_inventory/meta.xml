@@ -10,4 +10,5 @@
     <script type="server" src="server/actions.lua"/>
 
     <script type="client" src="client/inventory.lua"/>
+    <script type="client" src="client/gui.lua"/>
 </meta>

@@ -45,12 +45,18 @@ function Widget:render(mouseX, mouseY)
     self.mouseY = mouseY
 
     if isPointInRect(mouseX, mouseY, 0, 0, self.width, self.height) then
+        if not self.isMouseOver then
+            triggerWidgetEvent("onWidgetMouseOver", self)
+        end
         self.isMouseOver = true
         InputManager.setHoveredWidget(self)
         if self.enabled and InputManager.isPressed("mouse1") then
             InputManager.setClickedWidget(self)
         end
     else
+        if self.isMouseOver then
+            triggerWidgetEvent("onWidgetMouseOut", self)
+        end
         self.isMouseOver = false
     end
 
