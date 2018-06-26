@@ -1,4 +1,6 @@
+-- Команды для управления дебагом
 if Config.debugCommandsEnabled then
+    -- Включение и выключение дебаг-интерфейса
     addCommandHandler("debugui", function (cmd, mode)
         mode = tonumber(mode)
         if not mode or mode > 3 or mode < 0 or mode - math.floor(mode) ~= 0 then
@@ -14,6 +16,7 @@ if Config.debugCommandsEnabled then
     end)
 end
 
+-- Отображение количества вызовов отрисовки
 if Config.debugDrawCalls then
     local functionNames = {
         "dxDrawImage",

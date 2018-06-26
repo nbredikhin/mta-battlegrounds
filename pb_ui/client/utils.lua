@@ -1,3 +1,4 @@
+-- Эмуляция другого разрешения экрана
 if Config.debugFakeResolution then
     guiGetScreenSize = function () return Config.debugFakeResolution[1], Config.debugFakeResolution[2] end
 end
@@ -21,6 +22,7 @@ function defaultValues(sourceTable, targetTable, defaults)
     end
 end
 
+-- Удаление элемента массива по значению
 function removeArrayValue(t, removeValue)
     for i, value in ipairs(t) do
         if value == removeValue then
@@ -31,6 +33,7 @@ function removeArrayValue(t, removeValue)
     return false
 end
 
+-- Поиск элемента в массиве
 table.indexOf = function(t, object)
     local result
     if "table" == type(t) then

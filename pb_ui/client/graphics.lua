@@ -1,14 +1,19 @@
 Graphics = {}
 
+-- Цвет отрисовки по умолчанию
 local defaultDrawColor = tocolor(255, 255, 255)
+-- Шрифт по-умолчанию
 local defaultDrawFont = Config.defaultFont
-
+-- Текущий цвет
 local drawColor = defaultDrawColor
+-- Текущий шрифт
 local drawFont = defaultDrawFont
+-- Текущий центр координат
 local drawX = 0
 local drawY = 0
-
+-- Текущий масштаб отрисовки
 local drawScale = 1
+-- Масштаб текста
 local drawTextScale = 1
 
 local drawPostGUI = false

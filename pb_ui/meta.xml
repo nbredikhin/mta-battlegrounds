@@ -3,9 +3,11 @@
     <!-- Повышенный приоритет загрузки -->
     <download_priority_group>1</download_priority_group>
 
+    <!-- Библиотека для ООП -->
+    <script type="client" src="client/middleclass.lua"/>
+
     <script type="client" src="client/config.lua"/>
     <script type="client" src="client/utils.lua"/>
-    <script type="client" src="client/middleclass.lua"/>
     <script type="client" src="client/scaling.lua"/>
     <script type="client" src="client/assets.lua"/>
     <script type="client" src="client/widgets/Widget.lua"/>

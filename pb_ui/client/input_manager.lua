@@ -1,17 +1,24 @@
 InputManager = {}
 
+-- Состояние клавиш checkKeys в текущий момент
 local keysState = {}
+-- Кнопки из checkKeys, которые были нажаты в текущем кадре
 local keysPressed = {}
+-- Кнопки из checkKeys, которые были отпущены в текущем кадре
 local keysReleased = {}
-
+-- Клавиши, для которых нужно проверять состояние
 local checkKeys = {
     "mouse1"
 }
 
+-- Виджет, по которому был клик в текущем кадре
 local clickedWidget = nil
+-- Виджет, находящийся в фокусе
 local focusedWidget = nil
+-- Самый верхний виджет, находящийся под курсором мыши
 local hoveredWidget = nil
 
+-- Таймеры для обработки залипания клавиш при вводе текста
 local inputActionWaitTimer = nil
 local inputActionRepeatTimer = nil
 
@@ -28,6 +35,7 @@ local function stopTextInputAction()
     end
 end
 
+-- Выполнение действия над текстовым вводом с залипанием клавиш
 local function processTextInputAction(action)
     if isTimer(inputActionRepeatTimer) and (not getKeyState(action) or not focusedWidget) then
         stopTextInputAction()

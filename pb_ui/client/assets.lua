@@ -1,8 +1,8 @@
 Assets = {}
 
 local assetTables = {
-    font = {},
-    image = {},
+    font   = {},
+    image  = {},
     shader = {}
 }
 
@@ -10,6 +10,8 @@ local assetTables = {
 -- Локальные функции --
 -----------------------
 
+-- Загрузка ассета из файла для последующего использование
+-- Вызывается в Assets.reload
 local function loadAsset(assetType, assetName, path, ...)
     if not assetType or not assetName or not path then
         return false
@@ -41,14 +43,18 @@ end
 -- Глобальные функции --
 ------------------------
 
+-- Получение шрифта по названию
 function Assets.getFont(name)
     return assetTables.font[name]
 end
 
+-- Получение изображения по названию
 function Assets.getImage(name)
     return assetTables.image[name]
 end
 
+-- Удаляет старые загруженные ассеты и загружает их заново
+-- Необходимо для динамического изменения масштаба шрифтов
 function Assets.reload()
     for assetType, assets in pairs(assetTables) do
         for name, asset in pairs(assets) do

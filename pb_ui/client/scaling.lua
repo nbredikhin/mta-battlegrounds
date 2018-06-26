@@ -1,9 +1,12 @@
 Scaling = {}
 
+-- Реальные размеры экрана
 local screenWidth, screenHeight = guiGetScreenSize()
+-- Исходное разрешение до масштабирования
 Scaling.screenWidth  = screenWidth
 Scaling.screenHeight = screenHeight
 
+-- Глобальное масштабирование
 Scaling.scale = 1
 
 if Config.scalingMode == "fit_horizontal" then
@@ -16,6 +19,7 @@ elseif Config.scalingMode == "fit_vertical" then
     Scaling.screenHeight = Config.scalingHeight
 end
 
+-- Масштабирует размер шрифта в зависимости от параметров конфига
 function Scaling.fontSize(size)
     if Config.scalingFontsMode == "scale_text" then
         return size
@@ -25,5 +29,6 @@ function Scaling.fontSize(size)
 end
 
 addEventHandler("onClientResourceStart", resourceRoot, function ()
+    -- Установка масштаба отрисовки
     Graphics.setScale(Scaling.scale)
 end)

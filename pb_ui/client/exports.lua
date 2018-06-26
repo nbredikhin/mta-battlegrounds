@@ -1,3 +1,7 @@
+-- Виджеты, созданные ресурсами
+-- Каждый ресурс, создающий виджеты, получает корневой виджет,
+-- в котором лежат все виджеты ресурса. Если ресурс останаваливается,
+-- корневой виджет автоматически удаляется.
 local resourceWidgets = {}
 local widgetInstances = {}
 
@@ -29,6 +33,8 @@ function create(name, params)
         sourceResource = resource
     end
 
+    -- Если в params передан id виджета-родителя,
+    -- преобразовать его в ссылку на экземпляр.
     if params.parent then
         if widgetInstances[params.parent] then
             params.parent = widgetInstances[params.parent]
@@ -37,7 +43,10 @@ function create(name, params)
         end
     end
 
+    -- Если для виджета не указан родитель
     if not params.parent then
+        -- Если для ресурса, создающего виджет, не создан корневой виджет,
+        -- создаём его и добавляем в менеджер отрисовки
         if not resourceWidgets[sourceResourceRoot] then
             resourceWidgets[sourceResourceRoot] = Widget:new({
                 y = (screenHeight/Scaling.scale)/2-Scaling.screenHeight/2,
@@ -48,6 +57,8 @@ function create(name, params)
 
             RenderManager.addWidget(resourceWidgets[sourceResourceRoot])
         end
+        -- Указываем новому виджету созданный корневой виджет в качестве
+        -- родителя.
         params.parent = resourceWidgets[sourceResourceRoot]
     end
 
@@ -96,6 +107,8 @@ function setParams(id, params)
     if not widgetInstances[id] then
         return false
     end
+    -- Запрет переопределения некоторых полей
+    -- экземпляра виджета через данный метод.
     params.parent = nil
     params.children = nil
     params.id = nil
@@ -127,6 +140,7 @@ function getParam(id, key)
     return value
 end
 
+-- Получение названия класса виджета
 function getWidgetType(id, key)
     if not id then
         return false
@@ -137,6 +151,7 @@ function getWidgetType(id, key)
     return widgetInstances[id].class.name
 end
 
+-- Выравнивание виджета внутри родителя
 function alignWidget(id, alignAxis, align, offset)
     if not id then
         return false
@@ -184,6 +199,7 @@ function alignWidget(id, alignAxis, align, offset)
     return true
 end
 
+-- Устанавливает размер виджета под размеры родителя
 function fillSize(id, marginHorizontal, marginVertical)
     if not id then
         return false
@@ -211,10 +227,12 @@ function fillSize(id, marginHorizontal, marginVertical)
     return true
 end
 
+-- Возвращает разрешение, в котором отрисовывается интерфейс до масштабирования
 function getRenderResolution()
     return Scaling.screenWidth, Scaling.screenHeight
 end
 
+-- При выключении какого-либо ресурса удаляем его корневой виджет
 addEventHandler("onClientResourceStop", root, function ()
     if resourceWidgets[source] then
         RenderManager.removeWidget(resourceWidgets[source])
