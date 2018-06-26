@@ -31,6 +31,8 @@ function Window:initialize(params)
     -- Цвет заголовка
     self.colorText      = params.colorText      or tocolor(200, 200, 200)
     self.colorTextRight = params.colorTextRight or tocolor(150, 150, 150)
+
+    self.bringToFrontOnClick = true
 end
 
 function Window:draw()

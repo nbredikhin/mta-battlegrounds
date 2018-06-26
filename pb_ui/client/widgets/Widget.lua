@@ -31,6 +31,9 @@ function Widget:initialize(params)
     if params.parent then
         params.parent:addChild(self)
     end
+
+    self.receiveTextInput = false
+    self.bringToFrontOnClick = false
 end
 
 function Widget:render(mouseX, mouseY)
@@ -51,6 +54,9 @@ function Widget:render(mouseX, mouseY)
         self.isMouseOver = true
         InputManager.setHoveredWidget(self)
         if self.enabled and InputManager.isPressed("mouse1") then
+            if self.bringToFrontOnClick then
+                RenderManager.bringWidgetToFront(self)
+            end
             InputManager.setClickedWidget(self)
         end
     else
@@ -156,4 +162,15 @@ function Widget:getChildIndex(widget)
     end
 
     return false
+end
+
+-- Перемещает виджет наверх относительно других детей его родителя
+function Widget:bringToFront()
+    if not self.parent then
+        return false
+    end
+    local parent = self.parent
+    parent:removeChild(self)
+    parent:addChild(self)
+    return true
 end

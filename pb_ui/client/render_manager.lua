@@ -2,6 +2,8 @@ RenderManager = {}
 
 local renderWidgets = {}
 
+local bringToFrontWidget
+
 -----------------------
 -- Локальные функции --
 -----------------------
@@ -43,6 +45,10 @@ local function render()
         local renderTime = getTickCount() - renderStartTime
         dxDrawText("Render time: "..renderTime.."ms", 20, 420, 0, 0, tocolor(255, 0, 0))
     end
+
+    if bringToFrontWidget then
+        bringToFrontWidget:bringToFront()
+    end
 end
 
 ------------------------
@@ -64,6 +70,10 @@ function RenderManager.removeWidget(widget)
     end
     table.remove(renderWidgets, index)
     return true
+end
+
+function RenderManager.bringWidgetToFront(widget)
+    bringToFrontWidget = widget
 end
 
 -----------------------
