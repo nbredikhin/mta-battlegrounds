@@ -13,10 +13,20 @@ if Config.scalingMode == "fit_horizontal" then
     Scaling.scale = screenWidth / Config.scalingWidth
     Scaling.screenWidth  = Config.scalingWidth
     Scaling.screenHeight = Config.scalingHeight
+
+    if Config.scalingKeepRatio then
+        local ratio = screenWidth / screenHeight
+        Scaling.screenHeight = screenHeight / Scaling.scale
+    end
 elseif Config.scalingMode == "fit_vertical" then
     Scaling.scale = screenHeight / Config.scalingHeight
     Scaling.screenWidth  = Config.scalingWidth
     Scaling.screenHeight = Config.scalingHeight
+
+    if Config.scalingKeepRatio then
+        local ratio = screenWidth / screenHeight
+        Scaling.screenWidth = screenWidth / Scaling.scale
+    end
 end
 
 -- Масштабирует размер шрифта в зависимости от параметров конфига
