@@ -1,4 +1,4 @@
-local clientInventory = {}
+local clientItems = {}
 
 ------------------------
 -- Глобальные функции --
@@ -11,9 +11,9 @@ local clientInventory = {}
 addEvent("onClientInventoryUpdate", true)
 addEventHandler("onClientInventoryUpdate", resourceRoot, function (items)
     if type(items) == "table" then
-        clientInventory = items
+        clientItems = items
     else
-        clientInventory = {}
+        clientItems = {}
     end
 end)
 
