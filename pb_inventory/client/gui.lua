@@ -32,15 +32,47 @@ local weaponBlockHeight = (screenHeight - screenSpacing * 2 - blockSpacing * 3) 
 local weaponBlockWidth = weaponBlockHeight * 2 + blockSpacing
 -- Размер слота в два раза меньше блока оружия
 local slotSize = weaponBlockHeight / 2 - blockSpacing / 2
+local dragItemSize = slotSize * 0.76
 
 -- Цвета элементов интерфейса
 local backgroundColor   = tocolor(10, 10, 10, 200)
 local defaultBlockColor = tocolor(0, 0, 0, 200)
 local slotBorderColor   = tocolor(50, 50, 50)
 
+-- Drag & Drop
+local hoveredSlotName = nil
+local draggingSlotName = nil
+
 -----------------------
 -- Локальные функции --
 -----------------------
+
+-- Drag & Drop
+
+local function startSlotDragging(slotName)
+    if draggingSlotName then
+        cancelSlotDragging()
+    end
+
+    draggingSlotName = slotName
+    UI:setParams(ui.dragItem, { visible = true })
+end
+
+local function cancelSlotDragging()
+    if not draggingSlotName then
+        return
+    end
+
+    draggingSlotName = nil
+    UI:setParams(ui.dragItem, { visible = false })
+end
+
+local function finishSlotDragging(targetSlotName)
+    cancelSlotDragging()
+end
+
+
+-- Создание слотов различных типов
 
 local function createInventorySlot(name, x, y)
     local slot = UI:create("Rectangle", {
@@ -90,7 +122,6 @@ local function createSmallWeaponSlot(name, x, y)
         color  = defaultBlockColor
     })
 
-
     UI:setParams(slot, {
         blockType = "slot",
         slotName = name
@@ -99,6 +130,17 @@ local function createSmallWeaponSlot(name, x, y)
     ui.slots[name] = slot
 
     return slot
+end
+
+local function createItemsList()
+    UI:create("Rectangle", {
+        x = screenSpacing,
+        y = screenSpacing,
+        width = itemsListWidth,
+        height = screenHeight - screenSpacing*2,
+        color = defaultBlockColor
+    })
+
 end
 
 -----------------------
@@ -111,6 +153,7 @@ addEvent("onWidgetClick")
 
 addEventHandler("onWidgetMouseOver", resourceRoot, function (widget)
     if UI:getParam(widget, "blockType") == "slot" then
+        hoveredSlotName = UI:getParam(widget, "slotName")
         UI:setParams(widget, { color = tocolor(20, 20, 20, 230)})
     end
 end)
@@ -119,10 +162,45 @@ addEventHandler("onWidgetMouseOut", resourceRoot, function (widget)
     if UI:getParam(widget, "blockType") == "slot" then
         UI:setParams(widget, { color = tocolor(0, 0, 0, 200)})
     end
+    hoveredSlotName = nil
 end)
 
 addEventHandler("onWidgetClick", resourceRoot, function (widget)
 
+end)
+
+addEventHandler("onClientKey", root, function (key, state)
+    if key == "mouse1" then
+        -- Мышь нажата
+        if state then
+            -- Если курсор над слотом
+            if hoveredSlotName then
+                -- Начинаем драг этого слота
+                startSlotDragging(hoveredSlotName)
+            end
+        else
+            -- Если курсор над слотом
+            if hoveredSlotName then
+                -- Завершаем драг в этот слот
+                finishSlotDragging(hoveredSlotName)
+            else
+                -- Просто сбрасываем драг
+                cancelSlotDragging()
+            end
+        end
+    end
+end)
+
+addEventHandler("onClientPreRender", root, function ()
+    if draggingSlotName then
+        local mouseX, mouseY = getCursorPosition()
+        mouseX = mouseX * screenWidth
+        mouseY = mouseY * screenHeight
+        UI:setParams(ui.dragItem, {
+            x = mouseX - dragItemSize/2,
+            y = mouseY - dragItemSize/2
+        })
+    end
 end)
 
 -- Создание интерфейса
@@ -137,13 +215,6 @@ addEventHandler("onClientResourceStart", resourceRoot, function ()
         width = itemsListWidth,
         height = titleLabelHeight,
         text = "Вещи на земле"
-    })
-    UI:create("Rectangle", {
-        x = screenSpacing,
-        y = screenSpacing,
-        width = itemsListWidth,
-        height = screenHeight - screenSpacing*2,
-        color = defaultBlockColor
     })
 
     -- Блок рюкзака
@@ -224,6 +295,18 @@ addEventHandler("onClientResourceStart", resourceRoot, function ()
             screenWidth   - screenSpacing - weaponBlockWidth - slotSize - blockSpacing,
             screenSpacing + blockSpacing  * (i-1) + slotSize * (i-1))
     end
+
+    -- Drag & Drop
+    ui.dragItem = UI:create("Rectangle", {
+        x = 0,
+        y = 0,
+        width  = dragItemSize,
+        height = dragItemSize,
+        color  = defaultBlockColor,
+        borderSize  = 1,
+        borderColor = slotBorderColor,
+        visible = false
+    })
 
     showCursor(true)
 end)
