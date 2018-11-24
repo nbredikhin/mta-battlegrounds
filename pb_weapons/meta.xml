@@ -1,28 +1,7 @@
 <meta>
     <oop>true</oop>
 
-    <script type="shared" src="shared/config.lua"/>
-    <script type="shared" src="shared/weapons.lua"/>
-    <script type="shared" src="shared/props_groups.lua"/>
-    <script type="shared" src="shared/exports.lua"/>
-
-    <script type="client" src="client/camera.lua"/>
-    <script type="client" src="client/cursor.lua"/>
-    <script type="client" src="client/scope.lua"/>
-    <script type="client" src="client/weapon.lua"/>
-    <script type="client" src="client/slots.lua"/>
-    <script type="client" src="client/attach.lua"/>
-    <script type="client" src="client/debug.lua"/>
-    <script type="client" src="client/exports.lua"/>
-
-    <script type="server" src="server/properties.lua"/>
-    <script type="server" src="server/weapon.lua"/>
-    <script type="server" src="server/player_slots.lua"/>
-
-    <export type="client" function="getWeaponSlots"/>
-    <export type="client" function="getWeaponsTable"/>
-
-    <export type="server" function="getWeaponsTable"/>
+    <script type="client" src="client/main.lua"/>
 
     <file src="assets/nil.png"/>
     <file src="assets/replace.fx"/>
