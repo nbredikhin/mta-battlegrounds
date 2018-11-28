@@ -293,8 +293,8 @@ function dbLoginPlayer(result, params)
 
         -- Сброс уровня сундука раз в неделю
         local lastSeenTime = getRealTime(result.last_seen)
-        local lastSeenWeek = math.floor(lastSeenTime.yearday / 7)
-        local currentWeek = math.floor(getRealTime().yearday / 7)
+        local lastSeenWeek = math.floor((lastSeenTime.yearday + 1) / 7)
+        local currentWeek = math.floor((getRealTime().yearday + 1) / 7)
         if lastSeenWeek ~= currentWeek then
             player:setData("crate_level", 1)
         end

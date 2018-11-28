@@ -91,9 +91,9 @@ ClothesTable.shirt_floral = {
     material = "mbodyd",
     texture  = "body/mbodyd/1.png",
     icon     = "icon_equipment_Body_D_04.png",
-    rarity   = 5,
+    rarity   = 4,
     hide     = { forearm = true },
-    price    = 750,
+    priceMul = 0.9,
 }
 
 ClothesTable.shirt_dirty_green = {
@@ -102,9 +102,9 @@ ClothesTable.shirt_dirty_green = {
     material = "mbodyd",
     texture  = "body/mbodyd/2.png",
     icon     = "icon_equipment_Body_D_03.png",
-    rarity   = 5,
+    rarity   = 6,
     hide     = { forearm = true },
-    price    = 450,
+    priceMul = 0.85,
 }
 
 ClothesTable.shirt_white_tie = {
@@ -113,8 +113,7 @@ ClothesTable.shirt_white_tie = {
     material = "mbodyd",
     texture  = "body/mbodyd/3.png",
     icon     = "icon_equipment_Body_D_01.png",
-    rarity   = 4,
-    price    = 1200,
+    rarity   = 5,
     hide     = { forearm = true },
 }
 
@@ -126,8 +125,8 @@ ClothesTable.tshirt_camo = {
     material = "mbodybr03",
     texture  = "body/mbodybr03/1.png",
     icon     = "icon_equipment_Body_XB_01.png",
-    rarity   = 5,
-    price    = 750,
+    rarity   = 6,
+    priceMul = 1.5,
 }
 
 ClothesTable.tshirt_raglan1 = {
@@ -136,8 +135,8 @@ ClothesTable.tshirt_raglan1 = {
     material = "mbodybr03",
     texture  = "body/mbodybr03/2.png",
     icon     = "icon_equipment_Body_Raglan_01.png",
-    rarity   = 5,
-    price    = 600,
+    rarity   = 7,
+    priceMul = 1.25,
 }
 
 ClothesTable.tshirt_dmm1 = {
@@ -146,8 +145,7 @@ ClothesTable.tshirt_dmm1 = {
     material = "mbodybr03",
     texture  = "body/mbodybr03/3.png",
     icon     = "icon_equipment_Body_DMM_01.png",
-    rarity   = 5,
-    price    = 450,
+    rarity   = 6,
 }
 
 ClothesTable.tshirt_dmm2 = {
@@ -156,8 +154,7 @@ ClothesTable.tshirt_dmm2 = {
     material = "mbodybr03",
     texture  = "body/mbodybr03/4.png",
     icon     = "icon_equipment_Body_DMM_02.png",
-    rarity   = 5,
-    price    = 500,
+    rarity   = 6,
 }
 
 ClothesTable.tshirt_kakao1 = {
@@ -167,7 +164,6 @@ ClothesTable.tshirt_kakao1 = {
     texture  = "body/mbodybr03/5.png",
     icon     = "icon_equipment_Body_KaKao_01.png",
     rarity   = 7,
-    price    = 550,
 }
 
 ClothesTable.tshirt_kakao2 = {
@@ -177,7 +173,6 @@ ClothesTable.tshirt_kakao2 = {
     texture  = "body/mbodybr03/6.png",
     icon     = "icon_equipment_Body_Kakao_02.png",
     rarity   = 7,
-    price    = 500,
 }
 
 ClothesTable.tshirt_panda1 = {
@@ -187,7 +182,6 @@ ClothesTable.tshirt_panda1 = {
     texture  = "body/mbodybr03/7.png",
     icon     = "icon_equipment_Body_Panda_01.png",
     rarity   = 7,
-    price    = 550,
 }
 
 ClothesTable.tshirt_panda2 = {
@@ -197,7 +191,6 @@ ClothesTable.tshirt_panda2 = {
     texture  = "body/mbodybr03/8.png",
     icon     = "icon_equipment_Body_Panda_02.png",
     rarity   = 7,
-    price    = 550,
 }
 
 ClothesTable.tshirt_pioneer = {
@@ -207,7 +200,7 @@ ClothesTable.tshirt_pioneer = {
     texture  = "body/mbodybr03/9.png",
     icon     = "icon_equipment_Body_EA_01.png",
     rarity   = 6,
-    price    = 400,
+    priceMul = 1.75,
 }
 
 ClothesTable.tshirt_raglan2 = {
@@ -216,8 +209,8 @@ ClothesTable.tshirt_raglan2 = {
     material = "mbodybr03",
     texture  = "body/mbodybr03/10.png",
     icon     = "icon_equipment_Body_Raglan_02.png",
-    rarity   = 6,
-    price    = 350,
+    rarity   = 7,
+    priceMul = 0.5,
 }
 
 ClothesTable.tshirt_developer = {
@@ -235,9 +228,9 @@ ClothesTable.shirt_school = {
     material = "mbodybr06",
     texture  = "body/mbodybr06/1.png",
     icon     = "icon_equipment_Body_BR06_01.png",
-    rarity   = 4,
+    rarity   = 3,
     hide     = { forearm = true },
-    price    = 1000,
+    priceMul = 0.85,
 }
 
 -- mbodyc
@@ -248,8 +241,8 @@ ClothesTable.shirt_top_white = {
     material = "mbodyc",
     texture  = "body/mbodyc/1.png",
     icon     = "icon_equipment_Body_C_01.png",
-    rarity   = 5,
-    price    = 500,
+    rarity   = 7,
+    priceMul = 0.5,
 }
 
 ClothesTable.shirt_top_grey = {
@@ -258,8 +251,8 @@ ClothesTable.shirt_top_grey = {
     material = "mbodyc",
     texture  = "body/mbodyc/2.png",
     icon     = "icon_equipment_Body_C_02.png",
-    rarity   = 5,
-    price    = 450,
+    rarity   = 6,
+    priceMul = 0.75,
 }
 
 ClothesTable.shirt_tank_top = {
@@ -268,8 +261,8 @@ ClothesTable.shirt_tank_top = {
     material = "mbodyc",
     texture  = "body/mbodyc/3.png",
     icon     = "icon_equipment_Body_C_04.png",
-    rarity   = 6,
-    price    = 250,
+    rarity   = 7,
+    priceMul = 0.25,
 }
 
 ClothesTable.shirt_top_pricess = {
@@ -279,7 +272,7 @@ ClothesTable.shirt_top_pricess = {
     texture  = "body/mbodyc/4.png",
     icon     = "icon_equipment_Body_C_05.png",
     rarity   = 5,
-    price    = 750,
+    priceMul = 0.75,
 }
 
 ClothesTable.shirt_top_stipped = {
@@ -289,7 +282,7 @@ ClothesTable.shirt_top_stipped = {
     texture  = "body/mbodyc/5.png",
     icon     = "icon_equipment_Body_C_06.png",
     rarity   = 5,
-    price    = 800,
+    priceMul = 0.9,
 }
 
 -- mbodyf
@@ -300,8 +293,8 @@ ClothesTable.shirt_polka_dot = {
     material = "mbodyf",
     texture  = "body/mbodyf/1.png",
     icon     = "icon_equipment_Body_F_06.png",
-    rarity   = 4,
-    price    = 900,
+    rarity   = 6,
+    priceMul = 1.25
 }
 
 ClothesTable.shirt_pink_stipped = {
@@ -310,8 +303,8 @@ ClothesTable.shirt_pink_stipped = {
     material = "mbodyf",
     texture  = "body/mbodyf/2.png",
     icon     = "icon_equipment_Body_F_05.png",
-    rarity   = 5,
-    price    = 650,
+    rarity   = 7,
+    priceMul = 1.5
 }
 
 ClothesTable.shirt_white = {
@@ -320,8 +313,7 @@ ClothesTable.shirt_white = {
     material = "mbodyf",
     texture  = "body/mbodyf/3.png",
     icon     = "icon_equipment_Body_F_04.png",
-    rarity   = 5,
-    price    = 350,
+    rarity   = 7,
 }
 
 -- mbodyg
@@ -332,9 +324,9 @@ ClothesTable.tshirt_ls_dirty = {
     material = "mbodyg",
     texture  = "body/mbodyg/1.png",
     icon     = "icon_equipment_Body_G_04.png",
-    rarity   = 6,
+    rarity   = 7,
     hide     = { forearm = true },
-    price    = 200,
+    priceMul = 0.25,
 }
 
 ClothesTable.tshirt_ls_grey = {
@@ -343,9 +335,9 @@ ClothesTable.tshirt_ls_grey = {
     material = "mbodyg",
     texture  = "body/mbodyg/2.png",
     icon     = "icon_equipment_Body_G_01.png",
-    rarity   = 6,
+    rarity   = 7,
     hide     = { forearm = true },
-    price    = 250,
+    priceMul = 0.5,
 }
 
 ClothesTable.tshirt_ls_red = {
@@ -354,9 +346,8 @@ ClothesTable.tshirt_ls_red = {
     material = "mbodyg",
     texture  = "body/mbodyg/3.png",
     icon     = "icon_equipment_Body_G_05.png",
-    rarity   = 5,
+    rarity   = 6,
     hide     = { forearm = true },
-    price    = 300,
 }
 
 ClothesTable.tshirt_ls_telnyashka1 = {
@@ -367,7 +358,6 @@ ClothesTable.tshirt_ls_telnyashka1 = {
     icon     = "icon_equipment_Body_Mailru_01.png",
     rarity   = 4,
     hide     = { forearm = true },
-    price    = 1800,
 }
 
 ClothesTable.tshirt_ls_telnyashka2 = {
@@ -378,7 +368,6 @@ ClothesTable.tshirt_ls_telnyashka2 = {
     icon     = "icon_equipment_Body_Mailru_02.png",
     rarity   = 4,
     hide     = { forearm = true },
-    price    = 1800,
 }
 
 -- mbodypu
@@ -391,7 +380,7 @@ ClothesTable.shirt_checked_red = {
     icon     = "icon_equipment_Body_PU_02.png",
     rarity   = 3,
     hide     = { forearm = true },
-    price    = 4000,
+    priceMul = 1.25,
 }
 
 ClothesTable.shirt_checked_white = {
@@ -400,9 +389,8 @@ ClothesTable.shirt_checked_white = {
     material = "mbodypu",
     texture  = "body/mbodypu/2.png",
     icon     = "icon_equipment_Body_PU_03.png",
-    rarity   = 3,
+    rarity   = 4,
     hide     = { forearm = true },
-    price    = 3500,
 }
 
 ClothesTable.shirt_checked_choral = {
@@ -413,7 +401,6 @@ ClothesTable.shirt_checked_choral = {
     icon     = "icon_equipment_Body_PU_07.png",
     rarity   = 3,
     hide     = { forearm = true },
-    price    = 3500,
 }
 
 ClothesTable.shirt_floral_black = {
@@ -424,7 +411,7 @@ ClothesTable.shirt_floral_black = {
     icon     = "icon_equipment_Body_PU_06.png",
     rarity   = 2,
     hide     = { forearm = true },
-    price    = 8500,
+    priceMul = 1.25,
 }
 
 ClothesTable.shirt_floral_white = {
@@ -433,9 +420,8 @@ ClothesTable.shirt_floral_white = {
     material = "mbodypu",
     texture  = "body/mbodypu/5.png",
     icon     = "icon_equipment_Body_PU_05.png",
-    rarity   = 3,
+    rarity   = 4,
     hide     = { forearm = true },
-    price    = 3500,
 }
 
 ClothesTable.shirt_grey_blood = {
@@ -444,9 +430,9 @@ ClothesTable.shirt_grey_blood = {
     material = "mbodypu",
     texture  = "body/mbodypu/6.png",
     icon     = "icon_equipment_Body_PU_01.png",
-    rarity   = 5,
+    rarity   = 7,
     hide     = { forearm = true },
-    price    = 450,
+    priceMul = 1.5,
 }
 
 ClothesTable.shirt_grey_matched = {
@@ -457,7 +443,7 @@ ClothesTable.shirt_grey_matched = {
     icon     = "icon_equipment_Body_PU_04.png",
     rarity   = 5,
     hide     = { forearm = true },
-    price    = 500,
+    priceMul = 1.5,
 }
 
 ClothesTable.shirt_grey_stripped = {
@@ -468,7 +454,7 @@ ClothesTable.shirt_grey_stripped = {
     icon     = "icon_equipment_Body_PU_08.png",
     rarity   = 5,
     hide     = { forearm = true},
-    price    = 450,
+    priceMul = 1.2,
 }
 
 
@@ -506,7 +492,7 @@ ClothesTable.tracksuit_top1 = {
     icon     = "icon_equipment_Jacket_BR01_01.png",
     hide     = { elbow = true, forearm = true },
     rarity   = 3,
-    price    = 2000,
+    priceMul = 0.8,
 }
 
 -- mjacketbr02
@@ -519,7 +505,6 @@ ClothesTable.checkered_jacket = {
     icon     = "icon_equipment_Jacket_BR02_03.png",
     hide     = { elbow = true, forearm = true },
     rarity   = 2,
-    price    = 7500,
 }
 
 ClothesTable.school_jacket = {
@@ -529,8 +514,8 @@ ClothesTable.school_jacket = {
     texture  = "jacket/mjacketbr02/2.png",
     icon     = "icon_equipment_Jacket_BR02_01.png",
     hide     = { elbow = true, forearm = true },
-    rarity   = 2,
-    price    = 7500,
+    rarity   = 3,
+    priceMul = 0.9,
 }
 
 -- mjacketbr04
@@ -543,7 +528,7 @@ ClothesTable.purple_jacket = {
     icon     = "icon_equipment_Jacket_BR04_01.png",
     hide     = { elbow = true, forearm = true },
     rarity   = 2,
-    price    = 9500,
+    priceMul = 0.9,
 }
 
 -- mjacketbr05
@@ -554,8 +539,8 @@ ClothesTable.tracksuit_top2 = {
     material = "mjacketbr05",
     texture  = "jacket/mjacketbr05/1.png",
     icon     = "icon_equipment_Jacket_XB_01.png",
-    rarity   = 3,
-    price    = 5000,
+    rarity   = 4,
+    priceMul = 1.25,
 }
 
 ClothesTable.tracksuit_top3 = {
@@ -564,8 +549,7 @@ ClothesTable.tracksuit_top3 = {
     material = "mjacketbr05",
     texture  = "jacket/mjacketbr05/2.png",
     icon     = "icon_equipment_Jacket_BR05_01.png",
-    rarity   = 3,
-    price    = 5000,
+    rarity   = 4,
 }
 
 -- mjacketbr06
@@ -576,9 +560,9 @@ ClothesTable.mandarin_jacket1 = {
     material = "mjacketbr06",
     texture  = "jacket/mjacketbr06/1.png",
     icon     = "icon_equipment_Jacket_BR07_01.png",
-    hide     = { elbow = true, forearm = true },
     rarity   = 2,
-    price    = 8000,
+    hide     = { elbow = true, forearm = true },
+    priceMul = 0.8,
 }
 
 ClothesTable.mandarin_jacket2 = {
@@ -587,9 +571,9 @@ ClothesTable.mandarin_jacket2 = {
     material = "mjacketbr06",
     texture  = "jacket/mjacketbr06/2.png",
     icon     = "icon_equipment_Jacket_BR06_01.png",
+    rarity   = 4,
     hide     = { elbow = true, forearm = true },
-    rarity   = 2,
-    price    = 8000,
+    priceMul = 0.7,
 }
 
 -- mjacketpu
@@ -602,7 +586,7 @@ ClothesTable.pubg_coat = {
     icon     = "icon_equipment_Jacket_PU_01.png",
     hide     = { elbow = true, forearm = true },
     rarity   = 1,
-    price    = 15000,
+    priceMul = 1.25,
 }
 
 -- COAT
@@ -614,9 +598,8 @@ ClothesTable.coat = {
     material = "mjacketd",
     texture  = "jacket/mjacketd/4.png",
     icon     = "icon_equipment_Jacket_D_01.png",
-    rarity   = 1,
+    rarity   = 2,
     hide     = { forearm = true },
-    price    = 9000,
 }
 
 ClothesTable.coat_camel = {
@@ -625,9 +608,8 @@ ClothesTable.coat_camel = {
     material = "mjacketd",
     texture  = "jacket/mjacketd/1.png",
     icon     = "icon_equipment_Jacket_D_03.png",
-    rarity   = 1,
+    rarity   = 3,
     hide     = { forearm = true },
-    price    = 9000,
 }
 
 ClothesTable.coat_gray = {
@@ -636,9 +618,8 @@ ClothesTable.coat_gray = {
     material = "mjacketd",
     texture  = "jacket/mjacketd/2.png",
     icon     = "icon_equipment_Jacket_D_02.png",
-    rarity   = 1,
+    rarity   = 3,
     hide     = { forearm = true },
-    price    = 9000,
 }
 
 ClothesTable.coat_red = {
@@ -647,9 +628,9 @@ ClothesTable.coat_red = {
     material = "mjacketd",
     texture  = "jacket/mjacketd/3.png",
     icon     = "icon_equipment_Jacket_D_04.png",
-    rarity   = 1,
+    rarity   = 2,
     hide     = { forearm = true },
-    price    = 9500,
+    priceMul = 1.5,
 }
 
 ------------------------------
@@ -665,7 +646,7 @@ ClothesTable.pants_sport_white = {
     texture  = "legs/mlegsbr01/1.png",
     icon     = "icon_equipment_Legs_BR01_01.png",
     rarity   = 5,
-    price    = 400,
+    priceMul = 0.85,
 }
 
 ClothesTable.pants_sport_blue = {
@@ -675,7 +656,7 @@ ClothesTable.pants_sport_blue = {
     texture  = "legs/mlegsbr01/2.png",
     icon     = "icon_equipment_Legs_BR01_02.png",
     rarity   = 5,
-    price    = 450,
+    priceMul = 0.9,
 }
 
 -- mlegsbr03
@@ -714,8 +695,8 @@ ClothesTable.pants_slacks1 = {
     material = "mlegsbr0201",
     texture  = "legs/mlegsbr0201/1.png",
     icon     = "icon_equipment_Legs_BR04_01.png",
-    rarity   = 3,
-    price    = 4500,
+    rarity   = 4,
+    priceMul = 1.25,
 }
 
 ClothesTable.pants_slacks2 = {
@@ -724,8 +705,8 @@ ClothesTable.pants_slacks2 = {
     material = "mlegsbr0201",
     texture  = "legs/mlegsbr0201/2.png",
     icon     = "icon_equipment_Legs_BR02_03.png",
-    rarity   = 3,
-    price    = 5000,
+    rarity   = 5,
+    priceMul = 1.5,
 }
 
 ClothesTable.pants_slacks3 = {
@@ -734,8 +715,8 @@ ClothesTable.pants_slacks3 = {
     material = "mlegsbr0201",
     texture  = "legs/mlegsbr0201/3.png",
     icon     = "icon_equipment_Legs_BR02_01.png",
-    rarity   = 3,
-    price    = 3500,
+    rarity   = 5,
+    priceMul = 1.25,
 }
 
 ClothesTable.pants_slacks4 = {
@@ -744,8 +725,7 @@ ClothesTable.pants_slacks4 = {
     material = "mlegsbr0201",
     texture  = "legs/mlegsbr0201/4.png",
     icon     = "icon_equipment_Legs_BR07_01.png",
-    rarity   = 3,
-    price    = 3500,
+    rarity   = 5,
 }
 
 -- mlegsbr0202
@@ -776,6 +756,7 @@ ClothesTable.skirt2 = {
         legsbody2 = true,
     },
     rarity   = 1,
+    priceMul = 1.25,
 }
 
 -- mlegsbr0602
@@ -791,6 +772,7 @@ ClothesTable.skirt3 = {
         legsbody2 = true,
     },
     rarity   = 1,
+    priceMul = 1.35,
 }
 
 ClothesTable.skirt4 = {
@@ -804,6 +786,7 @@ ClothesTable.skirt4 = {
         legsbody2 = true,
     },
     rarity   = 1,
+    priceMul = 1.5,
 }
 
 -- mlegsbr0501
@@ -818,7 +801,7 @@ ClothesTable.shorts_tracksuit1 = {
         legsbody2 = true,
     },
     rarity   = 4,
-    price    = 2500,
+    priceMul = 1,
 }
 
 ClothesTable.shorts_tracksuit2 = {
@@ -831,7 +814,7 @@ ClothesTable.shorts_tracksuit2 = {
         legsbody2 = true,
     },
     rarity   = 4,
-    price    = 2500,
+    priceMul = 1.25,
 }
 
 -- mlegsc
@@ -843,6 +826,7 @@ ClothesTable.pants_combat1 = {
     texture  = "legs/mlegsc/1.png",
     icon     = "icon_equipment_Legs_C_05.png",
     rarity   = 6,
+    priceMul = 1.25,
 }
 
 ClothesTable.pants_combat2 = {
@@ -878,7 +862,7 @@ ClothesTable.pants_combat5 = {
     material = "mlegsc",
     texture  = "legs/mlegsc/5.png",
     icon     = "icon_equipment_Legs_C_07.png",
-    rarity   = 6,
+    rarity   = 7,
 }
 
 -- mlegsd
@@ -889,7 +873,7 @@ ClothesTable.pants_combat_black = {
     material = "mlegsd",
     texture  = "legs/mlegsd/1.png",
     icon     = "icon_equipment_Legs_D_01.png",
-    rarity   = 6,
+    rarity   = 7,
 }
 
 -- mlegsk
@@ -901,7 +885,6 @@ ClothesTable.pants_biker_black = {
     texture  = "legs/mlegsk/1.png",
     icon     = "icon_equipment_Legs_H_01.png",
     rarity   = 5,
-    price    = 350,
 }
 
 ClothesTable.pants_biker_gray = {
@@ -911,7 +894,6 @@ ClothesTable.pants_biker_gray = {
     texture  = "legs/mlegsk/2.png",
     icon     = "icon_equipment_Legs_H_02.png",
     rarity   = 5,
-    price    = 350,
 }
 
 ClothesTable.pants_cargo1 = {
@@ -920,8 +902,7 @@ ClothesTable.pants_cargo1 = {
     material = "mlegsk",
     texture  = "legs/mlegsk/3.png",
     icon     = "icon_equipment_Legs_K_01.png",
-    rarity   = 5,
-    price    = 400,
+    rarity   = 7,
 }
 
 ClothesTable.pants_cargo2 = {
@@ -930,8 +911,7 @@ ClothesTable.pants_cargo2 = {
     material = "mlegsk",
     texture  = "legs/mlegsk/4.png",
     icon     = "icon_equipment_Legs_K_02.png",
-    rarity   = 5,
-    price    = 400,
+    rarity   = 6,
 }
 
 ClothesTable.pants_cargo3 = {
@@ -940,8 +920,7 @@ ClothesTable.pants_cargo3 = {
     material = "mlegsk",
     texture  = "legs/mlegsk/5.png",
     icon     = "icon_equipment_Legs_K_03.png",
-    rarity   = 5,
-    price    = 400,
+    rarity   = 6,
 }
 
 ClothesTable.pants_twitch = {
@@ -951,7 +930,6 @@ ClothesTable.pants_twitch = {
     texture  = "legs/mlegsk/6.png",
     icon     = "icon_equipment_Legs_TW_01.png",
     rarity   = 5,
-    price    = 750,
 }
 
 ------------------------------
@@ -966,7 +944,7 @@ ClothesTable.boots_leather1 = {
     material = "mfeeta",
     texture  = "feet/mfeeta/1.png",
     icon     = "icon_equipment_Feet_A_02.png",
-    rarity   = 5,
+    rarity   = 4,
 }
 
 ClothesTable.boots_leather2 = {
@@ -1008,8 +986,7 @@ ClothesTable.sneakers1 = {
     material = "mfeetbr02",
     texture  = "feet/mfeetbr02/1.png",
     icon     = "icon_equipment_Feet_BR02_02.png",
-    rarity   = 5,
-    price    = 750,
+    rarity   = 4,
 }
 
 ClothesTable.sneakers2 = {
@@ -1018,8 +995,7 @@ ClothesTable.sneakers2 = {
     material = "mfeetbr02",
     texture  = "feet/mfeetbr02/2.png",
     icon     = "icon_equipment_Feet_BR02_01.png",
-    rarity   = 5,
-    price    = 750,
+    rarity   = 3,
 }
 
 -- mfeetbr06
@@ -1030,8 +1006,7 @@ ClothesTable.shoes_school = {
     material = "mfeetbr06",
     texture  = "feet/mfeetbr06/1.png",
     icon     = "icon_equipment_Feet_BR06_01.png",
-    rarity   = 5,
-    price    = 650,
+    rarity   = 4,
 }
 
 -- mfeetd
@@ -1042,7 +1017,7 @@ ClothesTable.boots_working1 = {
     material = "mfeetd",
     texture  = "feet/mfeetd/1.png",
     icon     = "icon_equipment_Feet_D_01.png",
-    rarity   = 6,
+    rarity   = 7,
 }
 
 ClothesTable.boots_working2 = {
@@ -1051,7 +1026,7 @@ ClothesTable.boots_working2 = {
     material = "mfeetd",
     texture  = "feet/mfeetd/2.png",
     icon     = "icon_equipment_Feet_D_02.png",
-    rarity   = 6,
+    rarity   = 7,
 }
 
 ClothesTable.boots_working3 = {
@@ -1071,7 +1046,7 @@ ClothesTable.trainers_hitop1 = {
     material = "mfeete",
     texture  = "feet/mfeete/1.png",
     icon     = "icon_equipment_Feet_E_01.png",
-    rarity   = 6,
+    rarity   = 7,
 }
 
 -- mfeetpu
@@ -1082,7 +1057,7 @@ ClothesTable.trainers_hitop2 = {
     material = "mfeetpu",
     texture  = "feet/mfeetpu/1.png",
     icon     = "icon_equipment_Feet_PU_01.png",
-    rarity   = 4,
+    rarity   = 2,
 }
 
 ClothesTable.trainers_hitop3 = {
@@ -1091,7 +1066,7 @@ ClothesTable.trainers_hitop3 = {
     material = "mfeetpu",
     texture  = "feet/mfeetpu/2.png",
     icon     = "icon_equipment_Feet_E_02.png",
-    rarity   = 4,
+    rarity   = 5,
 }
 
 ClothesTable.trainers_hitop4 = {
@@ -1100,7 +1075,7 @@ ClothesTable.trainers_hitop4 = {
     material = "mfeetpu",
     texture  = "feet/mfeetpu/3.png",
     icon     = "icon_equipment_Feet_E_03.png",
-    rarity   = 6,
+    rarity   = 7,
 }
 
 ClothesTable.trainers_hitop5 = {
@@ -1109,7 +1084,7 @@ ClothesTable.trainers_hitop5 = {
     material = "mfeetpu",
     texture  = "feet/mfeetpu/4.png",
     icon     = "icon_equipment_Feet_XB_01.png",
-    rarity   = 4,
+    rarity   = 3,
 }
 
 -----------------------------
@@ -1172,7 +1147,7 @@ ClothesTable.hat_camo_cap = {
     layer    = "hat",
     model    = "mheadbr01",
     icon     = "icon_equipment_Head_BR03_01.png",
-    rarity   = 3,
+    rarity   = 2,
 }
 
 ClothesTable.hat_xbox_cap = {
@@ -1180,7 +1155,7 @@ ClothesTable.hat_xbox_cap = {
     layer    = "hat",
     model    = "mheadbr02",
     icon     = "icon_equipment_Head_XB_01.png",
-    rarity   = 3,
+    rarity   = 2,
 }
 
 ClothesTable.hat_baseball1 = {
@@ -1198,8 +1173,7 @@ ClothesTable.hat_baseball2 = {
     icon     = "icon_equipment_Head_C_02.png",
     material = "mheadc",
     texture  = "hat/mheadc/2.png",
-    rarity   = 5,
-    price    = 300,
+    rarity   = 6,
 }
 
 ClothesTable.hat_baseball3 = {
@@ -1209,8 +1183,7 @@ ClothesTable.hat_baseball3 = {
     icon     = "icon_equipment_Head_C_03.png",
     material = "mheadc",
     texture  = "hat/mheadc/3.png",
-    rarity   = 5,
-    price    = 300,
+    rarity   = 6,
 }
 
 ClothesTable.hat_beanie1 = {
@@ -1228,7 +1201,7 @@ ClothesTable.hat_beanie1 = {
         rz = 180,
         scale = 1.08,
     },
-    rarity   = 6,
+    rarity   = 7,
 }
 
 ClothesTable.hat_beanie2 = {
@@ -1246,7 +1219,7 @@ ClothesTable.hat_beanie2 = {
         rz = 180,
         scale = 1.08,
     },
-    rarity   = 6,
+    rarity   = 7,
 }
 
 ClothesTable.hat_beanie3 = {
@@ -1266,7 +1239,7 @@ ClothesTable.hat_beanie3 = {
     },
     material = "*",
     texture  = "hat/mheadd/2.png",
-    rarity   = 5,
+    rarity   = 7,
 }
 
 ClothesTable.hat_patrol1 = {
@@ -1276,7 +1249,7 @@ ClothesTable.hat_patrol1 = {
     icon     = "icon_equipment_Head_H_01.png",
     material = "mheadh",
     texture  = "hat/mheadh/1.png",
-    rarity   = 3,
+    rarity   = 2,
 }
 
 ClothesTable.hat_patrol2 = {
@@ -1286,7 +1259,7 @@ ClothesTable.hat_patrol2 = {
     icon     = "icon_equipment_Head_H_02.png",
     material = "mheadh",
     texture  = "hat/mheadh/2.png",
-    rarity   = 3,
+    rarity   = 2,
 }
 
 ClothesTable.hat_uganda = {
@@ -1295,7 +1268,7 @@ ClothesTable.hat_uganda = {
     model    = "uganda",
     icon     = nil,
     rarity   = 1,
-    price    = 8500,
+    priceMul = 2,
 }
 
 -----------------------------
@@ -1309,7 +1282,7 @@ ClothesTable.glasses_punk = {
     material = "mea",
     texture  = "glasses/mea/1.png",
     icon     = "icon_equipment_Eyes_A_01.png",
-    rarity   = 4
+    rarity   = 5
 }
 
 ClothesTable.glasses_sun1 = {
@@ -1319,7 +1292,7 @@ ClothesTable.glasses_sun1 = {
     material = "med1",
     texture  = "glasses/med1/1.png",
     icon     = "icon_equipment_Eyes_D_02.png",
-    rarity   = 4
+    rarity   = 5
 }
 
 ClothesTable.glasses_sun2 = {
@@ -1329,7 +1302,7 @@ ClothesTable.glasses_sun2 = {
     material = "med1",
     texture  = "glasses/med1/2.png",
     icon     = "icon_equipment_Eyes_D_01.png",
-    rarity   = 4
+    rarity   = 5
 }
 
 ClothesTable.glasses_protective = {
@@ -1339,7 +1312,7 @@ ClothesTable.glasses_protective = {
     material = "med3",
     texture  = "glasses/med3/1.png",
     icon     = "icon_equipment_Eyes_D_03.png",
-    rarity   = 3
+    rarity   = 2
 }
 
 ClothesTable.glasses_aviator1 = {
@@ -1404,6 +1377,7 @@ ClothesTable.mask_balaclava2 = {
     material = "mheadh",
     texture  = "mask/balaclava/2.png",
     rarity   = 1,
+    priceMul = 1.15,
 }
 
 ClothesTable.mask_ballistic = {
@@ -1412,6 +1386,7 @@ ClothesTable.mask_ballistic = {
     model    = "mask2",
     icon     = "icon_equipment_Mask_D_01.png",
     rarity   = 5,
+    priceMul = 0.75,
 }
 
 ClothesTable.mask_bandana1 = {
@@ -1422,6 +1397,7 @@ ClothesTable.mask_bandana1 = {
     texture  = "mask/bandana/1.png",
     icon     = "icon_equipment_Mask_PU_02.png",
     rarity   = 1,
+    priceMul = 1.3,
 }
 
 ClothesTable.mask_bandana2 = {
@@ -1432,6 +1408,7 @@ ClothesTable.mask_bandana2 = {
     texture  = "mask/bandana/2.png",
     icon     = "icon_equipment_Mask_PU_01.png",
     rarity   = 1,
+    priceMul = 1.5,
 }
 
 ClothesTable.mask_bandana3 = {
@@ -1442,6 +1419,7 @@ ClothesTable.mask_bandana3 = {
     texture  = "mask/bandana/3.png",
     icon     = "icon_equipment_Mask_PU_03.png",
     rarity   = 1,
+    priceMul = 1.25,
 }
 
 ClothesTable.mask_gas = {
@@ -1450,6 +1428,7 @@ ClothesTable.mask_gas = {
     model    = "mask4",
     icon     = "icon_equipment_Mask_C_01.png",
     rarity   = 2,
+    priceMul = 1.5,
 }
 
 ClothesTable.mask_gas_half = {
@@ -1471,6 +1450,7 @@ ClothesTable.gloves1 = {
     texture  = "gloves/gloves/1.png",
     icon     = "icon_equipment_Hands_D_01.png",
     rarity   = 7,
+    priceMul = 0.25,
 }
 
 ClothesTable.gloves2 = {
@@ -1480,6 +1460,7 @@ ClothesTable.gloves2 = {
     texture  = "gloves/gloves/2.png",
     icon     = "icon_equipment_Hands_D_02.png",
     rarity   = 7,
+    priceMul = 0.2,
 }
 
 ClothesTable.gloves3 = {
@@ -1489,6 +1470,7 @@ ClothesTable.gloves3 = {
     texture  = "gloves/gloves/3.png",
     icon     = "icon_equipment_Hands_D_03.png",
     rarity   = 6,
+    priceMul = 0.75,
 }
 
 ClothesTable.gloves4 = {
@@ -1498,6 +1480,7 @@ ClothesTable.gloves4 = {
     texture  = "gloves/gloves/4.png",
     icon     = "icon_equipment_Hands_PU_01.png",
     rarity   = 7,
+    priceMul = 0.35,
 }
 
 ClothesTable.gloves5 = {
@@ -1506,6 +1489,7 @@ ClothesTable.gloves5 = {
     material = "gloves",
     texture  = "gloves/gloves/5.png",
     icon     = "icon_equipment_Hands_XB_01.png",
-    rarity   = 6,
+    rarity   = 5,
+    priceMul = 0.25,
 }
 

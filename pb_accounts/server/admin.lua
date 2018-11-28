@@ -52,13 +52,3 @@ addCommandHandler("userpoints", function (player, cmd, targetName, count)
     targetPlayer:setdata("battlepoints", bp)
     outputConsole("Player "..targetPlayer.name.." now has "..bp.." BP")
 end)
-
-addCommandHandler("encpwd", function (player, cmd, password)
-    if not isPlayerAdmin(player) then
-        return
-    end
-    passwordHash(password, "bcrypt", { cost = 10 }, function (password)
-        outputConsole("Password: '"..password.."'", player)
-        print("Password: '"..password.."'")
-    end)
-end)

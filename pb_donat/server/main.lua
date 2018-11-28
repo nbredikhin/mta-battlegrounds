@@ -1,4 +1,4 @@
-local ENABLE_X2 = false
+local ENABLE_X2 = true
 
 local dbTableName = "payments"
 
