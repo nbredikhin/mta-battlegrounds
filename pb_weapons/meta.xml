@@ -3,6 +3,8 @@
 
     <script type="client" src="client/main.lua"/>
 
+    <script type="server" src="server/main.lua"/>
+
     <file src="assets/nil.png"/>
     <file src="assets/replace.fx"/>
     <file src="assets/shader.fx"/>
